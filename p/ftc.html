@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="LTX-2 视频生成中的 Warble 和 AI Pattern Artifacts 不是随机 bug——它们指向缺失的时序约束。诊断根因，修复约束，消除伪影。">
+<title>Fix the Constraints, Fix the Artifacts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --text-1: #1D1B18;
+    --text-2: #5C5750;
+    --text-3: #9B958C;
+    --border: #E8E3DB;
+    --accent: #B8714A;
+    --blue: #7C6B5B;
+    --blue-soft: #F5F0EB;
+    --amber: #B8864A;
+    --amber-bg: #FBF6F0;
+    --red: #B85C4A;
+    --red-bg: #FBF2F0;
+    --green: #5A8A6E;
+    --green-bg: #F0F6F2;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+  .wide { max-width: var(--wide-w); }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: 2.2rem; font-weight: 700;
+    line-height: 1.25; letter-spacing: -0.03em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header h1 .sym { color: var(--accent); }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 580px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+  header .meta a {
+    color: var(--text-3); text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.15s;
+  }
+  header .meta a:hover { color: var(--text-1); border-color: var(--text-1); }
+
+  .thesis {
+    background: #2C2520; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B87A; font-weight: 600; }
+  .thesis .evidence {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem; opacity: 0.65; line-height: 1.7;
+  }
+  .thesis .evidence em { font-style: normal; opacity: 0.85; }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-size: 1.5rem; font-weight: 700;
+    line-height: 1.3; letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg);   border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F5F2ED; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 24px 0; font-size: 0.85rem;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .versus .v-left  { background: var(--red-bg); }
+  .versus .v-left .v-label  { color: var(--red); }
+  .versus .v-right { background: var(--green-bg); }
+  .versus .v-right .v-label { color: var(--green); }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 700; color: var(--text-3);
+    background: var(--bg); font-size: 0.75rem;
+  }
+
+  .causal {
+    margin: 24px 0; padding: 0; list-style: none;
+    counter-reset: cause;
+  }
+  .causal li {
+    counter-increment: cause; position: relative;
+    padding: 8px 0 8px 44px; font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .causal li::before {
+    content: counter(cause); position: absolute;
+    left: 0; top: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #2C2520; color: #F5F0EB;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .technique-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px; margin: 28px 0;
+  }
+  @media (max-width: 600px) { .technique-grid { grid-template-columns: 1fr; } }
+  .technique {
+    padding: 24px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .technique:hover { border-color: #D0C8BD; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .technique-tag {
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  .technique h4 {
+    font-size: 0.95rem; font-weight: 700;
+    margin-bottom: 10px; line-height: 1.4;
+  }
+  .technique p { font-size: 0.82rem; color: var(--text-2); line-height: 1.7; margin-bottom: 0; }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 24px 0; font-size: 0.82rem;
+  }
+  thead th {
+    text-align: left; padding: 10px 14px;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-3); border-bottom: 2px solid var(--border);
+  }
+  tbody td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tr.row-ok td { background: var(--green-bg); }
+  .badge {
+    display: inline-block; font-size: 0.65rem; font-weight: 600;
+    padding: 2px 8px; border-radius: 100px;
+  }
+  .badge-best { background: var(--green-bg); color: var(--green); }
+  .badge-good { background: var(--amber-bg); color: var(--amber); }
+  .badge-base { background: #F5F2ED; color: var(--text-3); }
+  .badge-warn { background: var(--red-bg); color: var(--red); }
+
+  details {
+    margin: 20px 0; border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+  }
+  details summary {
+    padding: 14px 20px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 500;
+    color: var(--text-2); background: #F5F2ED;
+    user-select: none; list-style: none;
+    transition: background 0.15s;
+  }
+  details summary:hover { background: #EDE9E3; }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: '+ '; font-weight: 700; color: var(--text-3); }
+  details[open] summary::before { content: '− '; }
+  details .expand-body {
+    padding: 18px 20px; font-size: 0.85rem;
+    line-height: 1.8; color: var(--text-2);
+  }
+
+  .stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px; margin: 24px 0;
+  }
+  @media (max-width: 600px) { .stat-grid { grid-template-columns: 1fr; } }
+  .stat-item {
+    padding: 20px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 1.6rem; font-weight: 700;
+    letter-spacing: -0.03em; color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 0.72rem; color: var(--text-3);
+    line-height: 1.5;
+  }
+
+  .pipeline {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; margin: 28px 0; flex-wrap: wrap;
+    font-size: 0.82rem;
+  }
+  .pipe-node {
+    padding: 10px 18px; border: 1px solid var(--border);
+    background: var(--surface); font-weight: 500;
+    text-align: center; white-space: nowrap;
+  }
+  .pipe-node:first-child { border-radius: 8px 0 0 8px; }
+  .pipe-node:last-child { border-radius: 0 8px 8px 0; }
+  .pipe-node + .pipe-node { border-left: none; }
+  .pipe-node.is-input { background: var(--blue-soft); border-color: #DDD5CB; }
+  .pipe-node.is-process { background: var(--amber-bg); border-color: #DCC9A8; font-weight: 700; }
+  .pipe-node.is-fix { background: var(--green-bg); border-color: #B8D4C0; font-weight: 700; }
+  .pipe-node.is-warn { background: var(--red-bg); border-color: #D4B8B0; }
+
+  code {
+    font-family: var(--mono); font-size: 0.82em;
+    background: #F0EDE8; padding: 2px 7px; border-radius: 5px;
+  }
+
+  .takeaway {
+    background: #2C2520; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,248,245,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232,227,219,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+  .topbar .site-name { color: var(--text-3); font-weight: 400; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+  footer a { color: var(--text-3); border-bottom: 1px solid var(--border); text-decoration: none; }
+  footer a:hover { color: var(--text-1); }
+
+  a:focus-visible,
+  details summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .technique-grid { grid-template-columns: 1fr; }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+  nav.toc .indent { padding-left: 26px; font-size: 0.65rem; }
+
+  .prompt-example {
+    margin: 16px 0; padding: 16px 20px;
+    border-radius: 10px; font-size: 0.82rem;
+    line-height: 1.7; font-family: var(--mono);
+  }
+  .prompt-do {
+    background: var(--green-bg); border: 1px solid #B8D4C0;
+  }
+  .prompt-dont {
+    background: var(--red-bg); border: 1px solid #D4B8B0;
+    text-decoration: line-through;
+    color: var(--text-3);
+  }
+  .prompt-label {
+    font-family: var(--sans);
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px; text-decoration: none;
+  }
+  .prompt-do .prompt-label { color: var(--green); }
+  .prompt-dont .prompt-label { color: var(--red); }
+  .prompt-dont span { text-decoration: line-through; }
+
+  .workflow-step {
+    padding: 20px 24px; margin: 12px 0;
+    background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px;
+  }
+  .workflow-step .ws-num {
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 6px;
+  }
+  .workflow-step h4 {
+    font-size: 0.92rem; font-weight: 700;
+    margin-bottom: 8px; line-height: 1.4;
+  }
+  .workflow-step p {
+    font-size: 0.82rem; color: var(--text-2);
+    line-height: 1.7; margin-bottom: 0;
+  }
+  .workflow-step ul {
+    margin: 8px 0 0; padding-left: 18px;
+    font-size: 0.82rem; color: var(--text-2);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← 首页</a>
+  <span class="site-name">pinyu.ai</span>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">核心论点</a>
+  <a href="#definition">什么是 Warble</a>
+  <a class="indent" href="#warble">时序不稳定</a>
+  <a class="indent" href="#pattern">纹理伪影</a>
+  <a href="#root-cause">根因诊断表</a>
+  <a href="#ic-lora">IC-LoRA 方案</a>
+  <a class="indent" href="#lora-modes">三种模式</a>
+  <a href="#prompting">Prompt 设计</a>
+  <a href="#i2v-t2v">I2V vs T2V</a>
+  <a href="#dev-pipeline">Dev Pipeline</a>
+  <a href="#workflow">实战工作流</a>
+  <a href="#takeaway-section">Takeaway</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">LTX-2 · Practical Guide</div>
+    <h1>Fix the Constraints<span class="sym">,</span> Fix the Artifacts</h1>
+    <p class="subtitle">
+      LTX-2 视频生成中的 Warble（画面抖动）和 AI Pattern Artifacts（合成纹理伪影）不是随机 bug。它们指向三个具体的缺失：运动锚定不足、输入对齐偏差、指令互相冲突。诊断根因，修复约束条件，伪影即可消除。
+    </p>
+    <div class="meta">
+      <span>LTX Team · 2026.02</span>
+      <a href="https://ltx.io/model/model-blog/how-to-reduce-warble-and-ai-pattern-artifacts-in-ltx-2" target="_blank">原文</a>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════ THESIS ═══════════════════════ -->
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">Core Thesis</div>
+    <p>
+      AI 视频生成本质上是一个<strong>时序问题</strong>，不只是视觉问题。模型不是生成一张图，而是生成数十帧必须在时间维度上保持一致的画面序列。当这种一致性崩溃——用户看到的就是抖动、闪烁、重复纹理和塑料感表面。
+    </p>
+    <div class="evidence">
+      <em>关键结论</em>：大多数伪影可以通过三步消除——用 IC-LoRA 锚定运动结构、精确对齐首帧输入、让 Prompt 只描述视觉风格而非运动。
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ §1 DEFINITION ═══════════════════════ -->
+  <section id="definition">
+    <div class="section-num">01</div>
+    <h2>你看到的到底是什么</h2>
+    <p class="section-hook">Warble 和 AI Pattern Artifacts 的精确定义——区分症状才能对症下药</p>
+
+    <h3 id="warble">Warble：帧间时序不稳定</h3>
+    <p>
+      当用户描述"画面在抖"时，他们识别的是<strong>微小的帧间不一致在时间上累积的效果</strong>。物体在本该静止时出现微妙的形变、摇晃或漂移。单帧看不出问题，但连续播放就暴露了。
+    </p>
+
+    <div class="note note-problem">
+      <div class="note-label">根因</div>
+      运动在帧间缺乏充分约束。每一帧被允许了过多的独立变化空间——模型在每帧上独立"猜测"，而非遵循一个统一的运动蓝图。
+    </div>
+
+    <h3 id="pattern">AI Pattern Artifacts：时间维度上的过度泛化</h3>
+    <p>
+      纹理伪影的表现更多样，但共享同一个底层机制：
+    </p>
+
+    <div class="stat-grid">
+      <div class="stat-item">
+        <div class="stat-num" style="font-size:1.2rem;">重复纹理</div>
+        <div class="stat-label">无变化的重复图案<br>缺乏自然随机性</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" style="font-size:1.2rem;">表面蠕动</div>
+        <div class="stat-label">细节在帧间"爬动"<br>本该静止的纹理在移动</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" style="font-size:1.2rem;">塑料质感</div>
+        <div class="stat-label">过于均匀、合成感强<br>材质缺乏真实质地</div>
+      </div>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">根因</div>
+      模型在没有强结构锚点的情况下，从零开始生成每个像素。它依赖训练中学到的视觉"捷径"——这些捷径在单帧上看似合理，但在时间维度上暴露为不自然的重复模式。
+    </div>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">Warble 的本质</div>
+        <strong>时序不稳定</strong>——帧与帧之间缺乏运动约束。静止物体在抖，运动物体在漂移。问题出在"帧间关系"。
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-right">
+        <div class="v-label">Pattern Artifacts 的本质</div>
+        <strong>过度泛化</strong>——模型依赖学到的视觉捷径生成纹理。问题出在"每帧的生成策略"缺乏真实参照。
+      </div>
+    </div>
+
+    <details>
+      <summary>这些问题正在被积极解决</summary>
+      <div class="expand-body">
+        在 LTX-2 开源发布的 Reddit AMA 中，Lightricks 联合创始人 Zeev Farbman 指出：LTX-2 的设计初衷是在消费级 GPU 上本地运行——不是只做精心挑选的 demo，而是支撑真实的创作工作流。<br><br>
+        他提到后续版本（包括增量更新和更大的架构改进）<strong>明确以空间和时序细节改进为目标</strong>，直接对应 warble 和帧间不稳定问题。<strong>LTX-2 已经支持对前一帧 latent 的条件生成</strong>——这是维持帧间一致性的关键机制。<br><br>
+        伪影不是被忽视的问题。它们是将先进视频生成推到本地硬件上的已知代价，时序稳定性是持续开发的明确焦点。
+      </div>
+    </details>
+  </section>
+
+  <!-- ═══════════════════════ §2 ROOT CAUSE ═══════════════════════ -->
+  <section id="root-cause">
+    <div class="section-num">02</div>
+    <h2>根因诊断：5 种失败模式</h2>
+    <p class="section-hook">从症状到根因的完整映射——每种伪影都有对应的修复路径</p>
+
+    <p>
+      文章最有价值的内容之一是这张诊断表。它把看似混乱的视觉问题归类为 5 种明确的失败模式，每种都有对应的根因和首选解决方案：
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>问题类型</th>
+          <th>根因</th>
+          <th>视觉症状</th>
+          <th>首选方案</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Warble</strong><br><span class="badge badge-warn">时序不稳</span></td>
+          <td>缺少运动约束——每帧自由度过高，无结构引导</td>
+          <td>物体抖动、微妙形变、刚体漂移，随时间累积</td>
+          <td>IC-LoRA（Canny / Depth / Pose）锚定运动结构</td>
+        </tr>
+        <tr>
+          <td><strong>Jump Cut</strong><br><span class="badge badge-warn">首帧闪烁</span></td>
+          <td>I2V 工作流中首帧与参考视频未对齐</td>
+          <td>视频开头可见"跳切"，前几帧不连贯</td>
+          <td>用 ControlNet 从参考视频首帧生成对齐的起始帧</td>
+        </tr>
+        <tr>
+          <td><strong>重复纹理</strong><br><span class="badge badge-base">纹理伪影</span></td>
+          <td>T2V 无结构引导——模型从零生成所有像素</td>
+          <td>纹理不自然重复，表面呈均匀合成外观</td>
+          <td>添加 IC-LoRA 引导，或切换到 I2V 模式</td>
+        </tr>
+        <tr>
+          <td><strong>塑料/合成表面</strong><br><span class="badge badge-base">质感伪影</span></td>
+          <td>运动指令冲突——Prompt 描述运动 + IC-LoRA 提供不同运动</td>
+          <td>表面过于光滑、人造感，纹理细节丧失</td>
+          <td>从 Prompt 中删除运动描述，只描述视觉风格</td>
+        </tr>
+        <tr>
+          <td><strong>细节蠕动</strong><br><span class="badge badge-base">纹理伪影</span></td>
+          <td>无强锚点时的过度泛化——模型依赖视觉捷径</td>
+          <td>本该静止的精细纹理在帧间移动或"爬行"</td>
+          <td>Canny IC-LoRA 稳定边缘和结构边界</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note note-ok">
+      <div class="note-label">诊断逻辑</div>
+      5 种问题指向 3 个根因类别：<strong>① 运动未锚定</strong>（Warble、细节蠕动）→ IC-LoRA；<strong>② 输入未对齐</strong>（Jump Cut）→ 首帧生成；<strong>③ 指令冲突</strong>（塑料表面、重复纹理）→ Prompt 精简。诊断表的价值在于：看到症状就知道该检查哪个环节。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §3 IC-LORA ═══════════════════════ -->
+  <section id="ic-lora">
+    <div class="section-num">03</div>
+    <h2>IC-LoRA：运动锚定的核心方案</h2>
+    <p class="section-hook">从参考视频中提取运动和结构蓝图，替代模型的随机猜测</p>
+
+    <p>
+      IC-LoRA 直接从参考视频中转移运动和结构信息，大幅提升时序一致性。原理很直接：<strong>不让模型猜物体该怎么动，而是给它一张固定的运动蓝图</strong>。
+    </p>
+
+    <h3 id="lora-modes">三种模式，稳定不同维度</h3>
+
+    <p>
+      每种 IC-LoRA 模式稳定视频的不同方面。选错模式——或完全不用——会让关键方面失去约束，伪影概率飙升：
+    </p>
+
+    <div class="technique-grid">
+      <div class="technique">
+        <div class="technique-tag">Canny IC-LoRA</div>
+        <h4>稳定边缘与轮廓</h4>
+        <p>
+          锁定画面中的边缘线和结构边界。防止物体变形或位移。<strong>最适合</strong>有清晰边界的场景——建筑、产品、文字。解决 warble 和细节蠕动。
+        </p>
+      </div>
+      <div class="technique">
+        <div class="technique-tag">Depth IC-LoRA</div>
+        <h4>稳定镜头运动与空间布局</h4>
+        <p>
+          锁定 3D 场景几何和摄像机路径。防止空间漂移和透视偏移。<strong>最适合</strong>有摄像机运动的场景——推拉摇移、航拍、跟踪镜头。
+        </p>
+      </div>
+      <div class="technique">
+        <div class="technique-tag">Pose IC-LoRA</div>
+        <h4>稳定人体运动</h4>
+        <p>
+          锚定骨骼运动和身体姿态。防止角色动画中的抖动。<strong>最适合</strong>以人物为主体的视频——舞蹈、演讲、行走。
+        </p>
+      </div>
+    </div>
+
+    <div class="note note-problem">
+      <div class="note-label">关键约束</div>
+      同一时间只启用<strong>一个</strong> IC-LoRA 组。多个模式同时运行可能产生冲突信号。选择那个与你<strong>最主要的稳定性需求</strong>匹配的模式——边缘结构 → Canny，镜头/空间 → Depth，人物动作 → Pose。
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">决策框架</div>
+      问自己一个问题：<strong>"这个场景中，什么最不能动？"</strong><br>
+      如果是物体轮廓 → Canny。如果是摄像机视角 → Depth。如果是人体姿态 → Pose。把最脆弱的维度锁住，其他维度的自由度通常就够模型处理了。
+    </div>
+
+    <details>
+      <summary>参考视频的选择原则</summary>
+      <div class="expand-body">
+        IC-LoRA 的效果取决于参考视频的质量。具有极端运动、快速摄像机移动或复杂形变的参考视频更难被准确追踪。最佳实践：<br><br>
+        <strong>稳定、平滑的摄像机运动</strong>——避免剧烈的手持抖动<br>
+        <strong>避免极端运动模糊</strong>——模糊帧为 IC-LoRA 提供的信号质量差<br>
+        <strong>选择光线充足、清晰的参考素材</strong>——细节越清晰，结构提取越准确
+      </div>
+    </details>
+  </section>
+
+  <!-- ═══════════════════════ §4 PROMPTING ═══════════════════════ -->
+  <section id="prompting">
+    <div class="section-num">04</div>
+    <h2>Prompt 设计：描述风格，而非运动</h2>
+    <p class="section-hook">一个反直觉的原则——当 IC-LoRA 控制运动时，Prompt 里的运动描述是有害的</p>
+
+    <p>
+      这是整篇文章中最重要的反直觉原则之一：<strong>当使用 IC-LoRA 时，不要在 Prompt 里描述运动</strong>。
+    </p>
+    <p>
+      原因：IC-LoRA 从参考视频提供运动信息，Prompt 中的运动描述构成了一组<strong>冲突的指令</strong>。模型同时收到两个不同的运动信号——这种张力直接表现为时序不稳定、视觉伪影和合成质感。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">不要写</div>
+        <strong>运动描述</strong>——摄像机向左平移、角色向前走、平滑推拉变焦。这些与 IC-LoRA 提供的运动信号冲突。
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-right">
+        <div class="v-label">应该写</div>
+        <strong>视觉特征</strong>——电影感、水彩风格、写实质感、粗糙金属纹理、暖色侧光、雾蒙蒙的大气。
+      </div>
+    </div>
+
+    <h3>Prompt 清单</h3>
+
+    <div class="prompt-example prompt-do">
+      <div class="prompt-label">应该包含</div>
+      视觉风格与美学（cinematic, watercolor, photorealistic）<br>
+      主体外观与细节描述<br>
+      纹理与材质（rough, smooth, metallic）<br>
+      光照与氛围<br>
+      环境与背景元素
+    </div>
+
+    <div class="prompt-example prompt-dont">
+      <div class="prompt-label">不要包含（使用 IC-LoRA 时）</div>
+      <span>"Camera pans left slowly"</span><br>
+      <span>"Character walks forward"</span><br>
+      <span>"Smooth dolly zoom"</span>
+    </div>
+
+    <div class="note note-ok">
+      <div class="note-label">核心原则</div>
+      <strong>让 IC-LoRA 管运动，让 Prompt 管风格。</strong>职责分离，信号不冲突。这也是为什么"塑料/合成表面"和"重复纹理"这两种伪影的解法是修改 Prompt，而非调整 IC-LoRA——因为问题出在指令冲突，不是引导不足。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §5 I2V vs T2V ═══════════════════════ -->
+  <section id="i2v-t2v">
+    <div class="section-num">05</div>
+    <h2>I2V vs T2V：工作流选择的权衡</h2>
+    <p class="section-hook">Image-to-Video 和 Text-to-Video 各有各的伪影模式——选对工作流是第一步</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>维度</th>
+          <th>Image-to-Video (I2V)</th>
+          <th>Text-to-Video (T2V)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>时序稳定性</strong></td>
+          <td>首帧对齐良好时<strong>更稳定</strong>——强视觉锚点减少探索空间</td>
+          <td>较不稳定——所有像素从零生成，无视觉参照</td>
+        </tr>
+        <tr>
+          <td><strong>伪影风险</strong></td>
+          <td>通常更少，结果更可预测</td>
+          <td>无引导时伪影潜力更高，对 Prompt 质量更敏感</td>
+        </tr>
+        <tr>
+          <td><strong>创作自由度</strong></td>
+          <td>受输入图像约束</td>
+          <td>最大自由度——无视觉限制</td>
+        </tr>
+        <tr>
+          <td><strong>前置要求</strong></td>
+          <td><span class="badge badge-warn">关键</span> 需用 ControlNet 生成与参考视频首帧紧密匹配的起始帧</td>
+          <td>无需图像预处理——直接从文本生成</td>
+        </tr>
+        <tr>
+          <td><strong>典型问题</strong></td>
+          <td>首帧对齐不佳 → 跳切、闪烁、开头 warble</td>
+          <td>重复纹理、合成表面、细节蠕动</td>
+        </tr>
+        <tr class="row-ok">
+          <td><strong>最佳实践</strong></td>
+          <td>用 ControlNet 从参考视频首帧生成对齐的起始帧</td>
+          <td>用 IC-LoRA 引导；先短片测试；保守 Prompt；只写风格</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note note-insight">
+      <div class="note-label">选择逻辑</div>
+      需要<strong>最大稳定性</strong>？→ I2V + IC-LoRA。有参考图像、需要精确运动控制。<br>
+      需要<strong>创作探索</strong>？→ T2V + IC-LoRA。快速迭代、无需预处理。<br><br>
+      注意：I2V 的稳定性优势完全取决于首帧对齐质量。首帧对齐不佳的 I2V <strong>可能比 T2V 更差</strong>——因为错误的起始帧会让整条视频"纠正"回正确轨道的过程中产生大量伪影。
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ §6 DEV PIPELINE ═══════════════════════ -->
+  <section id="dev-pipeline">
+    <div class="section-num">06</div>
+    <h2>Dev vs Distilled：最终渲染的选择</h2>
+    <p class="section-hook">多阶段采样如何改善时序一致性——以及什么时候值得付出代价</p>
+
+    <p>
+      LTX-2 提供两条 pipeline：<strong>Distilled</strong>（快速）和 <strong>Dev</strong>（精细）。Dev 使用多阶段采样（multi-stage sampling），在帧间施加更强的一致性约束：
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">Distilled Pipeline</div>
+        速度快，VRAM 需求低。适合<strong>迭代测试</strong>——快速验证构图、运动、风格方向是否正确。
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-right">
+        <div class="v-label">Dev Pipeline</div>
+        渐进式精炼，多阶段采样，更强的时序一致性。更重、更慢、更吃显存。适合<strong>最终渲染</strong>。
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-item">
+        <div class="stat-num" style="font-size:1rem;">渐进式精炼</div>
+        <div class="stat-label">减少帧间不一致</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" style="font-size:1rem;">多阶段采样</div>
+        <div class="stat-label">提升时序稳定性</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" style="font-size:1rem;">更强运动连贯</div>
+        <div class="stat-label">复杂场景更少伪影</div>
+      </div>
+    </div>
+
+    <div class="note note-ok">
+      <div class="note-label">工作流建议</div>
+      用 <strong>Distilled 做迭代和测试</strong>，确认构图、运动和风格方向后，切换到 <strong>Dev 做最终渲染</strong>——保持所有其他参数不变。不要在 Dev 上做探索性迭代——成本太高且没必要。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §7 WORKFLOW ═══════════════════════ -->
+  <section id="workflow">
+    <div class="section-num">07</div>
+    <h2>实战工作流：5 步消除伪影</h2>
+    <p class="section-hook">从工作流选择到最终渲染的系统化流程</p>
+
+    <p>
+      将前面所有原则整合为一个可执行的 5 步工作流：
+    </p>
+
+    <div class="pipeline">
+      <div class="pipe-node is-input">选择工作流</div>
+      <div class="pipe-node is-process">配置 IC-LoRA</div>
+      <div class="pipe-node is-process">编写 Prompt</div>
+      <div class="pipe-node is-warn">测试迭代</div>
+      <div class="pipe-node is-fix">Dev 最终渲染</div>
+    </div>
+
+    <div class="workflow-step">
+      <div class="ws-num">Step 1</div>
+      <h4>选择工作流模式</h4>
+      <p>追求最大稳定性 → I2V + IC-LoRA，用 ControlNet 从参考视频首帧生成对齐的起始帧。追求创作灵活性 → T2V + IC-LoRA，从短片（60-90 帧）开始测试。</p>
+    </div>
+
+    <div class="workflow-step">
+      <div class="ws-num">Step 2</div>
+      <h4>配置 IC-LoRA</h4>
+      <ul>
+        <li>同一时间只启用<strong>一个</strong> IC-LoRA 组</li>
+        <li>选择匹配主要稳定性需求的模式：Canny（结构）/ Depth（空间）/ Pose（人体）</li>
+        <li>确保参考视频干净、稳定</li>
+      </ul>
+    </div>
+
+    <div class="workflow-step">
+      <div class="ws-num">Step 3</div>
+      <h4>编写风格导向的 Prompt</h4>
+      <ul>
+        <li><strong>描述</strong>：视觉美学、光照色调、纹理材质、主体外观</li>
+        <li><strong>不描述</strong>：摄像机运动、角色动作、运动时序</li>
+        <li>核心原则：IC-LoRA 管运动，Prompt 管风格</li>
+      </ul>
+    </div>
+
+    <div class="workflow-step">
+      <div class="ws-num">Step 4</div>
+      <h4>低分辨率测试迭代</h4>
+      <ul>
+        <li>用 Distilled pipeline 生成 720p、60 帧预览</li>
+        <li>检查 warble 和伪影 → 调整 IC-LoRA 模式或 Prompt</li>
+        <li>稳定后渐进扩展：60 帧 → 90 帧 → 121+ 帧</li>
+        <li>调试时固定随机种子，每次只改一个变量</li>
+      </ul>
+    </div>
+
+    <div class="workflow-step">
+      <div class="ws-num">Step 5</div>
+      <h4>切换 Dev 做最终渲染</h4>
+      <ul>
+        <li>工作流稳定后，从 Distilled 切换到 Dev</li>
+        <li>保持所有其他参数不变</li>
+        <li>以目标分辨率和帧数渲染最终输出</li>
+      </ul>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">调试技巧</div>
+      伪影随时间累积。测试时用短片（60-90 帧）可以在问题恶化前识别它们。渐进式扩展帧数——如果 60 帧稳定、90 帧也稳定，再扩展到完整长度。如果 60 帧就出现问题，不要指望加长后问题消失——先在短片上解决。
+    </div>
+
+    <details>
+      <summary>调试时固定种子的原因</summary>
+      <div class="expand-body">
+        当对比不同设置对伪影的影响时，固定随机种子至关重要。原因：AI 视频生成有随机性，两次使用相同参数可能产生不同结果。如果不固定种子，你无法确定结果的改善是因为参数调整还是因为随机波动。<br><br>
+        <strong>正确做法</strong>：保持种子不变 → 每次只改一个变量 → 记录哪些变更改善了稳定性。这样每个配置变更的影响就被隔离出来了。
+      </div>
+    </details>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ SYNTHESIS ═══════════════════════ -->
+  <section id="takeaway-section">
+    <div class="section-num">综合</div>
+    <h2>从诊断到实践的知识结构</h2>
+    <p class="section-hook">将整篇文章提炼为一个可操作的决策框架</p>
+
+    <ol class="causal">
+      <li><strong>"这是时序问题，不是画质问题"</strong>——AI 视频的核心挑战不是单帧好不好看，而是数十帧之间能否保持一致。Warble 和 pattern artifacts 都指向时序一致性的崩溃。</li>
+      <li><strong>"锚定运动，而非修复画面"</strong>——IC-LoRA 不是后期修复工具，而是<em>前置约束</em>。它在生成阶段就限制了模型的自由度，从源头消除伪影。</li>
+      <li><strong>"信号不要冲突"</strong>——Prompt 和 IC-LoRA 必须各管各的。Prompt 管视觉风格，IC-LoRA 管运动结构。让它们管同一件事 = 冲突 = 伪影。</li>
+      <li><strong>"迭代成本和渲染成本分离"</strong>——Distilled 做探索（快、便宜），Dev 做产出（慢、精细）。不要在昂贵的 pipeline 上做廉价的探索。</li>
+      <li><strong>"伪影是信号，不是噪声"</strong>——每种伪影都指向一个具体的配置问题。它们不是随机 bug，而是诊断信息。读懂伪影，就知道该修什么。</li>
+    </ol>
+  </section>
+
+  <!-- ═══════════════════════ TAKEAWAY ═══════════════════════ -->
+  <div class="takeaway">
+    <div class="thesis-label">Takeaway</div>
+    <p>
+      LTX-2 的 warble 和 AI pattern artifacts 几乎从不是随机故障。它们是<strong>约束缺失的可见症状</strong>——运动没锚定、输入没对齐、指令在打架。这篇指南的核心洞察不是某个具体的参数设置，而是一个诊断思维：<strong>看到伪影 → 判断哪种约束缺失 → 补上那个约束</strong>。修复约束，伪影就消失了。
+    </p>
+  </div>
+
+  <footer>
+    原文 by <a href="https://ltx.io/model/model-blog/how-to-reduce-warble-and-ai-pattern-artifacts-in-ltx-2" target="_blank">LTX Team, 2026</a>
+    · <a href="/">← 首页</a>
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
