@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pinyu.ai</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --text-1: #1D1B18;
+    --text-2: #5C5750;
+    --text-3: #9B958C;
+    --border: #E8E3DB;
+    --accent: #B8714A;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 80px 24px 48px;
+    width: 100%;
+  }
+
+  .identity {
+    margin-bottom: 40px;
+  }
+
+  .identity h1 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  .identity p {
+    font-size: 0.82rem;
+    color: var(--text-3);
+    line-height: 1.6;
+  }
+
+  .section-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 20px;
+  }
+
+  .articles {
+    list-style: none;
+  }
+
+  .articles li + li {
+    margin-top: 1px;
+  }
+
+  .articles a {
+    display: block;
+    padding: 20px 0;
+    text-decoration: none;
+    color: inherit;
+    border-top: 1px solid var(--border);
+    transition: opacity 0.15s;
+  }
+
+  .articles li:last-child a {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .articles a:hover {
+    opacity: 0.65;
+  }
+
+  .article-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  .article-desc {
+    font-size: 0.8rem;
+    color: var(--text-2);
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .article-meta {
+    margin-top: 8px;
+    font-size: 0.7rem;
+    color: var(--text-3);
+  }
+
+  footer {
+    text-align: center;
+    padding: 32px 24px 48px;
+    font-size: 0.7rem;
+    color: var(--text-3);
+  }
+
+  footer a {
+    color: var(--text-3);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.15s;
+  }
+
+  footer a:hover {
+    color: var(--text-1);
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="identity">
+    <h1>pinyu.ai</h1>
+    <p>Coming to understand everything.</p>
+  </div>
+
+  <div class="section-label">Selected</div>
+  <ul class="articles">
+    <li>
+      <a href="p/vrg.html">
+        <div class="article-title">Better Reconstruction ≠ Better Generation</div>
+        <div class="article-desc">Linum 团队从零训练 Image-Video VAE 的 5 个月旅程。踩过 NaN 爆炸、神秘色斑、联合训练不稳定——最终学到一个违反直觉的教训。</div>
+        <div class="article-meta">Linum Field Notes · 2024</div>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<footer>
+  <a href="mailto:pinyu@fastmail.com">Contact</a>
+</footer>
+
+</body>
+</html>
