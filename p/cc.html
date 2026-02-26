@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Claude Code 的构建哲学——一个关于'做减法'的产品故事。7 个反直觉的构建原则，揭示 AI-first 工程的真实面貌。">
+<title>Less Code, More Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --text-1: #1D1B18;
+    --text-2: #5C5750;
+    --text-3: #9B958C;
+    --border: #E8E3DB;
+    --accent: #B8714A;
+    --blue: #7C6B5B;
+    --blue-soft: #F5F0EB;
+    --amber: #B8864A;
+    --amber-bg: #FBF6F0;
+    --red: #B85C4A;
+    --red-bg: #FBF2F0;
+    --green: #5A8A6E;
+    --green-bg: #F0F6F2;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+  .wide { max-width: var(--wide-w); }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: 2.2rem; font-weight: 700;
+    line-height: 1.25; letter-spacing: -0.03em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header h1 .sym { color: var(--accent); }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 580px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+  header .meta a {
+    color: var(--text-3); text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.15s;
+  }
+  header .meta a:hover { color: var(--text-1); border-color: var(--text-1); }
+
+  .thesis {
+    background: #2C2520; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B87A; font-weight: 600; }
+  .thesis .evidence {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem; opacity: 0.65; line-height: 1.7;
+  }
+  .thesis .evidence em { font-style: normal; opacity: 0.85; }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-size: 1.5rem; font-weight: 700;
+    line-height: 1.3; letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg);   border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F5F2ED; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 24px 0; font-size: 0.85rem;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .versus .v-left  { background: var(--red-bg); }
+  .versus .v-left .v-label  { color: var(--red); }
+  .versus .v-right { background: var(--green-bg); }
+  .versus .v-right .v-label { color: var(--green); }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 700; color: var(--text-3);
+    background: var(--bg); font-size: 0.75rem;
+  }
+
+  .causal {
+    margin: 24px 0; padding: 0; list-style: none;
+    counter-reset: cause;
+  }
+  .causal li {
+    counter-increment: cause; position: relative;
+    padding: 8px 0 8px 44px; font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .causal li::before {
+    content: counter(cause); position: absolute;
+    left: 0; top: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #2C2520; color: #F5F0EB;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .timeline {
+    margin: 28px 0; padding-left: 0; list-style: none;
+    position: relative;
+  }
+  .timeline::before {
+    content: ''; position: absolute;
+    left: 11px; top: 8px; bottom: 8px;
+    width: 1px; background: var(--border);
+  }
+  .timeline li {
+    position: relative; padding: 10px 0 10px 36px;
+    font-size: 0.88rem; line-height: 1.75;
+  }
+  .timeline li::before {
+    content: ''; position: absolute;
+    left: 5px; top: 18px;
+    width: 13px; height: 13px; border-radius: 50%;
+    border: 2px solid var(--border); background: var(--bg);
+  }
+  .timeline .t-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .tl-problem::before  { border-color: var(--red); background: var(--red-bg); }
+  .tl-problem .t-label { color: var(--red); }
+  .tl-try::before      { border-color: var(--amber); background: var(--amber-bg); }
+  .tl-try .t-label     { color: var(--amber); }
+  .tl-fix::before      { border-color: var(--green); background: var(--green-bg); }
+  .tl-fix .t-label     { color: var(--green); }
+
+  details {
+    margin: 20px 0; border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+  }
+  details summary {
+    padding: 14px 20px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 500;
+    color: var(--text-2); background: #F5F2ED;
+    user-select: none; list-style: none;
+    transition: background 0.15s;
+  }
+  details summary:hover { background: #EDE9E3; }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: '+ '; font-weight: 700; color: var(--text-3); }
+  details[open] summary::before { content: '− '; }
+  details .expand-body {
+    padding: 18px 20px; font-size: 0.85rem;
+    line-height: 1.8; color: var(--text-2);
+  }
+
+  .quote {
+    margin: 24px 0; padding: 20px 24px;
+    background: var(--surface); border-radius: 12px;
+    border: 1px solid var(--border);
+    font-size: 0.88rem; line-height: 1.85;
+    color: var(--text-2); position: relative;
+  }
+  .quote::before {
+    content: '"'; position: absolute;
+    top: 8px; left: 14px;
+    font-size: 2.5rem; font-weight: 700;
+    color: var(--border); line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .quote p { padding-left: 20px; }
+  .quote .q-attr {
+    font-size: 0.72rem; color: var(--text-3);
+    margin-top: 10px; padding-left: 20px;
+  }
+
+  .stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px; margin: 24px 0;
+  }
+  @media (max-width: 600px) { .stat-grid { grid-template-columns: 1fr; } }
+  .stat-item {
+    padding: 20px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 1.6rem; font-weight: 700;
+    letter-spacing: -0.03em; color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 0.72rem; color: var(--text-3);
+    line-height: 1.5;
+  }
+
+  .principle-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin: 28px 0;
+  }
+  @media (max-width: 600px) { .principle-grid { grid-template-columns: 1fr; } }
+  .principle {
+    padding: 24px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .principle:hover { border-color: #D0C8BD; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .principle-tag {
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  .principle h4 {
+    font-size: 0.95rem; font-weight: 700;
+    margin-bottom: 10px; line-height: 1.4;
+  }
+  .principle p { font-size: 0.82rem; color: var(--text-2); line-height: 1.7; margin-bottom: 0; }
+
+  .proto-flow {
+    display: flex; align-items: center; gap: 0;
+    margin: 28px 0; flex-wrap: wrap; font-size: 0.78rem;
+  }
+  .proto-node {
+    padding: 10px 16px; border: 1px solid var(--border);
+    background: var(--surface); text-align: center;
+    white-space: nowrap;
+  }
+  .proto-node:first-child { border-radius: 8px 0 0 8px; }
+  .proto-node:last-child { border-radius: 0 8px 8px 0; }
+  .proto-node + .proto-node { border-left: none; }
+  .proto-active { background: var(--amber-bg); border-color: #DCC9A8; font-weight: 600; }
+  .proto-dead { background: var(--red-bg); border-color: #D4B8B0; color: var(--text-3); text-decoration: line-through; }
+  .proto-ship { background: var(--green-bg); border-color: #B8D4C0; font-weight: 700; }
+
+  code {
+    font-family: var(--mono); font-size: 0.82em;
+    background: #F0EDE8; padding: 2px 7px; border-radius: 5px;
+  }
+
+  .takeaway {
+    background: #2C2520; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,248,245,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232,227,219,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+  .topbar .site-name { color: var(--text-3); font-weight: 400; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+  footer a { color: var(--text-3); border-bottom: 1px solid var(--border); text-decoration: none; }
+  footer a:hover { color: var(--text-1); }
+
+  a:focus-visible,
+  details summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+  nav.toc .indent { padding-left: 26px; font-size: 0.65rem; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← 首页</a>
+  <span class="site-name">pinyu.ai</span>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#overhang">Product Overhang</a>
+  <a href="#origin">起源故事</a>
+  <a href="#on-dist">On Distribution</a>
+  <a href="#subtraction">做减法的架构</a>
+  <a class="indent" href="#delete-code">每次升级删代码</a>
+  <a class="indent" href="#permissions">最难的部分</a>
+  <a href="#prototyping">20 个原型 / 2 天</a>
+  <a href="#brooks">Brooks' Law 失效</a>
+  <a href="#ai-first">AI-First 工程</a>
+  <a href="#takeaway-section">Takeaway</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Engineering Deep Dive</div>
+    <h1>Less Code<span class="sym">,</span> More Model</h1>
+    <p class="subtitle">
+      Claude Code 的构建哲学——一个关于"做减法"的产品故事。从 AppleScript 音乐控制到年营收 $500M+，Anthropic 创始工程师揭示了一系列反直觉的构建原则。
+    </p>
+    <div class="meta">
+      <span>基于 The Pragmatic Engineer 深度访谈 · 2025.09</span>
+      <a href="https://newsletter.pragmaticengineer.com/p/how-claude-code-is-built" target="_blank">原文</a>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════ THESIS ═══════════════════════ -->
+  <div class="thesis" id="overhang">
+    <div class="thesis-label">Core Thesis</div>
+    <p>
+      Claude Code 的成功不在于写了多少代码，而在于<strong>尽可能少写代码——让模型的原始能力直达用户</strong>。<br>
+      行业在拼命造更好的 AI 模型时，Anthropic 发现：模型的能力早已溢出，真正的瓶颈是包裹它的产品层。他们称之为 "Product Overhang"。
+    </p>
+    <div class="evidence">
+      <em>实证</em>：Claude Code 90% 的代码由自身编写。每次模型升级，团队删除代码而非新增。Claude 4.0 发布时，他们删掉了一半的 system prompt。
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ §1 ORIGIN ═══════════════════════ -->
+  <section id="origin">
+    <div class="section-num">01</div>
+    <h2>从 AppleScript 到文件系统</h2>
+    <p class="section-hook">一个偶然发现如何变成 $500M+ 产品</p>
+
+    <p>
+      2024 年 9 月，Boris Cherny 加入 Anthropic，为了熟悉 API 开始在终端里做各种原型。第一个版本极其简陋——不能读文件，不能运行命令，唯一能做的是通过 AppleScript 告诉他正在听什么音乐。
+    </p>
+    <p>
+      转折来自一个简单的决定：<strong>给它访问文件系统的能力</strong>。
+    </p>
+
+    <div class="quote">
+      <p>
+        I tried giving it some tools to interact with the filesystem… Suddenly, this agent was <strong>really</strong> interesting. I ran it in our codebase, and just started asking questions. Claude then started exploring the filesystem and reading files. It would read one file, look at the imports, then read the files that were defined in the imports! It went on, until it found a good answer.
+      </p>
+      <div class="q-attr">— Boris Cherny, founding engineer</div>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">关键概念 · Product Overhang</div>
+      模型已经<strong>能做</strong>某件事，但承载它的产品没有把这种能力释放出来。Boris 给了 Claude 文件系统访问权后，模型自发地沿着 import 链遍历代码库——这个能力一直在那里，只是从没有产品去"接住"它。
+    </div>
+
+    <h3>病毒式传播</h3>
+    <p>
+      Boris 开始每天在工作中使用这个原型，两个月后（2024 年 11 月）发布了内部 dogfooding 版本。
+    </p>
+
+    <ul class="timeline">
+      <li class="tl-try">
+        <div class="t-label">Day 1</div>
+        20% 的工程师开始使用
+      </li>
+      <li class="tl-fix">
+        <div class="t-label">Day 5</div>
+        <strong>50% 的工程师</strong>在日常使用 Claude Code
+      </li>
+      <li class="tl-fix">
+        <div class="t-label">至今</div>
+        80%+ 的 Anthropic 工程师日常使用；数据科学家也自发采用——用来写查询、做可视化
+      </li>
+    </ul>
+
+    <details>
+      <summary>内部争论：该不该发布？</summary>
+      <div class="expand-body">
+        团队曾认真考虑将 Claude Code 作为内部"秘密武器"，不对外发布。最终决策链：Anthropic 本质是模型安全公司 → 学习安全的方式是让人使用工具 → 全公司都上瘾了，说明外部用户也会用 → 发布它能学到更多关于模型安全和能力的知识。<br><br>
+        <strong>反共识之处</strong>：大多数公司会把内部工具当护城河。Anthropic 选择把它变成学习安全的手段——把竞争优势转化为研究优势。
+      </div>
+    </details>
+  </section>
+
+  <!-- ═══════════════════════ §2 ON DISTRIBUTION ═══════════════════════ -->
+  <section id="on-dist">
+    <div class="section-num">02</div>
+    <h2>"On Distribution" 技术栈</h2>
+    <p class="section-hook">选技术栈的新变量：不是人擅长什么，而是 AI 擅长什么</p>
+
+    <p>
+      Claude Code 的技术栈：<strong>TypeScript + React (Ink) + Yoga + Bun</strong>。选择标准不是"团队熟悉什么"，而是"模型在什么技术上已经很强"。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">传统思维</div>
+        团队熟悉 → 选技术栈 → AI 辅助
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-right">
+        <div class="v-label">新范式</div>
+        AI 擅长 → 选技术栈 → AI 构建 90% 的代码
+      </div>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">反共识</div>
+      "On distribution" 是 AI 术语——模型训练数据覆盖良好的领域。团队选 TypeScript 和 React，不是因为它们"最好"，而是因为 Claude 在这些技术上<strong>训练数据最丰富</strong>，能直接上手写代码。<br><br>
+      推论：如果你的目标是让 AI 写大部分代码，那技术栈选择的第一变量不再是人的偏好，而是模型的能力分布。
+    </div>
+
+    <div class="quote">
+      <p>
+        We wanted a tech stack which we didn't need to teach: one where Claude Code could build itself. And it's working great; around 90% of Claude Code is written with Claude Code.
+      </p>
+      <div class="q-attr">— Boris Cherny</div>
+    </div>
+
+    <p>
+      90% 自构建不是花哨的营销数字——它直接影响了开发速度：每位工程师每天约 5 个 PR，每天 60-100 次内部发布，每天 1 次外部发布。
+    </p>
+
+    <div class="stat-grid">
+      <div class="stat-item">
+        <div class="stat-num">90%</div>
+        <div class="stat-label">代码由 Claude Code<br>自身编写</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">~5</div>
+        <div class="stat-label">PR / 工程师 / 天<br>（行业常规 1-2）</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">60-100</div>
+        <div class="stat-label">内部发布 / 天</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §3 SUBTRACTION ═══════════════════════ -->
+  <section id="subtraction">
+    <div class="section-num">03</div>
+    <h2>做减法的架构</h2>
+    <p class="section-hook">最反直觉的工程决策——一个随时间变简单的产品</p>
+
+    <p>
+      Claude Code 做了很多复杂的事：遍历代码库、读写文件、运行命令。但它的架构出奇简单——只是模型外面裹了一层极薄的壳。
+    </p>
+
+    <ol class="causal">
+      <li>定义 UI，暴露 hooks 让模型操控</li>
+      <li>暴露工具（文件系统、bash 等）供模型调用</li>
+      <li><strong>然后，闪开</strong></li>
+    </ol>
+
+    <div class="quote">
+      <p>
+        This might sound weird, but the way we build this is we want people to <strong>feel the model as raw as possible</strong>. We have this belief the model can do much more than products today enable it to do.<br><br>
+        When you look at a lot of coding products, they get in the way of the model; they add scaffolding by adding UI elements and other parts that clutter things, so that the model running in those tools feels like it's hobbling on one foot.
+      </p>
+      <div class="q-attr">— Boris Cherny</div>
+    </div>
+
+    <div class="note note-problem">
+      <div class="note-label">隐含批评</div>
+      大多数 AI 产品在模型外面堆了太多"脚手架"——精心设计的 UI、复杂的 prompt 管理、各种中间层。这些本意是"帮助用户"的功能，实际上<strong>限制了模型</strong>。模型像是拄着拐杖走路。
+    </div>
+
+    <h3 id="delete-code">每次模型升级，删代码</h3>
+    <p>
+      软件通常随时间积累复杂度。Claude Code 恰好相反：<strong>每次模型升级，他们删除代码</strong>。
+    </p>
+
+    <div class="quote">
+      <p>
+        Every time there's a new model release, we delete a bunch of code. For example, with the 4.0 models, we deleted around half the system prompt because we no longer needed it. We try to put as little code as possible around the model, and this includes minimizing prompting and minimizing the number of tools. We constantly delete tools and experiment with new ones.
+      </p>
+      <div class="q-attr">— Boris Cherny</div>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">反共识 · 反向复杂度</div>
+      传统软件：功能累积 → 代码增长 → 复杂度上升。<br>
+      Claude Code：模型变强 → 代码减少 → 产品变简单。<br><br>
+      这意味着产品的<strong>技术债是负的</strong>——模型进步自动偿还债务。System prompt 减半、工具数量减少、业务逻辑精简。产品的"瘦身"不是重构的结果，而是模型进步的副产品。
+    </div>
+
+    <h3>不用虚拟化——本地运行</h3>
+    <p>
+      是否在 Docker 容器或云端沙箱中运行？团队选了最简单的方案：直接本地运行。读写文件系统，执行 bash 命令，没有虚拟化层。
+    </p>
+
+    <div class="quote">
+      <p>
+        With every design decision, we almost always pick the simplest possible option. What are the simplest answers to the questions: "where do you run batch commands?" and "where do you read from the filesystem?" It's to do it locally.
+      </p>
+      <div class="q-attr">— Boris Cherny</div>
+    </div>
+
+    <h3 id="permissions">最复杂的部分：不是 AI，是权限</h3>
+    <p>
+      Claude Code 中最复杂的部分是什么？不是代码生成，不是文件遍历——是<strong>权限系统</strong>。
+    </p>
+    <p>
+      本地运行意味着 agent 可能做不可逆的事（删文件等）。团队设计了一个简单但多层的权限系统：执行操作前请求许可，用户可以一次性授权、永久授权或拒绝。设置可以按项目、用户、公司三级配置，团队间可共享白名单。
+    </p>
+
+    <div class="note note-neutral">
+      <div class="note-label">启示</div>
+      当 AI 能力问题基本解决后，<strong>信任和安全</strong>才是最难的工程问题。这与行业对"让 AI 更聪明"的执念形成对比。Claude Code 的核心工程投入不在智能上，而在"如何安全地放权"上。
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ §4 PROTOTYPING ═══════════════════════ -->
+  <section id="prototyping">
+    <div class="section-num">04</div>
+    <h2>20 个原型 / 2 天</h2>
+    <p class="section-hook">AI 如何改变设计探索的经济学</p>
+
+    <p>
+      Boris 在两天内为 Todo List 功能做了约 20 个原型。以前两天能做两个原型就算快了。每个原型的迭代循环：
+    </p>
+
+    <ol class="causal">
+      <li>用自然语言给 Claude Code 描述想法</li>
+      <li>Claude Code 生成可运行的实现</li>
+      <li>Boris 试用、感受、微调</li>
+      <li>分享给同事获取反馈</li>
+      <li>如果感觉不对，<strong>用新 prompt 从头开始</strong></li>
+    </ol>
+
+    <h3>原型演化路径</h3>
+
+    <div class="proto-flow">
+      <div class="proto-node proto-active">#1 列表式</div>
+      <div class="proto-node proto-dead">#2 内联</div>
+      <div class="proto-node proto-dead">#3-4 药丸按钮</div>
+      <div class="proto-node proto-dead">#5-6 抽屉动画</div>
+      <div class="proto-node proto-active">#7-9 输入框上方</div>
+      <div class="proto-node proto-ship">#10-20 Spinner</div>
+    </div>
+
+    <p>
+      注意有多少方案被丢弃了。药丸按钮、抽屉动画、内联显示——每个都是可行的设计，但都不够"对"。传统流程中，每个方案可能花一天实现，根本不舍得扔；用 AI 迭代，丢弃成本趋近于零。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">反共识 · 探索的经济学</div>
+      传统原型的成本结构：<strong>实现贵 → 探索少 → 过早收敛到第一个"还行"的方案</strong>。<br>
+      AI 原型的成本结构：<strong>实现几乎免费 → 探索多 → 通过大量丢弃找到真正"对"的方案</strong>。<br><br>
+      不是"更快做完"，而是"探索了 10 倍多的设计空间"。产出的质量来自探索的广度，不是执行的速度。
+    </div>
+
+    <details>
+      <summary>Subagents：3 天构建，2 天的工作被扔掉</summary>
+      <div class="expand-body">
+        Claude Code 的 subagents 功能（让主 agent 派出子 agent 并行工作）在 3 天内构建完成。但其中 2 天的工作被完全丢弃。<br><br>
+        这不是失败——这是探索。当丢弃的成本降到足够低，"浪费"就变成了"搜索"。
+      </div>
+    </details>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §5 BROOKS ═══════════════════════ -->
+  <section id="brooks">
+    <div class="section-num">05</div>
+    <h2>Brooks' Law 失效</h2>
+    <p class="section-hook">团队翻倍，产出不降反升 67%</p>
+
+    <p>
+      Brooks' Law（《人月神话》，1975）：向延期的项目增加人手只会让它更延期。原因：新人需要 onboarding，老人花时间带人，沟通成本 O(n²) 增长。
+    </p>
+    <p>
+      Anthropic 的工程团队在采用 Claude Code 的同时人数翻倍。按 Brooks' Law，人均 PR 产出应该下降。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">Brooks' Law 预测</div>
+        团队 2x → 沟通成本 ↑ → 人均产出 ↓
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-right">
+        <div class="v-label">实际结果</div>
+        团队 2x + Claude Code → 人均 PR 产出 <strong>+67%</strong>
+      </div>
+    </div>
+
+    <div class="note note-ok">
+      <div class="note-label">可能的解释</div>
+      Claude Code 压缩了两个关键瓶颈：<strong>上下文获取</strong>（新人不用反复问同事代码怎么工作，问 Claude Code）和<strong>实现速度</strong>（写代码本身更快）。Brooks' Law 的核心假设——人际沟通是必要的知识传递通道——被 AI 部分绕过了。
+    </div>
+
+    <details>
+      <summary>不仅是程序员在用</summary>
+      <div class="expand-body">
+        Boris 在办公室走过数据科学家的工位时，发现他们也在用 Claude Code——自发地用它写查询和做可视化。产品名字叫 "Claude <strong>Code</strong>"，但用户不在乎名字，只要工具能解决问题。<br><br>
+        <strong>启示</strong>：当工具足够通用且足够简单时，它会自发渗透到设计者未曾预见的场景中。用户永远比产品经理更有创意。
+      </div>
+    </details>
+  </section>
+
+  <!-- ═══════════════════════ §6 AI-FIRST ═══════════════════════ -->
+  <section id="ai-first">
+    <div class="section-num">06</div>
+    <h2>AI-First 工程的形态</h2>
+    <p class="section-hook">不是"用 AI 辅助"，而是"围绕 AI 重新设计工程流程"</p>
+
+    <p>
+      文章揭示了 Anthropic 内部工程文化的几个特征，可能预示了 AI-first 团队的未来形态：
+    </p>
+
+    <div class="principle-grid">
+      <div class="principle">
+        <div class="principle-tag">TDD 复兴</div>
+        <h4>测试驱动开发回来了</h4>
+        <p>
+          AI agent 擅长写代码但不擅长自我验证。TDD 提供了客观的正确性标准——先写测试，让 agent 对着测试写实现。这不是方法论信仰，而是 AI 时代的实用约束。
+        </p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">AI Code Review</div>
+        <h4>Agent 做第一轮审查</h4>
+        <p>
+          让 AI agent 执行代码审查和测试。人类工程师聚焦在 agent 无法判断的部分：架构决策、产品方向、边界情况。
+        </p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">谨慎使用 Feature Flag</div>
+        <h4>简化发布流程</h4>
+        <p>
+          高频发布（每天 60-100 次内部发布）要求极简的发布流程。Feature flag 的使用是谨慎的——因为它们增加了代码路径的复杂度，而团队的首要原则是简化。
+        </p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">事件自动化</div>
+        <h4>Agent 响应 Incident</h4>
+        <p>
+          自动化 incident 响应。当系统出问题时，agent 可以参与诊断和修复流程——因为它已经能遍历代码库和运行命令。
+        </p>
+      </div>
+    </div>
+
+    <div class="note note-neutral">
+      <div class="note-label">重要的上下文</div>
+      Anthropic 有独特条件：工程师水平极高，且他们自己构建底层模型。这些实践不一定能直接复制到其他团队。但作为趋势方向——AI 参与审查、测试、incident 响应——值得关注。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ SYNTHESIS ═══════════════════════ -->
+  <section id="takeaway-section">
+    <div class="section-num">综合</div>
+    <h2>七个反直觉原则</h2>
+    <p class="section-hook">从 Claude Code 的构建中提炼出的范式转移</p>
+
+    <ol class="causal">
+      <li><strong>Product Overhang</strong>：瓶颈不在模型能力，在产品设计。大部分 AI 产品的问题是"包得太厚"，不是"模型太弱"。</li>
+      <li><strong>On Distribution Tech Stack</strong>：为 AI 选技术栈，不为人选。当 90% 的代码由 AI 写时，AI 的能力分布比人的偏好更重要。</li>
+      <li><strong>反向复杂度</strong>：好的 AI 产品随时间变简单，不变复杂。模型进步 = 代码减少。</li>
+      <li><strong>最小业务逻辑</strong>：不要试图"帮助"模型。暴露工具，闪开。脚手架越多，模型越瘸。</li>
+      <li><strong>信任 > 智能</strong>：AI 产品最难的工程问题不是让 AI 更聪明，而是设计可信的权限系统。</li>
+      <li><strong>探索 > 执行</strong>：AI 把原型成本降到接近零，设计质量来自探索 10 倍多的方案后的自然筛选。</li>
+      <li><strong>Brooks' Law 可被绕过</strong>：AI 替代了一部分人际知识传递，新人 ramp-up 更快，沟通成本的 O(n²) 增长被部分抵消。</li>
+    </ol>
+  </section>
+
+  <!-- ═══════════════════════ TAKEAWAY ═══════════════════════ -->
+  <div class="takeaway">
+    <div class="thesis-label">Takeaway</div>
+    <p>
+      Claude Code 的故事揭示了一个正在发生的范式转移：AI 产品的核心竞争力不是"给模型加多少功能"，而是<strong>"挡在模型和用户之间的东西有多少能删掉"</strong>。最好的 AI 产品，是让你感觉不到产品存在的那一个。
+    </p>
+  </div>
+
+  <footer>
+    原文 by <a href="https://newsletter.pragmaticengineer.com/p/how-claude-code-is-built" target="_blank">The Pragmatic Engineer</a>
+    · <a href="/">← 首页</a>
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+</body>
+</html>
