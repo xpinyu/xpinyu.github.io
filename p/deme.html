@@ -547,13 +547,21 @@
     <div class="fig fig-wide">
       <img src="img/deme/fig1_gradient.png" alt="Figure 1: Gradient cosine similarity heatmap between different timesteps" loading="lazy">
       <div class="fig-caption">
-        <strong>Figure 1</strong>：(a) CIFAR10 上不同时间步梯度的余弦相似度热力图——对角线附近（相邻时间步）相似度高，远离对角线则迅速衰减至零甚至为负，表明梯度冲突。右侧直方图对比了 t∈[0,1000] 和 t∈[0,250] 的梯度相似度分布。(b)(c) 传统范式（所有时间步共享一个模型）vs DeMe 范式（解耦为 N 个时间步区间分别训练）。
+        <strong>Figure 1 · 怎么读这张图</strong><br>
+        <strong>(a) 左上 · 热力图</strong>：横轴和纵轴都是时间步 0→1000。每个格子的颜色代表两个时间步梯度的余弦相似度——<strong>亮黄色=高度相似</strong>（梯度方向一致），<strong>深蓝色=相似度低甚至为负</strong>（梯度方向冲突）。注意对角线附近是亮黄色（相邻时间步方向一致），但远离对角线就变成深蓝色——说明 t=100 和 t=800 的梯度在"打架"。<br>
+        <strong>(a) 右上 · 直方图</strong>：绿色=全范围 [0,1000] 的梯度相似度分布，集中在 0 附近（大部分时间步对之间几乎不相关）；蓝色=缩小到 [0,250]，分布右移向正值（短程内相似度更高）。<br>
+        <strong>(b) 左下</strong>：传统方案——一个模型承接所有时间步，梯度相似度低（冲突严重）。<br>
+        <strong>(c) 右侧</strong>：DeMe 方案——每个模型只负责一个子区间，各自内部梯度相似度高（冲突消除）。
       </div>
     </div>
 
+    <p>
+      热力图的信息量很大，值得细看。核心结论只有一个：<strong>不相邻时间步之间的梯度方向几乎不相关甚至相反</strong>。这不是训练不够的问题——
+    </p>
+
     <div class="note note-problem">
       <div class="note-label">关键认知</div>
-      这不是"训练不够充分"的问题——即使训练到收敛，梯度冲突仍然存在。pretrained 模型看似收敛（整体梯度为零），但实际上不同时间步的梯度<strong>互相抵消</strong>后才等于零。模型停在了一个折中点，而非最优点。
+      即使训练到收敛，梯度冲突仍然存在。pretrained 模型看似收敛（整体梯度为零），但实际上不同时间步的梯度<strong>互相抵消</strong>后才等于零。模型停在了一个折中点，而非最优点。
     </div>
 
     <h3>不同时间步到底在做什么？</h3>
@@ -607,7 +615,10 @@
     <div class="fig fig-wide">
       <img src="img/deme/fig3_pipeline.png" alt="Figure 3: DeMe framework pipeline" loading="lazy">
       <div class="fig-caption">
-        <strong>Figure 3</strong>：DeMe 框架全景。微调阶段引入三项技术：Consistency Loss 保持与原始模型的一致性；Probabilistic Sampling 以一定概率从非对应区间采样防止遗忘；Channel-wise Projection 通过 C×C 矩阵捕捉通道维度的特征差异。微调后通过 Task Vector 加权合并为单一模型。
+        <strong>Figure 3 · 怎么读这张图</strong><br>
+        这张图分左右两半，建议先看左边再看右边。<br>
+        <strong>左半 · 整体流程</strong>：上方——预训练模型被复制为 N 份，每份只在自己的时间步区间 [0,T/N)、[T/N,2T/N)、... 上微调。下方——微调完成后，计算每个模型相对于预训练模型的差异（task vector τᵢ = θᵢ − θ），加权求和后叠加回预训练模型，得到单一的 θ<sub>merged</sub>。<br>
+        <strong>右半 · 单个模型怎么训</strong>：输入 (x<sub>t</sub>, t) 送入带 Channel Projection 层（初始化为单位矩阵）的扩散模型。时间步 t 的采样策略：以 (1-p)% 概率从对应子区间采样（左侧高柱），以 p% 概率从全范围 [0,T) 采样（右侧矮柱）。输出同时计算两个 loss——Diffusion Loss（去噪准确度）和 Consistency Loss（与原始模型的一致性）。
       </div>
     </div>
 
@@ -797,14 +808,20 @@
     <div class="fig fig-wide">
       <img src="img/deme/cvpr2025_quality1.png" alt="Qualitative comparison: before vs after finetuning with DeMe" loading="lazy">
       <div class="fig-caption">
-        <strong>Stable Diffusion 文生图对比</strong>：上方为微调前（原始 SD），下方为 DeMe 微调后。注意文本对齐度的提升——DeMe 能更准确地捕捉 prompt 中的细节描述（如"小木屋"、"野花"、"水花"等被忽略的元素），同时生成更细腻的纹理和光影。
+        <strong>Stable Diffusion 文生图对比 · Prompt I &amp; II</strong><br>
+        每组对比中，<strong>左图=微调前</strong>（原始 Stable Diffusion），<strong>右图=DeMe 微调后</strong>。蓝色斜体标注了 prompt 中模型未能对齐的关键描述。<br>
+        Prompt I"白马在野花田中奔跑"：微调前缺失"日落"场景（<em>as the sun sets behind it</em>），微调后完整还原了夕阳背景和飘动的鬃毛。<br>
+        Prompt II"热带海滩"：微调前缺失"白色沙滩"（<em>white sandy shores</em>），微调后沙滩、棕榈树、清澈海水全部到位。
       </div>
     </div>
 
     <div class="fig fig-wide">
-      <img src="img/deme/cvpr2025_quality2.png" alt="More qualitative comparison on unconditional generation" loading="lazy">
+      <img src="img/deme/cvpr2025_quality2.png" alt="Qualitative comparison: more text-to-image prompts" loading="lazy">
       <div class="fig-caption">
-        <strong>无条件生成对比（LSUN）</strong>：左为原始模型，右为 DeMe 合并后模型。结构更清晰，细节更丰富，色彩更自然。
+        <strong>Stable Diffusion 文生图对比 · Prompt III &amp; IV</strong><br>
+        同样左=微调前，右=微调后。<br>
+        Prompt III"海豚跃出海面"：微调前缺失"日落在地平线上"（<em>sun sets on the horizon</em>），画面平淡；微调后呈现出金色逆光剪影，水花飞溅动感十足。<br>
+        Prompt IV"雾蒙蒙的乡村早晨，一间小木屋"：微调前完全忽略了"小木屋"（<em>a small wooden cabin</em>）这一核心元素；微调后木屋、野花、晨雾、透过雾气的阳光全部准确呈现。
       </div>
     </div>
 
@@ -856,7 +873,10 @@
     <div class="fig fig-wide">
       <img src="img/deme/fig4_landscape.png" alt="Figure 4: Loss landscape visualization" loading="lazy">
       <div class="fig-caption">
-        <strong>Figure 4</strong>：CIFAR10 上预训练模型在不同时间步范围的 loss landscape。蓝色=低 loss，红色=高 loss，等高线密度反映梯度大小。完整范围 t∈[0,1000) 时模型处于等高线稀疏的临界点（梯度为零）；但在子区间（如 t∈[0,250)）上，模型周围等高线密集——存在明确的优化方向。
+        <strong>Figure 4 · 怎么读这张图</strong><br>
+        5 幅子图从左到右分别对应不同的时间步范围。每幅是一个二维 loss landscape（通过降维将高维参数空间投影到 2D）。<strong>蓝色=低 loss</strong>，<strong>红色=高 loss</strong>。等高线越密=地形越陡=梯度越大。<br>
+        <strong>浅蓝色大标记 📍</strong> = 预训练模型所在位置（临界点，梯度为零）；<strong>深蓝色小标记</strong> = 梯度方向（该点可以继续优化的方向）。<br><br>
+        <strong>关键对比</strong>：最左侧 t∈[0,1000)（完整范围）——模型 📍 所在区域等高线极其稀疏，地形几乎平坦，看起来已经"到底了"。但看其他 4 幅子图（子区间）——同一个位置周围等高线突然变密，出现了明确的"下坡路"。<strong>全局看似到底 ≠ 局部到底</strong>——模型卡在一个各方向梯度互相抵消的折中点，解耦后每个子区间都能找到继续优化的方向。
       </div>
     </div>
 
@@ -894,7 +914,9 @@
     <div class="fig fig-wide">
       <img src="img/deme/fig6_taskvec.png" alt="Figure 6: Loss landscape for task vectors and box plot" loading="lazy">
       <div class="fig-caption">
-        <strong>Figure 6</strong>：(a) Task vector 张成平面上的 loss landscape。预训练模型和微调模型都不在最优点——最优点位于 task vector 加权组合的方向上。等高线呈盆地状，变化光滑。(b) 不同时间步范围 task vector 幅度的箱线图：t∈[500,1000) 的幅度远大于 t∈[0,500)，说明大时间步在原始模型中被严重欠优化。
+        <strong>Figure 6 · 怎么读这张图</strong><br>
+        <strong>(a) 上方 · Task vector 平面上的 loss</strong>：横轴 w₁、纵轴 w₂ 分别是两个 task vector 的系数。<strong>红色圆圈 ⭕</strong> = 预训练模型（原点附近，w₁=w₂=0）；<strong>绿色圆圈</strong> = 各微调模型（沿轴方向远离原点）；<strong>紫色菱形 ◇</strong> = 网格搜索找到的最优合并参数。蓝色=低 loss，红色=高 loss。注意最优点 ◇ 既不在预训练位置 ⭕ 也不在任何微调模型位置——它在 task vector 的加权组合方向上，loss 更低。<br>
+        <strong>(b) 下方 · 箱线图</strong>：每个子图对应一个时间步子区间，横轴是模型层序号（0→27），纵轴是该层 task vector 的数值幅度。<strong>关键对比</strong>：左侧两图（t∈[0,250) 和 t∈[250,500)）箱体矮且窄——微调前后参数变化小；右侧两图（t∈[500,750) 和 t∈[750,1000)）<strong>箱体明显更高更宽</strong>——微调前后参数变化大，说明原始模型在大时间步上被严重欠优化。
       </div>
     </div>
 
@@ -915,10 +937,10 @@
       <summary>Channel-wise Projection 的激活分析（Figure 2）</summary>
       <div class="expand-body">
         <img src="img/deme/fig2_channel.png" alt="Figure 2: Channel vs spatial activation differences" style="width:100%; border-radius:8px; margin-bottom:14px;" loading="lazy">
-        论文可视化了微调前后的激活差异，比较了通道维度和空间维度：<br><br>
-        <strong>通道维度</strong>：激活值变化显著，分布差异明显<br>
-        <strong>空间维度</strong>：激活值变化很小，分布差异不明显<br><br>
-        这说明时间步特定的知识主要编码在<strong>通道映射</strong>中而非空间映射中——这就是 Channel-wise Projection（C×C 矩阵）比全连接层或空间注意力更合适的原因：它精准地作用在知识差异最大的维度上。
+        <strong>怎么读这张图</strong><br><br>
+        <strong>(a) 左侧 · 三行可视化</strong>：每行两张热力图，左列=通道激活，右列=空间激活。第一行=微调前，第二行=微调后，第三行=差异（前后之差）。<strong>关键对比在第三行</strong>：左列（通道差异）有明显的亮黄色斑块，说明特定通道的激活值变化剧烈；右列（空间差异）几乎全是均匀的深紫色，说明空间结构几乎没变。<br><br>
+        <strong>(b) 右侧 · 差异分布直方图</strong>：绿色=通道激活差异的分布，<strong>明显更宽</strong>（spread 大）；蓝色=空间激活差异的分布，窄得多（集中在 0 附近）。<br><br>
+        <strong>结论</strong>：微调学到的新知识主要编码在<strong>通道映射</strong>（"哪些特征通道变重要了"）中，而非空间映射（"像素位置关系"）中。这就是 Channel-wise Projection（C×C 矩阵）设计的实证依据——它精准作用在变化最大的维度上，只占模型参数的 1.06%。
       </div>
     </details>
   </section>
