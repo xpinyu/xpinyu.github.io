@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Andrej Karpathy 从'AI 是 slop'到'magnitude 9 earthquake'只用了两个月。三个模型的密集发布如何触发软件工程的认知相变。">
+<title>The Profession, Refactored</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --text-1: #1D1B18;
+    --text-2: #5C5750;
+    --text-3: #9B958C;
+    --border: #E8E3DB;
+    --accent: #B8714A;
+    --blue: #7C6B5B;
+    --blue-soft: #F5F0EB;
+    --amber: #B8864A;
+    --amber-bg: #FBF6F0;
+    --red: #B85C4A;
+    --red-bg: #FBF2F0;
+    --green: #5A8A6E;
+    --green-bg: #F0F6F2;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: 2.2rem; font-weight: 700;
+    line-height: 1.25; letter-spacing: -0.03em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header h1 .sym { color: var(--accent); }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 580px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+  header .meta a {
+    color: var(--text-3); text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.15s;
+  }
+  header .meta a:hover { color: var(--text-1); border-color: var(--text-1); }
+
+  .thesis {
+    background: #2C2520; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B87A; font-weight: 600; }
+  .thesis .evidence {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem; opacity: 0.65; line-height: 1.7;
+  }
+  .thesis .evidence em { font-style: normal; opacity: 0.85; }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-size: 1.5rem; font-weight: 700;
+    line-height: 1.3; letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg);   border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F5F2ED; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 24px 0; font-size: 0.85rem;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .versus .v-left  { background: var(--red-bg); }
+  .versus .v-left .v-label  { color: var(--red); }
+  .versus .v-right { background: var(--green-bg); }
+  .versus .v-right .v-label { color: var(--green); }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 700; color: var(--text-3);
+    background: var(--bg); font-size: 0.75rem;
+  }
+
+  .causal {
+    margin: 24px 0; padding: 0; list-style: none;
+    counter-reset: cause;
+  }
+  .causal li {
+    counter-increment: cause; position: relative;
+    padding: 8px 0 8px 44px; font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .causal li::before {
+    content: counter(cause); position: absolute;
+    left: 0; top: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #2C2520; color: #F5F0EB;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .timeline {
+    margin: 28px 0; padding-left: 0; list-style: none;
+    position: relative;
+  }
+  .timeline::before {
+    content: ''; position: absolute;
+    left: 11px; top: 8px; bottom: 8px;
+    width: 1px; background: var(--border);
+  }
+  .timeline li {
+    position: relative; padding: 10px 0 10px 36px;
+    font-size: 0.88rem; line-height: 1.75;
+  }
+  .timeline li::before {
+    content: ''; position: absolute;
+    left: 5px; top: 18px;
+    width: 13px; height: 13px; border-radius: 50%;
+    border: 2px solid var(--border); background: var(--bg);
+  }
+  .timeline .t-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .tl-problem::before  { border-color: var(--red); background: var(--red-bg); }
+  .tl-problem .t-label { color: var(--red); }
+  .tl-try::before      { border-color: var(--amber); background: var(--amber-bg); }
+  .tl-try .t-label     { color: var(--amber); }
+  .tl-fix::before      { border-color: var(--green); background: var(--green-bg); }
+  .tl-fix .t-label     { color: var(--green); }
+
+  details {
+    margin: 20px 0; border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+  }
+  details summary {
+    padding: 14px 20px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 500;
+    color: var(--text-2); background: #F5F2ED;
+    user-select: none; list-style: none;
+    transition: background 0.15s;
+  }
+  details summary:hover { background: #EDE9E3; }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: '+ '; font-weight: 700; color: var(--text-3); }
+  details[open] summary::before { content: '− '; }
+  details .expand-body {
+    padding: 18px 20px; font-size: 0.85rem;
+    line-height: 1.8; color: var(--text-2);
+  }
+
+  .quote {
+    margin: 24px 0; padding: 20px 24px;
+    background: var(--surface); border-radius: 12px;
+    border: 1px solid var(--border);
+    font-size: 0.88rem; line-height: 1.85;
+    color: var(--text-2); position: relative;
+  }
+  .quote::before {
+    content: '"'; position: absolute;
+    top: 8px; left: 14px;
+    font-size: 2.5rem; font-weight: 700;
+    color: var(--border); line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .quote p { padding-left: 20px; }
+  .quote .q-attr {
+    font-size: 0.72rem; color: var(--text-3);
+    margin-top: 10px; padding-left: 20px;
+  }
+
+  .stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 12px; margin: 24px 0;
+  }
+  @media (max-width: 600px) { .stat-grid { grid-template-columns: 1fr 1fr; } }
+  .stat-item {
+    padding: 20px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 1.6rem; font-weight: 700;
+    letter-spacing: -0.03em; color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 0.72rem; color: var(--text-3);
+    line-height: 1.5;
+  }
+
+  .deprecation-list {
+    margin: 28px 0; padding: 0; list-style: none;
+  }
+  .deprecation-list li {
+    padding: 20px 24px; margin-bottom: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; font-size: 0.88rem; line-height: 1.8;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .deprecation-list li:hover { border-color: #D0C8BD; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .deprecation-list .dep-tag {
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .dep-consensus .dep-tag { color: var(--green); }
+  .dep-emerging .dep-tag { color: var(--amber); }
+  .dep-counter .dep-tag { color: var(--red); }
+  .deprecation-list h4 {
+    font-size: 0.95rem; font-weight: 700;
+    margin-bottom: 8px; line-height: 1.4;
+  }
+  .deprecation-list p { font-size: 0.82rem; color: var(--text-2); line-height: 1.7; }
+
+  .model-timeline {
+    display: flex; gap: 0; margin: 28px 0;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .model-timeline .mt-item {
+    flex: 1; padding: 20px; text-align: center;
+    border-right: 1px solid var(--border);
+    font-size: 0.82rem; line-height: 1.6;
+  }
+  .model-timeline .mt-item:last-child { border-right: none; }
+  .model-timeline .mt-date {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 6px;
+  }
+  .model-timeline .mt-name {
+    font-size: 1rem; font-weight: 700; margin-bottom: 4px;
+  }
+  .model-timeline .mt-org {
+    font-size: 0.72rem; color: var(--text-3);
+  }
+  @media (max-width: 600px) {
+    .model-timeline { flex-direction: column; }
+    .model-timeline .mt-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .model-timeline .mt-item:last-child { border-bottom: none; }
+  }
+
+  .abstraction-grid {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 20px 0; padding: 20px;
+    background: #2C2520; border-radius: 14px;
+  }
+  .abs-tag {
+    padding: 6px 14px; border-radius: 100px;
+    font-size: 0.72rem; font-weight: 500;
+    font-family: var(--mono);
+    background: rgba(255,255,255,0.08); color: rgba(245,240,235,0.7);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  code {
+    font-family: var(--mono); font-size: 0.82em;
+    background: #F0EDE8; padding: 2px 7px; border-radius: 5px;
+  }
+
+  .takeaway {
+    background: #2C2520; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,248,245,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232,227,219,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+  .topbar .site-name { color: var(--text-3); font-weight: 400; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+  footer a { color: var(--text-3); border-bottom: 1px solid var(--border); text-decoration: none; }
+  footer a:hover { color: var(--text-1); }
+
+  a:focus-visible,
+  details summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+  nav.toc .indent { padding-left: 26px; font-size: 0.65rem; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← 首页</a>
+  <span class="site-name">pinyu.ai</span>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">核心论点</a>
+  <a href="#flip">认知翻转</a>
+  <a class="indent" href="#karpathy">Karpathy 的两个月</a>
+  <a class="indent" href="#chain-reaction">连锁反应</a>
+  <a href="#trigger">触发点</a>
+  <a href="#hard-data">硬数据</a>
+  <a href="#declining">贬值清单</a>
+  <a href="#new-layer">新的认知层</a>
+  <a href="#revaluation">重新估值</a>
+  <a href="#takeaway-section">Takeaway</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">The Pragmatic Engineer · Article Deep Dive · 2026</div>
+    <h1>The Profession<span class="sym">,</span> Refactored</h1>
+    <p class="subtitle">
+      Andrej Karpathy 10 月还在说 AI 编程是"slop"，12 月就说自己"从未如此落后"。DHH 夏天还拒绝让 AI 写代码，年底说这是互联网之后最让人兴奋的事。这两个月里发生了什么？
+    </p>
+    <div class="meta">
+      <span>基于 Gergely Orosz 深度分析 · 2026.01</span>
+      <a href="https://newsletter.pragmaticengineer.com/p/when-ai-writes-almost-all-code-what" target="_blank">原文</a>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════ THESIS ═══════════════════════ -->
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">Core Thesis</div>
+    <p>
+      软件工程正经历一次不可逆的重构。触发它的是 2025 年 11—12 月三个模型跨过了一条看不见的能力线。<strong>最有说服力的证据来自人类行为学：行业里最有名的怀疑者，在两个月内集体改变了立场。</strong>
+    </p>
+    <div class="evidence">
+      <em>关键信号</em>：Karpathy 10 月称 AI 编程是"slop"，12 月 26 日说"从未如此落后"。Boris Cherny 12 月一整月没有打开过 IDE，Opus 4.5 替他写了约 200 个 PR，每一行代码。Dario Amodei 3 月的"90% 预言"——当时包括 Gergely 在内的多数人持怀疑态度——12 月已被验证。
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ §1 THE FLIP ═══════════════════════ -->
+  <section id="flip">
+    <div class="section-num">01</div>
+    <h2>认知翻转：最审慎的怀疑者集体倒戈</h2>
+    <p class="section-hook">速度本身就是信号</p>
+
+    <p>
+      "AI 能写代码"早就不算新闻了。真正的新闻是：行业里辨识度最高、也最难被说服的那批人，几乎同时改变了立场。Gergely 用一连串具名的人物转变构建了一条证据链。
+    </p>
+
+    <h3 id="karpathy">Karpathy 的两个月</h3>
+    <p>
+      Andrej Karpathy——OpenAI 联合创始人，以对 AI 工具的坦率批评著称。看看他在两个月里说了什么：
+    </p>
+
+    <ul class="timeline">
+      <li class="tl-problem">
+        <div class="t-label">2025 年 10 月 · Dwarkesh Podcast</div>
+        <strong>"It's slop."</strong> — "模型还没到位。整个行业在打肿脸充胖子，假装这很了不起，其实不是。我也不确定他们在搞什么，可能是在融资吧。目前自动补全是我的甜蜜点。"
+      </li>
+      <li class="tl-fix">
+        <div class="t-label">2025 年 12 月 26 日</div>
+        <strong>"I've never felt this much behind as a programmer."</strong> — "这个职业正在被剧烈地重构（dramatically refactored），程序员贡献的比特越来越稀疏。我感觉如果能正确地组合过去一年涌现的这些工具，自己可以强大 10 倍——而没能做到这一点，看起来越来越像是一个技能问题（skill issue）。"
+      </li>
+    </ul>
+
+    <p>
+      从"slop"到"skill issue"，中间只有<strong>两个月</strong>。态度翻转的速度本身就说明问题——一个深思熟虑的人不会在两个月里慢慢改变主意，只会在某一天突然觉得自己落后了。
+    </p>
+
+    <div class="quote">
+      <p>
+        There's a new programmable layer of abstraction to master in addition to the usual layers involving agents, subagents, their prompts, contexts, memory, modes, permissions, tools, plugins, skills, hooks, MCP, LSP, slash commands, workflows, IDE integrations, and a need to build an all-encompassing mental model for strengths and pitfalls of fundamentally <strong>stochastic, fallible, unintelligible and changing entities</strong> suddenly intermingled with what used to be good old fashioned engineering.
+      </p>
+      <div class="q-attr">— Andrej Karpathy, 2025.12.26</div>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">关键词 · Stochastic, Fallible, Unintelligible</div>
+      注意这串形容词。传统工程建立在确定性、可验证、可理解的基础上。而你现在的合作伙伴是"随机的、会犯错的、不可理解的、还在不断变化的"——你仍然要拿它来做工程。
+    </div>
+
+    <h3 id="chain-reaction">连锁反应</h3>
+    <p>
+      Karpathy 不是个例。文章记录了同一时期一批具名工程领袖的同向转变：
+    </p>
+
+    <div class="quote">
+      <p>
+        Just last summer, I spoke with Lex Fridman about not letting AI write any code directly, but it turns out part of this resistance was simply based on the models not being good enough at the time! I spent more time rewriting what it wrote, than if I'd done it from scratch. <strong>That has now flipped.</strong>
+      </p>
+      <div class="q-attr">— David Heinemeier Hansson (DHH), Ruby on Rails 创建者</div>
+    </div>
+
+    <div class="quote">
+      <p>
+        For more than 15 years, I thought I loved writing code, loved typing out code by hand, and loved the "cadence of typing"... Now, I'm not so sure. What I learned over the course of the year is that <strong>typing out code by hand now frustrates me</strong>.
+      </p>
+      <div class="q-attr">— Thorsten Ball, Amp 工程师，15+ 年编程经验</div>
+    </div>
+
+    <div class="quote">
+      <p>
+        Any time I have to type precise syntax by hand now feels like such a tedious chore. Surprisingly and thankfully, programming is still fun, probably more fun. <strong>My biggest problem now is coming up with enough worthwhile ideas</strong> to fully leverage the productivity boost.
+      </p>
+      <div class="q-attr">— Adam Wathan, Tailwind CSS 创建者</div>
+    </div>
+
+    <div class="quote">
+      <p>
+        Y'all have to throw away your priors. <strong>The cost of software production is trending towards zero.</strong>
+      </p>
+      <div class="q-attr">— Malte Ubl, Vercel CTO，20 年工程经验</div>
+    </div>
+
+    <div class="note note-problem">
+      <div class="note-label">谁在说这些话</div>
+      Gergely 自己注意到了一个潜在问题：Jaana Dogan（Google）、Malte Ubl（Vercel）、Thorsten Ball（Amp）都在 AI 工具相关的公司工作。所以他专门找了没有利益绑定的声音做交叉验证——DHH（37signals）、Adam Wathan（Tailwind CSS）、Karpathy（已离开 OpenAI 多年）。结论一致。
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ §2 TRIGGER ═══════════════════════ -->
+  <section id="trigger">
+    <div class="section-num">02</div>
+    <h2>触发点：24 天，三个模型</h2>
+    <p class="section-hook">为什么偏偏是 2025 年末</p>
+
+    <p>
+      那么是什么触发了这次集体转变？答案指向一个极其紧凑的时间窗口——2025 年 11 到 12 月，三家公司在 24 天内先后发布了各自最强的编程模型：
+    </p>
+
+    <div class="model-timeline">
+      <div class="mt-item">
+        <div class="mt-date">11 月 17 日</div>
+        <div class="mt-name">Gemini 3</div>
+        <div class="mt-org">Google</div>
+      </div>
+      <div class="mt-item" style="background: var(--amber-bg);">
+        <div class="mt-date">11 月 24 日</div>
+        <div class="mt-name">Opus 4.5</div>
+        <div class="mt-org">Anthropic</div>
+      </div>
+      <div class="mt-item">
+        <div class="mt-date">12 月 11 日</div>
+        <div class="mt-name">GPT-5.2</div>
+        <div class="mt-org">OpenAI</div>
+      </div>
+    </div>
+
+    <p>
+      三个独立团队几乎同时跨过同一条线——这本身就是信号。当底层能力（训练数据规模、算力、算法改进）到达某个阈值时，独立团队会同时涌现出相似水平的能力。典型的 <a href="https://en.wikipedia.org/wiki/Multiple_discovery" target="_blank">simultaneous discovery</a>。
+    </p>
+
+    <div class="quote">
+      <p>
+        It genuinely feels to me like GPT-5.2 and Opus 4.5 in November represent <strong>an inflection point</strong> — one of those moments when the models get incrementally better in a way that <strong>tips over an invisible capability line</strong>. Suddenly, a whole bunch of much harder coding problems open up.
+      </p>
+      <div class="q-attr">— Simon Willison, 独立 LLM 研究者，以"不炒作"著称</div>
+    </div>
+
+    <p>
+      Simon Willison 的措辞很精准——"incrementally better in a way that tips over an invisible capability line"。模型一直在变好，但在某个节点上，量变突然翻成了质变。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">具体案例 · 1 小时 vs 1 年</div>
+      Google 首席工程师 Jaana Dogan 的经历最具冲击力：她把一个分布式 agent 编排器的需求描述给 Claude Code，<strong>它在 1 小时内生成了 Google 花了一年才建出来的东西</strong>。不完美，但足以迭代。她的建议："如果你还在怀疑，去你最擅长的领域试试——在那里你有资格评判产出的质量。"
+    </div>
+
+    <h3>GPT 5 → 5.2 的跳跃</h3>
+    <p>
+      Peter Steinberger（PSPDFKit 创建者，~20 年工程经验）提供了一个微观视角。他建了一个自定义 CLI 工具叫"oracle"，专门在 AI agent 卡住时介入帮助：
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">GPT 5 / 5.1 时代</div>
+        每天需要多次调用 oracle 来解卡。模型经常在复杂任务上转圈。
+      </div>
+      <div class="v-mid">→</div>
+      <div class="v-side v-right">
+        <div class="v-label">GPT-5.2 时代</div>
+        每周只需几次。<strong>"It one-shots almost anything I throw at it."</strong>
+      </div>
+    </div>
+
+    <p>
+      从"每天多次卡住"到"几乎什么都能一次搞定"——这种日常使用中的体感变化，比任何基准测试都直接。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §3 HARD DATA ═══════════════════════ -->
+  <section id="hard-data">
+    <div class="section-num">03</div>
+    <h2>硬数据</h2>
+    <p class="section-hook">散落在文章各处的关键数字，摆到一起看</p>
+
+    <div class="stat-grid">
+      <div class="stat-item">
+        <div class="stat-num">~200</div>
+        <div class="stat-label">PR 数<br>Boris Cherny 12 月</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">0</div>
+        <div class="stat-label">打开 IDE 的次数<br>Boris Cherny 12 月</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">1h</div>
+        <div class="stat-label">Jaana Dogan 复刻<br>Google 一年工作</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">90%</div>
+        <div class="stat-label">Amodei 预言<br>已被验证</div>
+      </div>
+    </div>
+
+    <p>
+      Boris Cherny（Claude Code 创建者）给出了最具体的数字：
+    </p>
+
+    <div class="quote">
+      <p>
+        The last month was my first as an engineer when I didn't open an IDE at all. Opus 4.5 wrote around 200 PRs, every single line. Software engineering is radically changing, and the hardest part even for early adopters and practitioners like us is to <strong>continue to re-adjust our expectations</strong>. And this is *still* just the beginning.
+      </p>
+      <div class="q-attr">— Boris Cherny, Claude Code 创始工程师</div>
+    </div>
+
+    <details>
+      <summary>对 Boris 数据的可信度校准</summary>
+      <div class="expand-body">
+        Gergely 在文章中做了诚实的对冲：Claude Code 是闭源的，Cherny 的声明难以独立验证，且作为创建者他有动机展示最好的一面。<br><br>
+        但 Gergely 补充了两个增信点：<strong>(1)</strong> 他与 Boris 有私人交流，信任他的诚实度；<strong>(2)</strong> Gergely 自己的体验与 Boris 一致——他现在也让 Claude Code 生成所有最终提交的代码，不满意时就继续 prompt 修改，而非手写。<br><br>
+        还有一点：Gergely 以"测量派"著称，他的 newsletter 有 80 万+ 付费订阅者，靠的是准确和中立。他在文章中承认自己此前对 Amodei 的 90% 预言持怀疑态度——现在认为预言成真了。一个以怀疑立身的人公开修正自己，这本身就是信号。
+      </div>
+    </details>
+
+    <h3>作者本人的体验</h3>
+    <p>
+      Gergely 在文章开头用了一段不起眼的个人经历，但细看信息量不小：
+    </p>
+
+    <ol class="causal">
+      <li>用 LLM 处理中等规模任务（self-service group subscriptions、admin panel），提交了几百行生产代码</li>
+      <li>流程：prompt → 审查 → 确认测试通过 → prompt 微调 → 提交</li>
+      <li>用 Claude Code for Web 连接 GitHub，在<strong>手机上</strong>写生产代码——让 Claude 改代码 → 创建 PR → GitHub Actions 跑测试 → 手机上审查合并</li>
+      <li>技术栈：TypeScript, Node/Express, React, Postgres</li>
+    </ol>
+
+    <div class="note note-ok">
+      <div class="note-label">细节</div>
+      "在手机上写生产代码"听起来像 gimmick。Gergely 明确说了，这是低风险工作且有自动化测试覆盖。但这个行为标志着一条分界线：<strong>编程从"坐在电脑前写代码"的活动，变成了"在任何地方审查和指挥 AI 产出"的活动</strong>。输入设备从键盘变成了自然语言。
+    </div>
+
+    <h3>Dario Amodei 的"疯狂预言"</h3>
+    <p>
+      2025 年 3 月，Anthropic CEO Dario Amodei 说：
+    </p>
+
+    <div class="quote">
+      <p>
+        I think we will be there in three to six months, where AI is writing 90% of the code. And then, in 12 months, we may be in a world where AI is writing essentially all the code.
+      </p>
+      <div class="q-attr">— Dario Amodei, 2025 年 3 月</div>
+    </div>
+
+    <p>
+      当时多数人——包括 Gergely——把这当成 CEO 的惯性乐观。9 个月后回头看，它更像是提前泄露了剧本。
+    </p>
+
+    <div class="note note-neutral">
+      <div class="note-label">上下文</div>
+      Gergely 做了重要的范围限定：最可能率先达到 90%+ AI 编写比例的是<strong>追求 PMF 的初创公司</strong>（代码可丢弃、不在乎技术债）和<strong>绿地项目</strong>（无需理解已有代码库）。大型遗留系统、安全关键领域、特殊技术栈——这些场景 AI 渗透会慢得多。全面覆盖不是今年的事，但方向不可逆。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §4 DECLINING ═══════════════════════ -->
+  <section id="declining">
+    <div class="section-num">04</div>
+    <h2>正在贬值的能力</h2>
+    <p class="section-hook">按扎心程度排列，越往下越难接受</p>
+
+    <p>
+      Gergely 列出了一系列正在失去市场溢价的技能。以下按"反共识程度"重新排序——先从容易接受的开始：
+    </p>
+
+    <ul class="deprecation-list">
+      <li class="dep-consensus">
+        <div class="dep-tag">已成共识</div>
+        <h4>原型制作能力</h4>
+        <p>Shaquille O'Neal 在 Replit 的广告中 vibe-coded 了一个应用。当 NBA 退役球星都能用自然语言搭原型时，"能快速搭 demo"不再是工程师的差异化能力。产品经理、设计师、业务人员都可以自己做原型了——工程师的差异化要往后挪——从"能做出来"移到"做出来之后怎么让它可靠地运行在生产环境中"。</p>
+      </li>
+      <li class="dep-consensus">
+        <div class="dep-tag">已成共识</div>
+        <h4>语言多面手</h4>
+        <p>过去精通多种编程语言是明确的职业溢价——Go 团队偏好有 Go 经验的人，Rust 同理。但当 AI 可以在任何语言中立即产出还不错的代码时，"我精通五种语言"变得和"我打字速度 120 WPM"一样——不再是决定性优势。</p>
+      </li>
+      <li class="dep-emerging">
+        <div class="dep-tag">趋势明显</div>
+        <h4>前后端分工</h4>
+        <p>Gergely 说他"很难想象初创公司还会分别招前端和后端开发者"。逻辑链：后端工程师现在可以 prompt 出还不错的前端代码，反之亦然 → AI 成了跨栈的桥梁 → 初创公司只需招"用 AI 能跨栈搞定事情的人"，不再按技术栈切分岗位。</p>
+      </li>
+      <li class="dep-emerging">
+        <div class="dep-tag">趋势明显</div>
+        <h4>执行明确定义的 Ticket</h4>
+        <p>Cursor 团队已经在做的事：所有 Linear ticket 自动传给 Cursor，AI one-shot 出一个实现，开发者决定合并还是迭代。当"拿到需求 → 写代码"这个环节被自动化，在层级分明的组织里长期存在的"PM 写 ticket → 开发者执行"模式就触到了存在危机。</p>
+      </li>
+      <li class="dep-counter">
+        <div class="dep-tag">反直觉</div>
+        <h4>重构</h4>
+        <p>手动重构会比用自然语言描述"我要什么样的重构"然后让 AI 执行慢得多。传统 IDE 的重构功能（重命名、提取函数）已经在走这条路，AI 只是把它推到了极致。当然，大规模重构仍有 AI 搞砸的风险——这也是为什么<strong>验证能力</strong>变得比编写能力更重要。</p>
+      </li>
+      <li class="dep-counter">
+        <div class="dep-tag">最反直觉</div>
+        <h4>阅读代码</h4>
+        <p>Peter Steinberger（PSPDFKit 创建者，~20 年经验）直接说了：</p>
+      </li>
+    </ul>
+
+    <div class="quote">
+      <p>
+        These days, <strong>I don't read much code anymore</strong>. I watch the stream and sometimes look at key parts, but I gotta be honest, most code I don't read. I do know where components are and how things are structured, and how the overall system is designed; that's usually all that's needed.
+      </p>
+      <div class="q-attr">— Peter Steinberger, ~20 年工程经验</div>
+    </div>
+
+    <p>
+      注意他的替代策略：不读具体代码，但清楚<strong>组件在哪里、结构是什么、整体系统怎么设计</strong>。抽象层级上移了——从"这行代码做什么"到"这个系统的架构是什么"。
+    </p>
+
+    <p>
+      他还提到了一个微妙的转变：选技术栈的第一变量变了。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">过去</div>
+        选"我熟悉什么"——人的经验决定技术栈
+      </div>
+      <div class="v-mid">→</div>
+      <div class="v-side v-right">
+        <div class="v-label">现在</div>
+        选"AI 擅长什么"——模型的能力分布决定技术栈。TypeScript 和 Go 成了首选，因为 agent 在这些语言上"写得最好"
+      </div>
+    </div>
+
+    <div class="note note-problem">
+      <div class="note-label">但是</div>
+      Gergely 给了一个重要的限定："阅读代码在扩展成熟软件或需要避免安全问题时仍然重要。如果上线的代码不工作并伤害了业务，你会想要同时测试和审查它的正确性。" 这里的边界条件很重要：Steinberger 做的是 greenfield 项目。低风险、新代码库、有测试覆盖——在这个上下文里不逐行读代码是合理的。换成遗留系统或安全关键场景，结论完全不同。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §5 NEW LAYER ═══════════════════════ -->
+  <section id="new-layer">
+    <div class="section-num">05</div>
+    <h2>新的认知层：复杂度去哪了</h2>
+    <p class="section-hook">写代码的复杂度下降了，但总复杂度并没有减少——它搬家了</p>
+
+    <p>
+      Karpathy 12 月那段话里有一串令人窒息的名词清单。他其实在试图给一个全新的认知层画地图：
+    </p>
+
+    <div class="abstraction-grid">
+      <span class="abs-tag">agents</span>
+      <span class="abs-tag">subagents</span>
+      <span class="abs-tag">prompts</span>
+      <span class="abs-tag">contexts</span>
+      <span class="abs-tag">memory</span>
+      <span class="abs-tag">modes</span>
+      <span class="abs-tag">permissions</span>
+      <span class="abs-tag">tools</span>
+      <span class="abs-tag">plugins</span>
+      <span class="abs-tag">skills</span>
+      <span class="abs-tag">hooks</span>
+      <span class="abs-tag">MCP</span>
+      <span class="abs-tag">LSP</span>
+      <span class="abs-tag">slash commands</span>
+      <span class="abs-tag">workflows</span>
+      <span class="abs-tag">IDE integrations</span>
+    </div>
+
+    <p>
+      16 个概念，大部分一年前还不存在。它们构成了一个全新的可编程抽象层。老一层（编辑器 + 编译器 + 调试器）是确定性的，文档完善，30 年没怎么变过。新一层完全是另一种东西：
+    </p>
+
+    <ol class="causal">
+      <li><strong>随机性（Stochastic）</strong>：同样的 prompt，不同运行可能得到不同结果。没有确定性保证。</li>
+      <li><strong>易错性（Fallible）</strong>：AI 会犯错，而且犯错方式不可预测——不像编译器错误那样有规律可循。</li>
+      <li><strong>不可解释性（Unintelligible）</strong>：你无法通过阅读源码来理解 AI 为什么做出某个决定。它是黑箱。</li>
+      <li><strong>持续变化（Changing）</strong>：模型每几个月升级一次，行为特征随之改变。你的心智模型永远在追赶。</li>
+    </ol>
+
+    <div class="quote">
+      <p>
+        Clearly some <strong>powerful alien tool</strong> was handed around, except it comes with no manual and everyone has to figure out how to hold and operate it while the resulting <strong>magnitude 9 earthquake</strong> is rocking the profession.
+      </p>
+      <div class="q-attr">— Andrej Karpathy</div>
+    </div>
+
+    <p>
+      "Alien tool"——你拿到了一件从没见过的工具，形状诡异，还会自己变形。你得一边弄清楚怎么握住它，一边用它干活，一边脚下的地在震。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">隐含判断</div>
+      Karpathy 说"failure to claim the boost feels decidedly like a skill issue"——没拿到 10 倍提升？那是你的问题。他把"不想用 AI 工具"从个人偏好重新定义成了能力短板。从 Karpathy 这个量级的人口中说出来，这句话的杀伤力不小。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §6 REVALUATION ═══════════════════════ -->
+  <section id="revaluation">
+    <div class="section-num">06</div>
+    <h2>重新估值：升值的和不舒服的</h2>
+    <p class="section-hook">文章付费部分的核心论点——从标题和导言摘要中提取</p>
+
+    <p>
+      文章后半部分展开了硬币的另一面。Gergely 在导言中已给出了核心论点：
+    </p>
+
+    <h3>正在升值：软件工程师比以前更有价值</h3>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">贬值中</div>
+        "Coder"——把需求翻译成代码的人。<br>
+        这正是 AI 最擅长取代的部分。
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-right">
+        <div class="v-label">升值中</div>
+        "Software Engineer"——做架构决策、理解系统边界、判断什么该建什么不该建的人。
+      </div>
+    </div>
+
+    <p>
+      Gergely 点名了三个升值方向：
+    </p>
+
+    <ol class="causal">
+      <li><strong>Tech Lead 特质更受追捧</strong>——不只是写代码，而是做技术决策、设定方向、在模糊中找到清晰路径。当 AI 能写代码时，"决定写什么代码"才是稀缺能力。</li>
+      <li><strong>"Product-minded"成为初创公司的基线</strong>——理解用户、理解业务、理解产品方向。当实现成本趋近于零时，"做对的东西"比"做东西"重要 10 倍。</li>
+      <li><strong>"软件工程"vs"写代码"的差距拉大</strong>——系统设计、可靠性、安全性、可维护性——这些"工程"维度不会被 AI 自动解决，而且 AI 产出的海量代码会让这些问题更快地浮出水面。</li>
+    </ol>
+
+    <h3>不舒服的推论</h3>
+
+    <ol class="causal">
+      <li><strong>更多代码 = 更多问题</strong>——AI 大幅降低了代码产出的成本，但没有降低代码维护和调试的成本。当代码量爆炸性增长时，弱工程实践（缺乏测试、缺乏审查、缺乏架构思考）会比以前更快地产生后果。</li>
+      <li><strong>工作生活平衡可能恶化</strong>——如果你的竞争对手在用 AI 以 3 倍速度交付，而你还在手写代码，压力会传导到整个行业。速度优势一旦建立，就会成为新的基线预期。</li>
+      <li><strong>PM 与 SE 的边界正在模糊</strong>——产品经理现在可以自己生成软件原型，减少对工程师的依赖；工程师借助 AI 可以更独立地做产品决策，减少对 PM 的需要。两个职业正在相互侵入对方的领地。</li>
+    </ol>
+
+    <div class="note note-insight">
+      <div class="note-label">底层张力</div>
+      Malte Ubl 说"软件生产成本趋近于零"。如果这话哪怕只对了一半，推论就很深远：<strong>当"做出来"变得几乎免费时，竞争就只发生在两个维度——判断力（做什么）和品味（做成什么样）。</strong>这两样 AI 暂时给不了。
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ TAKEAWAY ═══════════════════════ -->
+  <div class="takeaway" id="takeaway-section">
+    <div class="thesis-label">Takeaway</div>
+    <p>
+      Gergely 的文章提供了一样稀缺的东西：一个精确的时间戳。2025 年 11—12 月，行业里最冷静的那批人在 8 周内完成了从怀疑到拥抱的转变。Karpathy 的轨迹就是整个行业的缩影。他 10 月的位置，还是 12 月的位置——<strong>你现在站在哪里？</strong>
+    </p>
+  </div>
+
+  <div style="margin: 0 0 48px; padding: 24px; border: 1px solid var(--border); border-radius: 14px;">
+    <div style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;">延伸阅读</div>
+    <a href="cc.html" style="display: block; text-decoration: none; color: inherit;">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 6px; transition: color 0.2s;">Less Code, More Model →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">Boris Cherny 的 200 个 PR 背后是什么样的产品？Claude Code 的构建哲学——每次模型升级删代码、90% 自构建、7 个反直觉原则。同一个故事的另一半。</div>
+    </a>
+  </div>
+
+  <footer>
+    原文 by <a href="https://newsletter.pragmaticengineer.com/p/when-ai-writes-almost-all-code-what" target="_blank">The Pragmatic Engineer, Gergely Orosz</a>
+    · <a href="/">← 首页</a>
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
