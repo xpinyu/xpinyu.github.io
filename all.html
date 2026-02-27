@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="All articles — pinyu.ai">
+<title>All — pinyu.ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --text-1: #1D1B18;
+    --text-2: #5C5750;
+    --text-3: #9B958C;
+    --border: #E8E3DB;
+    --accent: #B8714A;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: max(80px, 10vh) 24px 80px;
+    width: 100%;
+    animation: enter 0.5s ease both;
+  }
+
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(6px); }
+  }
+
+  .nav {
+    margin-bottom: 40px;
+  }
+
+  .nav a {
+    font-size: 0.72rem;
+    color: var(--text-3);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.15s;
+  }
+
+  .nav a:hover {
+    color: var(--text-1);
+  }
+
+  .page-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+
+  .compact-list {
+    list-style: none;
+  }
+
+  .compact-list li {
+    border-top: 1px solid var(--border);
+  }
+
+  .compact-list li:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .compact-list a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.15s;
+  }
+
+  .compact-list a:hover {
+    color: var(--accent);
+  }
+
+  .compact-list a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .compact-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+  }
+
+  .compact-meta {
+    font-size: 0.68rem;
+    color: var(--text-3);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  footer {
+    text-align: center;
+    padding: 32px 24px 48px;
+    font-size: 0.7rem;
+    color: var(--text-3);
+  }
+
+  footer a {
+    color: var(--text-3);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.15s;
+  }
+
+  footer a:hover {
+    color: var(--text-1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="nav">
+    <a href="/">← pinyu.ai</a>
+  </div>
+
+  <h1 class="page-title">All</h1>
+
+  <ul class="compact-list">
+    <li><a href="p/ftc.html"><span class="compact-title">Fix the Constraints, Fix the Artifacts</span><span class="compact-meta">LTX-2 · Guide</span></a></li>
+    <li><a href="p/tpr.html"><span class="compact-title">The Profession, Refactored</span><span class="compact-meta">The Pragmatic Engineer</span></a></li>
+    <li><a href="p/ctl.html"><span class="compact-title">Closing the Loop</span><span class="compact-meta">Cybernetics × AGI</span></a></li>
+    <li><a href="p/deme.html"><span class="compact-title">Decouple-Then-Merge</span><span class="compact-meta">CVPR 2025</span></a></li>
+    <li><a href="p/cc.html"><span class="compact-title">Less Code, More Model</span><span class="compact-meta">The Pragmatic Engineer</span></a></li>
+    <li><a href="p/vrg.html"><span class="compact-title">Better Reconstruction ≠ Better Generation</span><span class="compact-meta">Linum Field Notes</span></a></li>
+  </ul>
+</div>
+
+<footer>
+  <a href="mailto:pinyu@fastmail.com">Contact</a>
+</footer>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>

@@ -66,13 +66,31 @@
     line-height: 1.6;
   }
 
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
   .section-label {
     font-size: 0.68rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-3);
-    margin-bottom: 20px;
+  }
+
+  .section-link {
+    font-size: 0.72rem;
+    color: var(--text-3);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.15s;
+  }
+
+  .section-link:hover {
+    color: var(--accent);
   }
 
   .articles {
@@ -169,7 +187,10 @@
     <p>Finally, clarity.</p>
   </div>
 
-  <h2 class="section-label">Selected</h2>
+  <div class="section-header">
+    <h2 class="section-label">Selected</h2>
+    <a href="all.html" class="section-link">All →</a>
+  </div>
   <ul class="articles">
     <li>
       <a href="p/tpr.html">
@@ -197,13 +218,6 @@
         <div class="article-title">Less Code, More Model</div>
         <div class="article-desc">Claude Code 的构建哲学——一个关于"做减法"的产品故事。从 AppleScript 音乐控制到年营收 $500M+，7 个反直觉的构建原则。</div>
         <div class="article-meta">The Pragmatic Engineer · 2025</div>
-      </a>
-    </li>
-    <li>
-      <a href="p/ftc.html">
-        <div class="article-title">Fix the Constraints, Fix the Artifacts</div>
-        <div class="article-desc">LTX-2 视频中的 Warble 和 AI 纹理伪影不是随机 bug——它们指向缺失的时序约束。5 种失败模式的根因诊断，IC-LoRA 三模式选择框架，和一个可执行的 5 步消除工作流。</div>
-        <div class="article-meta">LTX-2 · Practical Guide · 2026</div>
       </a>
     </li>
     <li>
