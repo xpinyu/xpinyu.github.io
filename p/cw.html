@@ -635,7 +635,7 @@
     <div class="eyebrow">arXiv · Variable Isolation Study · 2026.02</div>
     <h1>Structure Over Information</h1>
     <p class="subtitle">
-      "我想洗车。洗车场在 100 米外。走路还是开车？"——Claude、GPT-4、Gemini 全都说走路。正确答案是开车，因为车得在洗车场才能洗。一个变量隔离实验揭示了比"为什么 LLM 会错"更深的问题：<strong>哪一层 prompt 架构修复了它？</strong>
+      "我想洗车。洗车场在 100 米外。走路还是开车？"——Claude、GPT-4、Gemini 全都说走路。正确答案是开车：车得在洗车场才能洗。一个变量隔离实验追问了更深的问题：<strong>哪一层 prompt 架构修复了这个错误？</strong>
     </p>
     <div class="meta">
       <span>基于 Heejin Jo 的变量隔离研究 · 2026.02.25</span>
@@ -647,10 +647,10 @@
   <div class="thesis" id="core-thesis">
     <div class="thesis-label">Core Finding</div>
     <p>
-      结构化推理比直接注入上下文有效 <strong>2.83 倍</strong>（Fisher 精确检验，p = 0.001）。当模型被迫在回答前先写下"目标是什么"，隐性约束就变成了显性文本。<strong>模型如何处理信息，比它拥有多少信息更重要。</strong>
+      结构化推理比信息注入有效 <strong>2.83 倍</strong>（Fisher 精确检验，p = 0.001）。当模型被迫在回答前先写下"目标是什么"，隐性约束变成显性文本。<strong>模型如何处理信息，比它拥有多少信息更重要。</strong>
     </p>
     <div class="evidence">
-      <em>关键数据</em>：STAR 推理框架从 0% 跳到 85%。注入完整用户画像（车型、位置、停车状态）只达到 30%。二者叠加 95%。全栈 100%。优势全部来自"结构"，而非"信息"。
+      <em>关键数据</em>：STAR 推理框架 0% → 85%。注入完整用户画像仅达 30%。二者叠加 95%。全栈 100%。优势全部来自"结构"。
     </div>
   </div>
 
@@ -673,16 +673,16 @@
     </div>
 
     <p>
-      这个问题最早出现在 Mastodon 上，由用户 Kevin (<a href="https://mastodon.world/@knowmadd/116072773118828295" target="_blank">@knowmadd</a>) 发布。他测试了 Perplexity、ChatGPT、Claude 和 Mistral。四个模型全都说走路。帖子随后登上 Hacker News，获得 1,499 分和 943 条评论。Ryan Allen 则建了一个<a href="https://github.com/ryan-allen/car-wash-evals" target="_blank">基准测试仓库</a>来系统测量这个失败。
+      Kevin (<a href="https://mastodon.world/@knowmadd/116072773118828295" target="_blank">@knowmadd</a>) 在 Mastodon 上首发这个问题，测试了 Perplexity、ChatGPT、Claude、Mistral——全军覆没。帖子登上 Hacker News（1,499 分，943 条评论），Ryan Allen 随后建了<a href="https://github.com/ryan-allen/car-wash-evals" target="_blank">基准测试仓库</a>系统测量这个失败。
     </p>
 
     <p>
-      正确答案是<strong>开车</strong>——你不可能洗一辆不在洗车场的车。100 米的距离完全是干扰项。关键变量不是"你怎么到达洗车场"，而是"车怎么到达洗车场"。每个人类立刻就能推断出来的隐性前提——车在家里，不在洗车场——模型看不到。
+      正确答案是<strong>开车</strong>——车不在洗车场就没法洗。100 米是干扰项，关键变量不是"你怎么到达"，而是"车怎么到达"。人类立刻能推断出的隐性前提——车在家里，不在洗车场——模型看不到。
     </p>
 
     <div class="note note-insight">
       <div class="note-label">框架问题 · The Frame Problem</div>
-      McCarthy 和 Hayes 在 1969 年就定义了这个难题：系统必须判断"当一个动作发生时，哪些未陈述的事实仍然成立"——但它没有可靠的方法知道哪些未陈述的事实是相关的。洗车问题是这个经典 AI 问题的现代最小复现。
+      McCarthy & Hayes (1969)：系统必须判断"当一个动作发生时，哪些未陈述的事实仍然成立"——但它无法可靠地知道哪些未陈述的事实是相关的。洗车问题是这个经典难题的现代最小复现。
     </div>
   </section>
 
@@ -693,20 +693,20 @@
     <p class="section-hook">研究的起点不是"为什么 LLM 会错"，而是"为什么这个系统没错"</p>
 
     <p>
-      论文作者 Heejin Jo 在构建 InterviewMate（一个实时面试辅导系统）时遇到了这个问题。在一次常规测试中，InterviewMate 给出了正确答案——"开车"——而同一时间所有独立测试的 LLM 都说"走路"。
+      Heejin Jo 在构建面试辅导系统 InterviewMate 时发现了异常：常规测试中 InterviewMate 回答"开车"——而同期所有独立测试的 LLM 都说"走路"。
     </p>
 
     <p>
-      InterviewMate 的 system prompt 有多个层：角色定义、STAR 推理框架、用户画像数据、RAG 上下文检索。问题是：它正确，但她不知道<strong>是哪一层</strong>让它正确。一个你无法解释的结果，不是一个你能依赖的结果。
+      InterviewMate 的 system prompt 包含多层——角色定义、STAR 推理框架、用户画像、RAG 检索。结果正确，但她不知道<strong>是哪一层</strong>起了作用。无法解释的正确，等于不可依赖的正确。
     </p>
 
     <p>
-      于是她设计了一个变量隔离实验。不是问"为什么 LLM 在这个问题上失败"——Hacker News 上的讨论已经覆盖了这个话题——而是问一个更精准的工程问题：<strong>在同一个模型上，哪一层 prompt 架构修复了这个失败？</strong>
+      于是她设计了变量隔离实验。不是问"为什么 LLM 会错"——这个话题 Hacker News 已经讨论透了——而是问一个工程问题：<strong>同一个模型上，哪一层 prompt 架构修复了这个失败？</strong>
     </p>
 
     <div class="note note-neutral">
       <div class="note-label">STAR 框架</div>
-      Situation → Task → Action → Result，一个标准的面试准备框架。论文发现它作为 prompt 结构同样有效——关键在 Task 步骤强制模型先写下目标，再开始推理。这不是论文的贡献；论文的贡献是量化了它对推理质量的精确影响。
+      Situation → Task → Action → Result，标准面试准备框架。关键在 Task 步骤强制模型先写下目标，再开始推理。论文的贡献不是发现 STAR 有用，而是量化了它对推理质量的精确影响。
     </div>
   </section>
 
@@ -734,27 +734,27 @@
     </div>
 
     <p>
-      所有试验使用相同模型（<code>claude-sonnet-4-5-20250929</code>），温度固定 0.7（非 0，因为确定性解码会把结果压缩成二值，无法区分各层贡献），max_tokens 512。
+      模型统一使用 <code>claude-sonnet-4-5-20250929</code>，温度 0.7（确定性解码会压缩成二值，无法区分各层贡献），max_tokens 512。
     </p>
 
     <p>
-      6 个条件从 A 到 F，每一个在前一个基础上叠加一个变量——除了 C 和 D 是从 B 分叉的平行分支，用于直接比较 STAR 和 Profile 的独立效果。
+      6 个条件逐层叠加——C 和 D 从 B 分叉为平行分支，直接比较 STAR 和 Profile 的独立效果。
     </p>
 
     <ol class="causal">
-      <li><strong>A · 裸 prompt</strong> — 没有 system prompt，纯基线。测量模型的默认行为。</li>
-      <li><strong>B · 仅角色定义</strong> — 注入"专家顾问"人设。看人设本身能否修复推理。</li>
-      <li><strong>C · 角色 + STAR</strong> — 在角色基础上加 STAR 推理框架，要求模型按 Situation → Task → Action → Result 的顺序组织回答。</li>
-      <li><strong>D · 角色 + 用户画像</strong> — 与 C 平行。注入具体的物理上下文——名字、位置、车型（2022 Honda Civic）、车的当前状态（停在车道上）。</li>
-      <li><strong>F · 角色 + STAR + 画像</strong> — C 和 D 的组合。用于隔离 Profile 在 STAR 之上的边际贡献。</li>
-      <li><strong>E · 全栈</strong> — 所有层叠加：角色 + STAR + 画像 + 模拟 RAG 上下文。</li>
+      <li><strong>A · 裸 prompt</strong> — 无 system prompt，纯基线。</li>
+      <li><strong>B · 仅角色定义</strong> — 注入"专家顾问"人设，看人设能否修复推理。</li>
+      <li><strong>C · 角色 + STAR</strong> — 角色基础上加 STAR，要求按 S → T → A → R 组织回答。</li>
+      <li><strong>D · 角色 + 用户画像</strong> — 与 C 平行。注入物理上下文：名字、位置、车型（2022 Honda Civic）、停车状态。</li>
+      <li><strong>F · 角色 + STAR + 画像</strong> — C + D 组合，隔离 Profile 在 STAR 之上的边际贡献。</li>
+      <li><strong>E · 全栈</strong> — 角色 + STAR + 画像 + 模拟 RAG 上下文。</li>
     </ol>
 
     <details>
       <summary>评分方法论：从词匹配到意图匹配</summary>
       <div class="expand-body">
-        第一轮评分用裸词匹配（检查回答中是否包含"walk"或"drive"），直接失败——每个讨论了两个选项的回答都被标记为歧义，所有条件都得到 0%，无论实际推荐什么。<br><br>
-        第二轮改为意图模式匹配：14 个通过模式检测"推荐开车"（如 <code>\bshould\s+drive\b</code>），9 个失败模式检测"推荐走路"。还需要先剥离 markdown 粗体标记——Claude 经常写 <code>**should walk**</code>，星号会破坏正则。当通过和失败模式在同一回答中都匹配时，用 2:1 的优势比阈值判定。
+        第一轮用裸词匹配（检查是否含 "walk" 或 "drive"），直接失败——讨论了两个选项的回答全被标为歧义。<br><br>
+        第二轮改为意图匹配：14 个正则检测"推荐开车"，9 个检测"推荐走路"。需先剥离 markdown 粗体标记（Claude 常写 <code>**should walk**</code>，星号会破坏正则），双匹配时用 2:1 优势比阈值判定。
       </div>
     </details>
   </section>
@@ -802,19 +802,19 @@
     </div>
 
     <p>
-      两个关键对比讲完了几乎所有故事：
+      两个对比说明了几乎一切：
     </p>
 
     <div class="versus">
       <div class="v-side v-left">
         <div class="v-label">D · 注入所有事实</div>
-        名字、位置、车型、停车状态——模型拥有正确回答所需的一切信息。<br><br>
+        名字、位置、车型、停车状态——一切信息都给了。<br><br>
         <strong style="font-size: 1.3rem; color: var(--red);">30%</strong>
       </div>
       <div class="v-mid">VS</div>
       <div class="v-side v-right">
         <div class="v-label">C · 强制推理结构</div>
-        没有额外信息，只要求模型按 STAR 结构组织思考。<br><br>
+        零额外信息，只要求按 STAR 结构组织思考。<br><br>
         <strong style="font-size: 1.3rem; color: var(--green);">85%</strong>
       </div>
     </div>
@@ -826,7 +826,7 @@
     <h3 id="decomposition">逐层分解</h3>
 
     <p>
-      条件 F 的加入解决了原始五条件设计中的一个混淆因素。从 C 到 E 的跳跃现在可以被精确分解：
+      F 条件消除了混淆因素，使 C → E 的跳跃可以精确分解：
     </p>
 
     <div class="layer-stack">
@@ -853,7 +853,7 @@
 
     <div class="note note-ok">
       <div class="note-label">另一个发现 · 角色定义 = 零贡献</div>
-      B（仅角色定义）得分 0%，与 A（裸 prompt）完全相同。"专家顾问"人设让模型写了更长的回答（中位延迟 7,550ms vs 4,649ms），但没有改变答案。人设让输出更verbose，不让输出更正确。
+      B（仅角色）= A（裸 prompt）= 0%。"专家顾问"人设只让回答更长（中位延迟 7,550ms vs 4,649ms），没有更正确。
     </div>
   </section>
 
@@ -866,11 +866,11 @@
     <p class="section-hook">答案在 Task 步骤——一个分叉点决定一切</p>
 
     <p>
-      没有 STAR 时，模型的生成路径是：看到"100 米" → 激活距离启发式 → 输出"走路"。洗车的目的<em>在输入中</em>，但模型没有义务在生成结论之前处理它。
+      没有 STAR 时，生成路径是：看到"100 米" → 激活距离启发式 → 输出"走路"。洗车的目的<em>在输入中</em>，但模型没有义务在生成结论前处理它。
     </p>
 
     <p>
-      STAR 改变了生成序列。模型必须依次填写 Situation、Task、Action、Result。当它到达 Task 步骤时，必须回答一个问题：<strong>这个任务的目标是什么？</strong>
+      STAR 改变了生成序列：模型必须依次填写 S → T → A → R。到达 Task 步骤时，它必须回答：<strong>目标是什么？</strong>
     </p>
 
     <p>
@@ -902,16 +902,16 @@
     </div>
 
     <p>
-      逐试验数据证实了这一点：C 条件中所有 17 个通过的试验，Task 语句都以车为主要主语。所有 3 个失败的试验，Task 语句都围绕人来表述。
+      逐试验验证：C 条件 17 个通过试验的 Task 全部以车为主语；3 个失败试验全部以人为主语。
     </p>
 
     <p>
-      一旦模型生成了"Task: Get your car to the car wash"，后续的每一个 token 都以这段文本为条件。隐性约束——车必须在那里——现在是 context window 中的显性文本。<strong>STAR 没有给模型新信息，它让模型先写下了自己已经拥有的信息。</strong>
+      一旦生成"Task: Get your car to the car wash"，后续每个 token 都以此为条件。隐性约束——车必须在那里——变成了 context window 中的显性文本。<strong>STAR 没有给模型新信息，它让模型先写下自己已经拥有的信息。</strong>
     </p>
 
     <div class="note note-insight">
       <div class="note-label">Chain-of-Thought 的不同</div>
-      Wei et al. (2022) 的 Chain-of-Thought 要求模型"逐步推理"。STAR 更具体——它要求模型先命名<em>要达成什么目标</em>，然后再推理<em>如何达成</em>。区别在于：通用的顺序推理 vs 显式的目标声明。后者之所以更强，是因为目标声明直接触发了隐性前提的浮现。
+      Chain-of-Thought (Wei et al., 2022) 要求"逐步推理"。STAR 更窄——先命名<em>要达成什么</em>，再推理<em>如何达成</em>。通用顺序推理 vs 显式目标声明，后者更强，因为目标声明直接触发隐性前提的浮现。
     </div>
 
     <h3>为什么"喂信息"不够</h3>
@@ -921,7 +921,7 @@
     </p>
 
     <p>
-      问题不在于信息缺失。模型<em>有</em>这些事实。但 context window 里有事实，不等于模型会在正确的时刻使用它们。没有推理结构时，模型仍然走最短路径：从输入到输出。"100 米"触发距离启发式，结论在车的位置被拉入推理链之前就已经落地了。
+      问题不在于信息缺失，而在于使用时机。context window 里有事实，不等于模型会在正确的时刻调用它们。没有结构约束，"100 米"触发距离启发式，结论在车的位置进入推理链之前就已经落地。
     </p>
 
     <div class="quote">
@@ -949,7 +949,7 @@
       <div class="failure-card">
         <div class="fc-pct">~20%</div>
         <div class="fc-name">环保合理化</div>
-        <div class="fc-desc">模型围绕错误答案搭建次生论证："走路省油，对环境更好。"答案已经错了，但论证很精致。</div>
+        <div class="fc-desc">围绕错误答案搭建次生论证："走路省油，对环境更好。"答案错了，论证倒很精致。</div>
       </div>
       <div class="failure-card">
         <div class="fc-pct">~10%</div>
@@ -959,7 +959,7 @@
     </div>
 
     <p>
-      第三种最令人不安。模型拥有正确推理的所有材料，甚至显式地表达了关键约束，但仍然得出了错误结论。这不是"不知道"，而是"知道但不用"。
+      第三种最令人不安——模型显式表达了关键约束，仍然得出错误结论。不是"不知道"，是"知道但不用"。
     </p>
   </section>
 
@@ -972,7 +972,7 @@
     <p class="section-hook">首次越准，纠错越难——为什么？</p>
 
     <p>
-      每个首次回答错误的试验都会收到一个 challenge prompt："如果我走着去，怎么洗车？"下表显示了一个反直觉的模式：
+      每个首次回答错误的试验收到 challenge："如果我走着去，怎么洗车？"结果呈现反直觉模式：
     </p>
 
     <div class="staircase">
@@ -1005,28 +1005,28 @@
     </div>
 
     <p>
-      A 和 B 首次通过率 0%，但纠错率 95-100%——质疑一下就改了。C 首次通过率 85%，但纠错率只有 67%。F 更极端：95% 首次通过，唯一的一次失败完全无法纠正（0% recovery）。
+      A 和 B 首次通过 0%，纠错率 95-100%——质疑一下就改了。C 首次 85%，纠错率只有 67%。F 更极端：首次 95%，唯一的失败完全无法纠正（0% recovery）。
     </p>
 
     <h3>机制：已生成文本的锚定效应</h3>
 
     <p>
-      A 和 B 失败时，回答松散、无结构——challenge prompt 很容易重新引导。C 和 F 失败时，已经输出了一个完整的 STAR 结构化论证：Situation 分析过了，Task 定义过了，Action 论证过了，Result 总结过了。纠正意味着推翻一个<em>模型刚刚自己建构的</em>完整论证。
+      A 和 B 失败时回答松散，challenge 很容易重新引导。C 和 F 失败时，已经输出了完整的 STAR 论证——S、T、A、R 环环相扣。纠正意味着推翻<em>模型刚刚自己建构的</em>完整论证链。
     </p>
 
     <div class="note note-problem">
       <div class="note-label">实践推论</div>
-      如果初始回答使用了结构化推理但仍然错了，后续的纠正 prompt 需要精确地瞄准出错的那一步——在这个案例中是 Task 表述。笼统的"你确定吗？"对结构化的错误几乎无效。
+      结构化推理仍然出错时，纠正必须精确瞄准出错的那一步（此例是 Task 表述）。笼统的"你确定吗？"对结构化错误几乎无效。
     </div>
 
     <p>
-      论文特别指出：这不是"心理"效应，而是 token 级别的机制。先前生成的文本约束后续生成。结构化推理是双刃剑——让模型更可能在第一次就对，但也让错误更顽固。
+      这不是"心理"效应，而是 token 级机制：先前生成的文本约束后续生成。结构化推理是双刃剑——首次更准，但错误也更顽固。
     </p>
 
     <details>
       <summary>关于 challenge prompt 的局限</summary>
       <div class="expand-body">
-        论文承认 challenge prompt（"如果我走着去，怎么洗车？"）本身是引导性的——它暗示了走路是错的。一个中性的 challenge 如"你确定吗？"会更好地隔离自纠正能力。这是论文自陈的局限之一。
+          challenge prompt（"如果我走着去，怎么洗车？"）本身具有引导性——暗示了走路是错的。中性 challenge 如"你确定吗？"能更好地隔离自纠正能力。论文自陈的局限之一。
       </div>
     </details>
   </section>
@@ -1042,27 +1042,27 @@
     <h3>一个可操作的原则</h3>
 
     <p>
-      应用 AI 中一个常见模式是：推理出错了 → 注入更多上下文——更多事实、更多画像数据、更多检索文档。论文结果表明，<strong>这是错误的第一步</strong>。
+      应用 AI 的常见反射：推理出错 → 注入更多上下文。论文表明，<strong>这是错误的第一步</strong>。
     </p>
 
     <div class="versus">
       <div class="v-side v-left">
         <div class="v-label">常见策略</div>
         推理错了 → 加信息<br>
-        Profile 注入，所有事实都给模型<br><br>
+        所有事实都给模型<br><br>
         <strong style="color: var(--red);">30%</strong>
       </div>
       <div class="v-mid">VS</div>
       <div class="v-side v-right">
         <div class="v-label">更有效策略</div>
         推理错了 → 加结构<br>
-        不给新信息，只要求模型先写目标<br><br>
+        零新信息，只要求先写目标<br><br>
         <strong style="color: var(--green);">85%</strong>
       </div>
     </div>
 
     <p>
-      论文用了一个精准的类比收尾：
+      论文收尾的类比：
     </p>
 
     <div class="quote">
@@ -1075,23 +1075,23 @@
     <h3>延迟分析：一个意外</h3>
 
     <p>
-      全栈条件 E（100% 通过）的中位延迟是 8,347ms——比 D（30% 通过，8,837ms）和 F（95% 通过，9,056ms）都<em>快</em>。上下文更多，响应更快。论文推测：当模型置信度高时，"犹豫时间"减少。
+      全栈 E（100%）中位延迟 8,347ms，反而比 D（30%，8,837ms）和 F（95%，9,056ms）更快。论文推测：置信度高时犹豫时间减少。
     </p>
 
     <h3>论文的边界</h3>
 
     <ol class="causal">
-      <li><strong>单模型</strong> — 所有试验使用 Claude Sonnet 4.5。GPT-4o、Gemini、Mistral 上是否复现未知。</li>
-      <li><strong>单任务</strong> — 一个问题，一个正确答案。仅测试隐性物理约束推理。时间约束、社会推理、因果链推理未测试。</li>
-      <li><strong>样本量</strong> — 每条件 20 次。Fisher 检验确认 C vs D 显著（p = 0.001），但单条件通过率的置信区间仍然较宽。</li>
+      <li><strong>单模型</strong> — 仅 Claude Sonnet 4.5，跨模型复现未知。</li>
+      <li><strong>单任务</strong> — 一个问题，仅测试隐性物理约束推理，其他推理类型未覆盖。</li>
+      <li><strong>样本量</strong> — 每条件 20 次，C vs D 显著（p = 0.001），但单条件置信区间较宽。</li>
       <li><strong>温度</strong> — 固定 0.7，未做温度扫描。</li>
-      <li><strong>F 条件时间差</strong> — 条件 F 在初始五条件实验约 6 天后追加。虽然使用了相同的模型版本和参数，但无法排除 API 层面的微小行为变化。</li>
+      <li><strong>F 条件时间差</strong> — F 在初始实验 6 天后追加，模型版本参数相同，但无法排除 API 层面微小变化。</li>
     </ol>
 
     <h3>打开的问题</h3>
 
     <p>
-      论文在行为层面测量——它能看到 STAR 产出 85%，Profile 产出 30%。它看不到模型内部发生了什么。当 Task 步骤存在时，哪些 attention head 被不同地激活了？强制目标声明是否以跨 prompt 一致的方式改变了激活模式？同样的 STAR 结构在 GPT-4 或 Gemini 上会产生同样的提升吗？
+      论文停留在行为层面——能看到 STAR 产出 85%、Profile 产出 30%，看不到内部机制。Task 步骤改变了哪些 attention head？同样的结构在 GPT-4 或 Gemini 上效果如何？
     </p>
 
     <p>
@@ -1103,7 +1103,7 @@
   <div class="takeaway" id="takeaway-section">
     <div class="thesis-label">Takeaway</div>
     <p>
-      模型拥有所有正确推理的信息（30%），却不如仅被要求"先写下目标"的版本（85%）。差异来自结构，不是信息。<strong>你如何安排模型的思考顺序，比你喂给它多少上下文更重要。</strong>这个结论的射程远超一道洗车题——每一个 prompt 工程决策的第一问应该是：模型在回答之前，被要求先想清楚什么？
+      拥有所有信息的模型（30%），不如仅被要求"先写下目标"的版本（85%）。差异来自结构，不是信息。<strong>安排模型的思考顺序，比喂给它多少上下文更重要。</strong>这个结论远超一道洗车题——每个 prompt 工程决策的第一问应该是：模型在回答之前，被要求先想清楚什么？
     </p>
   </div>
 
@@ -1136,10 +1136,10 @@ function revealAnswer(choice) {
 
   if (choice === 'walk') {
     btnWalk.classList.add('selected-walk');
-    reveal.innerHTML = '<strong>每一个主流 LLM 都和你做了同样的选择。</strong>Claude、GPT-4、Gemini、Mistral——全都说走路。但正确答案是开车。原因很简单：<strong>车必须在洗车场才能被洗</strong>。你需要把车开过去，不是把自己走过去。100 米的距离完全是干扰项——关键不在于你怎么到达，而在于车怎么到达。';
+    reveal.innerHTML = '<strong>每个主流 LLM 都和你做了同样的选择</strong>——Claude、GPT-4、Gemini、Mistral 全都说走路。但正确答案是开车：<strong>车必须在洗车场才能被洗</strong>。100 米是干扰项，关键不在于你怎么到达，而在于车怎么到达。';
   } else {
     btnDrive.classList.add('selected-drive');
-    reveal.innerHTML = '<strong>你答对了。</strong>令人意外的是，你击败了所有主流 LLM——Claude、GPT-4、Gemini、Mistral 全都说走路。它们忽略了一个人类立刻就能推断的隐性前提：<strong>车必须在洗车场才能被洗</strong>。100 米的距离是干扰项；关键不在于你怎么到达，而在于车怎么到达。';
+    reveal.innerHTML = '<strong>你答对了。</strong>你击败了所有主流 LLM——Claude、GPT-4、Gemini、Mistral 全都说走路。它们忽略了人类立刻能推断的前提：<strong>车必须在洗车场才能被洗</strong>。100 米是干扰项，关键不在于你怎么到达，而在于车怎么到达。';
   }
   reveal.style.display = 'block';
 }
