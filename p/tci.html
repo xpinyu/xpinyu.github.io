@@ -442,7 +442,7 @@
   <a class="indent" href="#era-tab">Tab：减噪</a>
   <a class="indent" href="#era-agent">Agent：监督</a>
   <a class="indent" href="#era-cloud">Cloud：定义</a>
-  <a href="#artifact">Artifact 的杠杆</a>
+  <a href="#artifact">Code → Demo Review</a>
   <a href="#paradox">三重悖论</a>
   <a href="#boundary">65% 的边界</a>
   <a href="#takeaway-section">Takeaway</a>
@@ -480,7 +480,7 @@
     <p class="section-hook">所有工具进化都是人力重分配。只是大多数人看到工具，看不到背后的人</p>
 
     <p>
-      观察一个开发者写代码时在做什么。他的大脑同时处理两类完全不同的任务：
+      开发者写代码时，大脑同时处理两类本质不同的工作：
     </p>
 
     <div class="versus">
@@ -515,7 +515,7 @@
     </div>
 
     <p>
-      比例倒转意味着什么？它意味着<strong>生产力的定义变了</strong>。在旧世界，写代码快的人效率高。在新世界，定义问题准的人效率高。速度让位于精度，输出让位于输入。
+      比例倒转意味着什么？它意味着<strong>生产力的定义变了</strong>。在旧世界，写代码快的人效率高。在新世界，定义问题准的人效率高。写代码的速度让位于定义问题的精度。
     </p>
   </section>
 
@@ -595,7 +595,7 @@
         </div>
       </div>
       <div class="era-insight">
-        从监督者变为架构师。工作不再是「如何实现」，而是<strong>「值不值得实现」</strong>和<strong>「怎么判断做对了」</strong>。而这之所以可行，是因为产出形态变了——<strong>从 diff 变成了可感知的 artifact</strong>（→§3）。
+        从监督者变为架构师。工作不再是「如何实现」，而是<strong>「值不值得实现」</strong>和<strong>「怎么判断做对了」</strong>。而这之所以可行，是因为产出形态变了——<strong>从 diff 变成了可运行的 artifact</strong>，评审从 Code Review 转向了 Demo Review（→§3）。
       </div>
     </div>
 
@@ -610,38 +610,38 @@
   <!-- ═══════════════════════ §3 ARTIFACT ═══════════════════════ -->
   <section id="artifact">
     <div class="section-num">03</div>
-    <h2>Artifact：被低估的杠杆</h2>
-    <p class="section-hook">第三时代得以成立，不是因为 Agent 变强了，而是评估成本被压缩了</p>
+    <h2>从 Code Review 到 Demo Review</h2>
+    <p class="section-hook">第三时代得以成立，不是因为 Agent 变强了，而是评审从 Code Review 变成了 Demo Review</p>
 
     <p>
-      Truell 提到云端 Agent 产出的是「logs, video recordings, and live previews rather than diffs」。这句话被轻描淡写地嵌在技术描述中，但它是整篇最深刻的洞察。
+      Truell 提到云端 Agent 产出的是「logs, video recordings, and live previews rather than diffs」。这句话被轻描淡写地嵌在技术描述中，却是整篇最深刻的洞察——它意味着开发者的质量保证方式发生了根本转变：不再逐行读代码判断「写对了没」，而是观察运行结果判断「做到了没」。
     </p>
 
     <p>
-      评审一个 diff 意味着什么？你要在脑中重建整个问题空间——需求、架构、依赖、运行时行为。这是一次完整的<strong>上下文重建</strong>，成本极高。同时评审三个 Agent 的产出？每次切换都会在工作记忆中留下前一任务的残影，拉低每一次评审的质量。
+      评审一个 diff 意味着什么？你要在脑中重建整个问题空间——需求、架构、依赖、运行时行为——然后逐行映射变更对系统的影响。这是一次完整的<strong>上下文重建</strong>，代价是大量占用工作记忆——人类认知中容量最小、最容易过载的瓶颈。
     </p>
 
     <div class="versus">
       <div class="v-side v-left">
-        <div class="v-label">评审 Diff</div>
+        <div class="v-label">Code Review</div>
         重建上下文 → 理解变更 → 模拟影响 → 判断<br>
         <strong>路径长</strong>，依赖工作记忆
       </div>
       <div class="v-mid">VS</div>
       <div class="v-side v-right">
-        <div class="v-label">评审 Artifact</div>
+        <div class="v-label">Demo Review</div>
         观看预览 → 判断<br>
         <strong>路径短</strong>，依赖感知系统
       </div>
     </div>
 
     <p>
-      Artifact 的杠杆在于：它将评审从<strong>「重建 → 理解 → 判断」</strong>压缩为<strong>「感知 → 判断」</strong>。前者消耗工作记忆，后者使用感知系统——一个几乎没有容量限制的通道。
+      Artifact 的杠杆在于：它将评审从<strong>「重建上下文 → 理解变更 → 判断正确性」</strong>压缩为<strong>「感知 → 判断」</strong>，把瓶颈从工作记忆转移到视觉感知——一个处理速度快数个数量级、且几乎没有容量限制的通道。
     </p>
 
     <div class="note note-ok">
       <div class="note-label">关键推论</div>
-      并行管理多个 Agent 得以可能，不是因为人变聪明了，而是因为<strong>评估成本被 Artifact 从深度思考转移到了直觉感知</strong>。一个实时预览 3 秒内告诉你「对不对」——比读 500 行 diff 快两个数量级，且几乎不消耗工作记忆。
+      并行管理多个 Agent 之所以可行，不是因为人变聪明了，而是因为 <strong>Demo Review 将评估成本从深度思考转移到了直觉感知</strong>。看一个 3 秒的实时预览就知道「行不行」——比读 500 行 diff 快两个数量级，且几乎不消耗工作记忆。
     </div>
   </section>
 
@@ -687,7 +687,7 @@
 
     <div class="note note-problem">
       <div class="note-label">鸡生蛋问题</div>
-      新工作流的前提依赖旧工作流的产物。第一批「厂长型开发者」凭积累的经验运作。但后来者如何获得这些经验？这不是过渡阵痛——它是<strong>结构性的代际断层</strong>。
+      新工作流的前提依赖旧工作流的产物。当前这批开发者凭多年手写代码积累的经验来指挥 Agent——但下一代从未手写过代码的开发者，如何获得同等的判断力？这不是过渡阵痛——它是<strong>结构性的代际断层</strong>。
     </div>
 
     <h3>悖论三：注意力残留与并行幻觉</h3>
@@ -696,7 +696,7 @@
       Truell 提倡「spin up multiple agents simultaneously instead of handholding one to completion」。从工程效率看无可争议。但每次任务切换都会在工作记忆中留下前一任务的残留——你永远不是 100% 投入当前任务。
     </p>
     <p>
-      Artifact 缓解了这个问题（§3），但没有消除它。评估仍需要决策，决策仍是<strong>串行的</strong>。管理 10 个 Agent 感觉像并行，但你的决策管道是单线程的。
+      Demo Review 缓解了这个问题（§3），但没有消除它。评估仍需要决策，决策仍是<strong>串行的</strong>。管理 10 个 Agent 感觉像并行，但你的决策管道是单线程的。
     </p>
   </section>
 
@@ -739,7 +739,7 @@
     </div>
 
     <p>
-      那 65% 大概率落在这个区域：跨系统重构、需求模糊的新功能、安全架构决策、性能诊断。这些任务需要的不是更多计算力，而是<strong>情境感知</strong>——一种只能通过大量领域经验训练出来的直觉。
+      那 65% 正是这类任务：跨系统重构、需求模糊的新功能、安全架构决策、性能诊断。它们需要的不是更多计算力，而是<strong>情境感知</strong>——一种只能通过长期领域浸泡才能训练出来的直觉。
     </p>
 
     <div class="note note-neutral">
@@ -754,7 +754,7 @@
     <p>
       Truell 讲的不是技术迭代：<strong>当执行被完全外包，「理解问题」本身成了唯一的生产力。</strong><br><br>
       深层张力在于：理解问题的能力，历来在执行中习得。第三时代的核心问题不是「Agent 能做什么」，而是<strong>「当人不再亲手做时，如何保持做出正确判断的能力」</strong>。<br><br>
-      工具塑造思维，思维定义能力边界。看清工具在卸载什么，比学会使用工具更重要。
+      而应对这个张力的第一步，是看清它的存在。工具塑造认知，认知定义能力边界。看清工具在卸载什么，比学会使用工具更重要。
     </p>
   </div>
 
