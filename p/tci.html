@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Cursor CEO 描述了 AI 编程的三个时代。但他真正在说的是：当执行被完全外包，「理解问题」本身成了唯一的生产力。">
+<title>The Cognitive Inversion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --text-1: #1D1B18;
+    --text-2: #5C5750;
+    --text-3: #9B958C;
+    --border: #E8E3DB;
+    --accent: #B8714A;
+    --blue: #7C6B5B;
+    --blue-soft: #F5F0EB;
+    --amber: #B8864A;
+    --amber-bg: #FBF6F0;
+    --red: #B85C4A;
+    --red-bg: #FBF2F0;
+    --green: #5A8A6E;
+    --green-bg: #F0F6F2;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: 2.2rem; font-weight: 700;
+    line-height: 1.25; letter-spacing: -0.03em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header h1 .sym { color: var(--accent); }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 580px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+  header .meta a {
+    color: var(--text-3); text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.15s;
+  }
+  header .meta a:hover { color: var(--text-1); border-color: var(--text-1); }
+
+  .thesis {
+    background: #2C2520; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B87A; font-weight: 600; }
+  .thesis .evidence {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem; opacity: 0.65; line-height: 1.7;
+  }
+  .thesis .evidence em { font-style: normal; opacity: 0.85; }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-size: 1.5rem; font-weight: 700;
+    line-height: 1.3; letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg);   border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F5F2ED; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 24px 0; font-size: 0.85rem;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .versus .v-left  { background: var(--red-bg); }
+  .versus .v-left .v-label  { color: var(--red); }
+  .versus .v-right { background: var(--green-bg); }
+  .versus .v-right .v-label { color: var(--green); }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 700; color: var(--text-3);
+    background: var(--bg); font-size: 0.75rem;
+  }
+
+  .causal {
+    margin: 24px 0; padding: 0; list-style: none;
+    counter-reset: cause;
+  }
+  .causal li {
+    counter-increment: cause; position: relative;
+    padding: 8px 0 8px 44px; font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .causal li::before {
+    content: counter(cause); position: absolute;
+    left: 0; top: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #2C2520; color: #F5F0EB;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .quote {
+    margin: 24px 0; padding: 20px 24px;
+    background: var(--surface); border-radius: 12px;
+    border: 1px solid var(--border);
+    font-size: 0.88rem; line-height: 1.85;
+    color: var(--text-2); position: relative;
+  }
+  .quote::before {
+    content: '\201C'; position: absolute;
+    top: 8px; left: 14px;
+    font-size: 2.5rem; font-weight: 700;
+    color: var(--border); line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .quote p { padding-left: 20px; }
+  .quote .q-attr {
+    font-size: 0.72rem; color: var(--text-3);
+    margin-top: 10px; padding-left: 20px;
+  }
+
+  .stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px; margin: 24px 0;
+  }
+  @media (max-width: 600px) { .stat-grid { grid-template-columns: 1fr; } }
+  .stat-item {
+    padding: 20px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 1.6rem; font-weight: 700;
+    letter-spacing: -0.03em; color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 0.72rem; color: var(--text-3);
+    line-height: 1.5;
+  }
+
+  .principle-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin: 28px 0;
+  }
+  @media (max-width: 600px) { .principle-grid { grid-template-columns: 1fr; } }
+  .principle {
+    padding: 24px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .principle:hover { border-color: #D0C8BD; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .principle-tag {
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  .principle h4 {
+    font-size: 0.95rem; font-weight: 700;
+    margin-bottom: 10px; line-height: 1.4;
+  }
+  .principle p { font-size: 0.82rem; color: var(--text-2); line-height: 1.7; margin-bottom: 0; }
+
+  .proto-flow {
+    display: flex; align-items: center; gap: 0;
+    margin: 28px 0; flex-wrap: wrap; font-size: 0.78rem;
+  }
+  .proto-node {
+    padding: 10px 16px; border: 1px solid var(--border);
+    background: var(--surface); text-align: center;
+    white-space: nowrap;
+  }
+  .proto-node:first-child { border-radius: 8px 0 0 8px; }
+  .proto-node:last-child { border-radius: 0 8px 8px 0; }
+  .proto-node + .proto-node { border-left: none; }
+  .proto-active { background: var(--amber-bg); border-color: #DCC9A8; font-weight: 600; }
+  .proto-dead { background: var(--red-bg); border-color: #D4B8B0; color: var(--text-3); }
+  .proto-ship { background: var(--green-bg); border-color: #B8D4C0; font-weight: 700; }
+
+  .era-card {
+    margin: 28px 0; border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden;
+  }
+  .era-header {
+    padding: 20px 24px; display: flex;
+    align-items: baseline; gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .era-num {
+    font-family: var(--mono); font-size: 1.8rem;
+    font-weight: 700; color: var(--accent);
+    line-height: 1;
+  }
+  .era-title {
+    font-size: 1rem; font-weight: 700;
+    line-height: 1.3;
+  }
+  .era-subtitle {
+    font-size: 0.75rem; color: var(--text-3);
+    margin-top: 2px;
+  }
+  .era-body {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .era-body > div { padding: 16px 24px; font-size: 0.82rem; line-height: 1.7; }
+  .era-body > div:first-child { border-right: 1px solid var(--border); }
+  .era-body .eb-label {
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 4px;
+  }
+  .era-insight {
+    padding: 14px 24px; font-size: 0.82rem;
+    line-height: 1.7; color: var(--text-2);
+    background: var(--blue-soft);
+  }
+  .era-insight strong { color: var(--text-1); }
+
+  details {
+    margin: 20px 0; border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+  }
+  details summary {
+    padding: 14px 20px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 500;
+    color: var(--text-2); background: #F5F2ED;
+    user-select: none; list-style: none;
+    transition: background 0.15s;
+  }
+  details summary:hover { background: #EDE9E3; }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: '+ '; font-weight: 700; color: var(--text-3); }
+  details[open] summary::before { content: '\2212 '; }
+  details .expand-body {
+    padding: 18px 20px; font-size: 0.85rem;
+    line-height: 1.8; color: var(--text-2);
+  }
+
+  code {
+    font-family: var(--mono); font-size: 0.82em;
+    background: #F0EDE8; padding: 2px 7px; border-radius: 5px;
+  }
+
+  .takeaway {
+    background: #2C2520; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,248,245,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232,227,219,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+  footer a { color: var(--text-3); border-bottom: 1px solid var(--border); text-decoration: none; }
+  footer a:hover { color: var(--text-1); }
+
+  a:focus-visible,
+  details summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .era-body { grid-template-columns: 1fr; }
+    .era-body > div:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+  nav.toc .indent { padding-left: 26px; font-size: 0.65rem; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← pinyu.ai</a>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">Core Thesis</a>
+  <a href="#inversion">比例倒转</a>
+  <a href="#three-eras">三个时代</a>
+  <a class="indent" href="#era-tab">Tab：减噪</a>
+  <a class="indent" href="#era-agent">Agent：监督</a>
+  <a class="indent" href="#era-cloud">Cloud：定义</a>
+  <a href="#artifact">Artifact 的杠杆</a>
+  <a href="#paradox">三重悖论</a>
+  <a href="#boundary">65% 的边界</a>
+  <a href="#takeaway-section">Takeaway</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Cognitive Psychology × AI Development</div>
+    <h1>The Cognitive Inversion</h1>
+    <p class="subtitle">
+      Cursor CEO 描述了 AI 编程的三个时代。但他真正在说的是：当执行被完全外包，「理解问题」本身成了唯一的生产力。
+    </p>
+    <div class="meta">
+      <span>pinyu · 2026.02</span>
+      <a href="https://x.com/mntruell/status/2026736314272591924" target="_blank">Truell: The Third Era</a>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════ THESIS ═══════════════════════ -->
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">Core Thesis</div>
+    <p>
+      三个时代不是技术迭代，而是<strong>思考与执行之比的倒转</strong>——每一代工具卸载更多执行，直到开发者的唯一工作变成定义问题本身。悖论在于：<strong>定义问题的能力，历来在执行中习得</strong>。
+    </p>
+    <div class="evidence">
+      <em>数据</em>：Cursor 35% PR 来自自主 Agent；Agent 用户数已达 Tab 用户的 2 倍；Agent 使用量一年增长 15 倍。
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ §1 INVERSION ═══════════════════════ -->
+  <section id="inversion">
+    <div class="section-num">01</div>
+    <h2>比例的倒转</h2>
+    <p class="section-hook">所有工具进化都是人力重分配。只是大多数人看到工具，看不到背后的人</p>
+
+    <p>
+      观察一个开发者写代码时在做什么。他的大脑同时处理两类完全不同的任务：
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">执行性工作</div>
+        记语法、敲键盘、调 bug、管理构建——高频、低层、可程序化
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-right">
+        <div class="v-label">判断性工作</div>
+        分解问题、设定标准、权衡取舍、定义「完成」——低频、高层、需要经验
+      </div>
+    </div>
+
+    <p>
+      传统编程中，开发者 80% 的时间被锁在前者。不是因为这些任务重要，而是因为它们<strong>不可避免</strong>。三个时代本质上是一条重分配曲线：
+    </p>
+
+    <div class="stat-grid">
+      <div class="stat-item">
+        <div class="stat-num">~80%</div>
+        <div class="stat-label">传统编程<br>执行占比</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">~50%</div>
+        <div class="stat-label">同步 Agent<br>执行占比</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">~10%</div>
+        <div class="stat-label">云端 Agent<br>执行占比</div>
+      </div>
+    </div>
+
+    <p>
+      比例倒转意味着什么？它意味着<strong>生产力的定义变了</strong>。在旧世界，写代码快的人效率高。在新世界，定义问题准的人效率高。速度让位于精度，输出让位于输入。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §2 THREE ERAS ═══════════════════════ -->
+  <section id="three-eras">
+    <div class="section-num">02</div>
+    <h2>三个时代</h2>
+    <p class="section-hook">每个时代卸载了什么，保留了什么，代价又是什么</p>
+
+    <!-- ERA 1 -->
+    <div class="era-card" id="era-tab">
+      <div class="era-header">
+        <div class="era-num">I</div>
+        <div>
+          <div class="era-title">Tab 补全时代</div>
+          <div class="era-subtitle">卸载技能层</div>
+        </div>
+      </div>
+      <div class="era-body">
+        <div>
+          <div class="eb-label">卸载了什么</div>
+          与问题本身无关的心智消耗：记 API 签名、重复样板、语法细节。
+        </div>
+        <div>
+          <div class="eb-label">保留了什么</div>
+          核心判断完整保留。开发者仍决定写什么、怎么写、为什么写。角色没有质变。
+        </div>
+      </div>
+      <div class="era-insight">
+        减少噪音，不改变信号。开发者仍是操作员，只是工具变顺手了。
+      </div>
+    </div>
+
+    <!-- ERA 2 -->
+    <div class="era-card" id="era-agent">
+      <div class="era-header">
+        <div class="era-num">II</div>
+        <div>
+          <div class="era-title">同步 Agent 时代</div>
+          <div class="era-subtitle">卸载规则层</div>
+        </div>
+      </div>
+      <div class="era-body">
+        <div>
+          <div class="eb-label">卸载了什么</div>
+          规则性决策——「遇到 X 就做 Y」的模式匹配。Agent 接管了大部分 if-then 推理链。
+        </div>
+        <div>
+          <div class="eb-label">保留了什么</div>
+          高层监督。每个 prompt-response 循环中，开发者是纠偏者。
+        </div>
+      </div>
+      <div class="era-insight">
+        从操作员变为监督者。但人仍被锁在同步循环中——工作记忆容量成为硬瓶颈。Truell 的原话：「real-time interaction means it is only practical to work with a few at a time.」
+      </div>
+    </div>
+
+    <!-- ERA 3 -->
+    <div class="era-card" id="era-cloud">
+      <div class="era-header">
+        <div class="era-num">III</div>
+        <div>
+          <div class="era-title">云端 Agent 时代</div>
+          <div class="era-subtitle">卸载知识层</div>
+        </div>
+      </div>
+      <div class="era-body">
+        <div>
+          <div class="eb-label">卸载了什么</div>
+          知识性决策的执行。Agent 在独立虚拟机中自主规划、试错、迭代，直到对输出有信心。
+        </div>
+        <div>
+          <div class="eb-label">保留了什么</div>
+          纯判断——定义问题边界、设定评审标准、评估产出质量。开发者变成了 Agent 的产品经理。
+        </div>
+      </div>
+      <div class="era-insight">
+        从监督者变为架构师。工作不再是「如何实现」，而是<strong>「值不值得实现」</strong>和<strong>「怎么判断做对了」</strong>。而这之所以可行，是因为产出形态变了——<strong>从 diff 变成了可感知的 artifact</strong>（→§3）。
+      </div>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">模式识别</div>
+      跃迁不是线性的。从 I 到 II，Tab 时代持续了近两年。从 II 到 III，可能不到一年。卸载是<strong>自加速</strong>的——每一层卸载为下一层创造条件。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §3 ARTIFACT ═══════════════════════ -->
+  <section id="artifact">
+    <div class="section-num">03</div>
+    <h2>Artifact：被低估的杠杆</h2>
+    <p class="section-hook">第三时代得以成立，不是因为 Agent 变强了，而是评估成本被压缩了</p>
+
+    <p>
+      Truell 提到云端 Agent 产出的是「logs, video recordings, and live previews rather than diffs」。这句话被轻描淡写地嵌在技术描述中，但它是整篇最深刻的洞察。
+    </p>
+
+    <p>
+      评审一个 diff 意味着什么？你要在脑中重建整个问题空间——需求、架构、依赖、运行时行为。这是一次完整的<strong>上下文重建</strong>，成本极高。同时评审三个 Agent 的产出？每次切换都会在工作记忆中留下前一任务的残影，拉低每一次评审的质量。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">评审 Diff</div>
+        重建上下文 → 理解变更 → 模拟影响 → 判断<br>
+        <strong>路径长</strong>，依赖工作记忆
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-right">
+        <div class="v-label">评审 Artifact</div>
+        观看预览 → 判断<br>
+        <strong>路径短</strong>，依赖感知系统
+      </div>
+    </div>
+
+    <p>
+      Artifact 的杠杆在于：它将评审从<strong>「重建 → 理解 → 判断」</strong>压缩为<strong>「感知 → 判断」</strong>。前者消耗工作记忆，后者使用感知系统——一个几乎没有容量限制的通道。
+    </p>
+
+    <div class="note note-ok">
+      <div class="note-label">关键推论</div>
+      并行管理多个 Agent 得以可能，不是因为人变聪明了，而是因为<strong>评估成本被 Artifact 从深度思考转移到了直觉感知</strong>。一个实时预览 3 秒内告诉你「对不对」——比读 500 行 diff 快两个数量级，且几乎不消耗工作记忆。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §4 PARADOX ═══════════════════════ -->
+  <section id="paradox">
+    <div class="section-num">04</div>
+    <h2>三重悖论</h2>
+    <p class="section-hook">Truell 的叙事中被省略的风险</p>
+
+    <p>
+      比例倒转不是免费的。它产生三个相互关联的悖论。
+    </p>
+
+    <h3>悖论一：自动化悖论</h3>
+
+    <p>
+      经典发现：自动化程度越高，人在系统出错时的干预能力越差。技能维持需要<strong>持续练习</strong>，没有例外。
+    </p>
+    <p>
+      Truell 的理想态：「agents write almost 100% of their code」。问题是：如果你不再写代码，你用什么来评审代码？
+    </p>
+
+    <div class="quote">
+      <p>
+        你需要写过大量糟糕的代码，才能一眼识别糟糕的代码。如果你从未写过，你的评审能力建立在什么之上？
+      </p>
+      <div class="q-attr">— 自动化悖论的编程特化形式</div>
+    </div>
+
+    <h3>悖论二：分解能力的循环依赖</h3>
+
+    <p>
+      第三时代的核心技能是问题分解。但优秀的分解需要<strong>深厚的实现经验</strong>——你必须知道什么可行、什么会让 Agent 陷入死胡同、哪些子任务之间有隐式耦合。
+    </p>
+
+    <ol class="causal">
+      <li>新工作流要求开发者具备卓越的问题分解能力</li>
+      <li>问题分解能力依赖深厚的实现经验</li>
+      <li>新工作流减少了获取实现经验的机会</li>
+    </ol>
+
+    <div class="note note-problem">
+      <div class="note-label">鸡生蛋问题</div>
+      新工作流的前提依赖旧工作流的产物。第一批「厂长型开发者」凭积累的经验运作。但后来者如何获得这些经验？这不是过渡阵痛——它是<strong>结构性的代际断层</strong>。
+    </div>
+
+    <h3>悖论三：注意力残留与并行幻觉</h3>
+
+    <p>
+      Truell 提倡「spin up multiple agents simultaneously instead of handholding one to completion」。从工程效率看无可争议。但每次任务切换都会在工作记忆中留下前一任务的残留——你永远不是 100% 投入当前任务。
+    </p>
+    <p>
+      Artifact 缓解了这个问题（§3），但没有消除它。评估仍需要决策，决策仍是<strong>串行的</strong>。管理 10 个 Agent 感觉像并行，但你的决策管道是单线程的。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §5 BOUNDARY ═══════════════════════ -->
+  <section id="boundary">
+    <div class="section-num">05</div>
+    <h2>65% 的边界</h2>
+    <p class="section-hook">35% 的 PR 来自自主 Agent。但那 65% 在说什么？</p>
+
+    <p>
+      文章庆祝 35% 的 PR 由自主 Agent 创建。但更有信息量的是反面：<strong>65% 为什么不能？</strong>
+    </p>
+    <p>
+      Klein 的自然主义决策框架提供了解释。他研究消防、急救、军事中的真实决策，发现这些高难度决策有共同特征：
+    </p>
+
+    <div class="principle-grid">
+      <div class="principle">
+        <div class="principle-tag">NDM 特征 1</div>
+        <h4>高不确定性</h4>
+        <p>关键信息缺失或矛盾，无法等到信息完备再行动。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">NDM 特征 2</div>
+        <h4>动态变化</h4>
+        <p>环境在决策过程中持续改变，静态分析失效。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">NDM 特征 3</div>
+        <h4>目标冲突</h4>
+        <p>多个合法目标相互矛盾，需要在没有明确标准的情况下权衡。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">NDM 特征 4</div>
+        <h4>高赌注</h4>
+        <p>错误代价大到不允许通过试错收敛。</p>
+      </div>
+    </div>
+
+    <p>
+      那 65% 大概率落在这个区域：跨系统重构、需求模糊的新功能、安全架构决策、性能诊断。这些任务需要的不是更多计算力，而是<strong>情境感知</strong>——一种只能通过大量领域经验训练出来的直觉。
+    </p>
+
+    <div class="note note-neutral">
+      <div class="note-label">边界的形状比面积更有信息量</div>
+      35% 会继续增长，但速率会放缓——越接近边界，任务越符合上述特征。这条边界不是技术瓶颈，而是<strong>决策类型的边界</strong>。它划分的不是「能不能自动化」，而是<strong>「可形式化的决策」</strong>与<strong>「本质上需要情境嵌入的判断」</strong>。
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ TAKEAWAY ═══════════════════════ -->
+  <div class="takeaway" id="takeaway-section">
+    <div class="thesis-label">Takeaway</div>
+    <p>
+      Truell 讲的不是技术迭代：<strong>当执行被完全外包，「理解问题」本身成了唯一的生产力。</strong><br><br>
+      深层张力在于：理解问题的能力，历来在执行中习得。第三时代的核心问题不是「Agent 能做什么」，而是<strong>「当人不再亲手做时，如何保持做出正确判断的能力」</strong>。<br><br>
+      工具塑造思维，思维定义能力边界。看清工具在卸载什么，比学会使用工具更重要。
+    </p>
+  </div>
+
+  <!-- ═══════════════════════ REFERENCES ═══════════════════════ -->
+  <section style="margin-bottom: 24px;">
+    <div class="section-num">References</div>
+    <h2 style="margin-bottom: 20px;">引用</h2>
+
+    <details>
+      <summary>认知心理学文献</summary>
+      <div class="expand-body">
+        <p>Kahneman, D. <em>Thinking, Fast and Slow</em>, 2011.</p>
+        <p>Rasmussen, J. "Skills, Rules, and Knowledge", <em>IEEE Trans. SMC</em>, 1983.</p>
+        <p>Klein, G. <em>Sources of Power: How People Make Decisions</em>, 1998.</p>
+        <p>Parasuraman, R. & Riley, V. "Humans and Automation", <em>Human Factors</em>, 1997.</p>
+        <p>Leroy, S. "Why is it so hard to do my work?", <em>OBHDP</em>, 2009.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>原始材料</summary>
+      <div class="expand-body">
+        <p>Michael Truell, <a href="https://x.com/mntruell/status/2026736314272591924" target="_blank">"The third era of AI software development"</a>, X/Twitter, February 26, 2026.</p>
+      </div>
+    </details>
+  </section>
+
+  <div style="margin: 0 0 48px; padding: 24px; border: 1px solid var(--border); border-radius: 14px;">
+    <div style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;">延伸阅读</div>
+    <a href="ctl.html" style="display: block; text-decoration: none; color: inherit; margin-bottom: 16px;">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">Closing the Loop →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">卸载的终极形态——反馈回路。当 Agentic LLM 闭合了感知-行动-调节的递归循环，AGI 的条件正在被满足。</div>
+    </a>
+    <a href="tpr.html" style="display: block; text-decoration: none; color: inherit; padding-top: 16px; border-top: 1px solid var(--border);">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">The Profession, Refactored →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">倒转的行业后果——正在贬值的技能与正在升值的能力。</div>
+    </a>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
