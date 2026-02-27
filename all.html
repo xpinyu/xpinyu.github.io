@@ -48,7 +48,7 @@
   }
 
   .nav {
-    margin-bottom: 40px;
+    margin-bottom: 36px;
   }
 
   .nav a {
@@ -67,7 +67,7 @@
     font-size: 1.1rem;
     font-weight: 700;
     letter-spacing: -0.02em;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
   }
 
   .compact-list {
@@ -75,26 +75,30 @@
   }
 
   .compact-list li {
-    border-top: 1px solid var(--border);
+    animation: enter 0.35s ease both;
   }
-
-  .compact-list li:last-child {
-    border-bottom: 1px solid var(--border);
-  }
+  .compact-list li:nth-child(1) { animation-delay: 0.04s; }
+  .compact-list li:nth-child(2) { animation-delay: 0.08s; }
+  .compact-list li:nth-child(3) { animation-delay: 0.12s; }
+  .compact-list li:nth-child(4) { animation-delay: 0.16s; }
+  .compact-list li:nth-child(5) { animation-delay: 0.20s; }
+  .compact-list li:nth-child(6) { animation-delay: 0.24s; }
 
   .compact-list a {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 16px;
+    display: block;
     padding: 10px 0;
     text-decoration: none;
     color: inherit;
-    transition: color 0.15s;
+    border-top: 1px solid var(--border);
+    transition: padding 0.2s ease;
+  }
+
+  .compact-list li:last-child a {
+    border-bottom: 1px solid var(--border);
   }
 
   .compact-list a:hover {
-    color: var(--accent);
+    padding: 12px 0;
   }
 
   .compact-list a:focus-visible {
@@ -103,11 +107,23 @@
     border-radius: 2px;
   }
 
+  .compact-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
   .compact-title {
     font-size: 0.85rem;
     font-weight: 500;
     line-height: 1.4;
     letter-spacing: -0.01em;
+    transition: color 0.2s;
+  }
+
+  .compact-list a:hover .compact-title {
+    color: var(--accent);
   }
 
   .compact-meta {
@@ -115,6 +131,27 @@
     color: var(--text-3);
     white-space: nowrap;
     flex-shrink: 0;
+  }
+
+  .compact-detail {
+    font-size: 0.73rem;
+    color: var(--text-2);
+    line-height: 1.55;
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    margin-top: 0;
+    transition: grid-template-rows 0.3s ease, opacity 0.3s ease 0.08s, margin 0.3s ease;
+  }
+
+  .compact-detail > span {
+    overflow: hidden;
+  }
+
+  .compact-list a:hover .compact-detail {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    margin-top: 4px;
   }
 
   footer {
@@ -136,7 +173,9 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .page { animation: none; }
+    .page, .compact-list li { animation: none; }
+    .compact-detail { transition: none; }
+    .compact-list a { transition: none; }
   }
 </style>
 </head>
@@ -150,12 +189,60 @@
   <h1 class="page-title">All</h1>
 
   <ul class="compact-list">
-    <li><a href="p/ftc.html"><span class="compact-title">Fix the Constraints, Fix the Artifacts</span><span class="compact-meta">LTX-2 · Guide</span></a></li>
-    <li><a href="p/tpr.html"><span class="compact-title">The Profession, Refactored</span><span class="compact-meta">The Pragmatic Engineer</span></a></li>
-    <li><a href="p/ctl.html"><span class="compact-title">Closing the Loop</span><span class="compact-meta">Cybernetics × AGI</span></a></li>
-    <li><a href="p/deme.html"><span class="compact-title">Decouple-Then-Merge</span><span class="compact-meta">CVPR 2025</span></a></li>
-    <li><a href="p/cc.html"><span class="compact-title">Less Code, More Model</span><span class="compact-meta">The Pragmatic Engineer</span></a></li>
-    <li><a href="p/vrg.html"><span class="compact-title">Better Reconstruction ≠ Better Generation</span><span class="compact-meta">Linum Field Notes</span></a></li>
+    <li>
+      <a href="p/ftc.html">
+        <div class="compact-header">
+          <span class="compact-title">Fix the Constraints, Fix the Artifacts</span>
+          <span class="compact-meta">LTX-2 · Guide</span>
+        </div>
+        <div class="compact-detail"><span>Warble 和 AI 纹理伪影指向缺失的时序约束。5 种失败模式的根因诊断与可执行的消除工作流。</span></div>
+      </a>
+    </li>
+    <li>
+      <a href="p/tpr.html">
+        <div class="compact-header">
+          <span class="compact-title">The Profession, Refactored</span>
+          <span class="compact-meta">The Pragmatic Engineer</span>
+        </div>
+        <div class="compact-detail"><span>Karpathy 从"slop"到"magnitude 9 earthquake"只用了两个月。三个模型如何触发软件工程的认知相变。</span></div>
+      </a>
+    </li>
+    <li>
+      <a href="p/ctl.html">
+        <div class="compact-header">
+          <span class="compact-title">Closing the Loop</span>
+          <span class="compact-meta">Cybernetics × AGI</span>
+        </div>
+        <div class="compact-detail"><span>大多数人对 AGI 的判断基于一个错误的直觉——他们在评估思考能力，却忽略了智能的真正来源：反馈回路。</span></div>
+      </a>
+    </li>
+    <li>
+      <a href="p/deme.html">
+        <div class="compact-header">
+          <span class="compact-title">Decouple-Then-Merge</span>
+          <span class="compact-meta">CVPR 2025</span>
+        </div>
+        <div class="compact-detail"><span>扩散模型的不同去噪时间步之间存在梯度冲突。先解耦、再合并——零额外推理成本，6 个基准显著提升。</span></div>
+      </a>
+    </li>
+    <li>
+      <a href="p/cc.html">
+        <div class="compact-header">
+          <span class="compact-title">Less Code, More Model</span>
+          <span class="compact-meta">The Pragmatic Engineer</span>
+        </div>
+        <div class="compact-detail"><span>从 AppleScript 音乐控制到年营收 $500M+，Claude Code 的 7 个反直觉构建原则。</span></div>
+      </a>
+    </li>
+    <li>
+      <a href="p/vrg.html">
+        <div class="compact-header">
+          <span class="compact-title">Better Reconstruction ≠ Better Generation</span>
+          <span class="compact-meta">Linum Field Notes</span>
+        </div>
+        <div class="compact-detail"><span>踩过 NaN 爆炸、神秘色斑、联合训练不稳定——从零训练 VAE 的 5 个月旅程与违反直觉的教训。</span></div>
+      </a>
+    </li>
   </ul>
 </div>
 
