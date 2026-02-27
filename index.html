@@ -48,18 +48,18 @@
   }
 
   .identity {
-    margin-bottom: 48px;
+    margin-bottom: 40px;
   }
 
   .identity h1 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.03em;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
 
   .identity p {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--text-3);
     font-weight: 300;
     letter-spacing: 0.04em;
@@ -70,7 +70,7 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
   }
 
   .section-label {
@@ -97,20 +97,21 @@
     list-style: none;
   }
 
-  .articles li + li {
-    margin-top: 1px;
-  }
-
   .articles a {
     display: block;
-    padding: 20px 0;
+    padding: 12px 0;
     text-decoration: none;
     color: inherit;
     border-top: 1px solid var(--border);
+    transition: padding 0.25s ease;
   }
 
   .articles li:last-child a {
     border-bottom: 1px solid var(--border);
+  }
+
+  .articles a:hover {
+    padding: 14px 0;
   }
 
   .articles a .article-title {
@@ -127,28 +128,58 @@
     border-radius: 2px;
   }
 
+  .article-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
   .article-title {
-    font-size: 0.95rem;
+    font-size: 0.88rem;
     font-weight: 600;
     line-height: 1.4;
     letter-spacing: -0.01em;
-    margin-bottom: 6px;
-  }
-
-  .article-desc {
-    font-size: 0.8rem;
-    color: var(--text-2);
-    line-height: 1.65;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
   .article-meta {
-    margin-top: 8px;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     color: var(--text-3);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .article-desc {
+    font-size: 0.75rem;
+    color: var(--text-3);
+    line-height: 1.5;
+    margin-top: 3px;
+    transition: opacity 0.2s ease;
+  }
+
+  .articles a:hover .article-desc {
+    opacity: 0.5;
+  }
+
+  .article-detail {
+    font-size: 0.75rem;
+    color: var(--text-2);
+    line-height: 1.6;
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    margin-top: 0;
+    transition: grid-template-rows 0.3s ease, opacity 0.3s ease 0.05s, margin 0.3s ease;
+  }
+
+  .article-detail > span {
+    overflow: hidden;
+  }
+
+  .articles a:hover .article-detail {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    margin-top: 5px;
   }
 
   footer {
@@ -176,6 +207,9 @@
 
   @media (prefers-reduced-motion: reduce) {
     .page { animation: none; }
+    .article-detail { transition: none; }
+    .articles a { transition: none; }
+    .article-desc { transition: none; }
   }
 </style>
 </head>
@@ -194,44 +228,59 @@
   <ul class="articles">
     <li>
       <a href="p/tpr.html">
-        <div class="article-title">The Profession, Refactored</div>
-        <div class="article-desc">Andrej Karpathy 从"AI 是 slop"到"magnitude 9 earthquake"只用了两个月。2025 年末三个模型的密集发布如何触发软件工程的认知相变——从硬数据到正在贬值的技能清单。</div>
-        <div class="article-meta">The Pragmatic Engineer · 2026</div>
+        <div class="article-header">
+          <div class="article-title">The Profession, Refactored</div>
+          <div class="article-meta">The Pragmatic Engineer · 2026</div>
+        </div>
+        <div class="article-desc">AI 如何触发软件工程的认知相变。</div>
+        <div class="article-detail"><span>Andrej Karpathy 从"AI 是 slop"到"magnitude 9 earthquake"只用了两个月。2025 年末三个模型的密集发布如何触发软件工程的认知相变——从硬数据到正在贬值的技能清单。</span></div>
       </a>
     </li>
     <li>
       <a href="p/deme.html">
-        <div class="article-title">Decouple-Then-Merge</div>
-        <div class="article-desc">扩散模型的不同去噪时间步之间存在梯度冲突。DeMe 将训练视为多任务学习：先解耦、再合并——零额外推理成本，6 个基准显著提升。</div>
-        <div class="article-meta">CVPR 2025 · Paper Deep Dive</div>
+        <div class="article-header">
+          <div class="article-title">Decouple-Then-Merge</div>
+          <div class="article-meta">CVPR 2025</div>
+        </div>
+        <div class="article-desc">将扩散模型训练视为多任务学习：先解耦、再合并。</div>
+        <div class="article-detail"><span>扩散模型的不同去噪时间步之间存在梯度冲突。DeMe 将训练视为多任务学习：先解耦、再合并——零额外推理成本，6 个基准显著提升。</span></div>
       </a>
     </li>
     <li>
       <a href="p/ctl.html">
-        <div class="article-title">Closing the Loop</div>
-        <div class="article-desc">大多数人对 AGI 的判断基于一个错误的直觉——他们在评估 LLM 的思考能力，却忽略了智能的真正来源：反馈回路。从控制论看 Agentic LLM 通往 AGI 的路径。</div>
-        <div class="article-meta">Cybernetics × AGI · 2026</div>
+        <div class="article-header">
+          <div class="article-title">Closing the Loop</div>
+          <div class="article-meta">Cybernetics × AGI · 2026</div>
+        </div>
+        <div class="article-desc">从控制论看 Agentic LLM 通往 AGI 的路径。</div>
+        <div class="article-detail"><span>大多数人对 AGI 的判断基于一个错误的直觉——他们在评估 LLM 的思考能力，却忽略了智能的真正来源：反馈回路。当 Agent 闭合了感知-行动环路，一切都变了。</span></div>
       </a>
     </li>
     <li>
       <a href="p/cc.html">
-        <div class="article-title">Less Code, More Model</div>
-        <div class="article-desc">Claude Code 的构建哲学——一个关于"做减法"的产品故事。从 AppleScript 音乐控制到年营收 $500M+，7 个反直觉的构建原则。</div>
-        <div class="article-meta">The Pragmatic Engineer · 2025</div>
+        <div class="article-header">
+          <div class="article-title">Less Code, More Model</div>
+          <div class="article-meta">The Pragmatic Engineer · 2025</div>
+        </div>
+        <div class="article-desc">Claude Code 的构建哲学——一个关于"做减法"的产品故事。</div>
+        <div class="article-detail"><span>从 AppleScript 音乐控制到年营收 $500M+，7 个反直觉的构建原则。</span></div>
       </a>
     </li>
     <li>
       <a href="p/vrg.html">
-        <div class="article-title">Better Reconstruction ≠ Better Generation</div>
-        <div class="article-desc">Linum 团队从零训练 Image-Video VAE 的 5 个月旅程。踩过 NaN 爆炸、神秘色斑、联合训练不稳定——最终学到一个违反直觉的教训。</div>
-        <div class="article-meta">Linum Field Notes · 2024</div>
+        <div class="article-header">
+          <div class="article-title">Better Reconstruction ≠ Better Generation</div>
+          <div class="article-meta">Linum · 2024</div>
+        </div>
+        <div class="article-desc">从零训练 Image-Video VAE 的 5 个月旅程。</div>
+        <div class="article-detail"><span>踩过 NaN 爆炸、神秘色斑、联合训练不稳定——最终学到一个违反直觉的教训。</span></div>
       </a>
     </li>
   </ul>
 </div>
 
 <footer>
-  <a href="mailto:pinyu@fastmail.com">Contact</a>
+  <a href="all.html">All articles</a> · <a href="mailto:pinyu@fastmail.com">Contact</a>
 </footer>
 
 <script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
