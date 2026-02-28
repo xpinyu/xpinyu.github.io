@@ -520,10 +520,10 @@
   <section id="on-dist">
     <div class="section-num">02</div>
     <h2>"On Distribution" 技术栈</h2>
-    <p class="section-hook">选技术栈的新变量：不是人擅长什么，而是 AI 擅长什么</p>
+    <p class="section-hook">选技术栈的新标准：AI 擅长什么比人擅长什么更重要</p>
 
     <p>
-      Claude Code 的技术栈：<strong>TypeScript + React (Ink) + Yoga + Bun</strong>。选择标准不是"团队熟悉什么"，而是"模型在什么技术上已经很强"。
+      Claude Code 的技术栈：<strong>TypeScript + React (Ink) + Yoga + Bun</strong>。选择标准从"团队熟悉什么"变成了"模型在什么技术上已经很强"。
     </p>
 
     <div class="versus">
@@ -540,7 +540,7 @@
 
     <div class="note note-insight">
       <div class="note-label">反共识</div>
-      "On distribution" 是 AI 术语——模型训练数据覆盖良好的领域。团队选 TypeScript 和 React，不是因为它们"最好"，而是因为 Claude 在这些技术上<strong>训练数据最丰富</strong>，能直接上手写代码。<br><br>
+      "On distribution" 是 AI 术语——模型训练数据覆盖良好的领域。团队选 TypeScript 和 React，原因很简单：Claude 在这些技术上<strong>训练数据最丰富</strong>，能直接上手写代码。<br><br>
       推论：如果你的目标是让 AI 写大部分代码，那技术栈选择的第一变量不再是人的偏好，而是模型的能力分布。
     </div>
 
@@ -618,7 +618,7 @@
       <div class="note-label">反共识 · 反向复杂度</div>
       传统软件：功能累积 → 代码增长 → 复杂度上升。<br>
       Claude Code：模型变强 → 代码减少 → 产品变简单。<br><br>
-      这意味着产品的<strong>技术债是负的</strong>——模型进步自动偿还债务。System prompt 减半、工具数量减少、业务逻辑精简。产品的"瘦身"不是重构的结果，而是模型进步的副产品。
+      这意味着产品的<strong>技术债是负的</strong>——模型进步自动偿还债务。System prompt 减半、工具数量减少、业务逻辑精简。产品越来越轻，靠的是模型变强，无需额外重构。
     </div>
 
     <h3>不用虚拟化——本地运行</h3>
@@ -684,7 +684,7 @@
       <div class="note-label">反共识 · 探索的经济学</div>
       传统原型的成本结构：<strong>实现贵 → 探索少 → 过早收敛到第一个"还行"的方案</strong>。<br>
       AI 原型的成本结构：<strong>实现几乎免费 → 探索多 → 通过大量丢弃找到真正"对"的方案</strong>。<br><br>
-      不是"更快做完"，而是"探索了 10 倍多的设计空间"。产出的质量来自探索的广度，不是执行的速度。
+      关键收益是"探索了 10 倍多的设计空间"，而不只是更快做完。产出质量来自探索的广度。
     </div>
 
     <details>
@@ -741,7 +741,7 @@
   <section id="ai-first">
     <div class="section-num">06</div>
     <h2>AI-First 工程的形态</h2>
-    <p class="section-hook">不是"用 AI 辅助"，而是"围绕 AI 重新设计工程流程"</p>
+    <p class="section-hook">核心转变：围绕 AI 重新设计整个工程流程</p>
 
     <p>
       文章揭示了 Anthropic 内部工程文化的几个特征，可能预示了 AI-first 团队的未来形态：
@@ -752,7 +752,7 @@
         <div class="principle-tag">TDD 复兴</div>
         <h4>测试驱动开发回来了</h4>
         <p>
-          AI agent 擅长写代码但不擅长自我验证。TDD 提供了客观的正确性标准——先写测试，让 agent 对着测试写实现。这不是方法论信仰，而是 AI 时代的实用约束。
+          AI agent 擅长写代码但不擅长自我验证。TDD 提供了客观的正确性标准——先写测试，让 agent 对着测试写实现。在 AI 时代，这成了纯粹的实用约束。
         </p>
       </div>
       <div class="principle">
@@ -797,7 +797,7 @@
       <li><strong>On Distribution Tech Stack</strong>：为 AI 选技术栈，不为人选。当 90% 的代码由 AI 写时，AI 的能力分布比人的偏好更重要。</li>
       <li><strong>反向复杂度</strong>：好的 AI 产品随时间变简单，不变复杂。模型进步 = 代码减少。</li>
       <li><strong>最小业务逻辑</strong>：不要试图"帮助"模型。暴露工具，闪开。脚手架越多，模型越瘸。</li>
-      <li><strong>信任 > 智能</strong>：AI 产品最难的工程问题不是让 AI 更聪明，而是设计可信的权限系统。</li>
+      <li><strong>信任 > 智能</strong>：AI 产品最难的工程问题在于设计可信的权限系统，智能本身反而好解决。</li>
       <li><strong>探索 > 执行</strong>：AI 把原型成本降到接近零，设计质量来自探索 10 倍多的方案后的自然筛选。</li>
       <li><strong>Brooks' Law 可被绕过</strong>：AI 替代了一部分人际知识传递，新人 ramp-up 更快，沟通成本的 O(n²) 增长被部分抵消。</li>
     </ol>
@@ -807,7 +807,7 @@
   <div class="takeaway">
     <div class="thesis-label">Takeaway</div>
     <p>
-      Claude Code 的故事揭示了一个正在发生的范式转移：AI 产品的核心竞争力不是"给模型加多少功能"，而是<strong>"挡在模型和用户之间的东西有多少能删掉"</strong>。最好的 AI 产品，是让你感觉不到产品存在的那一个。
+      Claude Code 的故事揭示了一个正在发生的范式转移：AI 产品的核心竞争力在于<strong>"挡在模型和用户之间的东西有多少能删掉"</strong>。最好的 AI 产品，是让你感觉不到产品存在的那一个。
     </p>
   </div>
 
