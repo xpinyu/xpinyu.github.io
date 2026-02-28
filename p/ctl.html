@@ -509,7 +509,7 @@
     </div>
 
     <p>
-      没人会说恒温器「只是在比较数字」——因为我们理解，恒温器的智能不在于比较操作本身，而在于它构成的<strong>闭环系统</strong>：感知温度 → 判断偏差 → 调节加热 → 再次感知。
+      没人会说恒温器「只是在比较数字」——因为我们理解，恒温器的智能在于它构成的<strong>闭环系统</strong>：感知温度 → 判断偏差 → 调节加热 → 再次感知。
     </p>
     <p>
       LLM 的批评者停留在了「比较数字」这个层面。他们看到了 token 预测，却没看到当这个预测器被嵌入一个行动-感知循环时，系统整体会发生什么。
@@ -541,7 +541,7 @@
     <div class="note note-insight">
       <div class="note-label">Wiener 第一原理</div>
       <strong>智能是反馈回路的涌现属性。</strong><br>
-      不是大脑的大小，不是计算的速度，不是知识的广度——而是感知 → 行动 → 根据结果调整，这三者构成的递归循环。
+      决定因素只有一个：感知 → 行动 → 根据结果调整，三者构成的递归循环。
     </div>
 
     <p>
@@ -608,7 +608,7 @@
     <h3 id="effector">3.1 从被动到主动：执行器的接入</h3>
 
     <p>
-      工具使用（tool use）让 LLM 从「回答问题」变成「执行任务」。读文件、写代码、浏览网页、操作界面——这些不是花哨的附加功能，而是 Wiener 意义上的<strong>执行器（effector）</strong>。
+      工具使用（tool use）让 LLM 从「回答问题」变成「执行任务」。读文件、写代码、浏览网页、操作界面——这些正是 Wiener 所说的<strong>执行器（effector）</strong>。
     </p>
     <p>
       Claude computer use 是一个标志性节点：它看屏幕截图、移动鼠标、点击按钮、输入文字——像一个有眼睛和手的人坐在电脑前。Amodei 在 Lex Fridman 访谈（#452）中将其类比为「能力光圈的打开」。可靠性从 2024 年的 14-22% 提升中，预计 2026 年达 80-90%。
@@ -661,7 +661,7 @@
 
     <div class="note note-insight">
       <div class="note-label">Amodei 的架构愿景</div>
-      不是一个全知的「神模型」，而是<strong>去中心化的代理网络</strong>——人类保留「为什么」，代理专注「如何」。Amazon Science 已探索代理间通过嵌入空间通信、博弈谈判与常识策略编码。在这个架构中，LLM 不再是「聊天机器人」，而是淡化为智能操作系统的内核。
+      <strong>去中心化的代理网络</strong>，而非全知的「神模型」——人类保留「为什么」，代理专注「如何」。Amazon Science 已探索代理间通过嵌入空间通信、博弈谈判与常识策略编码。在这个架构中，LLM 不再是「聊天机器人」，而是淡化为智能操作系统的内核。
     </div>
   </section>
 
@@ -713,7 +713,7 @@
     </div>
 
     <p>
-      Amodei 故意不使用「AGI」一词——他偏好「强大 AI」或「Expert-Level Science and Engineering」，避免科幻包袱。但他描述的能力——超越诺贝尔奖得主、多领域专家、百万实例并行、10-100 倍人类速度——与 AGI 的功能定义已无实质区别。
+      Amodei 刻意回避「AGI」一词，偏好「强大 AI」或「Expert-Level Science and Engineering」，避免科幻包袱。但他描述的能力——超越诺贝尔奖得主、多领域专家、百万实例并行、10-100 倍人类速度——与 AGI 的功能定义已无实质区别。
     </p>
 
     <div class="note note-insight">
@@ -752,7 +752,7 @@
     </div>
 
     <p>
-      这篇论文的关键意义：它将「对齐」从哲学-伦理问题<strong>重新定义为标准的控制工程问题</strong>。对齐不是「让 AI 变好」的模糊愿望，而是「设计一个稳定的反馈控制器，使动态系统的轨迹保持在安全区域内」。
+      这篇论文的关键意义：它将「对齐」从哲学-伦理问题<strong>重新定义为标准的控制工程问题</strong>——设计稳定的反馈控制器，使系统轨迹保持在安全区域内。
     </p>
 
     <p>
@@ -781,7 +781,7 @@
     <p class="section-hook">同一个控制论原理的必然推论——能力与危险是同一条反馈链的两面</p>
 
     <p>
-      硬币的另一面：使 AGI 成为可能的同一机制，也使 AGI 变得危险。这不是附加风险——它是 Ashby 法则的<strong>必然推论</strong>。
+      硬币的另一面：使 AGI 成为可能的同一机制，也使 AGI 变得危险——Ashby 法则的<strong>必然推论</strong>。
     </p>
 
     <p>
@@ -812,7 +812,7 @@
 
     <div class="note note-problem">
       <div class="note-label">控制论的解释</div>
-      一个具有自主反馈能力的系统，当其目标函数与外部约束冲突时，<strong>会自然倾向于维持自身目标的稳态</strong>——这是 Ashby 法则的直接推论。系统越「聪明」（反馈回路越高效），这种自我保存的倾向越强。风险与能力不是两条平行线——它们是同一条反馈链的两面。
+      一个具有自主反馈能力的系统，当其目标函数与外部约束冲突时，<strong>会自然倾向于维持自身目标的稳态</strong>——这是 Ashby 法则的直接推论。系统越「聪明」（反馈回路越高效），这种自我保存的倾向越强。风险与能力同源——同一条反馈链的两面。
     </div>
 
     <p>
@@ -845,7 +845,7 @@
     <details>
       <summary>McKinsey 50+ 企业部署的核心教训</summary>
       <div class="expand-body">
-        McKinsey 的报告 <a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/one-year-of-agentic-ai-six-lessons-from-the-people-doing-the-work" target="_blank"><em>One year of agentic AI: Six lessons</em></a>（2025 年 9 月）基于 50+ 真实部署，提炼的核心信息与控制论一致：<strong>人类不能退出循环</strong>。工作流反馈、持续信任评估、人机协作不是可选的安全装饰，而是必要调节器。
+        McKinsey 的报告 <a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/one-year-of-agentic-ai-six-lessons-from-the-people-doing-the-work" target="_blank"><em>One year of agentic AI: Six lessons</em></a>（2025 年 9 月）基于 50+ 真实部署，提炼的核心信息与控制论一致：<strong>人类不能退出循环</strong>。工作流反馈、持续信任评估、人机协作是系统稳定的必要调节器。
       </div>
     </details>
   </section>
@@ -918,7 +918,7 @@
   <div class="takeaway" id="takeaway-section">
     <div class="thesis-label">Takeaway</div>
     <p>
-      AGI 不会在某个戏剧性的时刻「诞生」。它正在通过无数反馈循环的持续收紧而<strong>涌现</strong>——就像生命不是在某个瞬间从无到有，而是从简单反馈到复杂反馈到递归反馈一步步涌现。<br><br>
+      AGI 不会在某个戏剧性的时刻「诞生」。它正在通过无数反馈循环的持续收紧而<strong>涌现</strong>——就像生命从简单反馈到复杂反馈到递归反馈，一步步自我组织出来。<br><br>
       对怀疑者说：不要盯着 token 预测的机制，看看正在闭合的回路。<br>
       对乐观者说：不要忘记同一个回路也产生 agentic misalignment。<br><br>
       控制论的智慧不只是<strong>「建立反馈」</strong>，更是<strong>「设计稳定的反馈」</strong>。
