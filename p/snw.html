@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Fine-tuning 把智能烧进即将过期的权重。更好的架构选择：把智能放在模型之上，而非之内。从 Poetiq 的递归自改进系统看 AI 应用的正确抽象层。">
+<title>Stilts, Not Weights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --text-1: #1D1B18;
+    --text-2: #5C5750;
+    --text-3: #9B958C;
+    --border: #E8E3DB;
+    --accent: #B8714A;
+    --blue: #7C6B5B;
+    --blue-soft: #F5F0EB;
+    --amber: #B8864A;
+    --amber-bg: #FBF6F0;
+    --red: #B85C4A;
+    --red-bg: #FBF2F0;
+    --green: #5A8A6E;
+    --green-bg: #F0F6F2;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+  .wide { max-width: var(--wide-w); }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: 2.2rem; font-weight: 700;
+    line-height: 1.25; letter-spacing: -0.03em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header h1 .sym { color: var(--accent); }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 580px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+  header .meta a {
+    color: var(--text-3); text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.15s;
+  }
+  header .meta a:hover { color: var(--text-1); border-color: var(--text-1); }
+
+  .thesis {
+    background: #2C2520; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B87A; font-weight: 600; }
+  .thesis .evidence {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem; opacity: 0.65; line-height: 1.7;
+  }
+  .thesis .evidence em { font-style: normal; opacity: 0.85; }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-size: 1.5rem; font-weight: 700;
+    line-height: 1.3; letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg);   border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F5F2ED; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 24px 0; font-size: 0.85rem;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .versus .v-left  { background: var(--red-bg); }
+  .versus .v-left .v-label  { color: var(--red); }
+  .versus .v-right { background: var(--green-bg); }
+  .versus .v-right .v-label { color: var(--green); }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 700; color: var(--text-3);
+    background: var(--bg); font-size: 0.75rem;
+  }
+
+  .causal {
+    margin: 24px 0; padding: 0; list-style: none;
+    counter-reset: cause;
+  }
+  .causal li {
+    counter-increment: cause; position: relative;
+    padding: 8px 0 8px 44px; font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .causal li::before {
+    content: counter(cause); position: absolute;
+    left: 0; top: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #2C2520; color: #F5F0EB;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .timeline {
+    margin: 28px 0; padding-left: 0; list-style: none;
+    position: relative;
+  }
+  .timeline::before {
+    content: ''; position: absolute;
+    left: 11px; top: 8px; bottom: 8px;
+    width: 1px; background: var(--border);
+  }
+  .timeline li {
+    position: relative; padding: 10px 0 10px 36px;
+    font-size: 0.88rem; line-height: 1.75;
+  }
+  .timeline li::before {
+    content: ''; position: absolute;
+    left: 5px; top: 18px;
+    width: 13px; height: 13px; border-radius: 50%;
+    border: 2px solid var(--border); background: var(--bg);
+  }
+  .timeline .t-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .tl-problem::before  { border-color: var(--red); background: var(--red-bg); }
+  .tl-problem .t-label { color: var(--red); }
+  .tl-try::before      { border-color: var(--amber); background: var(--amber-bg); }
+  .tl-try .t-label     { color: var(--amber); }
+  .tl-fix::before      { border-color: var(--green); background: var(--green-bg); }
+  .tl-fix .t-label     { color: var(--green); }
+
+  details {
+    margin: 20px 0; border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+  }
+  details summary {
+    padding: 14px 20px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 500;
+    color: var(--text-2); background: #F5F2ED;
+    user-select: none; list-style: none;
+    transition: background 0.15s;
+  }
+  details summary:hover { background: #EDE9E3; }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: '+ '; font-weight: 700; color: var(--text-3); }
+  details[open] summary::before { content: '− '; }
+  details .expand-body {
+    padding: 18px 20px; font-size: 0.85rem;
+    line-height: 1.8; color: var(--text-2);
+  }
+
+  .quote {
+    margin: 24px 0; padding: 20px 24px;
+    background: var(--surface); border-radius: 12px;
+    border: 1px solid var(--border);
+    font-size: 0.88rem; line-height: 1.85;
+    color: var(--text-2); position: relative;
+  }
+  .quote::before {
+    content: '\201C'; position: absolute;
+    top: 8px; left: 14px;
+    font-size: 2.5rem; font-weight: 700;
+    color: var(--border); line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .quote p { padding-left: 20px; }
+  .quote .q-attr {
+    font-size: 0.72rem; color: var(--text-3);
+    margin-top: 10px; padding-left: 20px;
+  }
+
+  .stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px; margin: 24px 0;
+  }
+  @media (max-width: 600px) { .stat-grid { grid-template-columns: 1fr; } }
+  .stat-item {
+    padding: 20px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 1.6rem; font-weight: 700;
+    letter-spacing: -0.03em; color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 0.72rem; color: var(--text-3);
+    line-height: 1.5;
+  }
+
+  .principle-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin: 28px 0;
+  }
+  @media (max-width: 600px) { .principle-grid { grid-template-columns: 1fr; } }
+  .principle {
+    padding: 24px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .principle:hover { border-color: #D0C8BD; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .principle-tag {
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  .principle h4 {
+    font-size: 0.95rem; font-weight: 700;
+    margin-bottom: 10px; line-height: 1.4;
+  }
+  .principle p { font-size: 0.82rem; color: var(--text-2); line-height: 1.7; margin-bottom: 0; }
+
+  .layer-stack {
+    margin: 28px 0; border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden;
+  }
+  .layer {
+    padding: 20px 24px; display: flex;
+    align-items: flex-start; gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .layer:last-child { border-bottom: none; }
+  .layer-num {
+    font-family: var(--mono); font-size: 0.75rem;
+    font-weight: 700; color: var(--text-3);
+    min-width: 28px; padding-top: 2px;
+  }
+  .layer-content { flex: 1; }
+  .layer-title {
+    font-size: 0.92rem; font-weight: 700;
+    margin-bottom: 4px; line-height: 1.4;
+  }
+  .layer-desc {
+    font-size: 0.82rem; color: var(--text-2);
+    line-height: 1.7;
+  }
+  .layer-sweet {
+    background: var(--green-bg);
+    border-left: 3px solid var(--green);
+  }
+  .layer-warn {
+    background: var(--red-bg);
+    border-left: 3px solid var(--red);
+  }
+
+  .proto-flow {
+    display: flex; align-items: center; gap: 0;
+    margin: 28px 0; flex-wrap: wrap; font-size: 0.78rem;
+  }
+  .proto-node {
+    padding: 10px 16px; border: 1px solid var(--border);
+    background: var(--surface); text-align: center;
+    white-space: nowrap;
+  }
+  .proto-node:first-child { border-radius: 8px 0 0 8px; }
+  .proto-node:last-child { border-radius: 0 8px 8px 0; }
+  .proto-node + .proto-node { border-left: none; }
+  .proto-active { background: var(--amber-bg); border-color: #DCC9A8; font-weight: 600; }
+  .proto-dead { background: var(--red-bg); border-color: #D4B8B0; color: var(--text-3); text-decoration: line-through; }
+  .proto-ship { background: var(--green-bg); border-color: #B8D4C0; font-weight: 700; }
+
+  code {
+    font-family: var(--mono); font-size: 0.82em;
+    background: #F0EDE8; padding: 2px 7px; border-radius: 5px;
+  }
+
+  .takeaway {
+    background: #2C2520; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,248,245,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232,227,219,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+  footer a { color: var(--text-3); border-bottom: 1px solid var(--border); text-decoration: none; }
+  footer a:hover { color: var(--text-1); }
+
+  a:focus-visible,
+  details summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .principle-grid { grid-template-columns: 1fr; }
+    .proto-flow { font-size: 0.7rem; }
+    .proto-node { padding: 8px 10px; }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+  nav.toc .indent { padding-left: 26px; font-size: 0.65rem; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← pinyu.ai</a>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">Core Thesis</a>
+  <a href="#trap">Fine-Tuning 陷阱</a>
+  <a href="#coupling-tax">耦合税</a>
+  <a href="#three-layers">三层架构</a>
+  <a class="indent" href="#sweet-spot">甜蜜点</a>
+  <a href="#evidence">用数据说话</a>
+  <a href="#meta-system">递归自改进</a>
+  <a class="indent" href="#wrong-example">错误的例子</a>
+  <a href="#implications">对 Builder 的启示</a>
+  <a href="#takeaway-section">Takeaway</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">AI Architecture × Systems Thinking</div>
+    <h1>Stilts<span class="sym">,</span> Not Weights</h1>
+    <p class="subtitle">
+      Fine-tuning 花几百万美元把智能烧进模型权重，然后下一个前沿模型发布，一切归零。有一种更好的架构选择：把智能放在模型之上，而非之内。7 个人的团队用这种方式超过了所有前沿模型。
+    </p>
+    <div class="meta">
+      <span>pinyu · 2026.02</span>
+      <a href="https://www.youtube.com/watch?v=UPGB-hsAoVY" target="_blank">基于 YC Light Cone × Ian Fischer 对话</a>
+      <a href="https://poetiq.ai/" target="_blank">Poetiq</a>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════ THESIS ═══════════════════════ -->
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">Core Thesis</div>
+    <p>
+      Fine-tuning 真正致命的地方在于<strong>它把你的全部价值紧耦合到一个每 3-6 个月就被淘汰的资产上</strong>。贵只是表面伤。<br>
+      AI 应用的正确架构问题只有一个：智能应该住在你系统的哪一层？住在权重里，它会随模型过期；住在模型之上的推理系统里，它会随模型进步而自动增值。
+    </p>
+    <div class="evidence">
+      <em>实证</em>：Poetiq 用 7 人团队、不到 $100K 的优化成本，在 ARC AGI V2 和 Humanity's Last Exam 上同时超过了 Gemini Deep Think 和 Claude Opus 4.6——且每次新模型发布，他们的系统自动变得更强。
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ §1 THE TRAP ═══════════════════════ -->
+  <section id="trap">
+    <div class="section-num">01</div>
+    <h2>Fine-Tuning 陷阱</h2>
+    <p class="section-hook">标准剧本为什么注定是一场输掉的军备竞赛</p>
+
+    <p>
+      标准剧本看起来无可挑剔：收集几万条高质量数据，在最好的模型上 fine-tune，部署上线。成本：数十万到数百万美元，周期：数周到数月。
+    </p>
+    <p>
+      问题出在下一步。
+    </p>
+
+    <div class="proto-flow">
+      <div class="proto-node proto-ship">收集数据</div>
+      <div class="proto-node proto-active">花 $$$$ 微调</div>
+      <div class="proto-node proto-ship">部署上线</div>
+      <div class="proto-node proto-dead">新模型发布</div>
+      <div class="proto-node proto-dead">全部作废 ↺</div>
+    </div>
+
+    <div class="quote">
+      <p>
+        You fine-tuned on top of GPT 3.5 or whatever, and then GPT-4o4 comes out and just blows you out of the water. Are you going to do that again, or are you going to go out of business?
+      </p>
+      <div class="q-attr">— Ian Fischer, Poetiq co-founder, ex-Google DeepMind</div>
+    </div>
+
+    <p>
+      这不是假设性场景。前沿模型的迭代周期已经压缩到 3-6 个月。你的 fine-tuning 从完成那天起就在贬值——而你不知道保质期还剩多久。
+    </p>
+
+    <div class="note note-problem">
+      <div class="note-label">致命结构</div>
+      Fine-tuning 的本质是<strong>给租来的房子做精装修</strong>。房东（模型提供商）会定期拆掉整栋楼、建一栋更好的。你的精装修不能带走，也不能转移到新楼里。每次搬迁，从零开始。
+    </div>
+
+    <p>
+      更隐蔽的问题：fine-tuning 需要大规模高质量数据集。收集数据的人力成本、标注成本、清洗成本——这些沉没成本让团队产生"已经投入这么多，必须继续"的承诺升级心理。结果是越陷越深，与一个特定模型版本绑定得越来越紧。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §2 COUPLING TAX ═══════════════════════ -->
+  <section id="coupling-tax">
+    <div class="section-num">02</div>
+    <h2>耦合税：一个软件工程视角</h2>
+    <p class="section-hook">底层变化越快，紧耦合的代价越高——而模型层的变化速度是人类工程史上最快的</p>
+
+    <p>
+      软件工程有一条久经验证的原则：<strong>紧耦合的代价与依赖项的变化频率成正比</strong>。如果你的代码紧紧依赖一个稳定了十年的 API，耦合成本几乎为零。如果依赖一个每周都在改的内部接口，耦合成本会吞噬你。
+    </p>
+    <p>
+      Fine-tuning 是目前 AI 领域耦合最紧的架构选择。而它耦合的对象——前沿模型权重——恰好是技术史上变化最快的层。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">Fine-Tuning = 继承</div>
+        修改基类本身。基类一旦被替换，子类全部失效。投入与模型版本绑定。<br><br>
+        <em>OOP 类比：Inheritance</em>
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-right">
+        <div class="v-label">Harness = 组合</div>
+        在基类外部构建。基类升级时，外部系统自动受益。投入与问题绑定，与模型解耦。<br><br>
+        <em>OOP 类比：Composition</em>
+      </div>
+    </div>
+
+    <p>
+      Gang of Four 在 1994 年就给出了答案：<strong>优先使用组合而非继承</strong>。30 年后，同样的原则在 AI 架构中以更极端的形式重现——因为"基类"的迭代速度快了一千倍。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">The Bitter Lesson 的推论</div>
+      Rich Sutton 2019 年的 <em>Bitter Lesson</em>：利用计算的通用方法总是击败编码人类知识的专用方法。Fine-tuning 本质上是一种知识编码——把特定领域的模式烧进权重。它违反了 Bitter Lesson。<br><br>
+      Ian Fischer 的团队称自己"被接种了 Bitter Lesson 的疫苗"——因为他们从不修改模型权重。<strong>模型越强，他们的系统自动越强。</strong>这才是与 Bitter Lesson 对齐的架构。
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ §3 THREE LAYERS ═══════════════════════ -->
+  <section id="three-layers">
+    <div class="section-num">03</div>
+    <h2>三层架构：智能住在哪里？</h2>
+    <p class="section-hook">定制 AI 的三个层级——每层有不同的持久性、可移植性和投入产出比</p>
+
+    <p>
+      当你决定"让 AI 在我的特定场景上表现更好"时，你实际上在选择把智能注入系统的哪一层。
+    </p>
+
+    <div class="layer-stack">
+      <div class="layer layer-warn">
+        <div class="layer-num">L1</div>
+        <div class="layer-content">
+          <div class="layer-title">模型权重 — Fine-tuning</div>
+          <div class="layer-desc">
+            直接修改模型参数。持久性最强（嵌入权重），但<strong>可移植性为零</strong>。模型版本一旦过期，全部投入归零。成本高，周期长，需要大量标注数据。
+          </div>
+        </div>
+      </div>
+      <div class="layer layer-sweet" id="sweet-spot">
+        <div class="layer-num">L2</div>
+        <div class="layer-content">
+          <div class="layer-title">推理系统 — Harness / Agentic System</div>
+          <div class="layer-desc">
+            在模型之上构建推理策略、工具链、验证机制。<strong>可移植</strong>：底层模型替换后，系统继续工作且自动受益于新模型能力。智能存在于代码和架构中，不在权重里。
+          </div>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">L3</div>
+        <div class="layer-content">
+          <div class="layer-title">上下文 — Prompt Engineering / ICL</div>
+          <div class="layer-desc">
+            通过提示词和上下文示例引导模型行为。最轻量、最灵活，但<strong>能力天花板最低</strong>。自动化 prompt 优化（如 DSPy）在此层运作。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note note-ok">
+      <div class="note-label">甜蜜点在 L2</div>
+      L3（prompt engineering）人人都在做，但天花板有限。L1（fine-tuning）投入最重，风险最高。<strong>L2 是被严重低估的中间层</strong>——它把智能编码在可移植的推理策略中，而非不可移植的模型权重中。<br><br>
+      在 Poetiq 的 DeepMind 时期论文中，手动优化 prompt 只让性能从 0% 提升到 5%。加入 L2 层的推理策略后，性能从 <strong>5% 跳到 95%</strong>。这是 19 倍的差距——不在同一个数量级。
+    </div>
+
+    <div class="quote">
+      <p>
+        Everybody's out there doing some amount of automated prompt optimization. That will get you some performance improvements, but it's very far from everything you can get if you actually think about reasoning strategies that are really going to be written in code rather than in just better prompts.
+      </p>
+      <div class="q-attr">— Ian Fischer</div>
+    </div>
+
+    <p>
+      关键区分：L2 层的推理策略是<strong>代码</strong>，跟"更好的提示词"完全不同。多步推理框架、验证循环、失败-回退机制、结果聚合策略——全部用编程语言写成。
+    </p>
+
+    <details>
+      <summary>平台层类比：为什么 L2 是最有价值的位置</summary>
+      <div class="expand-body">
+        在任何技术栈中，最有价值的位置是把应用层与基础设施层解耦的<strong>抽象层</strong>。操作系统之于硬件、虚拟机之于物理服务器、Kubernetes 之于容器——每一个成功的抽象层都遵循同一个模式：让上层应用不关心下层实现。<br><br>
+        Harness 正是 AI 应用栈中的这个抽象层。它让你的领域智能不关心底下跑的是 GPT、Claude 还是 Gemini。而历史反复证明：<strong>占据抽象层的玩家，最终比占据应用层和基础设施层的玩家都更有价值。</strong>
+      </div>
+    </details>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §4 EVIDENCE ═══════════════════════ -->
+  <section id="evidence">
+    <div class="section-num">04</div>
+    <h2>用数据说话</h2>
+    <p class="section-hook">7 人团队，不到 $100K，两次击败前沿实验室的最佳模型</p>
+
+    <h3>ARC AGI V2</h3>
+    <p>
+      2024 年 12 月，Poetiq 走出隐身模式。Gemini 3 Deep Think 刚以 45% 的成绩霸占排行榜顶端。两天后，Poetiq 发布了结果。
+    </p>
+
+    <div class="stat-grid">
+      <div class="stat-item">
+        <div class="stat-num">54%</div>
+        <div class="stat-label">Poetiq 得分<br>（vs Gemini 的 45%）</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">$32</div>
+        <div class="stat-label">每道题成本<br>（vs Gemini 的 ~$70）</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">½</div>
+        <div class="stat-label">使用更便宜的<br>Gemini 3 Pro 作为底座</div>
+      </div>
+    </div>
+
+    <p>
+      注意反直觉的部分：Poetiq 没有使用 Gemini 3 Deep Think（昂贵的推理模型），而是使用了<strong>更便宜的 Gemini 3 Pro</strong>——然后通过推理系统让它比 Deep Think 表现更好，且成本只有一半。
+    </p>
+
+    <h3>Humanity's Last Exam</h3>
+    <p>
+      2500 道由各领域专家编写的极难题目，旨在挑战博士级知识。AI 尚未通过。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">Claude Opus 4.6</div>
+        53.1%<br>
+        Anthropic 最强模型<br>
+        训练成本：数亿美元
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-right">
+        <div class="v-label">Poetiq</div>
+        <strong>55%</strong><br>
+        7 人团队<br>
+        优化成本：<strong>< $100K</strong>
+      </div>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">高跷原理</div>
+      Ian Fischer 用了一个精准的比喻：前沿模型是地面，Poetiq 是<strong>高跷（stilts）</strong>。无论地面升高多少，穿着高跷的人总是更高。而且高跷与地面完全解耦——换一块地面（换一个模型），高跷照样工作。<br><br>
+      这两组数据展示了同一个结构性优势的两个维度：ARC AGI 证明 harness 能提升<strong>推理能力</strong>，Humanity's Last Exam 证明它能提升<strong>知识提取能力</strong>。
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ §5 META-SYSTEM ═══════════════════════ -->
+  <section id="meta-system">
+    <div class="section-num">05</div>
+    <h2>递归自改进：Harness 自己造 Harness</h2>
+    <p class="section-hook">真正的护城河在更高一层——能自动生成推理系统的元系统</p>
+
+    <p>
+      如果 L2 层（推理系统）如此有价值，难道不能手动构建吗？当然可以。问题在于效率和天花板。
+    </p>
+
+    <div class="quote">
+      <p>
+        We have a recursively self-improving system which we call the Poetiq Meta System. The output of that system is systems that solve hard problems.
+      </p>
+      <div class="q-attr">— Ian Fischer</div>
+    </div>
+
+    <p>
+      区分两个层次：
+    </p>
+
+    <div class="principle-grid">
+      <div class="principle">
+        <div class="principle-tag">Object Level</div>
+        <h4>推理系统本身</h4>
+        <p>
+          代码、prompt、数据、工具链——组成一个解决特定问题的 agentic system。人可以手动构建。
+        </p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">Meta Level</div>
+        <h4>生成推理系统的系统</h4>
+        <p>
+          Poetiq Meta System：自动搜索、评估、改进推理策略的递归优化器。更快、更便宜、且能发现人类不会想到的策略。
+        </p>
+      </div>
+    </div>
+
+    <p>
+      手动构建 harness 是 L2 层的第一步。但 Poetiq 在做的是<strong>让 L2 层的构建本身自动化</strong>——用 AI 来优化 AI 的推理架构。这是一个正反馈回路：元系统改进推理策略 → 推理策略产出更好的结果 → 更好的结果反馈给元系统 → 元系统进一步改进。
+    </p>
+
+    <div class="proto-flow">
+      <div class="proto-node proto-active">Meta System</div>
+      <div class="proto-node proto-ship">生成推理策略</div>
+      <div class="proto-node proto-active">评估结果</div>
+      <div class="proto-node proto-ship">改进策略</div>
+      <div class="proto-node proto-active">↻ 递归</div>
+    </div>
+
+    <h3 id="wrong-example">错误的例子</h3>
+    <p>
+      对话中一个令人深思的细节：在 ARC AGI 优化过程中，元系统自动生成了一组 few-shot 示例，其中有一个<strong>是错的</strong>。
+    </p>
+    <p>
+      团队没有修正它。
+    </p>
+
+    <div class="quote">
+      <p>
+        One of the examples is actually wrong, but we didn't change it. We're like, well, this is the thing that it output, we'll just leave it be. We don't want to go in and monkey around with things.
+      </p>
+      <div class="q-attr">— Ian Fischer</div>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">深层启示</div>
+      这打破了一个根深蒂固的假设：<strong>"正确的示例才能教出正确的行为"</strong>。<br><br>
+      元系统追求的是"统计意义上的最优输出"，人类可解释性只是附带品。一个看起来"错误"的示例可能在注意力机制层面起到了某种正则化或对比学习的作用——人类理解不了为什么它有效，但它有效。<br><br>
+      这暗示了一个更大的趋势：<strong>当优化者本身是 AI 时，"人类可理解性"已经不再是最优解的必要条件。</strong>我们正在进入一个人类无法完全审查优化结果的时代——结果可能完全正确，只是"对"的定义超出了人类直觉。
+    </div>
+
+    <details>
+      <summary>"了解你的数据"法则正在被改写</summary>
+      <div class="expand-body">
+        Ian Fischer 指出了一个机器学习范式的转变。传统 ML 的金科玉律是"你必须了解你的数据"。但在递归自改进系统中，这个责任被外包给了 AI 本身——AI 负责理解数据、找到失败模式、发现有效的推理策略。<br><br>
+        <strong>"Historically in machine learning, the rule was you have to know your dataset really well. But now we're outsourcing that to the AI itself."</strong><br><br>
+        人的角色从"亲自理解数据"转向"设计能理解数据的系统"。这是一个更高阶的抽象——控制论意义上的从直接控制到间接控制的转变。
+      </div>
+    </details>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §6 IMPLICATIONS ═══════════════════════ -->
+  <section id="implications">
+    <div class="section-num">06</div>
+    <h2>对 Builder 的启示</h2>
+    <p class="section-hook">四条架构原则——如何让你的 AI 投资不因模型迭代而归零</p>
+
+    <div class="principle-grid">
+      <div class="principle">
+        <div class="principle-tag">原则 1</div>
+        <h4>把价值放在可移植的层</h4>
+        <p>
+          你的领域知识、推理策略、验证逻辑——这些应该存在于模型之上的代码中，而非模型权重内。代码可以迁移到任何新模型；权重不行。
+        </p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">原则 2</div>
+        <h4>为模型升级而设计</h4>
+        <p>
+          把"底层模型可替换"作为架构的硬性约束。如果你的系统在换模型时需要大量重写，说明你的耦合太紧。高跷应该能站在任何地面上。
+        </p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">原则 3</div>
+        <h4>推理策略 > Prompt 优化</h4>
+        <p>
+          自动化 prompt 优化只是起点。真正的性能飞跃来自 L2 层——用代码实现的多步推理、验证回路、失败恢复。5% vs 95% 的差距在这里。
+        </p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">原则 4</div>
+        <h4>拥抱模型进步，而非对抗</h4>
+        <p>
+          Fine-tuning 让你与模型进步对抗（新模型使旧微调失效）。Harness 让你与模型进步对齐（新模型让旧 harness 更强）。选择与最强大的趋势站在同一边。
+        </p>
+      </div>
+    </div>
+
+    <h3>何时 fine-tuning 仍然合理</h3>
+    <p>
+      公平起见：fine-tuning 在某些场景下仍然合理。
+    </p>
+
+    <ol class="causal">
+      <li><strong>延迟极端敏感</strong>——harness 的多步推理增加延迟。如果你的场景需要亚秒级响应且每毫秒都算钱，fine-tuned 的小模型可能仍有优势。</li>
+      <li><strong>部署环境受限</strong>——边缘设备、离线场景、安全敏感环境。此时 fine-tuned 小模型的部署灵活性是必需的。</li>
+      <li><strong>模型层稳定</strong>——如果你使用的是开源模型且不追赶前沿，模型"过期"的压力减小。但即使如此，开源模型的迭代速度也在加快。</li>
+    </ol>
+
+    <div class="note note-neutral">
+      <div class="note-label">现实选择</div>
+      对大多数在前沿模型上构建应用的团队来说，fine-tuning 应该是<strong>最后手段</strong>，而非默认选项。先穷尽 L3（prompt engineering）和 L2（推理系统）的空间，只有在这两层都无法满足需求时，才考虑 L1（fine-tuning）。而且要做好心理准备：这笔投入的保质期可能只有几个月。
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ TAKEAWAY ═══════════════════════ -->
+  <div class="takeaway" id="takeaway-section">
+    <div class="thesis-label">Takeaway</div>
+    <p>
+      AI 应用的竞争发生在模型之上——模型层是几家万亿美金公司的游戏，你赢不了。真正的战场在于<strong>谁能在模型之上构建最有效的推理系统</strong>。<br><br>
+      Fine-tuning 是旧范式的惯性延续：修改底层来适应上层。正确的架构方向恰好相反——<strong>保持底层可替换，在上层积累可移植的智能</strong>。<br><br>
+      Poetiq 的 7 人团队用不到 $100K 超越了数亿美元训练出的前沿模型。他们没有更多资源，他们<strong>站对了层</strong>。
+    </p>
+  </div>
+
+  <div style="margin: 0 0 48px; padding: 24px; border: 1px solid var(--border); border-radius: 14px;">
+    <div style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;">延伸阅读</div>
+    <a href="cc.html" style="display: block; text-decoration: none; color: inherit; margin-bottom: 16px;">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">Less Code, More Model →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">同一个原则的产品实践。Claude Code 的团队把产品做薄、让模型能力直达用户——每次模型升级，删代码而非加代码。</div>
+    </a>
+    <a href="ctl.html" style="display: block; text-decoration: none; color: inherit; padding-top: 16px; border-top: 1px solid var(--border);">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">Closing the Loop →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">Poetiq 的递归自改进是控制论正反馈回路的具体实例。反馈回路一旦闭合，加速就是必然。</div>
+    </a>
+  </div>
+
+  <footer>
+    基于 <a href="https://www.youtube.com/watch?v=UPGB-hsAoVY" target="_blank">YC Light Cone × Ian Fischer (Poetiq)</a> 对话重新演绎
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
