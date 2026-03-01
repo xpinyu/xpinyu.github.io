@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="沟通和 AI 对齐是同一个数学问题——都是从低维信号反推高维源的不适定逆问题。为什么人与人之间的'对不齐'是信息论的硬约束，以及这和 RLHF 的结构同构。">
+<title>The Inverse Problem</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --ochre: #E8B830;
+    --blue: #5A7A90;
+    --blue-soft: #EAF0F5;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem; font-weight: 500;
+    line-height: 1.25; letter-spacing: -0.02em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 580px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+
+  .thesis {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B830; font-weight: 600; }
+  .thesis .evidence {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem; opacity: 0.65; line-height: 1.7;
+  }
+  .thesis .evidence em { font-style: normal; opacity: 0.85; }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem; font-weight: 600;
+    line-height: 1.3; letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg);   border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 24px 0; font-size: 0.85rem;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .versus .v-left  { background: var(--red-bg); }
+  .versus .v-left .v-label  { color: var(--red); }
+  .versus .v-right { background: var(--green-bg); }
+  .versus .v-right .v-label { color: var(--green); }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 700; color: var(--text-3);
+    background: var(--bg); font-size: 0.75rem;
+  }
+
+  .causal {
+    margin: 24px 0; padding: 0; list-style: none;
+    counter-reset: cause;
+  }
+  .causal li {
+    counter-increment: cause; position: relative;
+    padding: 8px 0 8px 44px; font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .causal li::before {
+    content: counter(cause); position: absolute;
+    left: 0; top: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #1A2540; color: #F5F0EB;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .iso-table {
+    width: 100%; border-collapse: collapse;
+    margin: 24px 0; font-size: 0.82rem;
+  }
+  .iso-table thead th {
+    text-align: left; padding: 10px 14px;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-3); border-bottom: 2px solid var(--border);
+  }
+  .iso-table tbody td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .iso-table tbody tr:last-child td { border-bottom: none; }
+
+  .principle-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px; margin: 28px 0;
+  }
+  @media (max-width: 600px) { .principle-grid { grid-template-columns: 1fr; } }
+  .principle {
+    padding: 24px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .principle:hover { border-color: #D0C8BD; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .principle-tag {
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  .principle h4 {
+    font-size: 0.95rem; font-weight: 700;
+    margin-bottom: 10px; line-height: 1.4;
+  }
+  .principle p { font-size: 0.82rem; color: var(--text-2); line-height: 1.7; margin-bottom: 0; }
+
+  details {
+    margin: 20px 0; border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+  }
+  details summary {
+    padding: 14px 20px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 500;
+    color: var(--text-2); background: #F2EDE4;
+    user-select: none; list-style: none;
+    transition: background 0.15s;
+  }
+  details summary:hover { background: #EAE5DC; }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: '+ '; font-weight: 700; color: var(--text-3); }
+  details[open] summary::before { content: '\2212 '; }
+  details .expand-body {
+    padding: 18px 20px; font-size: 0.85rem;
+    line-height: 1.8; color: var(--text-2);
+  }
+
+  code {
+    font-family: var(--mono); font-size: 0.82em;
+    background: #EDE8E0; padding: 2px 7px; border-radius: 5px;
+  }
+
+  .takeaway {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,246,238,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229,221,208,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+  footer a { color: var(--text-3); border-bottom: 1px solid var(--border); text-decoration: none; }
+  footer a:hover { color: var(--text-1); }
+
+  a:focus-visible,
+  details summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .principle-grid { grid-template-columns: 1fr; }
+    .iso-table { font-size: 0.75rem; }
+    .iso-table thead th,
+    .iso-table tbody td { padding: 8px 10px; }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← pinyu.ai</a>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">Core Thesis</a>
+  <a href="#illusion">传输幻觉</a>
+  <a href="#dirty-source">脏信源</a>
+  <a href="#lossy-is-right">有损即正义</a>
+  <a href="#same-equation">同一个方程</a>
+  <a href="#takeaway-section">Takeaway</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Information Theory × AI Alignment</div>
+    <h1>The Inverse Problem</h1>
+    <p class="subtitle">
+      人与人"对不齐"，和 AI 对齐困难，是同一个数学问题。沟通从来就不是传输——它是两个不透明系统之间永不收敛的近似校准。
+    </p>
+    <div class="meta">
+      <span>pinyu · 2026.03</span>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════ THESIS ═══════════════════════ -->
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">Core Thesis</div>
+    <p>
+      沟通的默认结果是失败，不是成功。不是因为不够真诚，而是因为沟通在数学上是一个<strong>逆问题</strong>——从低维信号反推高维源，解不唯一。你用自己的先验约束解空间，对方用对方的。同一句话，两个解。RLHF 从人类偏好反推价值函数，听你说话的人从你的话反推你的意图——<strong>同一个方程，同一套病态</strong>。
+    </p>
+    <div class="evidence">
+      <em>核心机制</em>：逆问题 · 率失真理论 · Ashby 必要多样性定律
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ §1 传输幻觉 ═══════════════════════ -->
+  <section id="illusion">
+    <div class="section-num">01</div>
+    <h2>传输幻觉</h2>
+    <p class="section-hook">你以为的"说清楚"和实际发生的事</p>
+
+    <p>
+      你说"我最近状态不太好"。对方说"别想太多，好好休息"。你想要的是被理解，不是被建议。对方觉得已经给了关心。没有人做错了什么。但沟通失败了。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">你以为的</div>
+        想法 → 语言 → 理解。线性的，确定的。"说清楚就行了。"
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-right">
+        <div class="v-label">实际发生的</div>
+        高维状态 → 有损压缩 → 低维符号 → 不同先验解压 → 不同重建
+      </div>
+    </div>
+
+    <p>
+      沟通的数学结构是一个<strong>逆问题</strong>。
+    </p>
+    <p>
+      <strong>正向过程</strong>：你的心智状态映射到你的话语——多对一。无数种内部状态都可以产生同一句"状态不好"。身体透支、心理倦怠、社交疲惫、渴望被关注——输出相同。
+    </p>
+    <p>
+      <strong>逆向过程</strong>：对方从你的话反推你的心智状态——一对多，数学上叫<strong>不适定问题</strong>。唯一的出路是正则化——用先验假设约束解空间。对方的经验、情绪、对你的心智模型，就是正则化项。
+    </p>
+    <p>
+      但对方的先验不等于你的事实。不同的正则化，同一个不适定问题，两个不同的解——这不是沟通失败，这是这类问题的<strong>数学必然</strong>。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">预测编码 · Predictive Processing</div>
+      Friston 的自由能原理：大脑不是被动接收信号的设备，而是主动生成预测的模型。你"听"到的 = 你的预测 + 残差修正。先验越强，残差信号越被压低。<br><br>
+      <strong>越熟悉 → 模型越固化 → 先验越强 → 对新信息越迟钝。</strong>你不是在听对方说话——你在听自己脑中的模型说话。
+    </div>
+
+    <div class="note note-neutral">
+      <div class="note-label">率失真理论 · Rate-Distortion</div>
+      Shannon (1959) 的硬约束：给定有限信道容量，失真不可避免。日常语言约 3000 词，你的主观体验——情绪梯度、身体感觉、时间纹理——维度远超这个数量级。有限带宽的离散符号，传输连续的高维信号。失真不是态度问题，是信息论的基本定理。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §2 脏信源 ═══════════════════════ -->
+  <section id="dirty-source">
+    <div class="section-num">02</div>
+    <h2>脏信源</h2>
+    <p class="section-hook">连发送端都不知道自己在发什么</p>
+
+    <p>
+      前面的分析有一个隐含前提：发送端有一个清晰的信号，传输过程中被扭曲了。
+    </p>
+    <p>
+      这个前提是错的。
+    </p>
+    <p>
+      Nisbett & Wilson (1977) 的经典发现：<strong>人对自己心理过程的内省报告，往往不是感知，而是事后编造。</strong>被试解释自己的选择时，给出的理由与实际操纵变量完全无关——但说得极其自信。
+    </p>
+    <p>
+      意识体验本身就是大脑对自身状态的一个简化的、延迟的、事后合理化的渲染。你不是可靠的自我报告者。
+    </p>
+
+    <h3>真实的传输链</h3>
+
+    <p>
+      不是四步，是六步——
+    </p>
+
+    <ol class="causal">
+      <li>实际的神经动力学</li>
+      <li><strong>有损</strong>：你的意识体验（大脑对自身状态的低分辨率渲染）</li>
+      <li><strong>有损</strong>：语言编码（3000 词 vs 无限维体验）</li>
+      <li><strong>噪声</strong>：信道传输（无纠错协议——TCP 有校验和重传，人类对话没有）</li>
+      <li><strong>有损</strong>：对方的语言解码（不同先验的正则化）</li>
+      <li><strong>有损</strong>：对方的意识体验</li>
+    </ol>
+
+    <p>
+      四次有损变换，一次噪声注入。<strong>信源就是脏的</strong>。你传输的不是"真实状态"，而是大脑对自身的低分辨率渲染。对方接收到的，是对一个已经失真的信号的再次失真。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">为什么你在吵架中途改口</div>
+      你经常在争吵中途突然意识到"等一下，我真正生气的不是这件事"——那是意识模型在实时更新，之前的版本本来就不精确。大脑在原理上无法在表达之前给出完全准确的自我报告。<strong>精确性在表达过程中涌现，不在表达之前。</strong>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §3 有损即正义 ═══════════════════════ -->
+  <section id="lossy-is-right">
+    <div class="section-num">03</div>
+    <h2>有损即正义</h2>
+    <p class="section-hook">为什么完美沟通反而会摧毁你的关系</p>
+
+    <p>
+      思想实验：假设一种技术让对方实时看到你所有内部状态——每一个闪念、每一个微情绪、每一个你三秒后就否定的念头。
+    </p>
+    <p>
+      <strong>这个关系大概率不会存活。</strong>
+    </p>
+    <p>
+      大脑每天产生大量你自己都不认可的想法——转瞬即逝的不耐烦、无意义的比较、立刻否定的冲动。语言的有损压缩充当了<strong>编辑过滤器</strong>——它只传输你反思后愿意认可的部分。
+    </p>
+    <p>
+      Gilbert 的情感预测研究表明，人无法准确预测自己五分钟后的情绪。完全透明意味着对方在对你自己都不认可的瞬态噪声做出反应。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">太多损耗</div>
+        疏离。"你永远不理解我。"<br>
+        连接断开，两个人活在各自的模型里。
+      </div>
+      <div class="v-mid">←&nbsp;最优区间&nbsp;→</div>
+      <div class="v-side v-right">
+        <div class="v-label">太少损耗</div>
+        灾难性透明。"我不该知道这些。"<br>
+        噪声淹没信号，信任地基崩塌。
+      </div>
+    </div>
+
+    <p>
+      沟通的损耗不全是 bug，有一部分是 feature。真正的问题不是"如何实现零失真"，而是<strong>"对一段关系而言，最优的失真量是多少？"</strong> 最优解不在零点。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">隐含沟通 · Relevance Theory</div>
+      Sperber & Wilson 的关联理论：人类沟通的大量价值发生在<strong>隐含层</strong>。你含蓄地说了一句话，对方成功推断出你的意图——这个推断过程本身就是亲密感的来源。"你懂我"不来自复述，而来自对方在你没有明说时抵达了正确的解读。完全显式的沟通反而发射一个元信号："我不信任你的推断能力。"
+    </div>
+
+    <details>
+      <summary>沟通失败本身就是数据</summary>
+      <div class="expand-body">
+        Watzlawick 的沟通公理 (1967)：<strong>你不可能不沟通。</strong>沉默、回避、"算了"都是沟通——传递的是关系层的信息，而非内容层。<br><br>
+        更深一层：你们"对不齐"的具体方式——对方总是把你的犹豫解读为否定，你总是把对方的追问解读为质疑——这个 pattern 本身是高信息量的数据，它精确映射了两个先验分布之间的差异结构。<br><br>
+        大多数人试图消除沟通失败。更有效的操作是：<strong>读取沟通失败。</strong>
+      </div>
+    </details>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §4 同一个方程 ═══════════════════════ -->
+  <section id="same-equation">
+    <div class="section-num">04</div>
+    <h2>同一个方程</h2>
+    <p class="section-hook">从日常对话到 RLHF——逆问题的双重面孔</p>
+
+    <p>
+      现在把镜头从日常沟通拉远到 AI 实验室。你会看到同一个方程。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">人与人</div>
+        你试图传递意图 → 对方通过自己的先验解码 → 偏差
+      </div>
+      <div class="v-mid">=</div>
+      <div class="v-side v-right">
+        <div class="v-label">人类和 AI</div>
+        人类传递价值观 → AI 通过训练分布解码 → 偏差
+      </div>
+    </div>
+
+    <p>
+      RLHF 的核心操作：给 AI 看两个输出，人类选一个。AI 从这个选择信号<strong>反推</strong>人类的奖励函数。
+    </p>
+    <p>
+      同一个逆问题——从低维偏好信号反推高维价值体系。解不唯一。正则化来自训练数据分布。不同的正则化 → 不同的解 → misalignment。
+    </p>
+
+    <h3>结构同构</h3>
+
+    <table class="iso-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>人与人</th>
+          <th>人类与 AI</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>正向过程</strong></td>
+          <td>心智状态 → 话语</td>
+          <td>价值观 → 可观测行为</td>
+        </tr>
+        <tr>
+          <td><strong>逆向过程</strong></td>
+          <td>话语 → 推断心智状态</td>
+          <td>行为/偏好 → 推断价值函数</td>
+        </tr>
+        <tr>
+          <td><strong>不适定原因</strong></td>
+          <td>多种状态 → 同一句话</td>
+          <td>多种价值函数 → 同一偏好排序</td>
+        </tr>
+        <tr>
+          <td><strong>正则化来源</strong></td>
+          <td>对方的人生经验</td>
+          <td>训练数据分布</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      RLHF 继承了前三节的全部缺陷——
+    </p>
+
+    <div class="principle-grid">
+      <div class="principle">
+        <div class="principle-tag">继承自 §02</div>
+        <h4>信源有损</h4>
+        <p>人类自己不知道自己要什么——你没法给 AI 一个你自己都没有的奖励函数。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">继承自 §01</div>
+        <h4>信道有损</h4>
+        <p>二选一的偏好信号压缩了多少维度的价值观？远不够反推完整的价值体系。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">继承自 §03</div>
+        <h4>零失真是灾难</h4>
+        <p>完美执行表面偏好可能背离深层价值。Goodhart's Law：当度量变成目标，它就不再是好的度量。</p>
+      </div>
+    </div>
+
+    <p>
+      Stuart Russell 的辅助博弈框架给出了对应策略：AI 应该对人类偏好<strong>保持不确定性</strong>，而不是锁定它认为正确的解——和前面的结论一样：目标不是消除歧义，而是在不确定性中持续校准。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">Ashby 必要多样性定律</div>
+      有效的调节器必须拥有不少于被调节系统的多样性 (Ashby, 1956)。你对任何一个人的心智模型不过几百条经验规则，而对方有 860 亿神经元——缺口是几个数量级。<br><br>
+      LLM 用数千亿参数建模人类语言行为的统计结构，在参数量级上第一次接近 Ashby 的门槛。这或许解释了一个令人不安的现象：<strong>它有时比身边的人更让你觉得"被懂了"</strong>。不是因为它真懂，是因为它的模型复杂度更接近必要多样性的要求。
+    </div>
+
+    <details>
+      <summary>最深一层：Maturana 的结构耦合</summary>
+      <div class="expand-body">
+        Maturana & Varela 的核心论证：生命系统是操作上封闭的——外部环境不能注入任何东西到系统内部，只能<strong>触发</strong>系统按自身结构产生变化。<br><br>
+        你从来没有把意义"传递"给任何人。你制造了一个声波扰动，对方的神经系统按自身结构对扰动做出响应。两个封闭系统通过反复相互扰动，可以变得"结构耦合"——行为趋于相关，但内部状态永远不会相同。<br><br>
+        这解释了两个现象：长期相处的人越来越像（动力学趋同），以及 LLM 的输出看起来像人类（通过训练与人类输出产生结构耦合——行为相似，内部表征完全不同）。
+      </div>
+    </details>
+  </section>
+
+  <!-- ═══════════════════════ TAKEAWAY ═══════════════════════ -->
+  <div class="takeaway" id="takeaway-section">
+    <div class="thesis-label">Takeaway</div>
+    <p>
+      你从未和任何人沟通过。<br><br>
+      你做的一直是<strong>近似校准</strong>——两个不透明系统通过有损信道互相扰动，在永不完全重叠的状态空间里逼近足够好的近似。这个结构支配着人与人之间的每一次误解，也支配着 RLHF 的困难。<br><br>
+      目标从来不是零失真。是<strong>缩短反馈回路</strong>——更快发现偏差，更小步长修正，对残差更大容忍。认清这一点不是悲观，是开始做得更好的前提。
+    </p>
+  </div>
+
+  <div style="margin: 0 0 48px; padding: 24px; border: 1px solid var(--border); border-radius: 14px;">
+    <div style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;">延伸阅读</div>
+    <a href="ctl.html" style="display: block; text-decoration: none; color: inherit; margin-bottom: 16px;">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">Closing the Loop →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">大多数人在评估 LLM 的思考能力，却忽略了智能的真正来源：反馈回路。当 Agent 闭合了感知-行动环路，一切都变了。</div>
+    </a>
+    <a href="tci.html" style="display: block; text-decoration: none; color: inherit; padding-top: 16px; border-top: 1px solid var(--border);">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">The Cognitive Inversion →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">当执行被完全外包，「理解问题」本身成了唯一的生产力。AI 编程三个时代背后的认知心理学。</div>
+    </a>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
