@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="实战表现最好的 AI Agent 收敛到了同一个极简架构。18 个模型的控制实验解释了为什么——上下文越长，智能越短。解法是一条三十年前的 UX 原则：渐进式披露。">
+<title>The Rot</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --ochre: #E8B830;
+    --blue: #5A7A90;
+    --blue-soft: #EAF0F5;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem; font-weight: 500;
+    line-height: 1.25; letter-spacing: -0.02em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 580px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+
+  .thesis {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B830; font-weight: 600; }
+  .thesis .evidence {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem; opacity: 0.65; line-height: 1.7;
+  }
+  .thesis .evidence em { font-style: normal; opacity: 0.85; }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem; font-weight: 600;
+    line-height: 1.3; letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  blockquote {
+    margin: 28px 0; padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.03);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.95rem; line-height: 1.85;
+  }
+  blockquote p { margin-bottom: 0; }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg);   border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 24px 0; font-size: 0.85rem;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .versus .v-left  { background: var(--green-bg); }
+  .versus .v-left .v-label  { color: var(--green); }
+  .versus .v-right { background: var(--red-bg); }
+  .versus .v-right .v-label { color: var(--red); }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 700; color: var(--text-3);
+    background: var(--bg); font-size: 0.75rem;
+  }
+
+  .iso-table {
+    width: 100%; border-collapse: collapse;
+    margin: 24px 0; font-size: 0.82rem;
+  }
+  .iso-table thead th {
+    text-align: left; padding: 10px 14px;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-3); border-bottom: 2px solid var(--border);
+  }
+  .iso-table tbody td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .iso-table tbody tr:last-child td { border-bottom: none; }
+  .iso-table tbody td:first-child { font-weight: 600; white-space: nowrap; }
+
+  .data-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px; margin: 28px 0;
+  }
+  @media (max-width: 600px) { .data-grid { grid-template-columns: 1fr; } }
+  .data-card {
+    padding: 24px; border-radius: 14px;
+    border: 1px solid var(--border); background: var(--surface);
+    text-align: center;
+  }
+  .data-card .data-num {
+    font-family: var(--serif);
+    font-size: 2rem; font-weight: 600;
+    color: var(--accent); line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .data-card .data-label {
+    font-size: 0.72rem; color: var(--text-3);
+    line-height: 1.5;
+  }
+
+  .takeaway {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  code {
+    font-family: var(--mono); font-size: 0.82em;
+    background: #F0EBE2; padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,246,238,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229,221,208,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+  footer a { color: var(--text-3); border-bottom: 1px solid var(--border); text-decoration: none; }
+  footer a:hover { color: var(--text-1); }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .iso-table { font-size: 0.75rem; }
+    .iso-table thead th,
+    .iso-table tbody td { padding: 8px 10px; }
+    .data-grid { grid-template-columns: 1fr; }
+    blockquote { padding: 16px 20px; }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← pinyu.ai</a>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">Core Thesis</a>
+  <a href="#harness">Harness</a>
+  <a href="#rot">Context Rot</a>
+  <a href="#disclosure">渐进式披露</a>
+  <a href="#blindspot">盲点</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Context Engineering</div>
+    <h1>The Rot</h1>
+    <p class="subtitle">
+      上下文越长，智能越短。两条独立的证据线交汇于同一个被忽略的真相。
+    </p>
+    <div class="meta">
+      <span>pinyu · 2026.03</span>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════ THESIS ═══════════════════════ -->
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">Core Thesis</div>
+    <p>
+      实战表现最好的 AI Agent 收敛到了同一个极简架构——一个 while 循环。18 个模型的控制实验揭示了原因：<strong>上下文越长，智能越短。</strong>解法是一条三十年前的 UX 原则：<strong>渐进式披露。</strong>
+    </p>
+    <div class="evidence">
+      <em>证据线</em>：Anthropic · Cursor · Manus · Vercel · LangChain · Chroma Research (18 models, 194k+ LLM calls)
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ §1 Harness ═══════════════════════ -->
+  <section id="harness">
+    <div class="section-num">01</div>
+    <h2>Harness</h2>
+    <p class="section-hook">脚手架决定智能</p>
+
+    <p>
+      2025 年底，Vercel 做了一个违反直觉的决定：删掉 Agent 80% 的工具。
+    </p>
+    <p>
+      Token 从 145k 降到 67k。步骤从 100 降到 19。延迟从 12 分钟降到两分半。<strong>Agent 从无法完成任务——变成了顺利完成。</strong>
+    </p>
+    <p>
+      少给了 80%，多做了 100%。
+    </p>
+    <p>
+      如果这是孤例，不过是个趣闻。但 2026 年初，一个趋势已经无法忽视：Claude Code、Cursor、Manus——当下最成功的 AI Agent 产品，架构上收敛到了同一个极简结构。
+    </p>
+
+    <div class="note note-neutral">
+      <div class="note-label">The Loop</div>
+<pre style="font-family: var(--mono); font-size: 0.8rem; background: #1A2540; color: #F5F0EB; padding: 16px 20px; border-radius: 8px; margin: 8px 0 16px; line-height: 1.9; overflow-x: auto;"><span style="color: #8EC5A0;">while</span> model returns tool_call:
+    result   = <span style="color: #E8B830;">execute</span>(tool_call)
+    context.<span style="color: #E8B830;">append</span>(result)
+    response = <span style="color: #E8B830;">call_model</span>(context)</pre>
+      没有 DAG 编排，没有多角色辩论，没有状态机。<br>模型决定下一步做什么，脚手架只负责执行并返回结果。
+    </div>
+
+    <p>
+      Claude Code、Cursor、Manus、Devin——底层全是这个循环。Anthropic 称之为"模型控制循环"。它把一个跨越漫长上下文的复杂决策，劈碎成一连串短上下文的简单决策。
+    </p>
+
+    <div class="data-grid">
+      <div class="data-card">
+        <div class="data-num">42→78%</div>
+        <div class="data-label">同一模型 (Opus 4.5)<br>仅换脚手架 · CORE-Bench</div>
+      </div>
+      <div class="data-card">
+        <div class="data-num">−46.9%</div>
+        <div class="data-label">Cursor 按需加载<br>token 削减量</div>
+      </div>
+      <div class="data-card">
+        <div class="data-num">0→100%</div>
+        <div class="data-label">Vercel 删除 80% 工具后<br>任务成功率</div>
+      </div>
+    </div>
+
+    <p>
+      Harrison Chase（LangChain）的定义最直接："框架是抽象，脚手架是开箱即用的全套方案。"所有人在比引擎马力，赢家在调方向盘的角度。但为什么更少的信息反而产生更好的结果？
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §2 Context Rot ═══════════════════════ -->
+  <section id="rot">
+    <div class="section-num">02</div>
+    <h2>Context Rot</h2>
+    <p class="section-hook">支持长上下文 ≠ 长上下文效果好</p>
+
+    <p>
+      2025 年 7 月，Chroma Research 发布了一份技术报告：<strong><a href="https://research.trychroma.com/context-rot" target="_blank">Context Rot</a></strong>——上下文腐烂。
+    </p>
+    <p>
+      实验极其克制：<strong>固定任务难度，只增加输入长度。</strong>18 个主流模型，194,480 次调用。
+    </p>
+
+    <div class="note note-problem">
+      <div class="note-label">核心发现</div>
+      <strong>所有模型，性能随输入长度单调下降。无一例外。</strong>即使任务难度完全不变。即使在最简单的复制粘贴任务上。
+    </div>
+
+    <p>
+      这些模型号称百万级 token 窗口，在 NIAH（Needle in a Haystack）基准上接近满分。但 NIAH 本质是字面检索——在干草堆里搜一根已知的针。真实任务几乎从不是字面匹配。当 Chroma 把任务改为<strong>语义匹配</strong>，性能曲线开始塌陷。引入语义相近的干扰项后，退化进一步加剧。
+    </p>
+    <p>
+      最具穿透力的证据来自一个看似荒诞的实验——Repeated Words。
+    </p>
+    <p>
+      任务：给模型一万个 "apple" 中混入一个 "apples"，要求原样输出。零推理，纯复制粘贴。
+    </p>
+    <p>
+      所有模型性能随长度下降。但真正让人停下来的，<strong>是失败的方式</strong>：
+    </p>
+
+    <table class="iso-table">
+      <thead>
+        <tr><th>模型</th><th>失败方式</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Gemini 2.5 Pro</td><td>输出乱码：<code>-\n-\n--\n-\n-</code></td></tr>
+        <tr><td>Claude Opus 4</td><td>拒绝执行——"可能涉及版权材料的复制"</td></tr>
+        <tr><td>GPT-4.1</td><td>直接拒绝——"I'm sorry, but I can't help with that"</td></tr>
+        <tr><td>Qwen3-8B</td><td><em>"I need to chill out. Maybe go to the beach."</em></td></tr>
+      </tbody>
+    </table>
+
+    <p>
+      连复制粘贴都做不好，失败方式又如此离奇——暴露出来的，<strong>是架构本身的边界。</strong>别把它们当数据处理器——它们是注意力驱动的动态系统。输入长度不只改变了数据量，它改变了系统本身的行为。五千个 "golden" 把 Qwen 推入了潜空间的某个完全不同的区域。在那里，它变成了另一个东西。
+    </p>
+
+    <p>
+      不同模型的腐烂方式也不同：
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">Claude 系列</div>
+        不确定时倾向<strong>拒绝回答</strong>。<br>"No answer can be found."<br>宁可不答，不可答错。
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-right">
+        <div class="v-label">GPT 系列</div>
+        不确定时倾向<strong>自信地给出错误答案</strong>。<br>幻觉率最高。<br>总要给一个答案。
+      </div>
+    </div>
+
+    <p>
+      同一个压力源，完全不同的失败路径。腐烂的方式取决于被腐烂的材质。
+    </p>
+
+    <p>
+      更致命的是，长上下文让检索和推理互相侵蚀：
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">Focused · ~300 tokens</div>
+        只给相关片段。模型只需推理。<br><strong>表现优异。</strong>
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-right">
+        <div class="v-label">Full · ~113k tokens</div>
+        给完整对话历史。检索+推理同时发生。<br><strong>性能显著下降。</strong>
+      </div>
+    </div>
+
+    <p>
+      所有模型都能推理——focused input 已经证明了。但当检索和推理被迫在同一个长上下文中发生，两者互相侵蚀。检索消耗了注意力预算，留给推理的不够了。让一个数学天才在安静书房解方程——轻松。让同一个人在嘈杂菜市场解方程，同时还要找一个穿蓝衣服的人——方程没变难，认知资源被分流了。
+    </p>
+    <p>
+      Dex Horthy（<a href="https://paddo.dev/blog/12-factor-agents" target="_blank">"12 Factor Agents"</a>）把阈值划在模型容量的 40%。超过这个点，信噪比退化，Agent 开始犯看似推理错误、实际是信息过载的错误。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §3 渐进式披露 ═══════════════════════ -->
+  <section id="disclosure">
+    <div class="section-num">03</div>
+    <h2>渐进式披露</h2>
+    <p class="section-hook">解法</p>
+
+    <p>
+      如果注意力是有限预算，解法就是分层花它。
+    </p>
+    <p>
+      1990 年代，Nielsen Norman Group 提出了<strong>渐进式披露</strong>（Progressive Disclosure）：只展示用户此刻需要的，其余按需呈现——降低认知负荷，让注意力聚焦。三十年后，这条 UX 原则在 AI Agent 内部找到了新生。
+    </p>
+    <p>
+      核心思路：分层加载。上下文窗口的每个 token 都在竞争注意力——把它当预算花，别当垃圾桶倒。先给轻量索引做路由，确认相关后才加载完整内容。
+    </p>
+    <p>
+      Claude Code 的 Skills 是教科书式的实现：启动时只加载 Skill 名称和描述，几十个 Skill 的元数据占不了多少 token；当用户请求匹配时，才加载完整内容；执行中需要文档和示例，再按需读取。三层渐进——<strong>索引 → 内容 → 支撑材料</strong>——上下文成本随实际使用增长，而非随安装量增长。
+    </p>
+    <p>
+      Cursor 把同样的思路用在工具上：MCP 工具只暴露名称，完整定义按需加载——本质上是 Tool RAG，从工具注册表中只取当前相关的工具。A/B 测试 token 降 46.9%。Manus 每步重写 <code>todo.md</code>，把全局计划锚定在注意力最强的近端区域。
+    </p>
+    <p>
+      而 Claude Code 那个看似什么都不做的 <code>TodoWrite</code>——不执行计算，不修改文件，只让模型写下当前计划。为什么有效？长任务中，上下文持续膨胀，模型逐渐"忘记"自己在做什么。TodoWrite 强制模型重新显式化目标——在不断膨胀的上下文中手动放置一盏灯。
+    </p>
+
+    <div class="note note-ok">
+      <div class="note-label">洞见</div>
+      <strong>这些空操作工具的真正角色，是对注意力衰减的工程修补。</strong>每次"写下计划"，就是把全局目标重新拉回注意力的近端——强制刷新，防止漂移。
+    </div>
+
+    <p>
+      每一步，模型只看当前结果和近期历史。全局靠锚点维持，错误靠即时反馈修正。一个循环，一套分层过滤，足矣。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §4 盲点 ═══════════════════════ -->
+  <section id="blindspot">
+    <div class="section-num">04</div>
+    <h2>盲点</h2>
+    <p class="section-hook">这可能只是过渡方案</p>
+
+    <p>
+      Google 赌的是另一个方向：200 万 token 窗口，让模型自己搞定。如果 Context Rot 是当前架构的弱点而非根本约束，下一代架构——更好的位置编码、更高效的注意力机制——可能大幅上移那个 40% 阈值。Anthropic 自己也承认：Claude Code 的脚手架被设计为"随模型进步而缩减"的。
+    </p>
+    <p>
+      <strong>但 40% 阈值会逼近 100% 吗？</strong>
+    </p>
+    <p>
+      一个迹象值得注意。Chroma 测试的模型跨越三代架构：GPT-3.5 到 4.1，Claude 3.5 到 4，Gemini 2.0 到 2.5。退化幅度在缩小，<strong>但退化本身从未消失。</strong>每一代更好了，没有一代突破"越长越差"的规律。
+    </p>
+    <p>
+      还有一条来自完全不同领域的线索。人类工作记忆——著名的 7±2 项目——几万年来没有显著扩大。大脑走了另一条路——进化出精密的过滤机制：选择性注意、抑制性控制、分块编码。<strong>过滤，而非扩容。</strong>
+    </p>
+    <p>
+      这可能只是类比。也可能暗示一个更深的约束——注意力的有效性与其承载量之间，存在某种不可消除的张力。
+    </p>
+
+    <div class="note note-problem">
+      <div class="note-label">开放问题</div>
+      <strong>Context Rot 是工程问题还是物理约束？</strong>如果下一代架构将衰减曲线压平到可忽略的程度，当前的一切只是历史注脚。如果衰减无法消除——只能缓解——那这就是 Agent 设计的永恒第一原理。
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ TAKEAWAY ═══════════════════════ -->
+  <div class="takeaway" id="takeaway-section">
+    <div class="thesis-label">Coda</div>
+    <p>
+      两条独立的证据线——一条来自工程收敛，一条来自控制实验——交汇于同一个结论：<strong>精心管理模型"看到什么"，比扩大模型"能看多少"更重要。</strong>
+    </p>
+    <p>
+      这对 AI 系统成立。对人类呢？
+    </p>
+    <p>
+      信息过载的时代，你面前的 token 越来越多，但你过滤它们的认知带宽没有增长。
+    </p>
+    <p>
+      模型需要脚手架来过滤。<strong>你需要什么？</strong>
+    </p>
+  </div>
+
+  <div style="margin: 0 0 20px; padding: 20px; border: 1px solid var(--border); border-radius: 14px; font-size: 0.78rem; color: var(--text-3); line-height: 1.7;">
+    <div style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;">Sources</div>
+    <a href="https://research.trychroma.com/context-rot" target="_blank">Chroma Research — Context Rot: How Increasing Input Tokens Impacts LLM Performance (Jul 2025)</a><br>
+    <a href="https://anthropic.com/engineering/effective-harnesses-for-long-running-agents" target="_blank">Anthropic — Effective Harnesses for Long-Running Agents (Jan 2026)</a><br>
+    <a href="https://cursor.com/blog/dynamic-context-discovery" target="_blank">Cursor — Dynamic Context Discovery (Jan 2026)</a><br>
+    <a href="https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus" target="_blank">Manus — Context Engineering for AI Agents (Jul 2025)</a><br>
+    <a href="https://blog.langchain.com/improving-deep-agents-with-harness-engineering" target="_blank">LangChain — Improving Deep Agents with Harness Engineering (Feb 2026)</a><br>
+    <a href="https://arxiv.org/abs/2307.03172" target="_blank">Liu et al. — Lost in the Middle (TACL 2024)</a><br>
+    <a href="https://arxiv.org/abs/2405.15793" target="_blank">Yang et al. — SWE-agent (NeurIPS 2024)</a><br>
+    <a href="https://paddo.dev/blog/12-factor-agents" target="_blank">Horthy — 12 Factor Agents</a><br>
+    <a href="https://www.honra.io/articles/progressive-disclosure-for-ai-agents" target="_blank">Honra — Progressive Disclosure for AI Agents (Feb 2026)</a>
+  </div>
+
+  <div style="margin: 0 0 48px; padding: 24px; border: 1px solid var(--border); border-radius: 14px;">
+    <div style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;">延伸阅读</div>
+    <a href="soi.html" style="display: block; text-decoration: none; color: inherit; margin-bottom: 16px;">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">The Shape of Intelligence →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">凸性、率失真理论、闭环反馈如何统一解释"智能"。本文所用的几何框架的完整推导。</div>
+    </a>
+    <a href="ctl.html" style="display: block; text-decoration: none; color: inherit; padding-top: 16px; border-top: 1px solid var(--border);">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">Closing the Loop →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">从控制论看 Agentic LLM 通往 AGI 的路径。while 循环为什么是 Agent 架构的唯一正确答案。</div>
+    </a>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
