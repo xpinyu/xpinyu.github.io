@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="推理模型学会了在内部制造分歧，却从未学会裁决分歧。一个没有法官的审判，为什么比没有审判更接近正义？深度拆解 Society of Thought 论文——以及论文自己的数据如何讲述了一个比主叙事更精确的故事。">
+<title>Trial Without a Judge</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --ochre: #E8B830;
+    --blue: #5A7A90;
+    --blue-soft: #EAF0F5;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem; font-weight: 500;
+    line-height: 1.25; letter-spacing: -0.02em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 580px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+
+  .thesis {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B830; font-weight: 600; }
+  .thesis .evidence {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem; opacity: 0.65; line-height: 1.7;
+  }
+  .thesis .evidence em { font-style: normal; opacity: 0.85; }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem; font-weight: 600;
+    line-height: 1.3; letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  blockquote {
+    margin: 28px 0; padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.03);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.95rem; line-height: 1.85;
+  }
+  blockquote p { margin-bottom: 0; }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg);   border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 24px 0; font-size: 0.85rem;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .versus .v-left  { background: var(--green-bg); }
+  .versus .v-left .v-label  { color: var(--green); }
+  .versus .v-right { background: var(--red-bg); }
+  .versus .v-right .v-label { color: var(--red); }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 700; color: var(--text-3);
+    background: var(--bg); font-size: 0.75rem;
+  }
+
+  .causal {
+    margin: 24px 0; padding: 0; list-style: none;
+    counter-reset: cause;
+  }
+  .causal li {
+    counter-increment: cause; position: relative;
+    padding: 8px 0 8px 44px; font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .causal li::before {
+    content: counter(cause); position: absolute;
+    left: 0; top: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #1A2540; color: #F5F0EB;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .iso-table {
+    width: 100%; border-collapse: collapse;
+    margin: 24px 0; font-size: 0.82rem;
+  }
+  .iso-table thead th {
+    text-align: left; padding: 10px 14px;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-3); border-bottom: 2px solid var(--border);
+  }
+  .iso-table tbody td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .iso-table tbody tr:last-child td { border-bottom: none; }
+  .iso-table tbody td:first-child { font-weight: 600; white-space: nowrap; }
+
+  .principle-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin: 28px 0;
+  }
+  @media (max-width: 600px) { .principle-grid { grid-template-columns: 1fr; } }
+  .principle {
+    padding: 24px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .principle:hover { border-color: #D0C8BD; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .principle-tag {
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  .principle h4 {
+    font-size: 0.95rem; font-weight: 700;
+    margin-bottom: 10px; line-height: 1.4;
+  }
+  .principle p { font-size: 0.82rem; color: var(--text-2); line-height: 1.7; margin-bottom: 0; }
+
+  .takeaway {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,246,238,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229,221,208,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+  footer a { color: var(--text-3); border-bottom: 1px solid var(--border); text-decoration: none; }
+  footer a:hover { color: var(--text-1); }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .iso-table { font-size: 0.75rem; }
+    .iso-table thead th,
+    .iso-table tbody td { padding: 8px 10px; }
+    blockquote { padding: 16px 20px; }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+
+  .stat-row {
+    display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap;
+  }
+  .stat-card {
+    flex: 1; min-width: 140px;
+    padding: 20px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px;
+    text-align: center;
+  }
+  .stat-card .stat-value {
+    font-family: var(--mono); font-size: 1.4rem;
+    font-weight: 700; line-height: 1.2; margin-bottom: 6px;
+  }
+  .stat-card .stat-label {
+    font-size: 0.7rem; color: var(--text-3);
+    line-height: 1.4;
+  }
+  .stat-neg .stat-value { color: var(--red); }
+  .stat-pos .stat-value { color: var(--green); }
+  .stat-accent .stat-value { color: var(--accent); }
+
+  .dialogue {
+    margin: 28px 0; padding: 0;
+  }
+  .dialogue .d-turn {
+    padding: 16px 20px; margin-bottom: 2px;
+    font-size: 0.9rem; line-height: 1.8;
+    border-radius: 10px;
+  }
+  .dialogue .d-turn:first-child { border-radius: 14px 14px 10px 10px; }
+  .dialogue .d-turn:last-child { border-radius: 10px 10px 14px 14px; }
+  .dialogue .d-q {
+    background: #1A2540; color: #F5F0EB;
+  }
+  .dialogue .d-q .d-speaker { color: var(--ochre); }
+  .dialogue .d-a {
+    background: var(--surface); border: 1px solid var(--border);
+  }
+  .dialogue .d-a .d-speaker { color: var(--accent); }
+  .dialogue .d-speaker {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← pinyu.ai</a>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">Core Thesis</a>
+  <a href="#paradox">悖论</a>
+  <a href="#signals">隐秘信号</a>
+  <a href="#phase-transition">相变</a>
+  <a href="#trial">无法官的审判</a>
+  <a href="#deeper">更深一层</a>
+  <a href="#truman">楚门的世界</a>
+  <a href="#open">未解之问</a>
+  <a href="#confidence">置信度</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Reasoning × Society of Mind</div>
+    <h1>Trial Without a Judge</h1>
+    <p class="subtitle">
+      推理模型学会了在内部制造分歧，却从未学会裁决。但恰恰是这种「无法官的审判」，比「无审判」更接近正义。
+    </p>
+    <div class="meta">
+      <span>pinyu · 2026.03</span>
+      <span>论文：<a href="https://arxiv.org/html/2601.10825v1" target="_blank">Reasoning Models Generate Societies of Thought</a></span>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════ THESIS ═══════════════════════ -->
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">Core Thesis</div>
+    <p>
+      推理模型（DeepSeek-R1、QwQ）的内部思维链展现出多声部辩论结构——一个「思想社会」。但论文自身的统计细节讲述了一个比主叙事更精确的故事：<strong>最「社会化」的行为反而与准确率负相关</strong>。辩论真正产出的，是对错误的修剪。推理需要的，是<strong>一场没有法官的审判</strong>。
+    </p>
+    <div class="evidence">
+      <em>关键证据</em>：SEM 路径分解 · Feature 30939 因果干预 · RL 行为涌现时序 · 人格多样性分析
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ §0 悖论 ═══════════════════════ -->
+  <section id="paradox">
+    <div class="section-num">00</div>
+    <h2>一个悖论</h2>
+    <p class="section-hook">论文最想告诉你的，和数据真正在说的</p>
+
+    <p>
+      Google Paradigms of Intelligence Team 联合芝加哥大学与 Santa Fe Institute 发表的这篇论文，抛出了一个极具冲击力的主张：推理模型之所以更强，是因为它们在思维链中自发形成了多智能体辩论结构。逻辑机器的内部，涌现出了一个「思想社会」。
+    </p>
+    <p>
+      叙事优雅，直觉友好，数据也确实在点头——推理模型的 trace 中对话行为显著多于非推理模型，SEM 总效应 0.26（p < 0.001）。
+    </p>
+    <p>
+      <strong>可翻到论文自己的 Supplementary Table 11，故事突然转了调。</strong>
+    </p>
+
+    <table class="iso-table">
+      <thead>
+        <tr>
+          <th>对话行为</th>
+          <th>对准确率的条件效应</th>
+          <th>p 值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Question &amp; Answering</td>
+          <td style="color: var(--green); font-weight: 700;">+0.009</td>
+          <td>&lt;0.001</td>
+        </tr>
+        <tr>
+          <td>Positive socio-emotional</td>
+          <td style="color: var(--green); font-weight: 700;">+0.020</td>
+          <td>&lt;0.001</td>
+        </tr>
+        <tr>
+          <td>Perspective Shift</td>
+          <td style="color: var(--red); font-weight: 700;">−0.006</td>
+          <td>&lt;0.001</td>
+        </tr>
+        <tr>
+          <td>Conflict of Perspectives</td>
+          <td style="color: var(--red); font-weight: 700;">−0.006</td>
+          <td>0.001</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      视角转换和观点冲突——恰恰是论文最着力渲染的两种「社会化」行为——控制其他变量后，<strong>反而与准确率负相关</strong>。真正贡献正向效应的，是自我提问和正面社会情感角色。
+    </p>
+    <p>
+      「辩论让推理更好」这条主线，被论文自己的数据拧成了问号。
+    </p>
+    <p>
+      我无意推翻论文。相反，我想从这个裂缝走进去，打开一个更精确的故事——推理模型到底在做什么，社会化行为扮演着怎样的真实角色，「思考」这件事的深层结构究竟长什么样。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §1 隐秘信号 ═══════════════════════ -->
+  <section id="signals">
+    <div class="section-num">01</div>
+    <h2>被主叙事掩盖的信号</h2>
+    <p class="section-hook">Simpson 悖论、模型间的裂缝、长度的诅咒</p>
+
+    <h3>汗水与成绩的 Simpson 悖论</h3>
+
+    <p>
+      社会化互动的总效应与推理表现正相关（0.26），最「社会化」的组分条件效应却为负——听起来矛盾？其实逻辑完全自洽。
+    </p>
+    <p>
+      想想运动员与汗水的关系：优秀运动员流汗更多（总体正相关）。但在优秀运动员之间，流汗更多意味着比赛更艰难（条件负相关）。<strong>汗水是伴随特征，没有因果力。</strong>
+    </p>
+    <p>
+      同样的逻辑：推理模型同时更强且更社会化，因此总体上社会化特征与好表现共变。然而深入推理模型内部看，更多冲突恰恰是挣扎的信号——题目越难，模型越频繁地转换视角、产生对立。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">但等一下</div>
+      <p>
+        「症状」只是其中一种读法。同等合理的替代：冲突可能是<strong>有代价的催化剂</strong>——它本身带来成本（负残差），但它触发的路径修剪创造了价值（被中介变量吸收的正效应）。就像发烧无法杀灭病毒，却激活了整条免疫级联——你无法删除发烧而保留它的下游收益。两种读法在当前数据下不可区分。<strong>这个不可区分性本身就是洞察</strong>：我们对推理过程中「冲突」的角色，理解得远比自以为的要少。
+      </p>
+    </div>
+
+    <h3>统一叙事的裂缝</h3>
+
+    <p>
+      在控制输出长度和任务固定效应后：
+    </p>
+
+    <div class="stat-row">
+      <div class="stat-card stat-pos">
+        <div class="stat-value">0.293</div>
+        <div class="stat-label">QwQ-32B 冲突系数<br>p &lt; 1e-277</div>
+      </div>
+      <div class="stat-card stat-neg">
+        <div class="stat-value">0.012</div>
+        <div class="stat-label">DeepSeek-R1 冲突系数<br>p = 0.127 不显著</div>
+      </div>
+    </div>
+
+    <p>
+      「推理模型内部冲突更多」这个结论，几乎完全靠 QwQ 一家支撑。DeepSeek-R1 在控制长度后，冲突行为的增量基本可以被输出长度解释掉——换句话说，它可能只是写得更长，所以看起来冲突更多。
+    </p>
+    <p>
+      这意味着什么？不同推理模型走的可能是截然不同的路径。「统一的思想社会理论」在第一道实证检验上就裂开了。
+    </p>
+
+    <h3>长度的诅咒</h3>
+
+    <p>
+      SEM 中 Length → Accuracy 的路径系数为 <strong>−0.134（p < 0.001）</strong>。在控制对话行为和认知策略后，更长的推理轨迹反而对应更低的准确率。
+    </p>
+    <p>
+      这对两个流行叙事同时构成挑战：
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">叙事一</div>
+        <p>更多 token = 更多计算 = 更好推理</p>
+      </div>
+      <div class="v-mid">都被<br>挑战</div>
+      <div class="v-side v-right">
+        <div class="v-label">叙事二</div>
+        <p>更多对话 = 更好推理<br><em>（因为对话也增加长度）</em></p>
+      </div>
+    </div>
+
+    <p>
+      长度增加中「有效计算」的真实占比，可能远低于直觉预期。大量额外 token 更像挣扎留下的痕迹——模型在踏步，并非在掘进。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §2 相变 ═══════════════════════ -->
+  <section id="phase-transition">
+    <div class="section-num">02</div>
+    <h2>万分之 1.6 的「等一下」</h2>
+    <p class="section-hook">万分之 1.6 的 token，决定推理的成败</p>
+
+    <p>
+      论文做了一个精彩的因果实验，但埋得太深，很多人会错过。
+    </p>
+    <p>
+      他们用稀疏自编码器（SAE）拆解模型内部的神经活动，找到了一个特征——Feature 30939，它在对话式文本中高频出现，研究者称之为「对话惊奇」。你可以把它想象成模型内部的一个微型开关，每当推理方向可能需要急转弯时，它就亮起来。
+    </p>
+    <p>
+      关键在于：这个开关极其罕见。整个语料库中，只有<strong>万分之 1.6</strong> 的 token 触发它。但当研究者人为放大这个信号时，发生了什么？
+    </p>
+
+    <div class="stat-row">
+      <div class="stat-card stat-accent">
+        <div class="stat-value">0.016%</div>
+        <div class="stat-label">仅万分之 1.6<br>的 token 触发</div>
+      </div>
+      <div class="stat-card stat-pos">
+        <div class="stat-value">27.1%→54.8%</div>
+        <div class="stat-label">放大信号后<br>准确率翻倍</div>
+      </div>
+      <div class="stat-card stat-neg">
+        <div class="stat-value">27.1%→23.8%</div>
+        <div class="stat-label">压制信号后<br>仅降 3.3pp</div>
+      </div>
+    </div>
+
+    <p>
+      准确率直接翻倍。而反过来压制这个信号呢？几乎没什么影响——只掉了 3.3 个百分点。
+    </p>
+    <p>
+      这组数据的含义值得慢慢咀嚼：
+    </p>
+
+    <ol class="causal">
+      <li>这个信号标记的是极其精准的<strong>认知转折点</strong>——模型即将「拐弯」的那个瞬间。让准确率翻倍的干预，本质上做了一件事：在极少数关键位置强制插入「等一下，让我重新想想」的冲动。</li>
+      <li>放大的增幅（+27.7pp）远远大于压制的降幅（−3.3pp）。基线模型本来就不怎么使用这个信号——对话结构是推理能力的<strong>放大器</strong>，基础能力另有来源。就像给跑车装涡轮增压，效果巨大；但拆掉涡轮，跑车还是跑车。</li>
+      <li>推理的关键落在<strong>精确时机的方向修正</strong>上，持续辩论本身反而没那么重要。「思想社会」的真正价值，可能就浓缩在那万分之 1.6 的「等一下，不对」里。</li>
+    </ol>
+
+    <div class="note note-insight">
+      <div class="note-label">范式转换</div>
+      <p>
+        这个发现将「思想社会」的图景从一场<strong>持续的圆桌讨论</strong>缩减为<strong>几个关键时刻的急刹车</strong>。推理质量的提升靠的是在正确的时刻踩下刹车、调转方向，辩论的长度和激烈程度反倒是次要的。物理学中有个类似的现象：将困在局部最优解的系统猛踹一脚（模拟退火），往往比让它慢慢爬坡更有效——少量关键扰动，触发大规模的状态重组。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §3 无法官的审判 ═══════════════════════ -->
+  <section id="trial">
+    <div class="section-num">03</div>
+    <h2>学会了争论，从未学会裁决</h2>
+    <p class="section-hook">最终答案只是「谁最后说话」——那为什么辩论依然有效？</p>
+
+    <p>
+      RL 训练中行为涌现遵循一个特定时序：
+    </p>
+
+    <ol class="causal">
+      <li><strong>Q&amp;A 行为最先涌现</strong>——自我提问是第一个出现的对话行为</li>
+      <li>视角冲突紧随其后</li>
+      <li>视角转换同步上升</li>
+      <li><strong>和解行为几乎不增长</strong></li>
+    </ol>
+
+    <p>
+      RL 选择性地激活了对话中最有利于搜索空间探索的子集。模型学会了争论，却从未学会综合。
+    </p>
+
+    <p>
+      这引出了一个结构性的问题：<strong>没有综合，答案从何而来？</strong>
+    </p>
+
+    <div class="dialogue">
+      <div class="d-turn d-q">
+        <div class="d-speaker">问</div>
+        <p>既然模型没学会综合，那它靠什么给出最终答案？</p>
+      </div>
+      <div class="d-turn d-a">
+        <div class="d-speaker">答</div>
+        <p>序列终止的隐式独裁。最后一个生成的「声音」直接占据答案位置——原因无关逻辑优劣，纯粹因为它在物理上<strong>最后</strong>。</p>
+      </div>
+      <div class="d-turn d-q">
+        <div class="d-speaker">问</div>
+        <p>但一个没有法官的审判，为什么依然比没有审判更接近正义？</p>
+      </div>
+      <div class="d-turn d-a">
+        <div class="d-speaker">答</div>
+        <p>因为辩论的真正产物是<strong>约束</strong>。每一轮冲突都改写了 latent space 的地形——修剪可能性空间，使最终声音的输出分布向更合理的区域漂移。机制完全不同于民主投票。<strong>每一次质疑都在收窄错误答案的概率通道</strong>，使偶然的最终发言者更可能落在正确区域。</p>
+      </div>
+    </div>
+
+    <p>
+      这个对话指向了一个更深的认识论问题。
+    </p>
+    <p>
+      在 Lean4 中，类型检查器可以确定性地否决不合法的证明——验证者拥有裁决权。在人类辩论中，存在投票、权威、制度化的收敛机制。但 LLM 的「验证」只是用同一套权重进行的<strong>又一轮生成</strong>。
+    </p>
+    <p>
+      "Wait, that can't be right" 和 "Yes, this follows logically" 在机制上完全对称——它们都只是 next-token prediction。验证者和生成者拥有同等的认识论权威，<strong>也就是说，都没有</strong>。
+    </p>
+
+    <div class="note note-problem">
+      <div class="note-label">结构性盲区</div>
+      <p>
+        「最后发言者获胜」本质上是收敛机制<strong>缺席</strong>后的默认行为。模型的收敛靠概率修剪完成，缺乏逻辑层面的判定力。这既是它的力量来源（可以在没有确定性答案的开放问题上自由探索），也是它的结构性天花板（永远无法保证收敛到正确答案）。
+      </p>
+    </div>
+
+    <h3>隐藏的人格密码</h3>
+
+    <p>
+      人格多样性分析中藏着一个精妙的佐证。推理模型在宜人性和神经质维度上多样性显著升高，但在<strong>责任心维度上多样性显著下降</strong>（DeepSeek-R1 的 β = −0.291，QwQ 的 β = −0.402）。
+    </p>
+    <p>
+      所有「声音」都保持高度一致的认真态度——分歧仅限于解题路径的选择。RL 在没有任何显式监督的情况下，自发地「重新发现」了组织行为学的经典发现：责任心多样性损害团队表现（Barrick et al., 1998）。
+    </p>
+    <p>
+      低宜人性提供反对意见，高神经质提供焦虑与怀疑——它们在搜索空间探索中各有功能价值。在这个「思想社会」里，不和谐就是特性。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">真实社会</div>
+        <p>通过投票或协商<strong>选择</strong>行动</p>
+      </div>
+      <div class="v-mid">vs</div>
+      <div class="v-side v-right">
+        <div class="v-label">思想社会</div>
+        <p>通过 latent space 漂移<strong>限制</strong>行动</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §4 更深一层 ═══════════════════════ -->
+  <section id="deeper">
+    <div class="section-num">04</div>
+    <h2>比社会性更深一层</h2>
+    <p class="section-hook">生成与验证的内部分离——以及 LLM 验证端的致命缺口</p>
+
+    <p>
+      综合前三节的证据，可以提炼出一个比「社会性」更基本的架构需求：
+    </p>
+
+    <blockquote>
+      <p>有效推理的核心需求是<strong>「生成与验证的内部分离」</strong>——一个「出主意的」和一个「挑毛病的」在同一系统内部拉扯。</p>
+    </blockquote>
+
+    <p>
+      这种分离在不同系统中有不同的实现：
+    </p>
+
+    <div class="principle-grid">
+      <div class="principle">
+        <div class="principle-tag">人类</div>
+        <h4>社会对话 → 内心独白</h4>
+        <p>最早通过社会对话实现（你提出、我反驳），后经维果茨基路径内化为内部自我对话。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">LLM</div>
+        <h4>训练数据 → 自我辩论</h4>
+        <p>借用了语料中社会对话的语言形式。语料中「对立与检验」的表达方式，统计上绝大多数就是对话。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">形式系统</div>
+        <h4>构造器 + 检查器</h4>
+        <p>Lean4 的 tactic 生成 + 类型检查器验证。生成与验证有确定性的权限分离。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">进化</div>
+        <h4>突变 + 选择</h4>
+        <p>随机突变生成变异，自然选择验证适应性。最古老的生成-验证架构。</p>
+      </div>
+    </div>
+
+    <h3>维果茨基说对了一半</h3>
+
+    <p>
+      苏联心理学家维果茨基提出：儿童认知发展始于外部社会交互，逐渐「内化」为内部自我对话，最终形成个人思维。LLM 的发展正在重演这一过程——预训练吸收海量社会交互记录，推理时将其内化为同一网络内的「自我对话」。
+    </p>
+    <p>
+      这个类比的力量在于：维果茨基的预言指向一个强命题——内化的社会对话是高级认知功能的<strong>必要条件</strong>，不可等闲视之。
+    </p>
+    <p>
+      但维果茨基可能只说对了一半。更精确的表述：社会互动是生成-验证张力<strong>最古老的实现方式</strong>，因此成了自然语言中编码这种张力的默认格式。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">关键区分</div>
+      <p>
+        这里必须区分两个命题。<strong>结构命题</strong>：推理的运作结构是生成-验证张力——这很可能为真。<strong>发生命题</strong>：这种结构可以不通过社会对话形式来建立——这未被证明。维果茨基内化理论的关键面向是：内化过程具有转化性——它重塑所经之物，与简单搬运有本质区别。脚手架拆除后建筑仍在，但<strong>没有脚手架就不可能建成</strong>。说「对话只是编码」就像说「DNA 只是编码蛋白质的载体」——技术上正确，但你无法在没有 DNA 的情况下产生那些蛋白质。
+      </p>
+    </div>
+
+    <h3>LLM 验证的致命缺口</h3>
+
+    <p>
+      即便接受「生成-验证分离」的框架，LLM 的实现方式也有一个与形式系统截然不同的特征：<strong>验证端没有裁决权</strong>。
+    </p>
+    <p>
+      在 Lean4 中，类型检查器可以确定性地说「不」。在 LLM 中，所谓的「验证」只是又一轮生成——它和上一轮拥有同等的认识论权威。LLM 实现了张力，却没有实现裁决；收敛通过<strong>概率修剪</strong>完成，缺乏逻辑层面的判定。
+    </p>
+    <p>
+      这也解释了为什么计算的<strong>拓扑结构</strong>比计算量更重要。真正的变量是路径的多样性：从深度优先搜索变为带有多个探索头的搜索策略——每一个对立视角就是一个新的探索头。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §5 楚门的世界 ═══════════════════════ -->
+  <section id="truman">
+    <div class="section-num">05</div>
+    <h2>信息对称的楚门世界</h2>
+    <p class="section-hook">完美信息对称的楚门世界，与自我验证的天花板</p>
+
+    <p>
+      「思想社会」的类比有一个致命的断裂点，它决定了这个类比的有效性上界。
+    </p>
+
+    <table class="iso-table">
+      <thead>
+        <tr>
+          <th>维度</th>
+          <th>真实社会</th>
+          <th>思想社会</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>信息</td>
+          <td>不同个体持有不同信息</td>
+          <td>所有「声音」共享完全相同的参数和输入</td>
+        </tr>
+        <tr>
+          <td>激励</td>
+          <td>个体有各自目标和偏好</td>
+          <td>所有「声音」服务于同一优化目标</td>
+        </tr>
+        <tr>
+          <td>身份</td>
+          <td>持久身份、历史、信誉</td>
+          <td>不同问题间无一致身份</td>
+        </tr>
+        <tr>
+          <td>因果方向</td>
+          <td>社会互动<strong>产生</strong>推理能力</td>
+          <td>推理压力<strong>产生</strong>类社会互动</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      <strong>信息对称性是最致命的断裂。</strong>人类社会通过辩论产生新知识，是因为不同个体掌握不对称的信息。LLM 内部的「虚拟智能体」共享同一套权重和上下文窗口——这是一个拥有完美信息对称的「楚门的世界」。
+    </p>
+    <p>
+      多样性仅源于生成过程中的随机性和注意力模式差异，底层的知识库完全相同。这意味着内部「思想社会」能纠正的只是<strong>随机偏差和注意力遮蔽导致的遗漏</strong>（模型知道但当前注意力没有激活的知识），<strong>结构性盲区</strong>（权重中根本不存在的信息）则完全无法突破。
+    </p>
+
+    <div class="note note-problem">
+      <div class="note-label">自我验证的上界</div>
+      <p>
+        信息对称意味着模型用<strong>同一套可能犯错的认知资源</strong>审查自己可能犯错的输出。就像隔一天再看自己的代码能发现之前看不到的 bug——但如果你根本不知道某个 API 已废弃，看多少遍也发现不了。内部对话永远无法发现权重中深埋的系统性偏差。要突破这个上界，必须引入真正的外部验证器——这也解释了为什么形式化证明系统在其覆盖范围内更可靠。
+      </p>
+    </div>
+
+    <h3>安全启示：概率性防护 vs. 确定性否决</h3>
+
+    <p>
+      这一发现对 AI 安全有直接的设计含义。一种乐观叙事是这样的：内部多声部推理天然包含「自我审查」机制——当恶意计划被提出时，总有一个足够「神经质」的内部委员将其驳倒。安全源于内部的权力制衡。
+    </p>
+    <p>
+      <strong>然而「最后发言者获胜」直接否定了这个叙事的强形式。</strong>如果收敛机制是序列终止的隐式独裁，那内部的「审查委员」无法通过辩论否决恶意的最终声音。前面的质疑只能通过修剪 latent space 来间接约束最终输出——它提供的是<strong>概率性防护</strong>（让恶意输出更不可能出现在最终分布中），确定性否决则超出了它的能力边界。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §6 未解之问 ═══════════════════════ -->
+  <section id="open">
+    <div class="section-num">06</div>
+    <h2>两个未解之问</h2>
+    <p class="section-hook">如果答不上来，我们对推理模型的理解就还在表面</p>
+
+    <div class="principle-grid">
+      <div class="principle" style="border-top: 3px solid var(--vermillion);">
+        <div class="principle-tag" style="color: var(--vermillion);">问题一</div>
+        <h4>RL 教的是推理，还是麦克风分配？</h4>
+        <p>RL 到底教会了模型推理，还是教会了它<strong>在正确时机结束辩论</strong>——动态分配 token 预算，使统计上最可能正确的声音恰好在序列终止时握着麦克风？如果答案是后者，test-time compute scaling 的整个叙事都需要重写。</p>
+      </div>
+      <div class="principle" style="border-top: 3px solid var(--accent);">
+        <div class="principle-tag" style="color: var(--accent);">问题二</div>
+        <h4>生成-验证分离是先验约束还是经验产物？</h4>
+        <p>真正需要检验的：一个<strong>从未经过语言/社会数据训练</strong>的纯结构强化学习系统，在面对足够困难的任务时，是否也自发发展出生成-验证分离的内部拓扑？如果是，这种张力就是智能的先验约束。如果不是，就证明你必须先经历社会，才能在孤独中重建它。</p>
+      </div>
+    </div>
+
+    <h3>可以立刻做的判别实验</h3>
+
+    <p>
+      设计一个干预：<strong>固定 token 预算，禁止对话标记但允许其他形式的结构化搜索</strong>（列表式回溯、树形分支标记）。如果准确率不变，则「对话」确实只是编码方式；如果下降，则对话形式本身是无法替代的认知脚手架。
+    </p>
+    <p>
+      另外，如果在<strong>非语言推理任务</strong>（纯视觉推理）中也发现类似的「内部多声部」结构，那么 Society of Thought 将从「有趣的类比」升级为「智能的基本原理」。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §7 置信度 ═══════════════════════ -->
+  <section id="confidence">
+    <div class="section-num">07</div>
+    <h2>置信度校准</h2>
+    <p class="section-hook">每个判断附带认知校准——知道自己不知道什么</p>
+
+    <table class="iso-table">
+      <thead>
+        <tr>
+          <th>判断</th>
+          <th>置信度</th>
+          <th>备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>推理模型展现系统不同的 trace 结构</td>
+          <td style="color: var(--green); font-weight: 600;">高</td>
+          <td>多维度、多模型一致</td>
+        </tr>
+        <tr>
+          <td>该结构与推理性能正相关</td>
+          <td style="color: var(--green); font-weight: 600;">高</td>
+          <td>SEM 总效应显著</td>
+        </tr>
+        <tr>
+          <td>至少部分因果性（SAE steering）</td>
+          <td style="color: var(--blue); font-weight: 600;">中-高</td>
+          <td>但可能是元认知控制而非「对话」</td>
+        </tr>
+        <tr>
+          <td>辩论产物是约束/修剪而非共识</td>
+          <td style="color: var(--blue); font-weight: 600;">中-高</td>
+          <td>和解不增长 + 条件效应方向一致</td>
+        </tr>
+        <tr>
+          <td>对话脚手架加速 RL 学习</td>
+          <td style="color: var(--amber); font-weight: 600;">中</td>
+          <td>仅基于 3B 模型的有限实验</td>
+        </tr>
+        <tr>
+          <td>模型内部真的存在「多个主体」</td>
+          <td style="color: var(--text-3); font-weight: 600;">不确定</td>
+          <td>可能是对搜索策略的拟人化解读</td>
+        </tr>
+        <tr>
+          <td>「社会化」是推理的必要条件</td>
+          <td style="color: var(--red); font-weight: 600;">低-中</td>
+          <td>若纯符号系统也能等效推理则证伪</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════════════════ TAKEAWAY ═══════════════════════ -->
+  <div class="takeaway" id="takeaway-section">
+    <div class="thesis-label">Coda</div>
+    <p>
+      这篇论文最有力的贡献，在于<strong>打开了一个全新的分析框架</strong>：将推理模型的内部过程当作社会系统来研究——至于「推理本质上是社会化的」这个更强的命题，还需要更多证据。<br><br>
+      但论文自身的数据指向了一个比主叙事更精确的结论：<strong>推理的核心需求是生成与验证的内部分离。辩论产出的从来都是对错误的修剪。一个没有法官的审判，之所以比没有审判更接近正义——因为每一次质疑都在收窄通往错误的通道。</strong>
+    </p>
+  </div>
+
+  <div style="margin: 0 0 48px; padding: 24px; border: 1px solid var(--border); border-radius: 14px;">
+    <div style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;">延伸阅读</div>
+    <a href="soi.html" style="display: block; text-decoration: none; color: inherit; margin-bottom: 16px;">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">The Shape of Intelligence →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">控制论、信息论与复杂性理论如何统一解释「智能」。凸化——把鸡蛋盒变成碗——是智能最精确的几何表述。</div>
+    </a>
+    <a href="ctl.html" style="display: block; text-decoration: none; color: inherit; padding-top: 16px; border-top: 1px solid var(--border);">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">Closing the Loop →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">从控制论看 Agentic LLM 通往 AGI 的路径。反馈回路如何让智能从静态跳跃到动态。</div>
+    </a>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
