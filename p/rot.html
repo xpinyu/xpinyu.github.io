@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="实战表现最好的 AI Agent 收敛到了同一个极简架构。18 个模型的控制实验解释了为什么——上下文越长，智能越短。解法是一条三十年前的 UX 原则：渐进式披露。">
+<meta name="description" content="实战表现最好的 AI Agent 收敛到了同一个极简架构。8 篇前沿文献、18 个模型的控制实验交汇于同一个被忽视的真相——上下文越长，智能越短。解法不是更大的窗口，而是更好的过滤。">
 <title>The Rot</title>
 <link rel="stylesheet" href="/fonts/fonts.css">
 <style>
@@ -327,6 +327,7 @@
   <a href="#harness">Harness</a>
   <a href="#rot">Context Rot</a>
   <a href="#disclosure">渐进式披露</a>
+  <a href="#distrust">假设它会犯错</a>
   <a href="#blindspot">盲点</a>
 </nav>
 
@@ -336,7 +337,7 @@
     <div class="eyebrow">Context Engineering</div>
     <h1>The Rot</h1>
     <p class="subtitle">
-      上下文越长，智能越短。两条独立的证据线交汇于同一个被忽略的真相。
+      上下文越长，智能越短。8 篇前沿文献交汇于同一个被忽视的真相——以及一套完整的应对体系。
     </p>
     <div class="meta">
       <span>pinyu · 2026.03</span>
@@ -347,10 +348,10 @@
   <div class="thesis" id="core-thesis">
     <div class="thesis-label">Core Thesis</div>
     <p>
-      实战表现最好的 AI Agent 收敛到了同一个极简架构——一个 while 循环。18 个模型的控制实验揭示了原因：<strong>上下文越长，智能越短。</strong>解法是一条三十年前的 UX 原则：<strong>渐进式披露。</strong>
+      实战表现最好的 AI Agent 收敛到了同一个极简架构——一个 while 循环。18 个模型的控制实验揭示了原因：<strong>上下文越长，智能越短。</strong>解法不是更大的窗口，而是更好的过滤：<strong>渐进式披露管理输入，强制验证管理输出，增量式工作管理时间跨度。</strong>
     </p>
     <div class="evidence">
-      <em>证据线</em>：Anthropic · Cursor · Manus · Vercel · LangChain · Chroma Research (18 models, 194k+ LLM calls)
+      <em>证据线</em>：Anthropic · Cursor · Manus · LangChain · Chroma Research · SWE-agent · Liu et al. · 12 Factor Agents (18 models, 194k+ LLM calls, 8 papers)
     </div>
   </div>
 
@@ -401,6 +402,12 @@
       </div>
     </div>
 
+    <p>
+      LangChain 用自己的数据补了一块拼图：不换模型，只调脚手架——Deep Agent 在 Terminal Bench 2.0 上从 <strong>Top 30 升至 Top 5</strong>。关键组件是两道 Middleware：一道在退出前强制跑测试，一道追踪编辑次数防止死循环。
+    </p>
+    <p>
+      Princeton 的 SWE-agent 走得更远——连交互界面都重新设计。他们称之为 <strong>Agent-Computer Interface</strong>（ACI）：不给人类的 Shell，而是定制命令集——文件查看器每次最多 100 行，搜索最多返回 50 条。SWE-bench 成功率从 3.8% 升至 <strong>12.5%</strong>。不是更强的引擎——是更匹配的传动系统。
+    </p>
     <p>
       Harrison Chase（LangChain）的定义最直接："框架是抽象，脚手架是开箱即用的全套方案。"所有人在比引擎马力，赢家在调方向盘的角度。但为什么更少的信息反而产生更好的结果？
     </p>
@@ -476,6 +483,13 @@
     </p>
 
     <p>
+      Liu et al.（Stanford / UC Berkeley）从位置维度解剖了同一个问题。他们发现了一条 <strong>U 型性能曲线</strong>：模型对上下文开头和结尾的信息利用率最高，中间部分几乎被"遗忘"。这不是分心——是 Transformer 架构的<strong>位置偏差</strong>。把无关文档替换成占位符，U 型曲线依然存在。信息不只是"太多了"——还放错了地方。
+    </p>
+    <p>
+      Chroma 的实验还揭露了一个更反常识的现象：所有 18 个模型在处理<strong>打乱顺序</strong>的上下文时，表现反而优于处理逻辑连贯的文本。连贯叙事的"惯性"误导了模型——当语义干扰项被打散，模型反而不容易被牵着走。
+    </p>
+
+    <p>
       更致命的是，长上下文让检索和推理互相侵蚀：
     </p>
 
@@ -514,7 +528,10 @@
       1990 年代，Nielsen Norman Group 提出了<strong>渐进式披露</strong>（Progressive Disclosure）：只展示用户此刻需要的，其余按需呈现——降低认知负荷，让注意力聚焦。三十年后，这条 UX 原则在 AI Agent 内部找到了新生。
     </p>
     <p>
-      核心思路：分层加载。上下文窗口的每个 token 都在竞争注意力——把它当预算花，别当垃圾桶倒。先给轻量索引做路由，确认相关后才加载完整内容。
+      多篇文献不约而同地将此具体化为一个范式转换：从<strong>"推送"到"拉取"</strong>。不是把所有可能相关的信息推入上下文，而是让 Agent 自己发现此刻需要什么。Manus 用文件系统作为无限容量的外部上下文——信息不丢失，只是移出了注意力窗口，上下文中仅保留路径引用——一种可恢复的压缩。
+    </p>
+    <p>
+      核心思路统一为分层加载。上下文窗口的每个 token 都在竞争注意力——把它当预算花，别当垃圾桶倒。先给轻量索引做路由，确认相关后才加载完整内容。
     </p>
     <p>
       Claude Code 的 Skills 是教科书式的实现：启动时只加载 Skill 名称和描述，几十个 Skill 的元数据占不了多少 token；当用户请求匹配时，才加载完整内容；执行中需要文档和示例，再按需读取。三层渐进——<strong>索引 → 内容 → 支撑材料</strong>——上下文成本随实际使用增长，而非随安装量增长。
@@ -538,9 +555,48 @@
 
   <hr class="sep">
 
-  <!-- ═══════════════════════ §4 盲点 ═══════════════════════ -->
-  <section id="blindspot">
+  <!-- ═══════════════════════ §4 假设它会犯错 ═══════════════════════ -->
+  <section id="distrust">
     <div class="section-num">04</div>
+    <h2>假设它会犯错</h2>
+    <p class="section-hook">可靠性来自不信任</p>
+
+    <p>
+      渐进式披露解决了输入端——模型看到什么。但输出端呢？
+    </p>
+    <p>
+      LangChain 发现最普遍的失败模式：Agent 生成代码后，仅凭"看起来正确"就宣布完成。解决方案不是让模型更聪明——是假设它一定会犯错，然后为此设计系统。
+    </p>
+    <p>
+      他们加了两道 Middleware。<code>PreCompletionChecklistMiddleware</code> 在 Agent 退出前注入验证清单——强制跑测试，不是建议。<code>LoopDetectionMiddleware</code> 追踪文件编辑次数——同一文件改超过阈值，打断循环，强制重新规划。
+    </p>
+    <p>
+      Anthropic 更激进——用 Puppeteer 做端到端浏览器测试。不是单元测试，是像真实用户一样点击界面来验证功能。SWE-agent 在 ACI 层内置语法检查护栏：提交的编辑有语法错误？系统直接拒绝并返回错误信息，让 Agent 立刻修复。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">反直觉</div>
+      Manus 发现：<strong>不要清理失败信息。</strong>保留错误的动作和堆栈跟踪在上下文中——模型能从中学习，避免重复犯错。你的第一反应是清理噪声，但这些"噪声"恰恰是最有价值的负面示例。
+    </div>
+
+    <p>
+      当任务跨越多个上下文窗口，挑战从"这一步对不对"升级为"方向还对不对"。Anthropic 的方案最系统：每个 Agent 会话只处理一个功能，完成后 <code>git commit</code> 并更新 <code>progress.txt</code> 进度日志。下一个无状态的 Agent 从日志中恢复方向——增量式工作流，每步留下一个干净的、有文档记录的状态。
+    </p>
+    <p>
+      LangChain 的 <strong>Reasoning Sandwich</strong> 从资源分配角度优化长任务：在规划和验证阶段投入最高推理预算，中间执行阶段适当节约。结果——比全程最高预算高出 <strong>12.6 个百分点</strong>（66.5% vs 53.9%）。不是总预算更多，是分配更聪明。
+    </p>
+
+    <div class="note note-ok">
+      <div class="note-label">洞见</div>
+      可靠的 Agent 不是不犯错的 Agent——是<strong>犯错后能恢复的 Agent</strong>。渐进式披露管理输入，强制验证管理输出，增量式工作管理时间跨度。三层防线共同对抗 Context Rot。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §5 盲点 ═══════════════════════ -->
+  <section id="blindspot">
+    <div class="section-num">05</div>
     <h2>盲点</h2>
     <p class="section-hook">这可能只是过渡方案</p>
 
@@ -570,7 +626,7 @@
   <div class="takeaway" id="takeaway-section">
     <div class="thesis-label">Coda</div>
     <p>
-      两条独立的证据线——一条来自工程收敛，一条来自控制实验——交汇于同一个结论：<strong>精心管理模型"看到什么"，比扩大模型"能看多少"更重要。</strong>
+      8 篇独立的文献——从控制实验到工程实战——交汇于同一个结论：<strong>精心管理模型"看到什么"，比扩大模型"能看多少"更重要。</strong>上下文窗口不是容器——是注意力预算。信息的<strong>组织方式</strong>——位置、结构、时效——比信息的存在与否更重要。
     </p>
     <p>
       这对 AI 系统成立。对人类呢？
