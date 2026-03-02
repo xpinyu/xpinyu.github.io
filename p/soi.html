@@ -250,6 +250,16 @@
   }
   .principle p { font-size: 0.82rem; color: var(--text-2); line-height: 1.7; margin-bottom: 0; }
 
+  .praxis-grid { grid-template-columns: 1fr; }
+  .praxis-grid .principle { border-top: 3px solid var(--accent); }
+  .praxis-grid .principle-tag { color: var(--accent); }
+  .praxis-grid .principle p { font-size: 0.85rem; }
+  .praxis-grid .ref {
+    display: inline-block; margin-top: 10px;
+    font-size: 0.72rem; color: var(--text-3);
+    letter-spacing: 0.02em;
+  }
+
   .level-grid {
     display: grid; grid-template-columns: 1fr 1fr 1fr;
     gap: 16px; margin: 28px 0;
@@ -384,6 +394,7 @@
   <a href="#control">控制论</a>
   <a href="#complexity">复杂系统</a>
   <a href="#cost">代价与极限</a>
+  <a href="#praxis">行为准则</a>
   <a href="#epilogue">尾声</a>
 </nav>
 
@@ -885,9 +896,53 @@
 
   <hr class="sep">
 
-  <!-- ═══════════════════════ §8 尾声 ═══════════════════════ -->
-  <section id="epilogue">
+  <!-- ═══════════════════════ §8 行为几何学 ═══════════════════════ -->
+  <section id="praxis">
     <div class="section-num">08</div>
+    <h2>行为几何学：四条操作准则</h2>
+    <p class="section-hook">理论如果不改变行为，就只是装饰品</p>
+
+    <p>
+      前七章建立了一个几何框架。框架真正的价值在于<strong>改变你面对问题时的第一反应</strong>。以下四条准则按杠杆率排序——从"改变一切"到"持续积累"。
+    </p>
+
+    <div class="principle-grid praxis-grid">
+      <div class="principle">
+        <div class="principle-tag">准则一</div>
+        <h4>换坐标系：别解题了，重新定义问题</h4>
+        <p>卡住的时候，你大概率不是不够努力——你的坐标系选错了。停下来，问一句：<strong>"有没有一种描述方式，让答案变得显而易见？"</strong>这是唯一能让问题直接消失的操作。爱因斯坦没有更好地解牛顿引力，他让那个问题不存在了。</p>
+        <span class="ref">→ §03 坐标系变换</span>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">准则二</div>
+        <h4>检查赔率形状：动手之前，先看收益的几何</h4>
+        <p>每个决策先问两件事——最坏情况我扛得住吗？最好情况有天花板吗？<strong>下行有限 + 上行敞开 = 大胆做。反过来 = 立刻跑。</strong>别执着于提高"赢的概率"——概率不可控，赔率结构才是你能设计的东西。</p>
+        <span class="ref">→ §06 凸性修补</span>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">准则三</div>
+        <h4>缩短反馈环：快比好更重要</h4>
+        <p>反馈间隔越短，每一步越接近线性，问题越凸——这是微积分，不是鸡汤。<strong>把获得反馈的周期砍一半。</strong>十次 70 分的快速迭代，远胜一次 95 分的完美规划。长周期计划最大的风险，是把你锁死在一条没有出口的路上。</p>
+        <span class="ref">→ §05 闭环反馈</span>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">准则四</div>
+        <h4>Via negativa：知道什么不该做，就够了</h4>
+        <p>在不透明系统里，"什么是对的"几乎不可能可靠判断，但"什么是错的"往往一目了然。<strong>给自己维护一张"绝不再犯"清单。</strong>每加一条，就砍掉一个噪声维度——清单越长，你脚下的景观越接近碗。</p>
+        <span class="ref">→ §06 不透明性 · §07 via negativa</span>
+      </div>
+    </div>
+
+    <blockquote>
+      <p><strong>在碗里，努力就是答案。在鸡蛋盒里，换一种走法才是答案。</strong>大多数人卡住，是因为在鸡蛋盒里用了碗的策略。</p>
+    </blockquote>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §9 尾声 ═══════════════════════ -->
+  <section id="epilogue">
+    <div class="section-num">09</div>
     <h2>尾声：致敬非凸性</h2>
     <p class="section-hook">非凸性不是智能的敌人——它是智能得以存在的唯一理由</p>
 
