@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="MoA 的力量只有一个来源：把开放式生成转化为在多样候选上做搜索与编辑。模型差异铺开覆盖率，强 aggregator 一锤定音。">
+<title>Mixture-of-Agents</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --ochre: #E8B830;
+    --blue: #5A7A90;
+    --blue-soft: #EAF0F5;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem; font-weight: 500;
+    line-height: 1.25; letter-spacing: -0.02em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 580px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+
+  .thesis {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B830; font-weight: 600; }
+  .thesis .evidence {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem; opacity: 0.65; line-height: 1.7;
+  }
+  .thesis .evidence em { font-style: normal; opacity: 0.85; }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem; font-weight: 600;
+    line-height: 1.3; letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  blockquote {
+    margin: 28px 0; padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.03);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.95rem; line-height: 1.85;
+  }
+  blockquote p { margin-bottom: 0; }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg);   border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 24px 0; font-size: 0.85rem;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .versus .v-left  { background: var(--green-bg); }
+  .versus .v-left .v-label  { color: var(--green); }
+  .versus .v-right { background: var(--red-bg); }
+  .versus .v-right .v-label { color: var(--red); }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 700; color: var(--text-3);
+    background: var(--bg); font-size: 0.75rem;
+  }
+
+  .iso-table {
+    width: 100%; border-collapse: collapse;
+    margin: 24px 0; font-size: 0.82rem;
+  }
+  .iso-table thead th {
+    text-align: left; padding: 10px 14px;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-3); border-bottom: 2px solid var(--border);
+  }
+  .iso-table tbody td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .iso-table tbody tr:last-child td { border-bottom: none; }
+  .iso-table tbody td:first-child { font-weight: 600; white-space: nowrap; }
+
+  .causal {
+    margin: 24px 0; padding: 0; list-style: none;
+    counter-reset: cause;
+  }
+  .causal li {
+    counter-increment: cause; position: relative;
+    padding: 8px 0 8px 44px; font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .causal li::before {
+    content: counter(cause); position: absolute;
+    left: 0; top: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #1A2540; color: #F5F0EB;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .data-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px; margin: 28px 0;
+  }
+  @media (max-width: 600px) { .data-grid { grid-template-columns: 1fr; } }
+  .data-card {
+    padding: 24px; border-radius: 14px;
+    border: 1px solid var(--border); background: var(--surface);
+    text-align: center;
+  }
+  .data-card .data-num {
+    font-family: var(--serif);
+    font-size: 2rem; font-weight: 600;
+    color: var(--accent); line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .data-card .data-label {
+    font-size: 0.72rem; color: var(--text-3);
+    line-height: 1.5;
+  }
+
+  .takeaway {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  code {
+    font-family: var(--mono); font-size: 0.82em;
+    background: #F0EBE2; padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,246,238,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229,221,208,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+  footer a { color: var(--text-3); border-bottom: 1px solid var(--border); text-decoration: none; }
+  footer a:hover { color: var(--text-1); }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .iso-table { font-size: 0.75rem; }
+    .iso-table thead th,
+    .iso-table tbody td { padding: 8px 10px; }
+    .data-grid { grid-template-columns: 1fr; }
+    blockquote { padding: 16px 20px; }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← pinyu.ai</a>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">Core Thesis</a>
+  <a href="#story">杂志社</a>
+  <a href="#commitment">承诺困境</a>
+  <a href="#lenses">三个透镜</a>
+  <a href="#protocol">自然语言协议</a>
+  <a href="#failure">失效边界</a>
+  <a href="#practice">实践原则</a>
+  <a href="#panorama">全景</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Inference-Time Compute</div>
+    <h1>Mixture-of-Agents</h1>
+    <p class="subtitle">
+      一群 AI「合写」凭什么超过任何单个 AI？看得更广，胜过想得更深。
+    </p>
+    <div class="meta">
+      <span>pinyu · 2026.03</span>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════ THESIS ═══════════════════════ -->
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">Core Thesis</div>
+    <p>
+      MoA 的核心杠杆：把<strong>开放式生成</strong>转化为<strong>在多样候选上做搜索与编辑</strong>。模型差异铺开覆盖率，强 aggregator 一锤定音。
+    </p>
+    <div style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <svg viewBox="0 0 540 56" style="width: 100%; max-width: 500px; height: auto; display: block;" xmlns="http://www.w3.org/2000/svg">
+        <style>
+          .th-node { fill: rgba(255,255,255,0.08); stroke: rgba(255,255,255,0.18); stroke-width: 1; rx: 8; }
+          .th-en { font-family: 'Inter', sans-serif; fill: #F5F0EB; font-size: 10px; font-weight: 600; }
+          .th-zh { font-family: 'Inter', sans-serif; fill: rgba(245,240,235,0.45); font-size: 9px; }
+          .th-arrow { fill: none; stroke: rgba(245,240,235,0.3); stroke-width: 1.2; }
+          .th-arrow-head { fill: rgba(245,240,235,0.3); }
+        </style>
+
+        <rect x="0" y="4" width="150" height="48" class="th-node"/>
+        <text x="75" y="26" text-anchor="middle" class="th-en">Commitment Problem</text>
+        <text x="75" y="42" text-anchor="middle" class="th-zh">单模型被锁死</text>
+
+        <line x1="154" y1="28" x2="186" y2="28" class="th-arrow"/>
+        <polygon points="186,24 194,28 186,32" class="th-arrow-head"/>
+
+        <rect x="196" y="4" width="150" height="48" class="th-node"/>
+        <text x="271" y="26" text-anchor="middle" class="th-en">Coverage via Diversity</text>
+        <text x="271" y="42" text-anchor="middle" class="th-zh">多模型铺覆盖</text>
+
+        <line x1="350" y1="28" x2="382" y2="28" class="th-arrow"/>
+        <polygon points="382,24 390,28 382,32" class="th-arrow-head"/>
+
+        <rect x="392" y="4" width="148" height="48" class="th-node" style="stroke: rgba(232,184,48,0.4);"/>
+        <text x="466" y="26" text-anchor="middle" class="th-en" style="fill: #E8B830;">Aggregation as Search</text>
+        <text x="466" y="42" text-anchor="middle" class="th-zh">强模型做收敛</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ §1 杂志社 ═══════════════════════ -->
+  <section id="story">
+    <div class="section-num">01</div>
+    <h2>一个你已经懂的故事</h2>
+    <p class="section-hook">从杂志社看懂 MoA 的核心逻辑</p>
+
+    <p>
+      一家杂志社要做一期封面专题。有两种工作方式：
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-right">
+        <div class="v-label">方式 A · 单枪匹马</div>
+        让最好的记者独自完成。落笔第一句就锁定了叙事角度，后面只能沿这个方向展开。写到一半发现另一个角度更好？<strong>推翻重来代价太大，只好硬着头皮写下去。</strong>
+      </div>
+      <div class="v-mid">VS</div>
+      <div class="v-side v-left">
+        <div class="v-label">方式 B · MoA</div>
+        派三个记者各自独立采访、各交一篇初稿。主编读完后，取张三的视角、李四的论据、王五的数据，<strong>重新写一篇终稿。</strong>
+      </div>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">关键洞察</div>
+      <strong>主编的工作比记者简单。</strong>从零写一篇好文章很难，但在三篇已有文章中鉴别、取舍、融合——这容易得多。
+    </div>
+
+    <p>
+      听起来像个比喻，但杂志社的困境恰好就是 Transformer 自回归生成的结构性困境。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §2 承诺困境 ═══════════════════════ -->
+  <section id="commitment">
+    <div class="section-num">02</div>
+    <h2>承诺困境</h2>
+    <p class="section-hook">模型够聪明——困住它的是那条单行道</p>
+
+    <p>
+      LLM 逐 token 生成文本，像在岔路口不断做选择。第一个 token 选定后，后续生成就被约束在与之兼容的"轨道"上——论证角度、表述框架、信息取舍，全部被早期选择锁定。
+    </p>
+    <p>
+      这就是<strong>承诺困境（Commitment Problem）</strong>：每一步 token 选择都在收窄后续空间，直到整条回答被锁死在 response space 的某个局部最优里。
+    </p>
+
+    <div style="margin: 24px 0; padding: 24px 24px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px;">
+      <svg viewBox="0 0 520 280" style="width: 100%; height: auto; display: block;" xmlns="http://www.w3.org/2000/svg">
+        <style>
+          .rs-label { font-family: 'Inter', sans-serif; fill: #776E62; font-size: 10px; }
+          .rs-tag { font-family: 'Inter', sans-serif; fill: #5C5349; font-size: 11px; font-weight: 600; }
+          .rs-title { font-family: 'Inter', sans-serif; fill: #776E62; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+        </style>
+
+        <text x="260" y="16" text-anchor="middle" class="rs-title">Response Space</text>
+
+        <ellipse cx="280" cy="150" rx="230" ry="120" fill="none" stroke="#E5DDD0" stroke-width="1"/>
+
+        <circle cx="340" cy="80" r="3" fill="#E5DDD0"/>
+        <circle cx="380" cy="100" r="3" fill="#E5DDD0"/>
+        <circle cx="420" cy="130" r="3" fill="#E5DDD0"/>
+        <circle cx="400" cy="170" r="3" fill="#E5DDD0"/>
+        <circle cx="440" cy="90" r="3" fill="#E5DDD0"/>
+        <circle cx="360" cy="190" r="3" fill="#E5DDD0"/>
+        <circle cx="300" cy="210" r="3" fill="#E5DDD0"/>
+        <circle cx="450" cy="160" r="3" fill="#E5DDD0"/>
+        <circle cx="470" cy="120" r="3" fill="#E5DDD0"/>
+        <text x="460" y="106" class="rs-label">其他 mode</text>
+
+        <path d="M 100,150 C 160,148 220,110 320,60" fill="none" stroke="#5A7A90" stroke-width="2" stroke-dasharray="6,4"/>
+        <circle cx="150" cy="146" r="3.5" fill="#5A7A90" opacity="0.5"/>
+        <circle cx="200" cy="132" r="3.5" fill="#5A7A90" opacity="0.5"/>
+        <circle cx="250" cy="105" r="3.5" fill="#5A7A90" opacity="0.5"/>
+        <circle cx="290" cy="78" r="3.5" fill="#5A7A90" opacity="0.5"/>
+        <text x="328" y="56" class="rs-tag" style="fill: #5A7A90;">模型 A 的轨迹</text>
+
+        <path d="M 100,150 C 160,155 230,195 330,240" fill="none" stroke="#7B6892" stroke-width="2" stroke-dasharray="6,4"/>
+        <circle cx="150" cy="156" r="3.5" fill="#7B6892" opacity="0.5"/>
+        <circle cx="200" cy="172" r="3.5" fill="#7B6892" opacity="0.5"/>
+        <circle cx="250" cy="200" r="3.5" fill="#7B6892" opacity="0.5"/>
+        <circle cx="295" cy="224" r="3.5" fill="#7B6892" opacity="0.5"/>
+        <text x="338" y="244" class="rs-tag" style="fill: #7B6892;">模型 B 的轨迹</text>
+
+        <circle cx="100" cy="150" r="7" fill="#4A8060"/>
+        <text x="88" y="170" class="rs-tag" style="fill: #4A8060;">起点</text>
+
+        <polygon points="390,72 393,80 402,80 395,86 398,94 390,89 382,94 385,86 378,80 387,80" fill="#B8864A"/>
+        <text x="390" y="66" text-anchor="middle" class="rs-tag" style="fill: #B8864A;">最优解</text>
+
+        <polygon points="410,200 412,206 419,206 414,210 416,216 410,212 404,216 406,210 401,206 408,206" fill="#B8864A" opacity="0.5"/>
+        <text x="410" y="194" text-anchor="middle" class="rs-label" style="fill: #B8864A;">另一个好解</text>
+      </svg>
+      <div style="font-size: 0.78rem; color: var(--text-3); line-height: 1.6; margin-top: 8px;">
+        每个模型从起点出发，被早期 token 选择锁死在各自的轨迹上。最优解可能就在旁边，但轨迹已无法拐弯。不同模型的轨迹覆盖不同区域——这就是 MoA 的原材料。
+      </div>
+    </div>
+
+    <div class="note note-ok">
+      <div class="note-label">MoA 的两个精确动作</div>
+      <strong>Proposers（记者们）</strong>：在自然语言层面制造扰动，在 response space 的不同 mode 上打下锚点。<br><br>
+      <strong>Aggregator（主编）</strong>：看到多条已完成轨迹后再选择和融合——因为<strong>鉴别与合成的认知成本，远低于从零生成。</strong>
+    </div>
+
+    <h3>弱模型为什么能帮强模型</h3>
+
+    <div class="note note-insight">
+      <div class="note-label">最反直觉的发现</div>
+      换个角度看：弱模型的贡献恰恰来自它的"偏"——训练偏差把它推向了强模型自身 sampling 几乎到不了的 response space 区域。<strong>这本质上是一场覆盖率的胜利。</strong><br><br>
+      就像实习记者写的稿子可能粗糙，但他可能采访到了资深记者不屑于去的社区，带回了独特的一手素材。
+    </div>
+
+    <h3>为什么 LLM 天生就能做"主编"？</h3>
+
+    <p>
+      LLM 为什么天然擅长这件事？因为 pre-training 语料里遍布综述论文、编辑修改、辩论综合——"读完多份材料再写一份总结"本就是模型见过无数遍的模式。MoA 通过 prompt 接口激活了这种<strong>潜在的综合能力</strong>，将「生成候选」与「整合判断」拆成两个独立步骤。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §3 三个透镜 ═══════════════════════ -->
+  <section id="lenses">
+    <div class="section-num">03</div>
+    <h2>三个思维透镜</h2>
+    <p class="section-hook">同一个机制，三种理解方式</p>
+
+    <h3>透镜一：陪审团 vs. 投票箱</h3>
+
+    <table class="iso-table">
+      <thead>
+        <tr><th></th><th>传统 Ensemble（投票箱）</th><th>MoA（陪审团）</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>机制</td><td>每个模型投票，取多数</td><td>先独立思考，再由 foreperson 撰写裁决书</td></tr>
+        <tr><td>输出</td><td>选择已有答案之一</td><td>生成新的综合答案</td></tr>
+        <tr><td>质量上限</td><td>≤ 最好的单个答案</td><td>可以超越所有单个答案</td></tr>
+      </tbody>
+    </table>
+
+    <p>
+      有效前提：(1) 视角足够多样，(2) foreperson 有整合能力。缺一就退化为普通投票。
+    </p>
+
+    <h3>透镜二：误差纠正码</h3>
+
+    <p>
+      每个 LLM 是一个<strong>带偏差的噪声信道</strong>。模型越多样 → 错误相关性越低 → aggregator 像解码器，从多份带噪观测中恢复更接近真值的信号。
+    </p>
+    <p>
+      这解释了"不同模型 > 同一模型多次采样"——同一信道的噪声高度相关。
+    </p>
+
+    <div class="note note-problem">
+      <div class="note-label">暴露的弱点</div>
+      当所有信道同方向系统性偏差时，解码器反而被误导。<strong>MoA 修正方差，但治不了系统性偏差。</strong>
+    </div>
+
+    <h3>透镜三：信息几何</h3>
+
+    <p>
+      把 response space 想象成一片地图。同一个模型采样多次，落点扎堆在同一片区域；换不同模型，落点才会散开到不同区域。Aggregator 在这些散开的落点之间做有语义理解的选择性插值——远超简单平均。
+    </p>
+
+    <div style="margin: 28px 0; padding: 28px 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px;">
+      <svg viewBox="0 0 600 220" style="width: 100%; height: auto; display: block;" xmlns="http://www.w3.org/2000/svg">
+        <style>
+          .geo-label { font-family: 'Inter', -apple-system, sans-serif; fill: #776E62; font-size: 11px; }
+          .geo-title { font-family: 'Inter', -apple-system, sans-serif; fill: #1A1714; font-size: 12px; font-weight: 600; }
+          .geo-sub { font-family: 'Inter', -apple-system, sans-serif; fill: #776E62; font-size: 10px; }
+        </style>
+
+        <line x1="300" y1="10" x2="300" y2="210" stroke="#E5DDD0" stroke-width="1" stroke-dasharray="4,4"/>
+
+        <text x="150" y="20" text-anchor="middle" class="geo-title">同模型 × 9</text>
+        <text x="150" y="34" text-anchor="middle" class="geo-sub">密集但局部</text>
+
+        <circle cx="140" cy="100" r="38" fill="none" stroke="#E5DDD0" stroke-width="1" stroke-dasharray="3,3"/>
+        <circle cx="132" cy="92" r="5" fill="#1B3F8B" opacity="0.5"/>
+        <circle cx="148" cy="88" r="5" fill="#1B3F8B" opacity="0.5"/>
+        <circle cx="155" cy="98" r="5" fill="#1B3F8B" opacity="0.5"/>
+        <circle cx="138" cy="105" r="5" fill="#1B3F8B" opacity="0.5"/>
+        <circle cx="150" cy="108" r="5" fill="#1B3F8B" opacity="0.5"/>
+        <circle cx="128" cy="100" r="5" fill="#1B3F8B" opacity="0.5"/>
+        <circle cx="145" cy="96" r="5" fill="#1B3F8B" opacity="0.5"/>
+        <circle cx="136" cy="112" r="5" fill="#1B3F8B" opacity="0.5"/>
+        <circle cx="152" cy="104" r="5" fill="#1B3F8B" opacity="0.5"/>
+
+        <text x="150" y="160" text-anchor="middle" class="geo-label">同一 mode，</text>
+        <text x="150" y="174" text-anchor="middle" class="geo-label">看不到其他区域</text>
+
+        <text x="450" y="20" text-anchor="middle" class="geo-title">异模型 × 3 + Aggregator</text>
+        <text x="450" y="34" text-anchor="middle" class="geo-sub">稀疏但覆盖广</text>
+
+        <circle cx="370" cy="80" r="5" fill="#1B3F8B" opacity="0.6"/>
+        <circle cx="380" cy="88" r="5" fill="#1B3F8B" opacity="0.6"/>
+        <circle cx="374" cy="92" r="5" fill="#1B3F8B" opacity="0.6"/>
+        <text x="375" y="114" text-anchor="middle" class="geo-sub">A</text>
+
+        <circle cx="500" cy="72" r="5" fill="#4A8060" opacity="0.6"/>
+        <circle cx="510" cy="80" r="5" fill="#4A8060" opacity="0.6"/>
+        <circle cx="504" cy="66" r="5" fill="#4A8060" opacity="0.6"/>
+        <text x="505" y="100" text-anchor="middle" class="geo-sub">B</text>
+
+        <circle cx="460" cy="140" r="5" fill="#7B6892" opacity="0.6"/>
+        <circle cx="470" cy="148" r="5" fill="#7B6892" opacity="0.6"/>
+        <circle cx="454" cy="146" r="5" fill="#7B6892" opacity="0.6"/>
+        <text x="462" y="170" text-anchor="middle" class="geo-sub">C</text>
+
+        <polygon points="445,102 449,112 459,112 451,118 454,128 445,122 436,128 439,118 431,112 441,112" fill="#E8B830"/>
+        <text x="445" y="98" text-anchor="middle" class="geo-label" style="fill: #B8864A; font-weight: 600;">★ Aggregator</text>
+
+        <text x="450" y="200" text-anchor="middle" class="geo-label">多个 mode 的信息</text>
+        <text x="450" y="214" text-anchor="middle" class="geo-label">汇聚成更优解</text>
+      </svg>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §4 自然语言协议 ═══════════════════════ -->
+  <section id="protocol">
+    <div class="section-num">04</div>
+    <h2>自然语言协议</h2>
+    <p class="section-hook">优雅与代价共享同一个设计选择</p>
+
+    <p>
+      MoA 做了一个不寻常的架构决定：用<strong>自然语言</strong>作为层间协议。这一刀切出三个优势：
+    </p>
+
+    <div class="note note-ok">
+      <div class="note-label">一个设计选择，三重收益</div>
+      <strong>Model-agnostic composability</strong>：任意模型可插拔，不需要统一的 embedding 空间或 API 格式。<br><br>
+      <strong>零微调成本</strong>：纯 prompt 驱动，不需要训练适配层。<br><br>
+      <strong>可解释的中间产物</strong>：每层输出人类可读——你可以直接审查 proposer 的初稿，看 aggregator 取了什么、丢了什么。
+    </div>
+
+    <p>
+      <strong>但同一个设计选择，也带来了它的固有局限。</strong>自然语言是一个有损的、带宽受限的信道——这正是下一节的主题。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §5 失效边界 ═══════════════════════ -->
+  <section id="failure">
+    <div class="section-num">05</div>
+    <h2>失效边界</h2>
+    <p class="section-hook">同一个设计选择的固有代价</p>
+
+    <h3>三个固有代价</h3>
+
+    <table class="iso-table">
+      <thead>
+        <tr><th>代价</th><th>根因</th><th>直觉</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>啰嗦</td><td>遗漏好观点的感知成本 >> 多包含一个观点</td><td>主编看了三篇稿子，本能地"都别浪费"</td></tr>
+        <tr><td>慢（TTFT）</td><td>层间严格数据依赖</td><td>记者不交稿，主编无法动笔——锁死在异步场景</td></tr>
+        <tr><td>丢信号</td><td>自然语言无法传递 uncertainty 分布</td><td>记者说"可能"，主编不知道这是 60% 还是 99%</td></tr>
+      </tbody>
+    </table>
+
+    <h3>四个需要警惕的陷阱</h3>
+
+    <ol class="causal">
+      <li><strong>评测幻觉</strong>：GPT-4 judge 偏好更长更结构化答案，MoA 天然产出此类输出——报告的提升中有多少是"投评委所好"？</li>
+      <li><strong>共识放大偏差</strong>：MoA 修正方差，但<strong>治不了系统性偏差</strong>——所有 proposer 有相同认知盲区时，aggregator 以更高置信度输出错误答案。</li>
+      <li><strong>因果链断裂</strong>：论文的 "collaborativeness" 缺少关键 ablation——是"参考让输出更好"，还是"只是输入更长了"？</li>
+      <li><strong>安全边界扩散</strong>：用户输入同时发送给多个模型/提供商，攻击面成倍扩大。</li>
+    </ol>
+
+    <div class="note note-problem">
+      <div class="note-label">最危险的陷阱</div>
+      <strong>共识放大偏差</strong>可能是 MoA 最容易被忽视的失效模式。多样性能降低方差，但当所有模型共享同一种训练数据偏差——比如 RLHF 塑造的相似价值观、相似的知识盲区——MoA 就会把错误打磨成共识：置信度更高，表述更统一，破绽更少。<strong>看起来更可靠，实际更危险。</strong>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §6 实践原则 ═══════════════════════ -->
+  <section id="practice">
+    <div class="section-num">06</div>
+    <h2>实践原则</h2>
+    <p class="section-hook">便宜发散，昂贵收敛</p>
+
+    <table class="iso-table">
+      <thead>
+        <tr><th>原则</th><th>做法</th><th>理由</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>便宜发散</td><td>低成本小模型做 proposer，最强模型做 aggregator</td><td>发散要量，收敛要质</td></tr>
+        <tr><td>动态触发</td><td>高不确定性时才升级到 MoA</td><td>简单问题单模型足够</td></tr>
+        <tr><td>薄层部署</td><td>MoA-Lite（2 层）是可部署配置</td><td>3 层边际递减，2 层性价比最优</td></tr>
+        <tr><td>硬性验证</td><td>MoA 整合 + 编译器/单测/规则校验做 hard check</td><td>软整合提升质量，硬验证保证正确性</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note note-neutral">
+      <div class="note-label">Decision Flow</div>
+<pre style="font-family: var(--mono); font-size: 0.8rem; background: #1A2540; color: #F5F0EB; padding: 16px 20px; border-radius: 8px; margin: 8px 0 16px; line-height: 1.9; overflow-x: auto;"><span style="color: #8EC5A0;">if</span> uncertainty_low:
+    single strong model → answer
+<span style="color: #8EC5A0;">else</span>:
+    small models → drafts
+      → strong <span style="color: #E8B830;">aggregator</span>
+        → (tests / rules)
+          → <span style="color: #E8B830;">final</span></pre>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §7 全景 ═══════════════════════ -->
+  <section id="panorama">
+    <div class="section-num">07</div>
+    <h2>全景</h2>
+    <p class="section-hook">推理时算力的两条路线</p>
+
+    <p>
+      MoA 属于 <strong>inference-time compute scaling</strong> 的关键分支——用推理阶段的算力换取更好的输出。这个方向有两条根本路线：
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">纵向 · 深度思考</div>
+        <strong>o1 / o3</strong><br>
+        单模型内部 · 链式推理<br>
+        "想得更深"
+      </div>
+      <div class="v-mid">×</div>
+      <div class="v-side v-right" style="background: var(--blue-soft);">
+        <div class="v-label" style="color: var(--blue);">横向 · 多样视角</div>
+        <strong>MoA</strong><br>
+        跨模型协作 · 多视角聚合<br>
+        "看得更广"
+      </div>
+    </div>
+
+    <p>
+      两条路线长期很可能走向 converge。
+    </p>
+
+    <div class="note note-ok">
+      <div class="note-label">三个正在萌芽的方向</div>
+      <strong>Learned Routing</strong>：为每个问题挑最有互补性的 proposer 子集——少而准，胜过多而泛。<br><br>
+      <strong>蒸馏数据工厂</strong>：MoA 产出反哺训练下一代单模型——多模型协作的智慧，压缩进单模型的权重。<br><br>
+      <strong>两条路线融合</strong>：深度思考 × 多模型协作的混合架构——先广后深，或深浅交替。
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ TAKEAWAY ═══════════════════════ -->
+  <div class="takeaway" id="takeaway-section">
+    <div class="thesis-label">Coda</div>
+    <p>
+      MoA 揭示了一件事：在 LLM 时代，<strong>覆盖率（coverage）是一种被严重低估的能力来源。</strong>
+    </p>
+    <p>
+      聪明没变。视野变了。看到更多可能性，做有约束的选择——<strong>把"从零创作"降维成"搜索与编辑"。</strong>
+    </p>
+  </div>
+
+  <div style="margin: 0 0 48px; padding: 24px; border: 1px solid var(--border); border-radius: 14px;">
+    <div style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;">延伸阅读</div>
+    <a href="rot.html" style="display: block; text-decoration: none; color: inherit; margin-bottom: 16px;">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">The Rot →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">上下文越长，智能越短。8 篇前沿文献交汇于同一个被忽视的真相——以及同一套解法。</div>
+    </a>
+    <a href="soi.html" style="display: block; text-decoration: none; color: inherit; padding-top: 16px; border-top: 1px solid var(--border);">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">The Shape of Intelligence →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">凸性、率失真理论、闭环反馈如何统一解释"智能"。MoA 中"覆盖率 → 搜索"的几何学根基。</div>
+    </a>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
