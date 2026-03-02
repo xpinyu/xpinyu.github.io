@@ -337,7 +337,7 @@
     <div class="eyebrow">Context Engineering</div>
     <h1>The Rot</h1>
     <p class="subtitle">
-      上下文越长，智能越短。8 篇前沿文献交汇于同一个被忽视的真相——以及一套完整的应对体系。
+      上下文越长，智能越短。8 篇前沿文献交汇于同一个被忽视的真相——以及同一套解法。
     </p>
     <div class="meta">
       <span>pinyu · 2026.03</span>
@@ -403,10 +403,10 @@
     </div>
 
     <p>
-      LangChain 用自己的数据补了一块拼图：不换模型，只调脚手架——Deep Agent 在 Terminal Bench 2.0 上从 <strong>Top 30 升至 Top 5</strong>。关键组件是两道 Middleware：一道在退出前强制跑测试，一道追踪编辑次数防止死循环。
+      LangChain 用自己的数据补了一块拼图：不换模型，只调脚手架——Deep Agent 在 Terminal Bench 2.0 上从 <strong>Top 30 升至 Top 5</strong>。
     </p>
     <p>
-      Princeton 的 SWE-agent 走得更远——连交互界面都重新设计。他们称之为 <strong>Agent-Computer Interface</strong>（ACI）：不给人类的 Shell，而是定制命令集——文件查看器每次最多 100 行，搜索最多返回 50 条。SWE-bench 成功率从 3.8% 升至 <strong>12.5%</strong>。不是更强的引擎——是更匹配的传动系统。
+      Princeton 的 SWE-agent 走得更远——连交互界面都重新设计。他们称之为 <strong>Agent-Computer Interface</strong>（ACI）：不给人类的 Shell，而是定制命令集——文件查看器每次最多 100 行，搜索最多返回 50 条。SWE-bench 成功率从 3.8% 升至 <strong>12.5%</strong>。同一个模型，换一副更合手的工具。
     </p>
     <p>
       Harrison Chase（LangChain）的定义最直接："框架是抽象，脚手架是开箱即用的全套方案。"所有人在比引擎马力，赢家在调方向盘的角度。但为什么更少的信息反而产生更好的结果？
@@ -434,7 +434,13 @@
     </div>
 
     <p>
-      这些模型号称百万级 token 窗口，在 NIAH（Needle in a Haystack）基准上接近满分。但 NIAH 本质是字面检索——在干草堆里搜一根已知的针。真实任务几乎从不是字面匹配。当 Chroma 把任务改为<strong>语义匹配</strong>，性能曲线开始塌陷。引入语义相近的干扰项后，退化进一步加剧。
+      这些模型号称百万级 token 窗口，在 NIAH（Needle in a Haystack）基准上接近满分。但 NIAH 本质是字面检索——在干草堆里搜一根已知的针。真实任务几乎从不是字面匹配。当 Chroma 把任务改为<strong>语义匹配</strong>，性能曲线开始塌陷。      引入语义相近的干扰项后，退化进一步加剧。
+    </p>
+    <p>
+      Liu et al.（Stanford / UC Berkeley）揭示了退化的另一个维度——位置。他们发现了一条 <strong>U 型性能曲线</strong>：模型对上下文开头和结尾的信息利用率最高，中间部分几乎被"遗忘"。这不是分心——是 Transformer 架构的<strong>位置偏差</strong>。即使把无关文档替换成占位符，U 型曲线依然存在。信息不只是"太多了"——还放错了地方。
+    </p>
+    <p>
+      Chroma 还揭露了一个更反常识的现象：所有 18 个模型处理<strong>打乱顺序</strong>的上下文时，表现反而优于处理逻辑连贯的文本。连贯叙事的"惯性"误导了模型——当语义干扰项被打散，注意力反而不容易被牵着走。
     </p>
     <p>
       最具穿透力的证据来自一个看似荒诞的实验——Repeated Words。
@@ -483,13 +489,6 @@
     </p>
 
     <p>
-      Liu et al.（Stanford / UC Berkeley）从位置维度解剖了同一个问题。他们发现了一条 <strong>U 型性能曲线</strong>：模型对上下文开头和结尾的信息利用率最高，中间部分几乎被"遗忘"。这不是分心——是 Transformer 架构的<strong>位置偏差</strong>。把无关文档替换成占位符，U 型曲线依然存在。信息不只是"太多了"——还放错了地方。
-    </p>
-    <p>
-      Chroma 的实验还揭露了一个更反常识的现象：所有 18 个模型在处理<strong>打乱顺序</strong>的上下文时，表现反而优于处理逻辑连贯的文本。连贯叙事的"惯性"误导了模型——当语义干扰项被打散，模型反而不容易被牵着走。
-    </p>
-
-    <p>
       更致命的是，长上下文让检索和推理互相侵蚀：
     </p>
 
@@ -528,10 +527,10 @@
       1990 年代，Nielsen Norman Group 提出了<strong>渐进式披露</strong>（Progressive Disclosure）：只展示用户此刻需要的，其余按需呈现——降低认知负荷，让注意力聚焦。三十年后，这条 UX 原则在 AI Agent 内部找到了新生。
     </p>
     <p>
-      多篇文献不约而同地将此具体化为一个范式转换：从<strong>"推送"到"拉取"</strong>。不是把所有可能相关的信息推入上下文，而是让 Agent 自己发现此刻需要什么。Manus 用文件系统作为无限容量的外部上下文——信息不丢失，只是移出了注意力窗口，上下文中仅保留路径引用——一种可恢复的压缩。
+      多篇文献不约而同地指向同一个范式转换：从<strong>"推送"到"拉取"</strong>。不是把所有可能相关的信息推入上下文，而是让 Agent 自己发现此刻需要什么。Manus 用文件系统作为无限容量的外部上下文——信息不丢失，只是移出了注意力窗口，上下文中仅保留路径引用——一种可恢复的压缩。
     </p>
     <p>
-      核心思路统一为分层加载。上下文窗口的每个 token 都在竞争注意力——把它当预算花，别当垃圾桶倒。先给轻量索引做路由，确认相关后才加载完整内容。
+      核心思路归结为分层加载。上下文窗口的每个 token 都在竞争注意力——把它当预算花，别当垃圾桶倒。先给轻量索引做路由，确认相关后才加载完整内容。
     </p>
     <p>
       Claude Code 的 Skills 是教科书式的实现：启动时只加载 Skill 名称和描述，几十个 Skill 的元数据占不了多少 token；当用户请求匹配时，才加载完整内容；执行中需要文档和示例，再按需读取。三层渐进——<strong>索引 → 内容 → 支撑材料</strong>——上下文成本随实际使用增长，而非随安装量增长。
@@ -583,7 +582,7 @@
       当任务跨越多个上下文窗口，挑战从"这一步对不对"升级为"方向还对不对"。Anthropic 的方案最系统：每个 Agent 会话只处理一个功能，完成后 <code>git commit</code> 并更新 <code>progress.txt</code> 进度日志。下一个无状态的 Agent 从日志中恢复方向——增量式工作流，每步留下一个干净的、有文档记录的状态。
     </p>
     <p>
-      LangChain 的 <strong>Reasoning Sandwich</strong> 从资源分配角度优化长任务：在规划和验证阶段投入最高推理预算，中间执行阶段适当节约。结果——比全程最高预算高出 <strong>12.6 个百分点</strong>（66.5% vs 53.9%）。不是总预算更多，是分配更聪明。
+      在单次会话内，资源分配也有讲究。LangChain 的 <strong>Reasoning Sandwich</strong>：在规划和验证阶段投入最高推理预算，中间执行阶段适当节约——比全程最高预算高出 <strong>12.6 个百分点</strong>（66.5% vs 53.9%）。不是总预算更多，是分配更聪明。
     </p>
 
     <div class="note note-ok">
@@ -626,7 +625,7 @@
   <div class="takeaway" id="takeaway-section">
     <div class="thesis-label">Coda</div>
     <p>
-      8 篇独立的文献——从控制实验到工程实战——交汇于同一个结论：<strong>精心管理模型"看到什么"，比扩大模型"能看多少"更重要。</strong>上下文窗口不是容器——是注意力预算。信息的<strong>组织方式</strong>——位置、结构、时效——比信息的存在与否更重要。
+      8 篇独立的文献——从控制实验到工程实战——交汇于同一个结论：<strong>精心管理模型"看到什么"，比扩大模型"能看多少"更重要。</strong>
     </p>
     <p>
       这对 AI 系统成立。对人类呢？
