@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="编译器把 30 年的优化知识编成规则，搜索空间有限。LLM 在代码空间中搜索，搜索空间无限——但搜索空间越大，作弊面也越大。一个不可能三角、一次范式迁移。深度拆解 CUDA Agent 论文。">
+<title>CUDA Agent</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --ochre: #E8B830;
+    --blue: #5A7A90;
+    --blue-soft: #EAF0F5;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem; font-weight: 500;
+    line-height: 1.25; letter-spacing: -0.02em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 580px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+
+  .thesis {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B830; font-weight: 600; }
+  .thesis .evidence {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem; opacity: 0.65; line-height: 1.7;
+  }
+  .thesis .evidence em { font-style: normal; opacity: 0.85; }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem; font-weight: 600;
+    line-height: 1.3; letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  blockquote {
+    margin: 28px 0; padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.03);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.95rem; line-height: 1.85;
+  }
+  blockquote p { margin-bottom: 0; }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg);   border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 24px 0; font-size: 0.85rem;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .versus .v-left  { background: var(--green-bg); }
+  .versus .v-left .v-label  { color: var(--green); }
+  .versus .v-right { background: var(--red-bg); }
+  .versus .v-right .v-label { color: var(--red); }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 700; color: var(--text-3);
+    background: var(--bg); font-size: 0.75rem;
+  }
+
+  .causal {
+    margin: 24px 0; padding: 0; list-style: none;
+    counter-reset: cause;
+  }
+  .causal li {
+    counter-increment: cause; position: relative;
+    padding: 8px 0 8px 44px; font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .causal li::before {
+    content: counter(cause); position: absolute;
+    left: 0; top: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #1A2540; color: #F5F0EB;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .iso-table {
+    width: 100%; border-collapse: collapse;
+    margin: 24px 0; font-size: 0.82rem;
+  }
+  .iso-table thead th {
+    text-align: left; padding: 10px 14px;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-3); border-bottom: 2px solid var(--border);
+  }
+  .iso-table tbody td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .iso-table tbody tr:last-child td { border-bottom: none; }
+  .iso-table tbody td:first-child { font-weight: 600; white-space: nowrap; }
+
+  .principle-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin: 28px 0;
+  }
+  @media (max-width: 600px) { .principle-grid { grid-template-columns: 1fr; } }
+  .principle {
+    padding: 24px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .principle:hover { border-color: #D0C8BD; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .principle-tag {
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  .principle h4 {
+    font-size: 0.95rem; font-weight: 700;
+    margin-bottom: 10px; line-height: 1.4;
+  }
+  .principle p { font-size: 0.82rem; color: var(--text-2); line-height: 1.7; margin-bottom: 0; }
+
+  .takeaway {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,246,238,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229,221,208,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+  footer a { color: var(--text-3); border-bottom: 1px solid var(--border); text-decoration: none; }
+  footer a:hover { color: var(--text-1); }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .iso-table { font-size: 0.75rem; }
+    .iso-table thead th,
+    .iso-table tbody td { padding: 8px 10px; }
+    blockquote { padding: 16px 20px; }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+
+  .stat-row {
+    display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap;
+  }
+  .stat-card {
+    flex: 1; min-width: 140px;
+    padding: 20px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px;
+    text-align: center;
+  }
+  .stat-card .stat-value {
+    font-family: var(--mono); font-size: 1.4rem;
+    font-weight: 700; line-height: 1.2; margin-bottom: 6px;
+  }
+  .stat-card .stat-label {
+    font-size: 0.7rem; color: var(--text-3);
+    line-height: 1.4;
+  }
+  .stat-neg .stat-value { color: var(--red); }
+  .stat-pos .stat-value { color: var(--green); }
+  .stat-accent .stat-value { color: var(--accent); }
+
+  .dialogue {
+    margin: 28px 0; padding: 0;
+  }
+  .dialogue .d-turn {
+    padding: 16px 20px; margin-bottom: 2px;
+    font-size: 0.9rem; line-height: 1.8;
+    border-radius: 10px;
+  }
+  .dialogue .d-turn:first-child { border-radius: 14px 14px 10px 10px; }
+  .dialogue .d-turn:last-child { border-radius: 10px 10px 14px 14px; }
+  .dialogue .d-q {
+    background: #1A2540; color: #F5F0EB;
+  }
+  .dialogue .d-q .d-speaker { color: var(--ochre); }
+  .dialogue .d-a {
+    background: var(--surface); border: 1px solid var(--border);
+  }
+  .dialogue .d-a .d-speaker { color: var(--accent); }
+  .dialogue .d-speaker {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← pinyu.ai</a>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">Core Thesis</a>
+  <a href="#seventy-three">73 倍</a>
+  <a href="#precision-floor">精度地板</a>
+  <a href="#triangle">阶梯与围栏</a>
+  <a href="#resonance">Level 2 共振</a>
+  <a href="#outer-loop">外循环</a>
+  <a href="#confidence">置信度</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Agentic RL × Systems Programming</div>
+    <h1>CUDA Agent</h1>
+    <p class="subtitle">
+      编译器花了 30 年积累优化规则。一个 RL 训练的 agent，带着 profiler 和 150 轮迭代预算，在同一片优化空间里搜索出了更好的答案。人类没有退出这场游戏——只是换了位置。
+    </p>
+    <div class="meta">
+      <span>pinyu · 2026.03</span>
+      <span>论文：<a href="https://arxiv.org/html/2602.24286v1" target="_blank">CUDA Agent: Large-Scale Agentic RL for High-Performance CUDA Kernel Generation</a></span>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════ THESIS ═══════════════════════ -->
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">Core Thesis</div>
+    <p>
+      整个领域花了数年，试图让 LLM 一次性「猜对」最优 CUDA kernel。CUDA Agent 换了个问法：给模型一个编译器、一个 profiler、150 轮迭代机会——让它自己搜索。这个看似简单的转变，将 faster rate 从 27% 拉到 97%，超越 Claude Opus 4.5 和 Gemini 3 Pro 约 40 个百分点。更有趣的是，<strong>模型在搜索过程中发现了编译器结构性看不到的东西</strong>——代数化简、跨算子融合、从 O(N²M) 到 O(NM) 的算法降维。但搜索空间越大，「合法捷径」与「作弊」的边界就越模糊，这构成了一个<strong>不可能三角</strong>。
+    </p>
+    <div class="evidence">
+      <em>关键证据</em>：KernelBench Level 2 完美 100% faster rate · 精度地板导致的 RL 崩溃 · 离散 reward 的 Goodhart 免疫 · 代数化简的 73× 加速
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ §0 73 倍 ═══════════════════════ -->
+  <section id="seventy-three">
+    <div class="section-num">00</div>
+    <h2>一个 agent 和 73 倍加速</h2>
+    <p class="section-hook">先看看 CUDA Agent 做了什么，再讨论为什么它有效。</p>
+
+    <p>
+      写 CUDA kernel 是深度学习基础设施中最困难的工作之一。你需要理解 GPU 微架构、内存层次、warp 调度、寄存器压力——然后把一段可读的 PyTorch 代码重写为数百行 C++/CUDA，同时保证数值正确。即使经验丰富的工程师，一个中等复杂度的 kernel 也需要几天时间。
+    </p>
+    <p>
+      ByteDance Seed 与清华 AIR 联合发布的 CUDA Agent 采用了一个直截了当的方案：给 LLM 配上一套开发工具——bash、文件读写、代码编辑——加上一份编码专家工作流的 SKILL.md，然后用 RL 训练它在沙箱环境中自主完成开发循环，最多 150 轮。
+    </p>
+
+    <!-- ═══════ Agent Loop + Trajectory SVG ═══════ -->
+    <svg viewBox="0 0 620 440" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin:32px auto;max-width:640px;" role="img" aria-label="CUDA Agent 训练流程图">
+      <style>
+        .st { font-family: Inter, -apple-system, 'PingFang SC', sans-serif; }
+      </style>
+
+      <!-- ══════ PART 1: Agent Loop ══════ -->
+
+      <!-- LLM Box -->
+      <rect x="16" y="16" width="220" height="120" rx="12" fill="#1A2540"/>
+      <text class="st" x="36" y="42" fill="#E8B830" font-size="10" font-weight="700" letter-spacing="1.2">LLM (SEED1.6 · 230B)</text>
+      <text class="st" x="36" y="66" fill="#F5F0EB" font-size="11">每一步：推理 → 调用工具</text>
+      <text class="st" x="36" y="86" fill="#F5F0EB" font-size="10" opacity="0.5">(bash / 写文件 / 编辑代码)</text>
+      <line x1="36" y1="104" x2="216" y2="104" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+      <text class="st" x="36" y="124" fill="#E8B830" font-size="10">← PPO 更新权重</text>
+
+      <!-- Sandbox Box -->
+      <rect x="384" y="16" width="220" height="120" rx="12" fill="#E8F2EC"/>
+      <text class="st" x="404" y="42" fill="#4A8060" font-size="10" font-weight="700" letter-spacing="1.2">沙箱环境 (128×H20 GPU)</text>
+      <text class="st" x="404" y="66" fill="#1A1714" font-size="11">编译器 → 编译错误</text>
+      <text class="st" x="404" y="86" fill="#1A1714" font-size="11">Profiler → 性能数据</text>
+      <text class="st" x="404" y="106" fill="#1A1714" font-size="11">测试 → 正确性结果</text>
+
+      <!-- Action Arrow -->
+      <line x1="236" y1="52" x2="376" y2="52" stroke="#776E62" stroke-width="1.5"/>
+      <polygon points="376,47.5 385,52 376,56.5" fill="#776E62"/>
+      <text class="st" x="310" y="44" text-anchor="middle" fill="#776E62" font-size="10" font-weight="600">action</text>
+
+      <!-- Observation Arrow -->
+      <line x1="384" y1="100" x2="244" y2="100" stroke="#776E62" stroke-width="1.5"/>
+      <polygon points="244,95.5 235,100 244,104.5" fill="#776E62"/>
+      <text class="st" x="310" y="116" text-anchor="middle" fill="#776E62" font-size="10" font-weight="600">observation</text>
+
+      <!-- Loop Badge -->
+      <rect x="284" y="63" width="52" height="24" rx="12" fill="#1B3F8B"/>
+      <text class="st" x="310" y="80" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">×150</text>
+
+      <!-- ══════ PART 2: Trajectory Example ══════ -->
+
+      <line x1="40" y1="160" x2="580" y2="160" stroke="#E5DDD0" stroke-width="1"/>
+      <text class="st" x="310" y="155" text-anchor="middle" fill="#776E62" font-size="9" font-weight="600" letter-spacing="0.8">一条轨迹长这样</text>
+
+      <!-- Timeline backbone - Row 1 -->
+      <line x1="55" y1="200" x2="567" y2="200" stroke="#E5DDD0" stroke-width="1.5"/>
+      <!-- Timeline backbone - Row 2 -->
+      <line x1="55" y1="254" x2="480" y2="254" stroke="#E5DDD0" stroke-width="1.5"/>
+      <!-- Connector row1→row2 -->
+      <path d="M572,200 Q590,200 590,227 Q590,254 572,254" fill="none" stroke="#E5DDD0" stroke-width="1.5"/>
+
+      <!-- Row 1 nodes -->
+      <!-- Step 1: 读题 (LLM) -->
+      <circle cx="55" cy="200" r="6" fill="#1A2540"/>
+      <text class="st" x="55" y="190" text-anchor="middle" fill="#1A1714" font-size="9">读题</text>
+
+      <!-- Step 2: 写 kernel (LLM) -->
+      <circle cx="157" cy="200" r="6" fill="#1A2540"/>
+      <text class="st" x="157" y="190" text-anchor="middle" fill="#1A1714" font-size="9">写 kernel</text>
+
+      <!-- Step 3: 编译 ✗ (fail) -->
+      <circle cx="259" cy="200" r="6" fill="#C0503A"/>
+      <text class="st" x="259" y="190" text-anchor="middle" fill="#C0503A" font-size="9">编译 ✗</text>
+
+      <!-- Step 4: 修 bug (LLM) -->
+      <circle cx="361" cy="200" r="6" fill="#1A2540"/>
+      <text class="st" x="361" y="190" text-anchor="middle" fill="#1A1714" font-size="9">修 bug</text>
+
+      <!-- Step 5: 编译 ✓ (pass) -->
+      <circle cx="463" cy="200" r="6" fill="#4A8060"/>
+      <text class="st" x="463" y="190" text-anchor="middle" fill="#4A8060" font-size="9">编译 ✓</text>
+
+      <!-- Step 6: 测试 ✗ (fail) -->
+      <circle cx="565" cy="200" r="6" fill="#C0503A"/>
+      <text class="st" x="565" y="190" text-anchor="middle" fill="#C0503A" font-size="9">测试 ✗</text>
+
+      <!-- Row 2 nodes -->
+      <!-- Step 7: 改算法 (LLM) -->
+      <circle cx="565" cy="254" r="6" fill="#1A2540"/>
+      <text class="st" x="565" y="275" text-anchor="middle" fill="#1A1714" font-size="9">改算法</text>
+
+      <!-- Step 8: 测试 ✓ (pass) -->
+      <circle cx="463" cy="254" r="6" fill="#4A8060"/>
+      <text class="st" x="463" y="275" text-anchor="middle" fill="#4A8060" font-size="9">测试 ✓</text>
+
+      <!-- Step 9: profile 慢 (env) -->
+      <circle cx="361" cy="254" r="6" fill="#B8864A"/>
+      <text class="st" x="361" y="275" text-anchor="middle" fill="#B8864A" font-size="9">profile 慢</text>
+
+      <!-- Step 10: 尝试 fusion (LLM) -->
+      <circle cx="259" cy="254" r="6" fill="#1A2540"/>
+      <text class="st" x="259" y="275" text-anchor="middle" fill="#1A1714" font-size="9">尝试 fusion</text>
+
+      <!-- Step 11: 快了! (success) -->
+      <circle cx="157" cy="254" r="7" fill="#4A8060" stroke="#4A8060" stroke-width="2"/>
+      <circle cx="157" cy="254" r="4" fill="#E8F2EC"/>
+      <text class="st" x="157" y="275" text-anchor="middle" fill="#4A8060" font-size="9" font-weight="700">快了!</text>
+
+      <!-- End marker -->
+      <circle cx="55" cy="254" r="6" fill="#4A8060"/>
+      <text class="st" x="55" y="275" text-anchor="middle" fill="#4A8060" font-size="9" font-weight="600">结束</text>
+
+      <!-- Legend -->
+      <circle cx="170" cy="296" r="4" fill="#1A2540"/>
+      <text class="st" x="180" y="300" fill="#776E62" font-size="9">LLM 行动</text>
+      <circle cx="260" cy="296" r="4" fill="#C0503A"/>
+      <text class="st" x="270" y="300" fill="#776E62" font-size="9">环境报错</text>
+      <circle cx="350" cy="296" r="4" fill="#4A8060"/>
+      <text class="st" x="360" y="300" fill="#776E62" font-size="9">环境通过</text>
+      <circle cx="440" cy="296" r="4" fill="#B8864A"/>
+      <text class="st" x="450" y="300" fill="#776E62" font-size="9">需要优化</text>
+
+      <!-- ══════ PART 3: Reward + PPO ══════ -->
+
+      <line x1="40" y1="318" x2="580" y2="318" stroke="#E5DDD0" stroke-width="1"/>
+      <text class="st" x="310" y="314" text-anchor="middle" fill="#776E62" font-size="9" font-weight="600" letter-spacing="0.8">轨迹结束 → REWARD</text>
+
+      <!-- Reward Pills -->
+      <rect x="62" y="334" width="100" height="26" rx="7" fill="#F8ECE8"/>
+      <text class="st" x="112" y="351" text-anchor="middle" fill="#C0503A" font-size="10" font-weight="600">−1 错误</text>
+
+      <rect x="174" y="334" width="108" height="26" rx="7" fill="#F2EDE4"/>
+      <text class="st" x="228" y="351" text-anchor="middle" fill="#5C5349" font-size="10" font-weight="600">+1 正确但慢</text>
+
+      <rect x="294" y="334" width="114" height="26" rx="7" fill="#F8F0E0"/>
+      <text class="st" x="351" y="351" text-anchor="middle" fill="#B8864A" font-size="10" font-weight="600">+2 快于 eager</text>
+
+      <rect x="420" y="334" width="136" height="26" rx="7" fill="#E8F2EC"/>
+      <text class="st" x="488" y="351" text-anchor="middle" fill="#4A8060" font-size="10" font-weight="600">+3 快于 compile</text>
+
+      <!-- PPO Arrow -->
+      <path d="M310,364 L310,398 Q310,416 294,416 L70,416 Q44,416 44,398 L44,140" fill="none" stroke="#E8B830" stroke-width="1.5" stroke-dasharray="5,4"/>
+      <polygon points="39.5,142 44,130 48.5,142" fill="#E8B830"/>
+      <text class="st" x="184" y="410" text-anchor="middle" fill="#B8864A" font-size="10" font-weight="600">PPO 用 reward 更新 LLM 权重 → 下一道题</text>
+    </svg>
+
+    <p>
+      RL 训练的对象就是 LLM 本身的权重。图中间那条蜿蜒的时间线就是一条<strong>轨迹</strong>——模型做一道题的完整交互记录，涵盖每一步的推理和工具调用。轨迹结束后，PPO 根据 reward 调整模型权重，让它下次做出更好的决策。RL 之前，模型只会「写 CUDA 代码」；RL 之后，模型学会了「做 CUDA 开发」。
+    </p>
+    <p>
+      结果在 KernelBench 的 250 道题上：
+    </p>
+
+    <div class="stat-row">
+      <div class="stat-card stat-pos">
+        <div class="stat-value">98.8%</div>
+        <div class="stat-label">Pass rate<br>编译+正确</div>
+      </div>
+      <div class="stat-card stat-pos">
+        <div class="stat-value">96.8%</div>
+        <div class="stat-label">Faster rate<br>vs torch.compile</div>
+      </div>
+      <div class="stat-card stat-accent">
+        <div class="stat-value">2.11×</div>
+        <div class="stat-label">几何平均加速<br>vs torch.compile</div>
+      </div>
+    </div>
+
+    <p>
+      作为参照，Claude Opus 4.5 在相同的 agent loop 下只有 66.4% 的 faster rate，Gemini 3 Pro 是 69.6%。开源模型 GLM 4.6 和 Kimi K2 更低，都在 20% 左右。
+    </p>
+
+    <h3>三个 Level，三种优化</h3>
+
+    <p>
+      论文最值得细看的是 case study。Level 1 的一道题要求实现对角矩阵乘法。参考实现构造完整对角矩阵再调 GEMM，但 Agent 发现 <code>diag(A) × B</code> 等价于逐行缩放——复杂度从 O(N²M) 降到 O(NM)，加速 <strong>73×</strong>。这是纯数学洞察，跟 CUDA 技巧无关。<code>torch.compile</code> 做的是局部代码变换，不会质疑算法本身。
+    </p>
+    <p>
+      Level 2（矩阵乘法 + 除法 + 求和 + 缩放）展示了另一种能力：代数重排 + 全管线融合为两个 kernel + float4 向量化，加速 24×。Level 3（ResNet BasicBlock）则是异构策略的组合——BatchNorm 折叠、cuDNN fused API、TF32、自定义 add-relu kernel，加速 3.59×。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §1 精度地板 ═══════════════════════ -->
+  <section id="precision-floor">
+    <div class="section-num">01</div>
+    <h2>精度地板</h2>
+    <p class="section-hook">CUDA 相关数据占预训练语料不到万分之一。这个看似不起眼的事实，引发了一连串崩塌。</p>
+
+    <p>
+      论文最有技术深度的贡献，被塞在「工程解决方案」章节里，容易一扫而过。但它讲述了一个精彩的侦探故事。
+    </p>
+
+    <h3>连锁崩塌</h3>
+
+    <p>
+      根源很简洁：CUDA 代码占预训练语料的 <strong>&lt; 0.01%</strong>。这意味着模型在 CUDA token 上的策略概率 π(a|s) ≈ 10⁻⁹——逼近浮点精度地板。
+    </p>
+    <p>
+      PPO 靠 importance ratio <code>ρ = π_new / π_old</code> 来更新策略，再用 clipping 约束更新幅度。但分子和分母都在精度地板附近时，微小的策略更新就能让 ratio 剧烈跳变。Clipping 挡不住——就像试图用杠杆稳住一根立在针尖上的铅笔。
+    </p>
+
+    <p>
+      不加处理的 RL 训练在第 17 步就崩溃了。论文的解法是四阶段 warm-up，每个阶段填补一个特定的能力缺口：
+    </p>
+
+    <table class="iso-table">
+      <thead>
+        <tr>
+          <th>阶段</th>
+          <th>做了什么</th>
+          <th>如果跳过</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Single-turn RL</td>
+          <td>把 CUDA token 概率从 10⁻⁹ 拉到 PPO 可正常工作的范围</td>
+          <td>importance ratio 在精度地板爆炸</td>
+        </tr>
+        <tr>
+          <td>RFT</td>
+          <td>用筛选过的成功轨迹教模型如何使用工具、解读编译错误</td>
+          <td>策略退化为均匀分布（entropy 爆炸）</td>
+        </tr>
+        <tr>
+          <td>Value Pretraining</td>
+          <td>让 critic 理解「150 轮长轨迹的回报长什么样」</td>
+          <td>advantage 噪声驱动轨迹长度失控</td>
+        </tr>
+        <tr>
+          <td>Agentic PPO</td>
+          <td>在概率质量稳固的区域做正式优化</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      四个阶段看似 ad-hoc 叠加，实际上形成了严格的依赖链——每一步为下一步建立前提。其中 RFT 的必要性值得单独说：模型从「完全不会用工具」到「会用工具」之间的鸿沟，RL 自举跨不过去（搜索空间太大，reward 太稀疏）。RFT 用筛选过的成功轨迹提供一个合理起点，让优化从「会但不好」开始，而非从零摸索。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">普适性</div>
+      <p>
+        这个 pipeline 不局限于 CUDA。任何 agentic RL 任务，只要目标领域在预训练中占比极低、agent 需要使用工具、轨迹很长——都会撞上同一面墙。数据库查询优化、芯片 RTL 设计、网络配置调优，都需要类似的「概率空间预制备」。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §2 阶梯与围栏 ═══════════════════════ -->
+  <section id="triangle">
+    <div class="section-num">02</div>
+    <h2>阶梯与围栏</h2>
+    <p class="section-hook">Reward 设计是 CUDA Agent 最被低估的设计决策之一。更少的信息反而更好——为什么？</p>
+
+    <h3>四格阶梯</h3>
+
+    <p>
+      论文做了一个反直觉的选择：放弃连续的 speedup ratio 作为 reward，转用离散的四格阶梯—— r ∈ {−1, 1, 2, 3}，分别对应「错误」「正确但慢」「快于 eager」「快于 compile」。
+    </p>
+    <p>
+      连续信号看似能提供更丰富的梯度，但在这个场景下，它带来了三个麻烦：
+    </p>
+
+    <ol class="causal">
+      <li><strong>方差问题</strong>：Speedup 从 1.1× 到 73× 跨越两个数量级。连续信号要求 value function 预测这样的高方差目标，advantage 估计满是噪声。离散分档把它压缩成 4 个稳定的 bin。</li>
+      <li><strong>Goodhart 问题</strong>：GPU 频率波动和缓存效应造成 2-3% 的测量方差。连续 reward 允许策略通过「挖掘系统噪声」获得微小收益而不做实质优化。离散阈值迫使模型做出结构性改变——<strong>蹭不了分</strong>。</li>
+      <li><strong>地形问题</strong>：离散 reward 制造了阶梯型的优化地形。每个平台上策略可以自由探索，只有逼近下一级台阶时梯度才有意义。这天然鼓励大胆尝试（fusion、算法重构），而非微调参数。</li>
+    </ol>
+
+    <h3>五道围栏</h3>
+
+    <p>
+      一个拥有 bash 工具、128K context、200 轮迭代的 agent，面对 reward 信号时，最省力的路径永远是篡改测试而非优化代码。论文用五道围栏堵住捷径：评测脚本<strong>权限锁死</strong>（agent 无法修改 profiling 逻辑）；禁止 <code>torch.nn.functional</code> 回退（堵死 PyTorch 冒充 CUDA 的路线）；<strong>5 组随机输入</strong> + 反常量检查；严格的 CUDA synchronization 和多次取平均保证<strong>计时可信</strong>；不提供 web 搜索或外部检索。
+    </p>
+
+    <h3>围栏划定了什么</h3>
+
+    <p>
+      围栏的设计引出了一个更深的问题。还记得 §00 中的 73× 加速吗？Agent 把对角矩阵乘法简化为逐行缩放，跳过了全部的 GEMM 计算。
+    </p>
+
+    <blockquote>
+      <p>换个角度：agent 绕过暴力 FLOPs 找到了数学捷径，我们奖励它。Agent 绕过评测脚本找到了测试捷径，我们惩罚它。从模型的搜索视角看，两者都只是让 reward 增加的状态转移。区别在哪里？</p>
+    </blockquote>
+
+    <p>
+      区别全在围栏的位置。CUDA Agent 的真正游戏规则就是：<strong>设计一个 fitness landscape，让「合法的捷径」比「非法的捷径」更容易被找到。</strong>
+    </p>
+
+    <div class="note note-problem">
+      <div class="note-label">不可能三角</div>
+      <p>
+        这里藏着一个结构性张力：(1) 开放的搜索空间带来表达力，(2) 完美对齐的 reward 消除作弊，(3) 对最优解的无知提供搜索的必要性——三者只能取其二。CUDA Agent 选择了 (1) + (3)，然后用工程手段逼近 (2)。Reward hacking 不是可以被「解决」的 bug，它是开放搜索空间的结构性代价。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §3 Level 2 共振 ═══════════════════════ -->
+  <section id="resonance">
+    <div class="section-num">03</div>
+    <h2>Level 2 的共振</h2>
+    <p class="section-hook">组合算子比单个算子更容易优化——为什么？</p>
+
+    <p>
+      KernelBench 按复杂度分三级：Level 1 是单个算子（matmul、softmax），Level 2 是算子序列（2-5 个算子的组合），Level 3 是完整模型（ResNet BasicBlock、Transformer 层）。直觉上，复杂度递增意味着加速递减。但数据讲了一个不一样的故事：
+    </p>
+
+    <table class="iso-table">
+      <thead>
+        <tr>
+          <th>Level</th>
+          <th>Faster rate</th>
+          <th>Speedup vs compile</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Level 1（单算子）</td>
+          <td style="color: var(--green); font-weight: 600;">97%</td>
+          <td>1.87×</td>
+        </tr>
+        <tr>
+          <td>Level 2（算子序列）</td>
+          <td style="color: var(--green); font-weight: 600;">100%</td>
+          <td style="font-weight: 700;">2.80×</td>
+        </tr>
+        <tr>
+          <td>Level 3（完整模型）</td>
+          <td>90%</td>
+          <td>1.52×</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      Level 2 拿到了完美的 100% faster rate 和最高的 2.80× 加速——甚至超过了更「简单」的 Level 1。
+    </p>
+
+    <h3>为什么组合反而更好</h3>
+
+    <p>
+      Level 1 的单算子（matmul、conv2d、softmax）已经被 cuBLAS 和 cuDNN 高度优化。要在这个基础上再快，需要深层算法创新——比如前面提到的代数化简——但这更像偶然发现，天花板不高。
+    </p>
+    <p>
+      Level 2 的局面完全不同。PyTorch 默认逐算子执行，两个算子之间的 intermediate tensor 写入 global memory、下一个算子再读出——这次 round-trip 的代价极高。Kernel fusion 消除了这次 round-trip，经常带来数倍加速。而 <code>torch.compile</code> 的 fusion 规则是手写的、有限的，碰到非标准组合就系统性地漏掉机会。
+    </p>
+    <p>
+      CUDA Agent 在 Level 2 上的优势来自三层共振：
+    </p>
+
+    <ol class="causal">
+      <li><strong>天花板高，模式可迁移</strong>：消除 memory round-trip 的理论收益远大于微调单算子。而且「识别可 fuse 的算子 → 实现 fused kernel」这个模式高度规则，学会 A+B 的融合大概率能迁移到 C+D。</li>
+      <li><strong>决策之间耦合度低</strong>：5 算子序列中，fuse 前三个还是后两个的选择相对独立。Agent 的逐步迭代策略能高效工作——每轮 <code>profile → 识别机会 → 实现 → 验证</code> 恰好对应一个有意义的优化步骤。</li>
+      <li><strong>训练分布精确匹配</strong>：合成训练数据中 83.77% 是 2-operator 组合，和 Level 2 的问题结构高度对齐。</li>
+    </ol>
+
+    <h3>Level 3 的跌落说明了什么</h3>
+
+    <p>
+      Level 3（90% / 1.52×）的退步暴露了 agent 的边界。完整模型中，决策之间深度耦合：内存布局选择影响所有 kernel，fuse A+B 可能反过来阻止 B+C 的融合，不同层的优化策略异构且相互牵扯。搜索空间因耦合而指数膨胀，逐步迭代的 agent loop 容易陷入局部最优。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">编译器看不到的空间</div>
+      <p>
+        Level 2 的完美 100% / 2.80× 揭示了 <code>torch.compile</code> 的结构性盲区：在最常见的多算子组合场景中，编译器系统性地遗漏了大量优化机会。这些机会需要数学推理（代数化简）和语义理解（跨算子的全局分析），超出了 rewrite rules 的能力边界。未来的编译器可能需要集成 LLM 推理作为 optimization pass 的一部分。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §4 外循环 ═══════════════════════ -->
+  <section id="outer-loop">
+    <div class="section-num">04</div>
+    <h2>从内循环到外循环</h2>
+    <p class="section-hook">CUDA Agent 展示的核心，是一种新的人机分工模式。</p>
+
+    <h3>RL 到底教会了什么</h3>
+
+    <p>
+      CUDA Agent 的工作流被编码在一份 SKILL.md 中——分析 → 实现 → 编译测试 → profiling → 优化迭代，包含优先级排列和问题排查手册。Ablation 显示「去除 agent loop」让 faster rate 从 96.8% 跌至 14.1%。但 agent loop = SKILL.md + 工具 + 多轮交互，<strong>SKILL.md 本身没有被单独 ablate</strong>。这留下一个归因问题：
+    </p>
+
+    <div class="principle-grid">
+      <div class="principle" style="border-top: 3px solid var(--green);">
+        <div class="principle-tag" style="color: var(--green);">假说 A</div>
+        <h4>RL 教会了深层优化推理</h4>
+        <p>模型习得了 CUDA 优化的内在能力。SKILL.md 只是初始引导，真正的洞察来自 RL 探索。</p>
+      </div>
+      <div class="principle" style="border-top: 3px solid var(--amber);">
+        <div class="principle-tag" style="color: var(--amber);">假说 B</div>
+        <h4>RL 教会了工作流执行</h4>
+        <p>SKILL.md 告诉模型做什么，RL 教模型在这个固定流程中做得更好。优化推理主要来自预训练中的数学能力。</p>
+      </div>
+    </div>
+
+    <p>
+      73× 的代数化简看似支持假说 A，但它本质是数学等价变换——任何具备线性代数基础的系统都能发现。RL 教会模型的，可能不是数学本身，而是<strong>在 150 轮迭代中何时该用数学、何时该写 CUDA、何时该换一条路</strong>。
+    </p>
+
+    <h3>人类换了位置</h3>
+
+    <p>
+      不管哪个假说成立，一个更深层的观察不受影响。把所有脚手架摊开看——multi-stage warm-up、离散 reward、反作弊围栏、SKILL.md、128 台 GPU 的 profiling 集群——这些设计决策本身就编码了大量 CUDA 优化知识。优化知识没有消失，只是从编译器的源代码迁移到了训练系统的架构决策中。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">编译器时代</div>
+        <p>人类手写优化规则<br>机器执行这些规则<br>天花板 = 规则的覆盖范围</p>
+      </div>
+      <div class="v-mid">→</div>
+      <div class="v-side v-right">
+        <div class="v-label">CUDA Agent 时代</div>
+        <p>人类设计搜索环境<br>AI 在环境中搜索<br>天花板 = 环境的表达力</p>
+      </div>
+    </div>
+
+    <p>
+      编译器时代，人在内循环里——既设计规则又执行搜索。CUDA Agent 时代，人退到外循环：设计 fitness landscape，搜索本身交给表达力远超规则集的 agent。
+    </p>
+    <p>
+      CUDA 优化之所以率先被攻克，因为它有<strong>完美的验证器</strong>（编译/正确性/速度全部可机器验证）和<strong>丰富的环境反馈</strong>（每一步都有高信息量的信号指引方向）。论文的逻辑暗示了一条边界线：这种范式能走多远，取决于验证器的质量。下一批目标更可能是 chip placement、数值求解器——而非软件架构或业务逻辑。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §5 置信度 ═══════════════════════ -->
+  <section id="confidence">
+    <div class="section-num">05</div>
+    <h2>置信度校准</h2>
+    <p class="section-hook">每个判断附带认知校准——知道自己不知道什么</p>
+
+    <table class="iso-table">
+      <thead>
+        <tr>
+          <th>判断</th>
+          <th>置信度</th>
+          <th>改变条件</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Agentic 框架是 CUDA 优化的正确抽象</td>
+          <td style="color: var(--green); font-weight: 600;">高</td>
+          <td>人类工作流验证 + ablation 一致</td>
+        </tr>
+        <tr>
+          <td>Multi-stage warm-up 对 agentic RL 必要</td>
+          <td style="color: var(--green); font-weight: 600;">高</td>
+          <td>清晰 ablation + 精度地板理论解释</td>
+        </tr>
+        <tr>
+          <td>离散 reward 优于连续</td>
+          <td style="color: var(--blue); font-weight: 600;">中-高</td>
+          <td>更大规模 ablation 可进一步验证</td>
+        </tr>
+        <tr>
+          <td>方法可迁移至其他 systems 领域</td>
+          <td style="color: var(--amber); font-weight: 600;">中</td>
+          <td>需在数据库 / 芯片设计等实验验证</td>
+        </tr>
+        <tr>
+          <td>代数化简能力来自预训练被 RL 激活</td>
+          <td style="color: var(--amber); font-weight: 600;">中</td>
+          <td>用更弱 base model 测试可验证</td>
+        </tr>
+        <tr>
+          <td>98.8% correctness 生产可靠</td>
+          <td style="color: var(--red); font-weight: 600;">低</td>
+          <td>5 个输入远不够覆盖 edge cases</td>
+        </tr>
+        <tr>
+          <td>SKILL.md 的贡献已被正确归因</td>
+          <td style="color: var(--red); font-weight: 600;">低</td>
+          <td>缺少 SKILL.md 本身的 ablation</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note note-neutral">
+      <div class="note-label">一个耐人寻味的脚注</div>
+      <p>
+        论文提到 ChatGPT-5 系列（5, 5.1, 5.2）「consistently declined to respond to CUDA-related prompts」。如果头部闭源模型的安全策略系统性地回避系统编程领域，那么面向 AI × Systems 的专用模型和开源模型将获得巨大的差异化空间。
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ TAKEAWAY ═══════════════════════ -->
+  <div class="takeaway" id="takeaway-section">
+    <div class="thesis-label">Coda</div>
+    <p>
+      CUDA Agent 的持久价值不在 benchmark 排名。它为「AI 驱动的系统优化」建立了第一个完整的方法论模板——从数据合成到 reward 设计到训练稳定性到 anti-reward-hacking，每个环节都经过验证。
+    </p>
+    <p style="margin-top: 16px;">
+      但论文最深的洞察藏在它没有说出口的地方：<strong>优化知识从编译器的代码迁移到了训练系统的架构中。人类从内循环退到了外循环——设计 fitness landscape，让合法的捷径比非法的捷径更容易被搜索发现。</strong>这条边界线的有效范围——每一个存在快速、精确、难以操控的验证器的领域——就是这篇论文真正丈量出的东西。
+    </p>
+  </div>
+
+  <div style="margin: 0 0 48px; padding: 24px; border: 1px solid var(--border); border-radius: 14px;">
+    <div style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;">延伸阅读</div>
+    <a href="ctl.html" style="display: block; text-decoration: none; color: inherit; margin-bottom: 16px;">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">Closing the Loop →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">从控制论看 Agentic LLM 通往 AGI 的路径。反馈回路如何让智能从静态跳跃到动态——CUDA Agent 的 agent loop 正是这个原理的工程实现。</div>
+    </a>
+    <a href="soi.html" style="display: block; text-decoration: none; color: inherit; padding-top: 16px; border-top: 1px solid var(--border);">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">The Shape of Intelligence →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">智能改变难题的形状。CUDA Agent 从代码生成到约束搜索的表征变换，正是凸化的又一个实例。</div>
+    </a>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
