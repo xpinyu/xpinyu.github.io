@@ -248,6 +248,18 @@
     outline-offset: 2px;
   }
 
+  .pick .article-title::before {
+    content: '';
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-right: 7px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .page, .articles li { animation: none; }
     .article-detail { transition: none; }
@@ -268,6 +280,16 @@
     <a href="all.html" class="section-link">All →</a>
   </div>
   <ul class="articles">
+    <li class="pick">
+      <a href="p/subagent.html">
+        <div class="article-header">
+          <div class="article-title">The Markdown Org</div>
+          <div class="article-meta">Cursor × Multi-Agent · 2026</div>
+        </div>
+        <div class="article-desc">一个 Markdown 就是一个 agent，一个文件夹就是一个团队。</div>
+        <div class="article-detail"><span>你以为 multi-agent 协作需要编排框架，Cursor 用一个 Markdown 文件定义了全部。上下文隔离让每个 agent 各管各的，反而更容易把一件事想深。文件夹就是团队——可以 git 管理、版本化、code review。</span></div>
+      </a>
+    </li>
     <li>
       <a href="p/sot.html">
         <div class="article-header">

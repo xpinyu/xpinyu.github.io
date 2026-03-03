@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Multi-agent 协作不需要编排框架。一个 Markdown 就是一个 agent，一个文件夹就是一个团队。Cursor Subagents 如何用最简设计解决 multi-agent 协作的核心问题。">
+<title>The Markdown Org</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --ochre: #E8B830;
+    --blue: #5A7A90;
+    --blue-soft: #EAF0F5;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem; font-weight: 500;
+    line-height: 1.25; letter-spacing: -0.02em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 580px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+
+  .thesis {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B830; font-weight: 600; }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem; font-weight: 600;
+    line-height: 1.3; letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  blockquote {
+    margin: 28px 0; padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.03);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.95rem; line-height: 1.85;
+  }
+  blockquote p { margin-bottom: 0; }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg);   border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 24px 0; font-size: 0.85rem;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .versus .v-left  { background: var(--green-bg); }
+  .versus .v-left .v-label  { color: var(--green); }
+  .versus .v-right { background: var(--red-bg); }
+  .versus .v-right .v-label { color: var(--red); }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 700; color: var(--text-3);
+    background: var(--bg); font-size: 0.75rem;
+  }
+
+  .causal {
+    margin: 24px 0; padding: 0; list-style: none;
+    counter-reset: cause;
+  }
+  .causal li {
+    counter-increment: cause; position: relative;
+    padding: 8px 0 8px 44px; font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .causal li::before {
+    content: counter(cause); position: absolute;
+    left: 0; top: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #1A2540; color: #F5F0EB;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .iso-table {
+    width: 100%; border-collapse: collapse;
+    margin: 24px 0; font-size: 0.82rem;
+  }
+  .iso-table thead th {
+    text-align: left; padding: 10px 14px;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-3); border-bottom: 2px solid var(--border);
+  }
+  .iso-table tbody td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .iso-table tbody tr:last-child td { border-bottom: none; }
+  .iso-table tbody td:first-child { font-weight: 600; white-space: nowrap; }
+
+  .principle-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin: 28px 0;
+  }
+  @media (max-width: 600px) { .principle-grid { grid-template-columns: 1fr; } }
+  .principle {
+    padding: 24px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .principle:hover { border-color: #D0C8BD; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .principle-tag {
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  .principle h4 {
+    font-size: 0.95rem; font-weight: 700;
+    margin-bottom: 10px; line-height: 1.4;
+  }
+  .principle p { font-size: 0.82rem; color: var(--text-2); line-height: 1.7; margin-bottom: 0; }
+
+  .takeaway {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,246,238,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229,221,208,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .iso-table { font-size: 0.75rem; }
+    .iso-table thead th,
+    .iso-table tbody td { padding: 8px 10px; }
+    blockquote { padding: 16px 20px; }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+
+  .stat-row {
+    display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap;
+  }
+  .stat-card {
+    flex: 1; min-width: 140px;
+    padding: 20px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px;
+    text-align: center;
+  }
+  .stat-card .stat-value {
+    font-family: var(--mono); font-size: 1.4rem;
+    font-weight: 700; line-height: 1.2; margin-bottom: 6px;
+  }
+  .stat-card .stat-label {
+    font-size: 0.7rem; color: var(--text-3);
+    line-height: 1.4;
+  }
+  .stat-neg .stat-value { color: var(--red); }
+  .stat-pos .stat-value { color: var(--green); }
+  .stat-accent .stat-value { color: var(--accent); }
+
+  .dialogue {
+    margin: 28px 0; padding: 0;
+  }
+  .dialogue .d-turn {
+    padding: 16px 20px; margin-bottom: 2px;
+    font-size: 0.9rem; line-height: 1.8;
+    border-radius: 10px;
+  }
+  .dialogue .d-turn:first-child { border-radius: 14px 14px 10px 10px; }
+  .dialogue .d-turn:last-child { border-radius: 10px 10px 14px 14px; }
+  .dialogue .d-q {
+    background: #1A2540; color: #F5F0EB;
+  }
+  .dialogue .d-q .d-speaker { color: var(--ochre); }
+  .dialogue .d-a {
+    background: var(--surface); border: 1px solid var(--border);
+  }
+  .dialogue .d-a .d-speaker { color: var(--accent); }
+  .dialogue .d-speaker {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  pre {
+    background: #1A2540; color: #F5F0EB;
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; overflow-x: auto;
+    font-family: var(--mono); font-size: 0.82rem;
+    line-height: 1.7;
+  }
+  code {
+    font-family: var(--mono); font-size: 0.88em;
+    background: rgba(26, 37, 64, 0.06);
+    padding: 2px 6px; border-radius: 4px;
+  }
+  pre code {
+    background: none; padding: 0;
+  }
+  .yaml-key { color: #8EC5A0; }
+  .yaml-val { color: #E8B830; }
+  .comment { color: #6B7B8D; }
+  .prompt-text { color: #D4CFCA; }
+
+  .file-label {
+    display: inline-block; margin-bottom: -12px;
+    font-family: var(--mono); font-size: 0.72rem;
+    color: var(--text-3); background: var(--bg);
+    padding: 2px 10px; border-radius: 6px 6px 0 0;
+    border: 1px solid var(--border); border-bottom: none;
+    position: relative; z-index: 1;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← pinyu.ai</a>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">Core Thesis</a>
+  <a href="#crash">崩溃现场</a>
+  <a href="#resume">简历就是接口</a>
+  <a href="#isolation">隔离不是限制</a>
+  <a href="#folder">文件夹即团队</a>
+  <a href="#squad">第一支特种部队</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Cursor × Multi-Agent</div>
+    <h1>The Markdown Org</h1>
+    <p class="subtitle">
+      Multi-agent 协作不需要编排框架。一个 Markdown 就是一个 agent，一个文件夹就是一个团队。
+    </p>
+    <div class="meta">
+      <span>pinyu · 2026.03</span>
+      <span><a href="https://cursor.com/cn/docs/context/subagents" target="_blank">Cursor Subagents ↗</a></span>
+    </div>
+  </header>
+
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">Core Thesis</div>
+    <p>
+      你可能以为 multi-agent 协作需要复杂的编排框架。Cursor 把全部定义压缩成了一个 Markdown 文件。而且让每个 agent <strong>知道更少</strong>（上下文隔离），整个系统反而<strong>犯更少的错</strong>。一个 Markdown 就是一个 agent。一个文件夹就是一个团队。
+    </p>
+  </div>
+
+  <!-- §00 -->
+  <section id="crash">
+    <div class="section-num">00</div>
+    <h2>崩溃现场：一个 Agent 试图成为所有人</h2>
+    <p class="section-hook">你的 AI 看起来变笨了——多半是被上下文淹没了</p>
+
+    <p>
+      你让 Cursor agent 重构一个模块。进展顺利。然后你追加一句：「顺便把测试也写了。」再追加：「文档也更新一下。」
+    </p>
+    <p>
+      前 5 轮一切如常。到第 10 轮就开始跑偏——它写的测试用例引用了一个刚被自己删掉的函数。你指出错误，它改了测试，但文档描述的接口又跟改后的代码对不上了。
+    </p>
+    <p>
+      你正在经历三种不同的摩擦同时发作：
+    </p>
+
+    <ol class="causal">
+      <li><strong>上下文串味</strong>——重构时的思路带进了测试编写。代码里已经把 <code>getUserById</code> 改成了 <code>findUser</code>，但 context window 里还残留着旧的调用方式，于是测试「看到」了两个版本，选了错的那个。</li>
+      <li><strong>等待阻塞</strong>——你其实可以在它写测试的时候同步推进文档，但你做不到。你只有一个对话窗口，只能看着它一行行地生成测试代码，等。</li>
+      <li><strong>你成了人工路由器</strong>——「先改这个文件」、「现在去写测试」、「回来更新文档」——这些调度决策全部落在你头上。你本来雇了一个工程师，结果自己当起了项目经理。</li>
+    </ol>
+
+    <p>
+      想象一块白板。你在上面画系统架构图。画到一半，又要在同一块白板上画测试矩阵。再加上文档大纲。三张图在物理上互相覆盖。白板就那么大，三个独立的思考空间根本挤不下。
+    </p>
+
+    <svg width="100%" viewBox="0 0 560 230" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:24px auto;display:block" preserveAspectRatio="xMidYMid meet">
+      <rect x="30" y="12" width="500" height="170" rx="12" fill="#FFFFFF" stroke="#E5DDD0" stroke-width="1.5"/>
+      <text x="280" y="30" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62" font-weight="600" letter-spacing="0.1em">CONTEXT WINDOW</text>
+      <rect x="50" y="42" width="210" height="125" rx="8" fill="#5A7A90" opacity="0.18"/>
+      <rect x="175" y="42" width="195" height="125" rx="8" fill="#4A8060" opacity="0.18"/>
+      <rect x="290" y="42" width="215" height="125" rx="8" fill="#7B6892" opacity="0.18"/>
+      <text x="120" y="110" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="12" fill="#5A7A90" font-weight="600">代码重构</text>
+      <text x="272" y="110" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="12" fill="#4A8060" font-weight="600">测试编写</text>
+      <text x="420" y="110" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="12" fill="#7B6892" font-weight="600">文档更新</text>
+      <rect x="165" y="42" width="145" height="125" rx="0" fill="#C0503A" opacity="0.08"/>
+      <rect x="280" y="42" width="92" height="125" rx="0" fill="#C0503A" opacity="0.08"/>
+      <text x="237" y="145" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#C0503A" font-weight="600">污染区</text>
+      <text x="326" y="145" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#C0503A" font-weight="600">污染区</text>
+      <text x="280" y="210" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#776E62">一块白板，三张图——重叠区域越多，每张图越不清晰</text>
+    </svg>
+
+    <p>
+      把这三种摩擦放在一起看，结论就很清楚了：<strong>这个活不应该是同一个人做的。</strong>
+    </p>
+    <p>
+      卡住的地方在架构：一个 agent 在一个 context window 里同时处理多个需要深度专注的任务，天花板就在那里。模型再强，白板还是那么大。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- §01 -->
+  <section id="resume">
+    <div class="section-num">01</div>
+    <h2>简历就是接口</h2>
+    <p class="section-hook">一个 Markdown 文件的全部——从约束推导到完整定义</p>
+
+    <p>
+      既然一个 agent 不行，那就需要多个。问题变成：怎么定义一个 agent 的角色？
+    </p>
+    <p>
+      从约束倒推。角色定义需要持久化，不能每次对话重新描述一遍，所以得是文件。人要能直接读写，JSON 或二进制都太重，Markdown 最合适。系统还得结构化地提取元数据——模型选择、权限这些东西不能靠正则猜——所以加个 YAML frontmatter。
+    </p>
+    <p>
+      三条约束一合并，答案就一个：YAML 头 + Markdown 正文 = 完整的 Agent 定义。没有第二个文件。
+    </p>
+    <p>
+      这就是 Cursor subagent 的全部形态。看一个实际的定义文件：
+    </p>
+
+    <div class="file-label">.cursor/agents/security-reviewer.md</div>
+    <pre><code><span class="comment">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-val">security-reviewer</span>
+<span class="yaml-key">description:</span> <span class="yaml-val">Reviews code changes for security vulnerabilities,</span>
+  <span class="yaml-val">injection risks, secret leaks, and unsafe patterns.</span>
+<span class="yaml-key">model:</span> <span class="yaml-val">inherit</span>
+<span class="yaml-key">readonly:</span> <span class="yaml-val">true</span>
+<span class="comment">---</span>
+
+<span class="prompt-text">You are a security-focused code reviewer. For any code change:</span>
+<span class="prompt-text">1. Check for injection vulnerabilities (SQL, XSS, command injection)</span>
+<span class="prompt-text">2. Identify hardcoded secrets or credentials</span>
+<span class="prompt-text">3. Flag unsafe deserialization or eval usage</span>
+<span class="prompt-text">4. Check dependency security (known CVEs)</span>
+
+<span class="prompt-text">Output: ranked findings with severity (Critical / High / Medium / Low).</span>
+<span class="prompt-text">If clean, state "No security issues identified."</span></code></pre>
+
+    <p>
+      十几行就能定义一个完整的 agent。文件放到 <code>.cursor/agents/</code> 目录下，Cursor 就会加载它。
+    </p>
+
+    <svg width="100%" viewBox="0 0 640 310" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:24px auto;display:block" preserveAspectRatio="xMidYMid meet">
+      <!-- .md file (left) -->
+      <rect x="20" y="10" width="250" height="290" rx="12" fill="#FFFFFF" stroke="#E5DDD0" stroke-width="1.5"/>
+      <rect x="20" y="10" width="250" height="40" rx="12" fill="#1A2540"/>
+      <rect x="20" y="38" width="250" height="12" fill="#1A2540"/>
+      <text x="145" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8EC5A0" font-weight="600">.cursor/agents/*.md</text>
+      <!-- YAML fields -->
+      <text x="36" y="72" font-family="'JetBrains Mono',monospace" font-size="9" fill="#776E62">name:</text>
+      <text x="80" y="72" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1A1714">security-reviewer</text>
+      <text x="36" y="94" font-family="'JetBrains Mono',monospace" font-size="9" fill="#C0503A" font-weight="700">description:</text>
+      <text x="110" y="94" font-family="'JetBrains Mono',monospace" font-size="8" fill="#1A1714">Reviews code for...</text>
+      <text x="36" y="116" font-family="'JetBrains Mono',monospace" font-size="9" fill="#776E62">model:</text>
+      <text x="80" y="116" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1A1714">fast</text>
+      <text x="36" y="138" font-family="'JetBrains Mono',monospace" font-size="9" fill="#776E62">readonly:</text>
+      <text x="95" y="138" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1A1714">true</text>
+      <line x1="32" y1="152" x2="256" y2="152" stroke="#E5DDD0" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="36" y="175" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62">PROMPT BODY</text>
+      <text x="36" y="195" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#5C5349">You are a security-focused</text>
+      <text x="36" y="210" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#5C5349">code reviewer. For any</text>
+      <text x="36" y="225" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#5C5349">code change: ...</text>
+      <!-- Runtime mapping (right) -->
+      <rect x="370" y="55" width="250" height="36" rx="8" fill="#FAF6EE" stroke="#E5DDD0" stroke-width="1"/>
+      <text x="495" y="77" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#776E62">调用标识 <tspan font-family="'JetBrains Mono',monospace" fill="#1B3F8B">/security-reviewer</tspan></text>
+      <rect x="370" y="99" width="250" height="36" rx="8" fill="#F8ECE8" stroke="#C0503A" stroke-width="1.5"/>
+      <text x="495" y="121" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#C0503A" font-weight="600">自动路由匹配器（路由规则）</text>
+      <rect x="370" y="143" width="250" height="36" rx="8" fill="#FAF6EE" stroke="#E5DDD0" stroke-width="1"/>
+      <text x="495" y="165" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#776E62">推理引擎选择（inherit / fast / 模型 ID）</text>
+      <rect x="370" y="187" width="250" height="36" rx="8" fill="#FAF6EE" stroke="#E5DDD0" stroke-width="1"/>
+      <text x="495" y="209" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#776E62">权限边界（只读 / 可写）</text>
+      <rect x="370" y="231" width="250" height="36" rx="8" fill="#FAF6EE" stroke="#E5DDD0" stroke-width="1"/>
+      <text x="495" y="253" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#776E62">System Prompt（详细 SOP）</text>
+      <!-- Connecting lines -->
+      <line x1="270" y1="68" x2="370" y2="73" stroke="#E5DDD0" stroke-width="1"/>
+      <line x1="270" y1="90" x2="370" y2="117" stroke="#C0503A" stroke-width="1.5"/>
+      <line x1="270" y1="112" x2="370" y2="161" stroke="#E5DDD0" stroke-width="1"/>
+      <line x1="270" y1="134" x2="370" y2="205" stroke="#E5DDD0" stroke-width="1"/>
+      <line x1="270" y1="200" x2="370" y2="249" stroke="#E5DDD0" stroke-width="1"/>
+      <!-- Title -->
+      <text x="320" y="298" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#776E62" font-weight="600" letter-spacing="0.05em">ANATOMY OF A SUBAGENT</text>
+    </svg>
+
+    <p>
+      每个字段都有明确的职责。要快速理解它们，最好的办法是问一个问题：删掉会怎样？
+    </p>
+
+    <table class="iso-table">
+      <thead>
+        <tr>
+          <th>字段</th>
+          <th>HR 类比</th>
+          <th>删掉会怎样</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>name</td>
+          <td>职位名</td>
+          <td>无法通过 <code>/name</code> 显式调用</td>
+        </tr>
+        <tr>
+          <td style="color: var(--red); font-weight: 700;">description</td>
+          <td>招聘帖标题</td>
+          <td>自动委派失明——系统不知道该派谁</td>
+        </tr>
+        <tr>
+          <td>model</td>
+          <td>资质要求</td>
+          <td>继承父级模型，简单任务浪费算力</td>
+        </tr>
+        <tr>
+          <td>readonly</td>
+          <td>权限等级</td>
+          <td>探索角色也能改代码——危险</td>
+        </tr>
+        <tr>
+          <td>is_background</td>
+          <td>「做调研，我先推进」</td>
+          <td>阻塞主线程，等它做完才能继续</td>
+        </tr>
+        <tr>
+          <td>prompt body</td>
+          <td>详细 SOP</td>
+          <td>Agent 不知道具体该做什么</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      有个细节值得单独说：<code>description</code> 其实是路由规则，给系统看的。当你说「帮我 review 这个 PR」，主 agent 会扫描所有 subagent 的 description，用语义匹配找到最相关的角色，自动委派。description 写得模糊，路由就不准。把它当招聘帖标题来写就对了。
+    </p>
+    <p>
+      <code>model</code> 决定 subagent 用哪个模型思考：
+    </p>
+
+    <pre><code><span class="yaml-key">model:</span> <span class="yaml-val">inherit</span>                            <span class="comment"># 默认——继承父 agent 的模型</span>
+<span class="yaml-key">model:</span> <span class="yaml-val">fast</span>                               <span class="comment"># 快速低成本</span>
+
+<span class="comment"># 日常够用</span>
+<span class="yaml-key">model:</span> <span class="yaml-val">gemini-3-flash</span>
+<span class="yaml-key">model:</span> <span class="yaml-val">claude-4.6-sonnet-medium-thinking</span>
+<span class="yaml-key">model:</span> <span class="yaml-val">gpt-5.2-high</span>
+
+<span class="comment"># 重度推理</span>
+<span class="yaml-key">model:</span> <span class="yaml-val">gpt-5.2-xhigh</span>
+<span class="yaml-key">model:</span> <span class="yaml-val">gemini-3.1-pro</span>
+<span class="yaml-key">model:</span> <span class="yaml-val">claude-4.6-opus-max-thinking</span></code></pre>
+
+    <p>
+      大多数时候 <code>inherit</code> 就够了——你用什么模型跟它说话，它就用什么模型思考。只有当你明确知道某个角色需要更快更便宜、或需要特定模型的深度推理时，才显式指定。
+    </p>
+
+    <h3>两种调用方式</h3>
+
+    <p>
+      <strong>显式调用</strong>——你点名要人：<code>/security-reviewer 检查这个文件有没有注入风险</code>。直接，明确，零歧义。
+    </p>
+    <p>
+      <strong>自动委派</strong>——你只说需求：「帮我看看这段代码的安全性」。主 agent 根据 description 语义匹配，自动路由到合适的 subagent。你不需要记住谁叫什么名字。
+    </p>
+    <p>
+      Cursor 自带三个内置 subagent：<code>explore</code>（代码搜索专家），<code>shell</code>（命令执行），<code>browser</code>（浏览器自动化）。你之前用的其实一直是 subagent 架构——只是现在你可以定义自己的角色了。
+    </p>
+
+    <div class="note note-neutral">
+      <div class="note-label">澄清</div>
+      <p>
+        <strong>Subagent ≠ Cursor Rules。</strong> Rules 是全局生效的被动约束——无论哪个 agent 在工作，Rules 始终在背景中约束它的行为，像宪法。Subagent 是按需唤醒的主动执行者——只在被调用时激活，像雇员。它们可以叠加使用，但谁也替代不了谁。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- §02 -->
+  <section id="isolation">
+    <div class="section-num">02</div>
+    <h2>隔离不是限制</h2>
+    <p class="section-hook">让每个 agent 知道更少，整个系统反而犯更少的错</p>
+
+    <p>
+      Subagent 有个关键点听起来有点反常识：<strong>隔离越强，并行越真实。</strong>
+    </p>
+    <p>
+      想象三个人共用一张办公桌。理论上他们可以「并行工作」——但实际上，一个人摊开的图纸会压住另一个人的笔记，第三个人的咖啡随时可能洒在所有人的文件上。他们花在协调物理空间上的精力，可能比花在思考上的还多。
+    </p>
+    <p>
+      现在给每个人一个独立的工作间。门一关，他们真正在并行。互不干扰，各自深入。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">隔离</div>
+        <p>各自独立工作间<br>真正并行，互不干扰<br>每个人的桌面只有自己的任务</p>
+      </div>
+      <div class="v-mid">vs</div>
+      <div class="v-side v-right">
+        <div class="v-label">共享</div>
+        <p>三人共用一张办公桌<br>互相覆盖、被迫排队<br>协调成本吞噬生产力</p>
+      </div>
+    </div>
+
+    <p>
+      这就是 context isolation 做的事。如果你熟悉 Unix，对应的概念是 <code>fork()</code>——子进程获得父进程内存空间的副本，但之后的修改互不影响。Subagent 获得必要的任务上下文，但之后的推理在独立的 context window 中进行，不会污染主 agent 的思考空间，也不会被其他 subagent 的中间结果干扰。
+    </p>
+    <p>
+      换个角度讲：context isolation 是聚焦，不是失忆。Subagent 拿到了完成任务所需的全部信息，只是不会被无关内容分散注意力。安全审查员不需要知道你同时在做性能优化，性能审查员也不用关心安全审查的中间发现。这种「各管各的」是刻意设计的——把噪音隔开，反而更容易把一件事想深。
+    </p>
+
+    <svg width="100%" viewBox="0 0 560 350" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:28px auto;display:block" preserveAspectRatio="xMidYMid meet">
+      <!-- Main Agent (top) -->
+      <rect x="200" y="8" width="160" height="42" rx="10" fill="#1A2540"/>
+      <text x="280" y="34" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="12" fill="#F5F0EB" font-weight="600">Main Agent</text>
+      <!-- Fork lines -->
+      <path d="M240 50 L100 100" stroke="#B8864A" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <path d="M280 50 L280 100" stroke="#B8864A" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <path d="M320 50 L460 100" stroke="#B8864A" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="175" y="70" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#B8864A" font-weight="600">fork</text>
+      <text x="395" y="70" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#B8864A" font-weight="600">fork</text>
+      <!-- Subagent A -->
+      <rect x="22" y="100" width="156" height="130" rx="10" fill="none" stroke="#5A7A90" stroke-width="1" stroke-dasharray="6 4"/>
+      <text x="100" y="118" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="8" fill="#5A7A90" font-weight="600" letter-spacing="0.08em">独立 CONTEXT</text>
+      <rect x="38" y="128" width="124" height="38" rx="8" fill="#5A7A90" opacity="0.12"/>
+      <text x="100" y="152" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#5A7A90" font-weight="600">安全审查</text>
+      <text x="100" y="210" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62">~15s</text>
+      <!-- Subagent B -->
+      <rect x="202" y="100" width="156" height="130" rx="10" fill="none" stroke="#4A8060" stroke-width="1" stroke-dasharray="6 4"/>
+      <text x="280" y="118" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="8" fill="#4A8060" font-weight="600" letter-spacing="0.08em">独立 CONTEXT</text>
+      <rect x="218" y="128" width="124" height="38" rx="8" fill="#4A8060" opacity="0.12"/>
+      <text x="280" y="152" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#4A8060" font-weight="600">性能审查</text>
+      <text x="280" y="210" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62">~12s</text>
+      <!-- Subagent C -->
+      <rect x="382" y="100" width="156" height="130" rx="10" fill="none" stroke="#7B6892" stroke-width="1" stroke-dasharray="6 4"/>
+      <text x="460" y="118" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="8" fill="#7B6892" font-weight="600" letter-spacing="0.08em">独立 CONTEXT</text>
+      <rect x="398" y="128" width="124" height="38" rx="8" fill="#7B6892" opacity="0.12"/>
+      <text x="460" y="152" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#7B6892" font-weight="600">文档检查</text>
+      <text x="460" y="210" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62">~8s</text>
+      <!-- Parallel label -->
+      <text x="280" y="250" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62" letter-spacing="0.1em">← 并行执行 →</text>
+      <!-- Merge lines -->
+      <path d="M100 230 L240 280" stroke="#B8864A" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <path d="M280 230 L280 280" stroke="#B8864A" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <path d="M460 230 L320 280" stroke="#B8864A" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="400" y="268" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#B8864A" font-weight="600">merge</text>
+      <!-- Main Agent (bottom) -->
+      <rect x="200" y="280" width="160" height="42" rx="10" fill="#1A2540"/>
+      <text x="280" y="306" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="12" fill="#F5F0EB" font-weight="600">综合 & 返回</text>
+      <!-- Time comparison -->
+      <text x="280" y="340" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#776E62">串行 35s → 并行 15s：时间折叠</text>
+    </svg>
+
+    <p>
+      另一个直接收益是省等待时间。安全审查需要 15 秒，性能审查需要 12 秒，文档检查需要 8 秒。串行执行：35 秒。并行执行：15 秒。任务越多，折叠效果越显著。
+    </p>
+    <p>
+      当所有 subagent 完成工作，它们将各自的分析结果——纯文本——返回给主 agent。主 agent 持有全局上下文，负责综合这些独立报告，形成统一的回复。推理阶段彼此隔离，汇报阶段再做整合——先独立思考，再统一汇总。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">深一层</div>
+      <p>
+        隔离的好处不止是并行提速。往深了想：<strong>深度需要承诺</strong>。做真正深入的安全审计，你需要暂时、真诚地相信「一切外部输入都是恶意的」——这是一个局部极端的立场。同时持有多个评价框架的 agent 很难走到这种极端，因为每一步深入都会被其他立场的引力拉回来。隔离给了每个 agent 走极端的空间。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- §03 -->
+  <section id="folder">
+    <div class="section-num">03</div>
+    <h2>文件夹即团队</h2>
+    <p class="section-hook">从一个文件扩到一个团队：递归的力量</p>
+
+    <p>
+      Subagent 可以派遣 subagent。主 agent 委派安全审查，安全审查 agent 如果发现可疑的依赖项，可以进一步派遣 <code>explore</code> agent 去搜索相关代码。这种递归委派能力意味着你不需要预设所有可能的工作流——agent 根据实际情况动态分工。
+    </p>
+    <p>
+      回过头看 <code>.cursor/agents/</code> 文件夹：
+    </p>
+
+    <pre><code><span class="comment">.cursor/agents/</span>
+├── security-reviewer.md
+├── perf-reviewer.md
+└── docs-checker.md</code></pre>
+
+    <p>
+      这个文件结构本身就是一张 org chart。每个 <code>.md</code> 文件是一个岗位。文件夹是团队。删一个文件就是裁员，加一个文件就是招聘。
+    </p>
+    <p>
+      顺着这个思路往下想：
+    </p>
+
+    <ol class="causal">
+      <li><strong>一个文件 = 一个 agent</strong> → <strong>一个文件夹 = 一个团队</strong> → <strong>一个仓库 = 一个组织</strong>。从单兵到军团，只是文件数量的变化。</li>
+      <li><strong>团队可以 git 管理。</strong> <code>git log</code> 看团队的演变历史。<code>git blame</code> 追溯谁在什么时候修改了某个 agent 的职责。Pull request 审查 agent 定义的变更——组织架构变更也要走 code review。</li>
+      <li><strong>团队可以 fork。</strong> 看到一个开源项目的 <code>agents/</code> 定义得好？复制这个文件夹，你就拥有了同样的团队。你不需要从零开始设计分工，直接复用别人的「团队配置」。</li>
+    </ol>
+
+    <p>
+      分工的道理一直没变——从厨房旅制度到 Unix 哲学到微服务，都是这个逻辑。只是这一次，<strong>团队定义本身变成了代码</strong>——可以 git 管理、版本化、code review。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- §04 -->
+  <section id="squad">
+    <div class="section-num">04</div>
+    <h2>你的第一支特种部队</h2>
+    <p class="section-hook">五分钟，从零到一个能并行工作的 review 团队</p>
+
+    <p>
+      场景：你提交了一段代码变更，希望同时获得安全审查和性能审查。两个独立的专家，并行工作，各自提交报告。
+    </p>
+    <p>
+      你只需要创建两个文件。
+    </p>
+
+    <h3>安全审查员</h3>
+
+    <div class="file-label">.cursor/agents/security-reviewer.md</div>
+    <pre><code><span class="comment">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-val">security-reviewer</span>
+<span class="yaml-key">description:</span> <span class="yaml-val">Reviews code changes for security vulnerabilities,</span>
+  <span class="yaml-val">injection risks, secret leaks, and unsafe patterns.</span>
+<span class="yaml-key">model:</span> <span class="yaml-val">inherit</span>
+<span class="yaml-key">readonly:</span> <span class="yaml-val">true</span>
+<span class="comment">---</span>
+
+<span class="prompt-text">You are a security-focused code reviewer. For any code change:</span>
+<span class="prompt-text">1. Check for injection vulnerabilities (SQL, XSS, command injection)</span>
+<span class="prompt-text">2. Identify hardcoded secrets or credentials</span>
+<span class="prompt-text">3. Flag unsafe deserialization or eval usage</span>
+<span class="prompt-text">4. Check dependency security (known CVEs)</span>
+
+<span class="prompt-text">Output: ranked findings with severity (Critical / High / Medium / Low).</span>
+<span class="prompt-text">If clean, state "No security issues identified."</span></code></pre>
+
+    <p>
+      <code>readonly: true</code>——审查员只看不碰代码。<code>model: inherit</code>——继承你当前使用的模型，不用额外操心选型。
+    </p>
+
+    <h3>性能审查员</h3>
+
+    <div class="file-label">.cursor/agents/perf-reviewer.md</div>
+    <pre><code><span class="comment">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-val">perf-reviewer</span>
+<span class="yaml-key">description:</span> <span class="yaml-val">Reviews code changes for performance issues, N+1 queries,</span>
+  <span class="yaml-val">memory leaks, and unnecessary computations.</span>
+<span class="yaml-key">model:</span> <span class="yaml-val">inherit</span>
+<span class="yaml-key">readonly:</span> <span class="yaml-val">true</span>
+<span class="comment">---</span>
+
+<span class="prompt-text">You are a performance-focused code reviewer. For any code change:</span>
+<span class="prompt-text">1. Identify N+1 query patterns or unnecessary database calls</span>
+<span class="prompt-text">2. Flag potential memory leaks or unbounded growth</span>
+<span class="prompt-text">3. Check for O(n²) or worse algorithms where O(n) is possible</span>
+<span class="prompt-text">4. Spot unnecessary re-renders or redundant computations</span>
+
+<span class="prompt-text">Output: specific findings with estimated impact (High / Medium / Low).</span></code></pre>
+
+    <p>
+      两个文件创建完毕。现在来看触发方式。
+    </p>
+
+    <h3>触发</h3>
+
+    <p>
+      <strong>自动委派</strong>——你只需说一句：
+    </p>
+
+    <blockquote>
+      <p>帮我 review 一下这个 PR 的改动</p>
+    </blockquote>
+
+    <p>
+      主 agent 读取两个 agent 的 <code>description</code>，判断「安全漏洞审查」和「性能问题审查」都与 review 相关，自动同时派发。两者在各自独立的 context 中并行运行，各自返回报告。你拿到的是综合后的双视角审查结果。
+    </p>
+    <p>
+      <strong>显式调用</strong>——你也可以精确指定：
+    </p>
+
+    <blockquote>
+      <p>/security-reviewer 检查这个文件有没有注入风险</p>
+    </blockquote>
+
+    <p>
+      点名调用，零歧义。适合你已经知道需要哪个专家的场景。
+    </p>
+
+    <svg width="100%" viewBox="0 0 640 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:28px auto;display:block" preserveAspectRatio="xMidYMid meet">
+      <!-- Timeline base -->
+      <line x1="30" y1="100" x2="610" y2="100" stroke="#E5DDD0" stroke-width="1"/>
+      <!-- User instruction -->
+      <rect x="20" y="72" width="110" height="36" rx="8" fill="#1A2540"/>
+      <text x="75" y="94" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#F5F0EB" font-weight="500">「review 这个 PR」</text>
+      <!-- Match -->
+      <circle cx="170" cy="100" r="5" fill="#B8864A"/>
+      <text x="170" y="68" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#B8864A" font-weight="600">匹配 description</text>
+      <!-- Fork -->
+      <path d="M175 100 L240 55" stroke="#5A7A90" stroke-width="1.5"/>
+      <path d="M175 100 L240 145" stroke="#4A8060" stroke-width="1.5"/>
+      <!-- Security lane -->
+      <rect x="240" y="32" width="220" height="32" rx="8" fill="#5A7A90" opacity="0.12" stroke="#5A7A90" stroke-width="1"/>
+      <text x="350" y="52" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#5A7A90" font-weight="600">security-reviewer 工作中</text>
+      <!-- Perf lane -->
+      <rect x="240" y="130" width="180" height="32" rx="8" fill="#4A8060" opacity="0.12" stroke="#4A8060" stroke-width="1"/>
+      <text x="330" y="150" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#4A8060" font-weight="600">perf-reviewer 工作中</text>
+      <!-- Merge -->
+      <path d="M460 48 L500 100" stroke="#5A7A90" stroke-width="1.5"/>
+      <path d="M420 146 L500 100" stroke="#4A8060" stroke-width="1.5"/>
+      <circle cx="500" cy="100" r="5" fill="#B8864A"/>
+      <text x="500" y="68" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#B8864A" font-weight="600">汇合</text>
+      <!-- Result -->
+      <rect x="530" y="82" width="90" height="36" rx="8" fill="#1A2540"/>
+      <text x="575" y="104" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#F5F0EB" font-weight="500">综合报告</text>
+      <!-- Time axis -->
+      <text x="75" y="190" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62">0s</text>
+      <text x="170" y="190" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62">~1s</text>
+      <text x="350" y="190" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62">并行执行</text>
+      <text x="500" y="190" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62">~15s</text>
+      <text x="575" y="190" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62">~16s</text>
+    </svg>
+
+    <p>
+      整条链路不到 20 秒。如果串行，你要等至少 30 秒，而且还要亲自在两种审查视角之间切换调度。
+    </p>
+
+    <div class="note note-ok">
+      <div class="note-label">进阶</div>
+      <p>
+        试试加入第三个 agent <code>docs-checker.md</code>，让它检查文档是否与代码变更同步。你的 review 团队从 2 人变成了 3 人——只需要多创建一个文件。这就是 <strong>file as agent</strong> 的组合力：团队扩容的成本是一次 <code>touch</code>。
+      </p>
+    </div>
+  </section>
+
+  <!-- Takeaway -->
+  <div class="takeaway" id="takeaway-section">
+    <div class="thesis-label">Takeaway</div>
+    <p>
+      你要带走的两个不变量：<strong>Routing</strong>——把任务送到对的角色——和 <strong>Isolation</strong>——让角色互不干扰。理解这两点，你就能为任何项目设计 agent 团队。这些原则跟 Cursor 无关，放到任何 multi-agent 系统里都成立。<br><br>
+      一个文件 = 一个 agent。一个文件夹 = 一个团队。一个仓库 = 一个组织。<strong>组织架构变成了源代码——而源代码是可以 fork 的。</strong>
+    </p>
+  </div>
+
+  <div style="margin: 0 0 48px; padding: 24px; border: 1px solid var(--border); border-radius: 14px;">
+    <div style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;">延伸阅读</div>
+    <a href="moa.html" style="display: block; text-decoration: none; color: inherit; margin-bottom: 16px;">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">Mixture-of-Agents →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">从推理侧看 multi-agent 协作——用模型差异铺覆盖率，把「从零创作」降维成「搜索与编辑」。</div>
+    </a>
+    <a href="sk.html" style="display: block; text-decoration: none; color: inherit; padding-top: 16px; border-top: 1px solid var(--border);">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">Skills, Explained →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">同样是 Markdown 文件，同样的设计哲学——把 prompt 变成可复用、可共享的 Skill。</div>
+    </a>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
