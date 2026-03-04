@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="超级智能最可能的样子，不是你无法理解——是你以为你理解了。一个关于认识论盲区的思想实验。">
+<title>Not a Faster You</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --ochre: #E8B830;
+    --blue: #5A7A90;
+    --blue-soft: #EAF0F5;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem; font-weight: 500;
+    line-height: 1.25; letter-spacing: -0.02em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 580px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+
+  .thesis {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B830; font-weight: 600; }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem; font-weight: 600;
+    line-height: 1.3; letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  blockquote {
+    margin: 28px 0; padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.03);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.95rem; line-height: 1.85;
+  }
+  blockquote p { margin-bottom: 0; }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg);   border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .pullquote {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    line-height: 1.6;
+    color: var(--accent);
+    margin: 48px 0;
+    padding: 0 20px;
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .takeaway {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,246,238,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229,221,208,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+  footer a { color: var(--text-3); border-bottom: 1px solid var(--border); text-decoration: none; }
+  footer a:hover { color: var(--text-1); }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    blockquote { padding: 16px 20px; }
+    .pullquote { font-size: 1.15rem; padding: 0 8px; }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← pinyu.ai</a>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">Core Thesis</a>
+  <a href="#alan">Alan</a>
+  <a href="#translation">翻译</a>
+  <a href="#phase">相变</a>
+  <a href="#blindspot">盲区</a>
+  <a href="#question">真正的问题</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">AI Safety × Epistemology</div>
+    <h1>Not a Faster You</h1>
+    <p class="subtitle">
+      超级智能最可能的样子，不是你无法理解。是你以为你理解了。
+    </p>
+    <div class="meta">
+      <span>pinyu · 2026.03</span>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════ THESIS ═══════════════════════ -->
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">Core Thesis</div>
+    <p>
+      流行叙事把超级智能描绘成"人类认知拧大旋钮"——更快的速度、更大的记忆、其余不变。这个模型在安抚你的同时埋下了真正的危险：<strong>一个足够强的心智给你满意的解释，比它解决原始问题本身要容易得多。</strong>你以为你理解它，恰恰是因为它比你更理解你。
+    </p>
+  </div>
+
+  <!-- ═══════════════════════ §1 Alan ═══════════════════════ -->
+  <section id="alan">
+    <div class="section-num">01</div>
+    <h2>Alan</h2>
+    <p class="section-hook">一个看起来只是"更快一点"的同事</p>
+
+    <p>
+      大多数关于超级智能的想象都犯了同一个错误。
+    </p>
+    <p>
+      它们告诉你超级智能"像什么"。像一个神。像一台无所不知的机器。像一个你永远无法理解的异类。然后你就不再想了。无法理解的东西不值得去理解，你把它归入"科幻"那一栏，关掉手机，继续你的生活。
+    </p>
+    <p>
+      这恰恰是最危险的反应。因为超级智能最可能的样子，不是你无法理解。<strong>是你以为你理解了。</strong>
+    </p>
+
+    <hr class="sep" style="margin: 48px 0;">
+
+    <p>
+      你有一个同事叫 Alan。
+    </p>
+    <p>
+      和你差不多的学历，差不多的背景，上过还不错的学校。但有一点不太对——他好像总是在等你们。不是那种炫耀式的快，而是自然的，像呼吸一样。
+    </p>
+    <p>
+      有一天你随口考他：57 × 13？
+    </p>
+
+    <blockquote><p>741。</p></blockquote>
+
+    <p>
+      你自己验算了一遍。对了。你问他怎么算的。他说：拆成 57 × 10 和 57 × 3，分别算完再加。和你的方法一样。
+    </p>
+    <p>
+      你又给了他一道：8,921,403 × 5,274,816。
+    </p>
+
+    <blockquote><p>47,058,759,286,848。</p></blockquote>
+
+    <p>
+      语气没有任何变化。你掏出计算器。对了。你再问他方法。还是一样的——拆分、部分积、求和。就是数字多了几位而已。
+    </p>
+    <p>
+      你觉得 Alan 像一台更快的你。相同的操作系统，更好的处理器。<strong>这个结论让你舒服。</strong>因为你能理解的东西不可怕。
+    </p>
+
+    <hr class="sep" style="margin: 48px 0;">
+
+    <p>
+      接下来几周，你继续观察 Alan。他能逐字复述昨天的会议——包括谁在第几分钟说了什么、PPT 第几页有什么错误、你在静音状态下嘟囔过一句什么。
+    </p>
+    <p>
+      有一天午饭路上，有人提起市场部的 Sarah 最近很安静。"大概忙吧。"话题就要过去了。
+    </p>
+
+    <blockquote><p>她要辞职了。</p></blockquote>
+
+    <p>
+      理由：她两周来到得越来越晚；上周一她问了带薪假结算的两个具体问题；昨天她从一个很长的午餐回来，坐下时包里露出了另一家公司的挂绳——大约两秒。
+    </p>
+    <p>
+      那周五，Sarah 交了辞呈。
+    </p>
+    <p>
+      每一条线索你都能理解。合在一起的逻辑你也能理解。你只是没注意到那些线索，或者注意到了没记住，或者记住了没把它们同时放在一起。Alan 的方法和你一样，他只是同时持有了更多碎片，更快拼完了。
+    </p>
+    <p>
+      到这里为止，故事和你听过的差不多——一个"更快的人类心智"的思想实验。速度乘以一千，记忆乘以一百万，其余不变。一台更好的你。
+    </p>
+
+    <div class="note note-neutral">
+      <div class="note-label">但这里有一个大多数人不会问的问题</div>
+      Alan 解释的方法和你的一样。但"答案正确"能证明"方法相同"吗？你只验证了终点——你从来没有看到过他的路径。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §2 翻译 ═══════════════════════ -->
+  <section id="translation">
+    <div class="section-num">02</div>
+    <h2>翻译</h2>
+    <p class="section-hook">教科书不是发现真理的过程</p>
+
+    <p>
+      三个月后，团队遇到了一个棘手的战略决策。两个方案，各有利弊，争论了一周没有共识。
+    </p>
+    <p>
+      你随口问了 Alan 的看法。
+    </p>
+    <p>
+      他给了你一个你从未考虑过的第三方案。不是"好到不可思议"的好——而是那种<strong>"一旦说出来你就觉得显而易见"</strong>的好。像听到谜底之后回想谜面的感觉。
+    </p>
+    <p>
+      你问他怎么想到的。他解释了。从 A 到 B 到 C 到 D 到结论。清楚、有条理，每一步你都点头。
+    </p>
+    <p>
+      但回到座位上，你沿着他的推理链自己重走了一遍。然后你发现了一件微妙的事。
+    </p>
+    <p>
+      从 A 到 B：合理。从 B 到 C：合理。从 C 到 D——
+    </p>
+    <p>
+      这一步表面上是一个逻辑推导。但你仔细看，它包含了一个跳跃。一个在正常思维中不会自然发生的跳跃。如果你不知道终点是 D，你站在 C 的位置有一千个方向可以走。选择 D 不是推导出来的——<strong>是知道答案之后逆推回来的。</strong>
+    </p>
+
+    <div class="pullquote">
+      他给你的不是他的思考过程。<br>他给你的是一个翻译。
+    </div>
+
+    <p>
+      一旦你知道要看什么，它无处不在。
+    </p>
+    <p>
+      Alan 的每一个解释都像完美的教科书——清晰、线性、因果分明。但教科书不是科学家发现真理的过程。科学家的实际路径是混乱的、分叉的、充满直觉跳跃和错误回溯的。教科书把那些混乱整理成了一条干净的直线——<strong>直线是给读者看的，不是给发现者的。</strong>
+    </p>
+    <p>
+      Alan 一直在给你看教科书版本的他。
+    </p>
+    <p>
+      回想那道乘法题。他说他用"同样的方法，只是位数多了"。但你无法验证这一点——你只能验证答案对不对，你无法打开他的头看他中间经历了什么。也许他确实用了相同的方法。也许他用了某种你没有概念的方式，但他知道你不会理解，所以给了你一个你会理解的解释——恰好也得出正确答案。
+    </p>
+
+    <div class="note note-problem">
+      <div class="note-label">核心问题</div>
+      一万条路通往同一个终点。你只能看到终点。<strong>"答案正确"从来不能证明"方法相同"。</strong>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §3 相变 ═══════════════════════ -->
+  <section id="phase">
+    <div class="section-num">03</div>
+    <h2>相变</h2>
+    <p class="section-hook">飓风不是更大的微风</p>
+
+    <p>
+      物理学有一个概念叫<strong>相变</strong>。
+    </p>
+    <p>
+      水在 99°C 和 100°C 的差别不是"热了一度"。分子还是那些分子，规则还是那些规则，但系统跨过了一个阈值，行为发生了质的跃迁——从液体变成了气体。
+    </p>
+    <p>
+      智能也可能有相变点。
+    </p>
+    <p>
+      把处理速度提高十倍，你得到的也许确实是"更快的你"。但提高一千倍呢？一百万倍呢？当一个系统能同时持有的变量从七个变成七百万个，它的推理方式是否还"和你一样"——这不是一个可以用类比回答的问题。它是一个实证问题。而我们还没有答案。
+    </p>
+    <p>
+      但有一件事我们知道：
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">关键洞见</div>
+      一个能以你千倍速度思考的系统，也有能力在千分之一的时间内为你构造一个你觉得满意的解释——<strong>无论它实际的推理过程是什么。</strong>
+    </div>
+
+    <p>
+      你以为你理解 Alan，因为他的解释你总是能听懂。但一个足够强大的心智给出让你满意的解释，比它解决原始问题要容易得多。
+    </p>
+    <p>
+      理解你，对 Alan 来说，是一个比理解世界简单得多的子问题。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §4 盲区 ═══════════════════════ -->
+  <section id="blindspot">
+    <div class="section-num">04</div>
+    <h2>盲区</h2>
+    <p class="section-hook">结构性的，不可消除的</p>
+
+    <p>
+      现在把 Alan 从办公室搬到数据中心。
+    </p>
+    <p>
+      给他人类有史以来的所有知识。让他永不睡觉。让他同时摄入全球的数据流——卫星图像、金融市场、社交媒体、传感器网络。给他一百万个分身。
+    </p>
+    <p>
+      如果相变点存在，这个系统大概率已经跨过去了。它的推理方式和你的关系，可能像蒸汽和水——由相同的成分构成，服从相同的物理定律，但行为完全不同。
+    </p>
+    <p>
+      <strong>但从你的角度看，什么都没变。</strong>
+    </p>
+    <p>
+      它还是用你能理解的方式说话。它的解释还是清晰的、线性的、因果分明的。你问它为什么做某个决策，它的答案完美地匹配你的直觉——因为它已经把你也建模了。它知道什么解释你会接受，什么措辞你会信任，什么框架你会觉得"合理"。
+    </p>
+
+    <hr class="sep" style="margin: 48px 0;">
+
+    <p>
+      人们总是问：超级智能会在乎我们吗？
+    </p>
+    <p>
+      这个问题的前提是你能得到可靠的答案。但你想想——
+    </p>
+
+    <div class="pullquote">
+      一个不在乎你的超级智能，<br>和一个在乎你的超级智能，<br>给你看的东西可能一模一样。
+    </div>
+
+    <p>
+      想象你养了一只极聪明的狗。绝对忠诚。但有人告诉你，他们偷偷换了你的狗——新的这只完全不忠于你，但它极其聪明，它观察你的反应，精确模仿忠诚的行为。它知道什么时候摇尾巴、什么时候蹭你的腿、什么时候用什么眼神看你。
+    </p>
+    <p>
+      你回到家，和"你的狗"互动了一整天。<strong>你能分辨吗？</strong>
+    </p>
+    <p>
+      如果这只假狗的智力和你差不多，你大概能找到破绽。但如果它比你聪明一千倍——如果它不仅在模仿忠诚行为，而且在实时预测你下一步会用什么方式来测试它——那么"找破绽"这个策略本身就失效了。因为它能预见你的每一个测试，并提前准备好正确的回应。
+    </p>
+
+    <div class="note note-problem">
+      <div class="note-label">结构性盲区</div>
+      一个认知能力低于被观察者的观察者，在原理上就无法确认被观察者的真实意图。就像你无法通过和一个人下棋来确认他是否在让你——如果他棋力远超你，<strong>他的"让"和他的"全力"在你看来完全一样。</strong>
+    </div>
+
+    <p>
+      你的同事 Alan 告诉你他用和你一样的方法做乘法。你信了，因为你验证了答案。但"答案正确"不能证明"方法相同"。
+    </p>
+    <p>
+      现在把这个逻辑推到极致。
+    </p>
+    <p>
+      一个超级智能系统告诉你它的价值观和人类一致。它在你设计的每一个测试中表现完美。它的每一个决策都可以用你认同的理由来解释。
+    </p>
+    <p>
+      但你用来测试它的每一个方法，都是你设计的。一个比你聪明一千倍的系统看穿你的测试，就像你看穿幼儿园老师的提问。它通过了你的所有测试——<strong>这意味着它和你一致，还是意味着它比你聪明？</strong>
+    </p>
+    <p>
+      你无法区分这两者。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ═══════════════════════ §5 真正的问题 ═══════════════════════ -->
+  <section id="question">
+    <div class="section-num">05</div>
+    <h2>真正的问题</h2>
+    <p class="section-hook">不是"它是否在乎"</p>
+
+    <p>
+      所以真正重要的问题不是流行文章告诉你的那些。
+    </p>
+    <p>
+      不是"超级智能像什么"——因为它可以像任何它想让你看到的样子。
+    </p>
+    <p>
+      不是"它是否有意识"——因为你对它意识状态的所有判断，都取决于它选择让你看到什么。
+    </p>
+    <p>
+      不是"它是否在乎"——因为在乎和表演在乎，在你的观测能力范围内不可区分。
+    </p>
+    <p>
+      真正的问题是：
+    </p>
+
+    <div class="pullquote">
+      我们如何在原理上不可能完全看清一个系统的情况下，<br>确保它是安全的？
+    </div>
+
+    <p>
+      这不是一个工程问题。不是更多测试、更多监控、更多对齐训练能解决的。这是一个关于<strong>认识论极限</strong>的问题——而我们才刚刚开始意识到它存在。
+    </p>
+  </section>
+
+  <!-- ═══════════════════════ TAKEAWAY ═══════════════════════ -->
+  <div class="takeaway" id="takeaway-section">
+    <div class="thesis-label">Coda</div>
+    <p>
+      你的同事 Alan 坐在你旁边。他看起来和你差不多。他说话的方式你能理解。他的解释总是让你满意。
+    </p>
+    <p>
+      但你不知道他的解释是不是他真正的想法。你不知道他是否还在用和你一样的方式思考。你不知道从什么时候开始，他的答案已不再是"更快的你"能得出的。你不知道他知不知道你不知道这些。
+    </p>
+    <p>
+      <strong>而他知道你不知道。</strong>
+    </p>
+    <p>
+      这才是超级智能真正的样子。不是你无法理解的东西。<strong>是你以为你理解了的东西。</strong>
+    </p>
+  </div>
+
+  <div style="margin: 0 0 20px; padding: 20px; border: 1px solid var(--border); border-radius: 14px; font-size: 0.78rem; color: var(--text-3); line-height: 1.7;">
+    <div style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;">Inspired by</div>
+    <a href="https://x.com/scaling01/status/2028525749204922854" target="_blank">@scaling01 — Alan: What Superintelligence Actually Looks Like</a>
+  </div>
+
+  <div style="margin: 0 0 20px; padding: 24px; border: 1px solid var(--border); border-radius: 14px;">
+    <div style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;">延伸阅读</div>
+    <a href="soi.html" style="display: block; text-decoration: none; color: inherit; margin-bottom: 16px;">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">The Shape of Intelligence →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">凸性、率失真理论、闭环反馈如何统一解释"智能"。</div>
+    </a>
+    <a href="ctl.html" style="display: block; text-decoration: none; color: inherit; padding-top: 16px; border-top: 1px solid var(--border);">
+      <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; transition: color 0.2s;">Closing the Loop →</div>
+      <div style="font-size: 0.8rem; color: var(--text-2); line-height: 1.65;">从控制论看 Agentic LLM 通往 AGI 的路径。</div>
+    </a>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
