@@ -579,6 +579,88 @@
       模型越大越强，生成质量反而越差。这不是训练 bug，而是一个结构性矛盾——判别模型和生成模型对「好表征」的定义<strong>根本冲突</strong>：
     </p>
 
+    <div class="diagram-card" style="padding:8px 8px 0;">
+      <svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs>
+          <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#5A7A90" stop-opacity="0.12"/><stop offset="100%" stop-color="#5A7A90" stop-opacity="0"/></radialGradient>
+          <radialGradient id="glow-red" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C0503A" stop-opacity="0.1"/><stop offset="100%" stop-color="#C0503A" stop-opacity="0"/></radialGradient>
+          <radialGradient id="glow-amber" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#B8864A" stop-opacity="0.1"/><stop offset="100%" stop-color="#B8864A" stop-opacity="0"/></radialGradient>
+          <linearGradient id="flow-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5A7A90" stop-opacity="0.25"/><stop offset="50%" stop-color="#7B6892" stop-opacity="0.18"/><stop offset="100%" stop-color="#C0503A" stop-opacity="0.25"/></linearGradient>
+        </defs>
+
+        <!-- Left: DINO discriminative space -->
+        <text x="170" y="24" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600" fill="#C0503A" letter-spacing="0.08em">DISCRIMINATIVE SPACE (DINO)</text>
+
+        <!-- cluster glows -->
+        <ellipse cx="90" cy="110" rx="55" ry="45" fill="url(#glow-blue)"/>
+        <ellipse cx="230" cy="200" rx="50" ry="40" fill="url(#glow-red)"/>
+        <ellipse cx="120" cy="240" rx="40" ry="30" fill="url(#glow-amber)"/>
+
+        <!-- Dog cluster -->
+        <circle cx="72" cy="95" r="5.5" fill="#5A7A90"/><circle cx="95" cy="88" r="4.5" fill="#5A7A90"/><circle cx="108" cy="102" r="5" fill="#5A7A90"/>
+        <circle cx="80" cy="112" r="4" fill="#5A7A90"/><circle cx="100" cy="118" r="5.5" fill="#5A7A90"/><circle cx="65" cy="108" r="4.5" fill="#5A7A90"/>
+        <circle cx="88" cy="128" r="4" fill="#5A7A90"/><circle cx="112" cy="90" r="4" fill="#5A7A90"/>
+        <text x="90" y="152" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#5A7A90" font-weight="500">dogs</text>
+
+        <!-- Cat cluster -->
+        <circle cx="215" cy="188" r="5" fill="#C0503A"/><circle cx="238" cy="195" r="4.5" fill="#C0503A"/><circle cx="250" cy="205" r="5.5" fill="#C0503A"/>
+        <circle cx="222" cy="210" r="4" fill="#C0503A"/><circle cx="240" cy="215" r="5" fill="#C0503A"/><circle cx="228" cy="180" r="4.5" fill="#C0503A"/>
+        <circle cx="210" cy="202" r="4" fill="#C0503A"/>
+        <text x="232" y="240" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#C0503A" font-weight="500">cats</text>
+
+        <!-- Car cluster -->
+        <circle cx="108" cy="232" r="4.5" fill="#B8864A"/><circle cx="125" cy="240" r="5" fill="#B8864A"/><circle cx="140" cy="235" r="4" fill="#B8864A"/>
+        <circle cx="115" cy="248" r="5" fill="#B8864A"/><circle cx="130" cy="252" r="4.5" fill="#B8864A"/>
+        <text x="122" y="274" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#B8864A" font-weight="500">cars</text>
+
+        <!-- Gap annotations -->
+        <line x1="115" y1="140" x2="205" y2="178" stroke="#E5DDD0" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <line x1="130" y1="145" x2="140" y2="220" stroke="#E5DDD0" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <text x="170" y="170" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" fill="#C0503A" font-weight="600" opacity="0.7">GAP</text>
+        <text x="145" y="190" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" fill="#C0503A" font-weight="600" opacity="0.7">GAP</text>
+
+        <!-- Divider -->
+        <line x1="340" y1="30" x2="340" y2="280" stroke="#E5DDD0" stroke-width="1"/>
+
+        <!-- Right: Generative space -->
+        <text x="510" y="24" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600" fill="#4A8060" letter-spacing="0.08em">GENERATIVE SPACE (NEEDED)</text>
+
+        <!-- Smooth manifold blob -->
+        <path d="M420,100 C440,55 530,45 580,80 C630,115 640,180 600,220 C560,260 480,270 440,240 C400,210 390,145 420,100Z" fill="url(#flow-grad)" stroke="#4A8060" stroke-width="1.2" stroke-opacity="0.3"/>
+
+        <!-- Scattered points with gradient colors -->
+        <circle cx="440" cy="110" r="5" fill="#5A7A90"/><circle cx="455" cy="98" r="4.5" fill="#5A7A90"/>
+        <circle cx="468" cy="115" r="4" fill="#6A7E90"/><circle cx="480" cy="105" r="5" fill="#6B7A8A"/>
+        <circle cx="495" cy="118" r="4.5" fill="#7B6892"/><circle cx="510" cy="108" r="4" fill="#7B6892"/>
+        <circle cx="460" cy="135" r="4.5" fill="#6A7E8A"/><circle cx="478" cy="142" r="5" fill="#7B6892"/>
+        <circle cx="500" cy="138" r="4" fill="#8A6880"/><circle cx="520" cy="130" r="5" fill="#8A6070"/>
+        <circle cx="540" cy="120" r="4.5" fill="#9A5A60"/><circle cx="555" cy="112" r="4" fill="#A55550"/>
+        <circle cx="570" cy="128" r="5" fill="#B05040"/><circle cx="580" cy="142" r="4.5" fill="#C0503A"/>
+        <circle cx="445" cy="155" r="4" fill="#6A8070"/><circle cx="465" cy="165" r="5" fill="#7A7570"/>
+        <circle cx="490" cy="160" r="4.5" fill="#8A6A60"/><circle cx="515" cy="155" r="4" fill="#9A5E55"/>
+        <circle cx="540" cy="150" r="5" fill="#A55550"/><circle cx="560" cy="160" r="4" fill="#B05040"/>
+        <circle cx="480" cy="180" r="4.5" fill="#8A7060"/><circle cx="505" cy="178" r="5" fill="#9A6555"/>
+        <circle cx="530" cy="172" r="4" fill="#A55550"/><circle cx="550" cy="185" r="5" fill="#B05040"/>
+        <circle cx="460" cy="195" r="4" fill="#8A7A60"/><circle cx="490" cy="200" r="5" fill="#9A6A55"/>
+        <circle cx="520" cy="198" r="4.5" fill="#A55A50"/><circle cx="540" cy="210" r="4" fill="#B8864A"/>
+        <circle cx="500" cy="220" r="5" fill="#A57050"/><circle cx="475" cy="225" r="4" fill="#9A7A55"/>
+        <circle cx="520" cy="235" r="4.5" fill="#B07A4A"/>
+
+        <!-- Labels on the smooth manifold -->
+        <text x="445" y="88" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" fill="#5A7A90" font-weight="500">dogs</text>
+        <text x="575" cy="100" y="100" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" fill="#C0503A" font-weight="500">cats</text>
+        <text x="525" y="252" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" fill="#B8864A" font-weight="500">cars</text>
+
+        <!-- Smooth transition annotation -->
+        <path d="M455,100 C490,130 540,125 570,108" fill="none" stroke="#4A8060" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+        <text x="510" y="90" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#4A8060" font-weight="500">smooth transition</text>
+
+        <!-- Bottom labels -->
+        <text x="170" y="296" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" fill="#776E62">Clusters + gaps → good for classification, bad for sampling</text>
+        <text x="510" y="296" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" fill="#776E62">Continuous manifold → every point is a valid sample</text>
+      </svg>
+    </div>
+
     <div class="versus">
       <div class="v-side v-right">
         <div class="v-label">DINO 的特征空间</div>
