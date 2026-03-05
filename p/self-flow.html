@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Self-Flow 用 Dual-Timestep 自蒸馏取代外部编码器，让生成模型自己学出强语义表征——在图像、视频、音频上全面超越 REPA。">
+<title>Self-Flow</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --ochre: #E8B830;
+    --blue: #5A7A90;
+    --blue-soft: #EAF0F5;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem; font-weight: 500;
+    line-height: 1.25; letter-spacing: -0.02em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 580px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+
+  .thesis {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B830; font-weight: 600; }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem; font-weight: 600;
+    line-height: 1.3; letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  blockquote {
+    margin: 28px 0; padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.03);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.95rem; line-height: 1.85;
+  }
+  blockquote p { margin-bottom: 0; }
+
+  .agent-trace {
+    margin: 28px 0; padding: 20px 28px;
+    border-left: 3px solid var(--purple);
+    background: var(--purple-bg);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.88rem; line-height: 1.85;
+  }
+  .agent-trace .trace-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--purple); margin-bottom: 8px;
+  }
+  .agent-trace p { margin-bottom: 0; }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg);   border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 24px 0; font-size: 0.85rem;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .versus .v-left  { background: var(--green-bg); }
+  .versus .v-left .v-label  { color: var(--green); }
+  .versus .v-right { background: var(--red-bg); }
+  .versus .v-right .v-label { color: var(--red); }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 700; color: var(--text-3);
+    background: var(--bg); font-size: 0.75rem;
+  }
+
+  .causal {
+    margin: 24px 0; padding: 0; list-style: none;
+    counter-reset: cause;
+  }
+  .causal li {
+    counter-increment: cause; position: relative;
+    padding: 8px 0 8px 44px; font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .causal li::before {
+    content: counter(cause); position: absolute;
+    left: 0; top: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #1A2540; color: #F5F0EB;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .iso-table {
+    width: 100%; border-collapse: collapse;
+    margin: 24px 0; font-size: 0.82rem;
+  }
+  .iso-table thead th {
+    text-align: left; padding: 10px 14px;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-3); border-bottom: 2px solid var(--border);
+  }
+  .iso-table tbody td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .iso-table tbody tr:last-child td { border-bottom: none; }
+  .iso-table tbody td:first-child { font-weight: 600; white-space: nowrap; }
+
+  .bar-row {
+    display: flex; align-items: center; gap: 12px;
+    margin: 10px 0; font-size: 0.82rem;
+  }
+  .bar-label { width: 130px; text-align: right; color: var(--text-2); flex-shrink: 0; }
+  .bar-track {
+    flex: 1; height: 24px; background: #EDE8DF; border-radius: 6px;
+    overflow: hidden; position: relative;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 6px;
+    transition: width 0.6s ease;
+  }
+  .bar-value {
+    width: 44px; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+  }
+  .bar-fill-low { background: var(--green); }
+  .bar-fill-mid { background: var(--amber); }
+  .bar-fill-high { background: var(--red); }
+  .bar-fill-max { background: var(--vermillion); }
+  .bar-group-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-3); margin: 20px 0 6px;
+  }
+
+  code {
+    font-family: var(--mono); font-size: 0.85em;
+    background: #EDE8DF; padding: 2px 6px; border-radius: 4px;
+  }
+
+  .takeaway {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,246,238,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229,221,208,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+
+  /* === Additional classes for Self-Flow === */
+
+  .diagram-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin: 24px 0;
+    overflow-x: auto;
+  }
+  .diagram-card svg { display: block; margin: 0 auto; }
+
+  .formula-box {
+    font-family: var(--mono);
+    font-size: 0.92rem;
+    text-align: center;
+    padding: 16px 24px;
+    background: var(--blue-soft);
+    border: 1px solid rgba(90,122,144,0.2);
+    border-radius: 10px;
+    margin: 20px 0;
+    line-height: 1.8;
+  }
+
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 3px;
+    max-width: 340px;
+    margin: 16px auto;
+  }
+  .token {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    position: relative;
+    transition: background 0.25s ease, outline-color 0.25s ease;
+  }
+  .token-lbl {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
+    pointer-events: none;
+  }
+
+  .grid-legend {
+    display: flex; justify-content: center; gap: 20px;
+    font-size: 0.72rem; color: var(--text-3);
+    margin: 10px 0;
+    font-family: var(--mono);
+  }
+  .grid-legend span {
+    display: flex; align-items: center; gap: 5px;
+  }
+  .grid-legend .swatch {
+    display: inline-block; width: 12px; height: 12px;
+    border-radius: 3px;
+  }
+
+  .slider-group { margin: 20px 0; }
+  .slider-row {
+    display: flex; align-items: center; gap: 12px;
+    margin: 8px 0;
+  }
+  .slider-row label {
+    width: 100px; text-align: right;
+    color: var(--text-2);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    flex-shrink: 0;
+  }
+  .slider-row input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 4px; border-radius: 2px;
+    background: #EDE8DF;
+    outline: none;
+  }
+  .slider-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--surface);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+  .slider-row input[type="range"]::-moz-range-thumb {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--surface);
+  }
+  .slider-row input[type="range"]::-moz-range-track {
+    height: 4px; border-radius: 2px;
+    background: #EDE8DF;
+  }
+  .slider-val {
+    width: 44px; text-align: right;
+    font-family: var(--mono); font-weight: 700;
+    font-size: 0.82rem; flex-shrink: 0;
+  }
+
+  .wide-wrap {
+    max-width: var(--wide-w);
+    margin: 24px auto;
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .iso-table { font-size: 0.75rem; }
+    .iso-table thead th,
+    .iso-table tbody td { padding: 8px 10px; }
+    blockquote, .agent-trace { padding: 16px 20px; }
+    .bar-label { width: 90px; font-size: 0.75rem; }
+    .bar-value { font-size: 0.78rem; }
+    .diagram-card { padding: 16px 12px; }
+    .token-grid { max-width: 280px; }
+    .slider-row label { width: 80px; font-size: 0.7rem; }
+  }
+
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+
+<div class="topbar">
+  <a href="/" class="home-link">← pinyu.ai</a>
+</div>
+
+<nav class="toc" id="toc">
+  <a href="#problem">像素修复师</a>
+  <a href="#repa-fail">请错了家教</a>
+  <a href="#dual-timestep">不均匀的雾</a>
+  <a href="#self-flow">自己教自己</a>
+  <a href="#results">全面领先</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Generative AI × Representation Learning</div>
+    <h1>Self-Flow</h1>
+    <div class="subtitle">Self-Supervised Flow Matching for Scalable Multi-Modal Synthesis——生成模型不需要外部「家教」，正确的训练信号能让它自己长出理解力。</div>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.03</span>
+      <span><a href="https://bfl.ai/research/self-flow" target="_blank">Self-Flow · BFL ↗</a></span>
+    </div>
+  </header>
+
+  <div class="thesis">
+    <div class="thesis-label">Thesis</div>
+    <p>
+      Self-Flow 证明了一个反直觉的事实：<strong>生成模型不需要借助判别模型的表征</strong>。通过 Dual-Timestep Scheduling 制造训练时的信息不对称，模型自己就能长出强语义理解——在图像、视频、音频上全面超越依赖外部编码器的方法，并且遵循预期的 scaling laws。
+    </p>
+  </div>
+
+  <!-- §00 -->
+  <section id="problem">
+    <div class="section-num">00</div>
+    <h2>像素修复师</h2>
+    <p class="section-hook">Flow Matching 会画画，但不「理解」</p>
+
+    <p>
+      Flow Matching 的训练目标是预测从噪声到数据的速度场（velocity）。给定一张被加噪的图片 x<sub>t</sub>，模型学习的是「这些像素应该往哪个方向挪」。
+    </p>
+    <p>
+      问题在于：这个信号太<em>局部</em>了。模型只需要看周围几个像素的统计规律就能完成去噪——它永远不需要理解「这是一只狗」。像素对了，损失就低了，训练就结束了。
+    </p>
+
+    <div class="diagram-card">
+      <svg viewBox="0 0 600 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flow Matching denoising process" style="width:100%;max-width:600px;">
+        <rect x="8" y="28" width="95" height="55" rx="8" fill="#F8ECE8" stroke="#C0503A" stroke-width="1.2"/>
+        <text x="55" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#C0503A">Noisy x&#x209C;</text>
+        <text x="55" y="70" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#776E62">image tokens</text>
+        <line x1="108" y1="55" x2="140" y2="55" stroke="#776E62" stroke-width="1.5" marker-end="url(#arr-s0)"/>
+        <rect x="145" y="28" width="105" height="55" rx="8" fill="#EAF0F5" stroke="#5A7A90" stroke-width="1.2"/>
+        <text x="197" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#5A7A90">Flow Model</text>
+        <text x="197" y="70" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#776E62">DiT / UNet</text>
+        <line x1="255" y1="55" x2="288" y2="55" stroke="#776E62" stroke-width="1.5" marker-end="url(#arr-s0)"/>
+        <rect x="293" y="28" width="95" height="55" rx="8" fill="#F8F0E0" stroke="#E8B830" stroke-width="1.2"/>
+        <text x="340" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#B8864A">Velocity v</text>
+        <text x="340" y="70" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#776E62">pixel-level</text>
+        <line x1="405" y1="55" x2="405" y2="10" stroke="none"/>
+        <line x1="420" y1="15" x2="420" y2="115" stroke="#E5DDD0" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="510" y="36" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="600" fill="#776E62">What model learns</text>
+        <text x="510" y="62" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#4A8060">Pixel reconstruction ✓</text>
+        <text x="510" y="86" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#C0503A">Semantic understanding ✗</text>
+        <text x="510" y="112" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" fill="#776E62">Can paint a dog, doesn't "know" it's a dog</text>
+        <defs>
+          <marker id="arr-s0" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#776E62"/></marker>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="note note-problem">
+      <div class="note-label">后果</div>
+      <p>
+        <strong>收敛慢</strong>——缺乏全局语义指导，模型需要海量迭代才能学到结构。<strong>结构错误</strong>——六根手指、断裂的文字，因为模型不「理解」对象的结构。<strong>内部表征差</strong>——中间层特征无法用于分类或检索，生成能力与理解能力脱节。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- §01 -->
+  <section id="repa-fail">
+    <div class="section-num">01</div>
+    <h2>请错了家教</h2>
+    <p class="section-hook">DINO 越强，生成越差——Scaling 的反面</p>
+
+    <p>
+      之前的解法叫 <strong>REPA</strong>（Representation Alignment）：用一个预训练好的判别模型（如 DINO）作为「家教」，让生成模型的内部特征去对齐家教的特征。逻辑很直觉——借一个已经「理解」图像的模型，教会生成模型也去理解。
+    </p>
+    <p>
+      初始版本确实有效：对齐 DINOv2-B（86M 参数）后 FID 从基线显著下降。自然推论：换一个更大更强的 DINO 应该更好。但实验结果完全相反：
+    </p>
+
+    <div style="margin: 28px 0;">
+      <div class="bar-group-label">DINO 越强 → FID 越差（反向 Scaling）</div>
+      <div class="bar-row">
+        <div class="bar-label">DINOv2-B (86M)</div>
+        <div class="bar-track"><div class="bar-fill bar-fill-low" style="width: 35%"></div></div>
+        <div class="bar-value" style="color:var(--green);">5.89</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">DINOv2-L (300M)</div>
+        <div class="bar-track"><div class="bar-fill bar-fill-mid" style="width: 50%"></div></div>
+        <div class="bar-value">worse</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">DINOv3-B</div>
+        <div class="bar-track"><div class="bar-fill bar-fill-high" style="width: 65%"></div></div>
+        <div class="bar-value">worse</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">DINOv3-H+ (1B+)</div>
+        <div class="bar-track"><div class="bar-fill bar-fill-max" style="width: 82%"></div></div>
+        <div class="bar-value" style="color:var(--vermillion);">worst</div>
+      </div>
+    </div>
+
+    <p>
+      模型越大越强，生成质量反而越差。这不是训练 bug，而是一个结构性矛盾——判别模型和生成模型对「好表征」的定义<strong>根本冲突</strong>：
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-right">
+        <div class="v-label">DINO 的特征空间</div>
+        <p>
+          同类紧聚，异类隔开。类间留有清晰的<strong>鸿沟</strong>——对分类很好。但生成需要从一个类连续过渡到另一个类，鸿沟意味着不可采样的死区。
+        </p>
+      </div>
+      <div class="v-mid">vs</div>
+      <div class="v-side v-left">
+        <div class="v-label">生成需要的特征空间</div>
+        <p>
+          连续过渡、保留纹理和光照细节、<strong>平滑流形</strong>上处处可采样。不需要分类边界，需要的是每个方向都有意义的平滑梯度。
+        </p>
+      </div>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">根因</div>
+      <p>
+        判别模型做的是<strong>破坏性压缩</strong>（destructive compression）：它主动丢弃纹理、光照、姿态等「分类无关」信息以获得不变性。DINO 越强，丢得越彻底。但生成模型恰恰需要这些被丢弃的细节——你不可能让学生去对齐一个连目标信息都不包含的教师。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- §02 -->
+  <section id="dual-timestep">
+    <div class="section-num">02</div>
+    <h2>不均匀的雾</h2>
+    <p class="section-hook">用噪声程度的差异制造信息不对称</p>
+
+    <p>
+      标准 Flow Matching 对所有 token 施加<em>同一噪声程度</em> t。模型面对的是一张「均匀模糊」的图——每个像素一样不清楚，局部去噪就够了，不需要跨区域推理。
+    </p>
+    <p>
+      Dual-Timestep 的核心创新：给不同 token 施加<strong>不同程度</strong>的噪声。一部分 token 看得清（噪声 s，较小），另一部分看不清（噪声 t，较大）。模型被迫用清楚的推断模糊的——这就需要<strong>全局语义联系</strong>。
+    </p>
+
+    <div class="diagram-card">
+      <div style="text-align:center;margin-bottom:8px;font-size:0.78rem;color:var(--text-3);">
+        拖动滑块观察不同噪声配置下的 token 状态
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-row">
+          <label>Noise t =</label>
+          <input type="range" id="sl-t" min="0" max="100" value="80" style="--thumb-c:var(--red);">
+          <span class="slider-val" id="sv-t" style="color:var(--red);">0.80</span>
+        </div>
+        <div class="slider-row">
+          <label>Noise s =</label>
+          <input type="range" id="sl-s" min="0" max="100" value="20" style="--thumb-c:var(--accent);">
+          <span class="slider-val" id="sv-s" style="color:var(--accent);">0.20</span>
+        </div>
+        <div class="slider-row">
+          <label>Mask ratio =</label>
+          <input type="range" id="sl-mask" min="5" max="50" value="25" style="--thumb-c:var(--amber);">
+          <span class="slider-val" id="sv-mask" style="color:var(--amber);">25%</span>
+        </div>
+      </div>
+
+      <div class="grid-legend">
+        <span><span class="swatch" style="background:var(--accent);"></span> noise s (cleaner)</span>
+        <span><span class="swatch" style="background:var(--red);opacity:0.7;"></span> noise t (noisier)</span>
+      </div>
+
+      <div class="token-grid" id="token-grid"></div>
+
+      <div style="text-align:center;font-size:0.8rem;color:var(--text-2);margin-top:10px;">
+        模型必须用<span style="color:var(--accent);font-weight:600;">看得清的 token</span> 推断<span style="color:var(--red);font-weight:600;">看不清的 token</span> → 被迫建立全局语义联系
+      </div>
+    </div>
+
+    <p>
+      为什么不直接遮掉部分 token（binary masking）？因为推理时所有 token 都是同一噪声水平——训练时搞二值遮掩会产生 train-inference gap。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-right">
+        <div class="v-label">Naive 遮掩 / Diffusion Forcing</div>
+        <p>
+          训练：有 / 无的二值掩码<br>
+          推理：连续噪声<br>
+          <strong>分布不匹配 → 质量下降</strong>
+        </p>
+      </div>
+      <div class="v-mid">vs</div>
+      <div class="v-side v-left">
+        <div class="v-label">Dual-Timestep（本文）</div>
+        <p>
+          训练：两种不同<em>程度</em>的噪声<br>
+          推理：连续噪声<br>
+          <strong>分布兼容 → 无缝迁移</strong>
+        </p>
+      </div>
+    </div>
+
+    <div class="note note-ok">
+      <div class="note-label">关键保证</div>
+      <p>
+        每个 token 单独看仍然在正常噪声分布内——只是不同 token 的噪声程度不同。这意味着 Dual-Timestep 训练出的模型可以直接用标准 Flow Matching 推理，<strong>零额外成本</strong>。
+      </p>
+    </div>
+
+    <div class="formula-box">
+      x<sub>τ</sub> = diag(1 − τ) · x<sub>0</sub> + diag(τ) · x<sub>1</sub><br>
+      where &nbsp; τ<sub>i</sub> = s &nbsp;if token i is masked, &nbsp; t &nbsp;otherwise
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- §03 -->
+  <section id="self-flow">
+    <div class="section-num">03</div>
+    <h2>自己教自己</h2>
+    <p class="section-hook">EMA 自蒸馏 + Dual-Timestep = 完整方法</p>
+
+    <p>
+      Dual-Timestep 制造了信息不对称，但光有不对称还不够——模型需要一个<strong>学习目标</strong>来引导表征的方向。Self-Flow 的做法：用自己的 EMA 副本（教师）提供表征目标。
+    </p>
+    <p>
+      学生看到不均匀加噪的输入（多数 token 噪声为 t，少数为 s），教师看到更清晰的版本（所有 token 噪声均为 s）。学生的任务：<strong>从残缺视角重建教师在完整视角下的特征</strong>。
+    </p>
+
+    <div class="diagram-card wide-wrap">
+      <svg viewBox="0 0 780 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Self-Flow architecture" style="width:100%;max-width:var(--wide-w);">
+        <defs>
+          <marker id="arr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#776E62"/></marker>
+          <marker id="arr-r" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#C0503A"/></marker>
+          <marker id="arr-g" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#4A8060"/></marker>
+          <marker id="arr-b" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#5A7A90"/></marker>
+          <marker id="arr-a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#B8864A"/></marker>
+          <marker id="arr-p" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#7B6892"/></marker>
+        </defs>
+
+        <!-- x₀ -->
+        <rect x="12" y="122" width="72" height="42" rx="8" fill="#EAF0F5" stroke="#5A7A90" stroke-width="1.2"/>
+        <text x="48" y="143" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700" fill="#5A7A90">x₀</text>
+        <text x="48" y="158" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="#776E62">Clean data</text>
+
+        <!-- Dual-Timestep frame -->
+        <rect x="112" y="38" width="98" height="238" rx="10" fill="rgba(232,184,48,0.04)" stroke="#E8B830" stroke-width="1.2" stroke-dasharray="5,3"/>
+        <text x="161" y="55" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="600" fill="#B8864A">DUAL-TIMESTEP</text>
+
+        <!-- x_τ -->
+        <rect x="122" y="68" width="78" height="30" rx="6" fill="#F8ECE8" stroke="#C0503A" stroke-width="1"/>
+        <text x="161" y="87" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="600" fill="#C0503A">x_τ</text>
+
+        <!-- x_τmin -->
+        <rect x="122" y="210" width="78" height="30" rx="6" fill="#E8F2EC" stroke="#4A8060" stroke-width="1"/>
+        <text x="161" y="229" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="600" fill="#4A8060">x_τmin</text>
+
+        <!-- Arrows x₀ → Dual-TS -->
+        <line x1="84" y1="136" x2="120" y2="83" stroke="#776E62" stroke-width="1.2" marker-end="url(#arr)"/>
+        <line x1="84" y1="150" x2="120" y2="225" stroke="#776E62" stroke-width="1.2" marker-end="url(#arr)"/>
+
+        <!-- Labels for noise inputs -->
+        <text x="95" y="98" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#C0503A" transform="rotate(-30,95,98)">mixed noise</text>
+        <text x="95" y="204" font-family="Inter,system-ui,sans-serif" font-size="7" fill="#4A8060" transform="rotate(30,95,204)">cleaner</text>
+
+        <!-- Student f_θ -->
+        <rect x="242" y="48" width="112" height="55" rx="10" fill="#EAF0F5" stroke="#5A7A90" stroke-width="1.3"/>
+        <text x="298" y="74" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#5A7A90">Student f_θ</text>
+        <text x="298" y="92" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="#776E62">Gradient update</text>
+
+        <!-- Teacher f_θ' -->
+        <rect x="242" y="195" width="112" height="55" rx="10" fill="#E8F2EC" stroke="#4A8060" stroke-width="1.3"/>
+        <text x="298" y="221" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#4A8060">Teacher f_θ'</text>
+        <text x="298" y="239" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8" fill="#776E62">EMA slow update</text>
+
+        <!-- Arrows inputs → networks -->
+        <line x1="200" y1="83" x2="240" y2="75" stroke="#C0503A" stroke-width="1.2" marker-end="url(#arr-r)"/>
+        <line x1="200" y1="225" x2="240" y2="222" stroke="#4A8060" stroke-width="1.2" marker-end="url(#arr-g)"/>
+
+        <!-- EMA dashed arrow -->
+        <line x1="298" y1="105" x2="298" y2="193" stroke="#7B6892" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
+        <text x="315" y="152" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="600" fill="#7B6892">EMA</text>
+
+        <!-- Velocity prediction -->
+        <rect x="392" y="12" width="88" height="28" rx="6" fill="#F8F0E0" stroke="#E8B830" stroke-width="1"/>
+        <text x="436" y="30" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="600" fill="#B8864A">Velocity v</text>
+
+        <!-- Student features -->
+        <rect x="392" y="62" width="88" height="28" rx="6" fill="#EAF0F5" stroke="#5A7A90" stroke-width="1"/>
+        <text x="436" y="78" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="600" fill="#5A7A90">Features</text>
+        <text x="436" y="88" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#776E62">layer 0.3D</text>
+
+        <!-- Teacher features -->
+        <rect x="392" y="210" width="88" height="28" rx="6" fill="#E8F2EC" stroke="#4A8060" stroke-width="1"/>
+        <text x="436" y="226" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="600" fill="#4A8060">Features</text>
+        <text x="436" y="236" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#776E62">layer 0.7D</text>
+
+        <!-- Arrows student → outputs -->
+        <line x1="354" y1="58" x2="390" y2="30" stroke="#B8864A" stroke-width="1.2" marker-end="url(#arr-a)"/>
+        <line x1="354" y1="75" x2="390" y2="76" stroke="#5A7A90" stroke-width="1.2" marker-end="url(#arr-b)"/>
+        <line x1="354" y1="222" x2="390" y2="224" stroke="#4A8060" stroke-width="1.2" marker-end="url(#arr-g)"/>
+
+        <!-- L_gen -->
+        <rect x="515" y="12" width="60" height="28" rx="6" fill="#F8F0E0" stroke="#E8B830" stroke-width="1.2"/>
+        <text x="545" y="30" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#B8864A">L_gen</text>
+
+        <!-- L_rep -->
+        <rect x="515" y="122" width="60" height="32" rx="6" fill="#F0ECF5" stroke="#7B6892" stroke-width="1.2"/>
+        <text x="545" y="142" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#7B6892">L_rep</text>
+
+        <!-- Arrows → losses -->
+        <line x1="480" y1="26" x2="513" y2="26" stroke="#B8864A" stroke-width="1.2" marker-end="url(#arr-a)"/>
+        <line x1="480" y1="76" x2="513" y2="130" stroke="#5A7A90" stroke-width="1.2" marker-end="url(#arr-b)"/>
+        <line x1="480" y1="224" x2="513" y2="148" stroke="#4A8060" stroke-width="1.2" marker-end="url(#arr-g)"/>
+
+        <!-- Total L -->
+        <rect x="612" y="52" width="88" height="52" rx="8" fill="rgba(232,67,42,0.05)" stroke="#E8432A" stroke-width="1.3"/>
+        <text x="656" y="74" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14" font-weight="700" fill="#E8432A">L</text>
+        <text x="656" y="92" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#776E62">L_gen + γ·L_rep</text>
+
+        <!-- Arrows losses → total -->
+        <line x1="575" y1="26" x2="610" y2="62" stroke="#B8864A" stroke-width="1.2" marker-end="url(#arr-a)"/>
+        <line x1="575" y1="138" x2="610" y2="90" stroke="#7B6892" stroke-width="1.2" marker-end="url(#arr-p)"/>
+
+        <!-- Bottom annotation -->
+        <text x="390" y="285" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" fill="#776E62">Student reconstructs teacher's features from a noisier view → forced to learn semantics</text>
+        <text x="390" y="300" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" fill="#776E62">Generation loss prevents collapse · Representations scale with model size</text>
+      </svg>
+    </div>
+
+    <p>
+      为什么这套设计能赢过借用外部编码器的方案？三条结构性原因：
+    </p>
+
+    <ol class="causal">
+      <li><strong>自监督信号和生成目标长在同一个网络里</strong>——不需要在两套坐标系之间做翻译。REPA 需要一个 projector 把 DiT 特征投影到 DINO 空间，这个 projector 本身就是信息瓶颈。Self-Flow 没有这个问题。</li>
+      <li><strong>生成损失是天然的坍缩防护</strong>——如果表征退化，生成的图就会变糊，L<sub>gen</sub> 暴涨，梯度会把特征拉回来。这比 DINO 的 centering + sharpening 更直接、更可靠。</li>
+      <li><strong>表征随模型规模自然增长</strong>——教师就是学生自己的 EMA，模型变大，教师也变大，不存在 REPA 那种「86M 的 DINO 教 1B 的 DiT」的外部瓶颈。</li>
+    </ol>
+  </section>
+
+  <hr class="sep">
+
+  <!-- §04 -->
+  <section id="results">
+    <div class="section-num">04</div>
+    <h2>全面领先</h2>
+    <p class="section-hook">所有模态、所有规模，Self-Flow 均为最优</p>
+
+    <p>
+      Self-Flow 在四个模态上用同一套方法超越了各自依赖外部编码器的基线：
+    </p>
+
+    <table class="iso-table">
+      <thead>
+        <tr><th>Modality</th><th>Metric</th><th>Self-Flow</th><th>REPA</th><th>Winner</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ImageNet</td>
+          <td>FID ↓</td>
+          <td style="font-weight:700;color:var(--green);">5.70</td>
+          <td>5.89</td>
+          <td style="color:var(--green);">Self-Flow</td>
+        </tr>
+        <tr>
+          <td>Text-to-Image</td>
+          <td>FID ↓</td>
+          <td style="font-weight:700;color:var(--green);">3.61</td>
+          <td>3.92</td>
+          <td style="color:var(--green);">Self-Flow</td>
+        </tr>
+        <tr>
+          <td>Text-to-Video</td>
+          <td>FVD ↓</td>
+          <td style="font-weight:700;color:var(--green);">47.81</td>
+          <td>49.59</td>
+          <td style="color:var(--green);">Self-Flow</td>
+        </tr>
+        <tr>
+          <td>Text-to-Audio</td>
+          <td>FAD ↓</td>
+          <td style="font-weight:700;color:var(--green);">145.6</td>
+          <td>148.9</td>
+          <td style="color:var(--green);">Self-Flow</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Scaling：差距随模型规模拉大</h3>
+
+    <p>
+      更关键的是 Self-Flow 在 scaling 时表现出预期的行为——模型越大，效果越好，且与 REPA 的差距持续扩大：
+    </p>
+
+    <div style="margin: 28px 0;">
+      <div class="bar-group-label">Self-Flow（绿）vs REPA（红）· FID ↓ 越低越好</div>
+      <div class="bar-row">
+        <div class="bar-label">290M</div>
+        <div class="bar-track"><div class="bar-fill bar-fill-low" style="width: 48%"></div></div>
+        <div class="bar-value" style="color:var(--green);">SF</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="opacity:0.5;">290M</div>
+        <div class="bar-track"><div class="bar-fill bar-fill-high" style="width: 44%"></div></div>
+        <div class="bar-value" style="color:var(--text-3);">REPA</div>
+      </div>
+      <div class="bar-row" style="margin-top:16px;">
+        <div class="bar-label">420M</div>
+        <div class="bar-track"><div class="bar-fill bar-fill-low" style="width: 60%"></div></div>
+        <div class="bar-value" style="color:var(--green);">SF</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="opacity:0.5;">420M</div>
+        <div class="bar-track"><div class="bar-fill bar-fill-high" style="width: 53%"></div></div>
+        <div class="bar-value" style="color:var(--text-3);">REPA</div>
+      </div>
+      <div class="bar-row" style="margin-top:16px;">
+        <div class="bar-label">625M</div>
+        <div class="bar-track"><div class="bar-fill bar-fill-low" style="width: 76%"></div></div>
+        <div class="bar-value" style="color:var(--green);">SF</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="opacity:0.5;">625M</div>
+        <div class="bar-track"><div class="bar-fill bar-fill-high" style="width: 64%"></div></div>
+        <div class="bar-value" style="color:var(--text-3);">REPA</div>
+      </div>
+      <div class="bar-row" style="margin-top:16px;">
+        <div class="bar-label" style="font-weight:600;">1B</div>
+        <div class="bar-track"><div class="bar-fill bar-fill-low" style="width: 90%"></div></div>
+        <div class="bar-value" style="color:var(--green);font-weight:700;">SF</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="opacity:0.5;">1B</div>
+        <div class="bar-track"><div class="bar-fill bar-fill-high" style="width: 74%"></div></div>
+        <div class="bar-value" style="color:var(--text-3);">REPA</div>
+      </div>
+    </div>
+
+    <p>
+      注意 <strong>Self-Flow 625M</strong> 的绿条已经超过了 <strong>REPA 1B</strong> 的红条——用 60% 的参数达到更好的效果。这就是 scaling 不被外部瓶颈卡住时的正常样子。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">多模态发现</div>
+      <p>
+        视频和音频的结果尤其有趣：REPA 用的外部编码器（V-JEPA2 用于视频、MERT 用于音频）非但没帮忙，<strong>反而降低了生成质量</strong>。这进一步印证了核心论点——外部判别模型的表征不适合生成任务，不仅仅是图像如此，跨模态普遍成立。Self-Flow 用同一套方法同时改善了所有模态。
+      </p>
+    </div>
+
+    <div class="note note-neutral">
+      <div class="note-label">局限</div>
+      <p>
+        教师网络需要额外一次前向传播，训练开销增加约 30-50%。噪声调度器 p(t) 的形状需要调优。自举（bootstrapping）的理论上限未知——自己教自己是否存在天花板，目前没有证明。
+      </p>
+    </div>
+  </section>
+
+  <!-- Takeaway -->
+  <div class="takeaway">
+    <div class="thesis-label">Takeaway</div>
+    <p>
+      好的表征不是绝对的，它是相对于你要用它干什么而言的。向别人借来的「理解」，再好也不如自己在实践中长出来的。
+    </p>
+    <p style="margin-top:16px;">
+      <strong>生成 ⊇ 理解。理解可以从生成中涌现。</strong>
+    </p>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', function() {
+  var h = document.documentElement;
+  var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+var toc = document.getElementById('toc');
+if (toc) {
+  var links = Array.from(toc.querySelectorAll('a'));
+  var targets = links.map(function(a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  var update = function() {
+    var current = '';
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].getBoundingClientRect().top <= 140) current = targets[i].id;
+    }
+    links.forEach(function(a) { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
+/* Dual-Timestep token grid */
+function mulberry32(a) {
+  return function() {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+var gridSeeds = [];
+(function buildGrid() {
+  var grid = document.getElementById('token-grid');
+  if (!grid) return;
+  var rng = mulberry32(42);
+  for (var i = 0; i < 64; i++) {
+    var seed = rng();
+    gridSeeds.push(seed);
+    var div = document.createElement('div');
+    div.className = 'token';
+    var lbl = document.createElement('div');
+    lbl.className = 'token-lbl';
+    div.appendChild(lbl);
+    grid.appendChild(div);
+  }
+  updateGrid();
+})();
+
+function updateGrid() {
+  var t = parseInt(document.getElementById('sl-t').value) / 100;
+  var s = parseInt(document.getElementById('sl-s').value) / 100;
+  var maskRatio = parseInt(document.getElementById('sl-mask').value) / 100;
+
+  document.getElementById('sv-t').textContent = t.toFixed(2);
+  document.getElementById('sv-s').textContent = s.toFixed(2);
+  document.getElementById('sv-mask').textContent = Math.round(maskRatio * 100) + '%';
+
+  var tokens = document.querySelectorAll('.token');
+  var maskRng = mulberry32(77);
+
+  for (var i = 0; i < tokens.length; i++) {
+    var tok = tokens[i];
+    var seed = gridSeeds[i];
+    var isMasked = maskRng() < maskRatio;
+    var noise = isMasked ? s : t;
+
+    var baseH = 20 + seed * 30;
+    var baseS = 45 + seed * 20;
+    var baseL = 48 + seed * 15;
+
+    var nH = baseH + (seed * 180 - 90) * noise;
+    var nS = baseS * (1 - noise * 0.65);
+    var nL = baseL + (78 - baseL) * noise * 0.55;
+
+    tok.style.background = 'hsl(' + nH + ',' + nS + '%,' + nL + '%)';
+
+    var lbl = tok.querySelector('.token-lbl');
+    if (isMasked) {
+      tok.style.outline = '2px solid rgba(27,63,139,0.55)';
+      tok.style.outlineOffset = '-1px';
+      lbl.textContent = 's';
+      lbl.style.color = 'rgba(27,63,139,0.85)';
+    } else {
+      tok.style.outline = '1.5px solid rgba(192,80,58,0.35)';
+      tok.style.outlineOffset = '-1px';
+      lbl.textContent = 't';
+      lbl.style.color = 'rgba(192,80,58,0.6)';
+    }
+  }
+}
+
+['sl-t', 'sl-s', 'sl-mask'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', updateGrid);
+});
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
