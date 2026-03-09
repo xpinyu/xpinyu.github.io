@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="社交平台的算法只看一件事：内容能否留住人。Organic Marketing 的起点是赢得注意力，产品只是终点。">
+<title>Attention Before Product</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --ochre: #E8B830;
+    --blue: #5A7A90;
+    --blue-soft: #EAF0F5;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem; font-weight: 500;
+    line-height: 1.25; letter-spacing: -0.02em;
+    margin-bottom: 24px; max-width: 560px;
+  }
+  header .subtitle {
+    font-size: 1rem; color: var(--text-2);
+    line-height: 1.9; max-width: 600px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px;
+    font-size: 0.75rem; color: var(--text-3); flex-wrap: wrap;
+  }
+
+  .thesis {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin-bottom: 72px; position: relative;
+  }
+  .thesis .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p {
+    font-size: 1.05rem; line-height: 1.85;
+    font-weight: 400;
+  }
+  .thesis strong { color: #E8B830; font-weight: 600; }
+
+  .epigraph {
+    margin: -36px 0 72px;
+    padding: 22px 24px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.7);
+  }
+  .epigraph-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  .epigraph p {
+    font-family: var(--serif);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 10px;
+  }
+  .epigraph p:last-child { margin-bottom: 0; }
+  .epigraph .epigraph-translation {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    color: var(--text-2);
+  }
+  .epigraph-source {
+    font-size: 0.74rem;
+    color: var(--text-3);
+  }
+
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem; font-weight: 600;
+    line-height: 1.3; letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  h3 {
+    font-size: 1.1rem; font-weight: 600;
+    margin: 40px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px; background: var(--border);
+    margin: 72px 0; border: none;
+  }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px;
+    margin: 24px 0; font-size: 0.88rem; line-height: 1.8;
+    border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg); border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 24px 0; font-size: 0.85rem;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden;
+  }
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .versus .v-left  { background: var(--green-bg); }
+  .versus .v-left .v-label  { color: var(--green); }
+  .versus .v-right { background: var(--red-bg); }
+  .versus .v-right .v-label { color: var(--red); }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 700; color: var(--text-3);
+    background: var(--bg); font-size: 0.75rem;
+  }
+
+  .causal {
+    margin: 24px 0; padding: 0; list-style: none;
+    counter-reset: cause;
+  }
+  .causal li {
+    counter-increment: cause; position: relative;
+    padding: 8px 0 8px 44px; font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .causal li::before {
+    content: counter(cause); position: absolute;
+    left: 0; top: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #1A2540; color: #F5F0EB;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .iso-table {
+    width: 100%; border-collapse: collapse;
+    margin: 24px 0; font-size: 0.82rem;
+  }
+  .iso-table thead th {
+    text-align: left; padding: 10px 14px;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-3); border-bottom: 2px solid var(--border);
+  }
+  .iso-table tbody td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .iso-table tbody tr:last-child td { border-bottom: none; }
+  .iso-table tbody td:first-child { font-weight: 600; white-space: nowrap; }
+
+  .stat-row {
+    display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap;
+  }
+  .stat-card {
+    flex: 1; min-width: 140px;
+    padding: 20px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px;
+    text-align: center;
+  }
+  .stat-card .stat-value {
+    font-family: var(--mono); font-size: 1.4rem;
+    font-weight: 700; line-height: 1.2; margin-bottom: 6px;
+  }
+  .stat-card .stat-label {
+    font-size: 0.7rem; color: var(--text-3);
+    line-height: 1.4;
+  }
+  .stat-neg .stat-value { color: var(--red); }
+  .stat-pos .stat-value { color: var(--green); }
+  .stat-accent .stat-value { color: var(--accent); }
+
+  .figure {
+    margin: 28px 0;
+    padding: 20px 20px 16px;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+  .figure svg {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .figure-caption {
+    margin-top: 10px;
+    max-width: 92%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.77rem;
+    line-height: 1.6;
+    color: var(--text-3);
+    text-align: center;
+  }
+
+  code {
+    font-family: var(--mono); font-size: 0.85em;
+    background: #EDE8DF; padding: 2px 6px; border-radius: 4px;
+  }
+
+  .takeaway {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+  .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .takeaway p { font-size: 1.05rem; line-height: 1.85; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0;
+    z-index: 100; padding: 10px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,246,238,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229,221,208,0.6);
+  }
+  .topbar a {
+    color: var(--text-3); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center; padding: 48px 0 64px;
+    font-size: 0.72rem; color: var(--text-3);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .iso-table { font-size: 0.75rem; }
+    .iso-table thead th,
+    .iso-table tbody td { padding: 8px 10px; }
+    .stat-card { min-width: 100%; }
+  }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.6;
+    z-index: 50;
+  }
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none;
+    transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+
+<div class="topbar">
+  <a href="/" class="home-link">← pinyu.ai</a>
+</div>
+
+<nav class="toc" id="toc">
+  <a href="#misdiagnosis">目标错位</a>
+  <a href="#sequence">注意力顺序</a>
+  <a href="#format">Format 与实验</a>
+  <a href="#friction">跨平台摩擦</a>
+  <a href="#moat">验证层</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Organic Marketing × Attention</div>
+    <h1>Attention Before Product</h1>
+    <div class="subtitle">社交平台的算法只关心一件事：你的内容能否留住人。对分发而言，产品不是起点，注意力才是入场券。</div>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.03</span>
+      <span><a href="https://x.com/jorgiabays/status/2030714812809068652" target="_blank">原文 ↗</a></span>
+    </div>
+  </header>
+
+  <div class="thesis">
+    <div class="thesis-label">核心判断</div>
+    <p>
+      Organic Marketing 本质上是一套围绕 <strong>retention</strong> 运转的分发系统。平台先判断你的内容能否让人停下、留下、继续看，再决定要不要放大它。<strong>产品应当在张力建立之后，以答案的形式出现。</strong>
+    </p>
+  </div>
+
+  <div class="epigraph">
+    <div class="epigraph-label">摘自原文</div>
+    <p>"Social media is not advertising. It is algorithmic entertainment. Platforms don't care about your product. They care about one thing: retention."</p>
+    <p class="epigraph-translation">社交平台是算法化的娱乐系统，而非广告位。平台在意的只有一件事——retention。</p>
+    <div class="epigraph-source">jorgia · X</div>
+  </div>
+
+  <section id="misdiagnosis">
+    <div class="section-num">00</div>
+    <h2>误诊：你以为自己在传播产品</h2>
+    <p class="section-hook">创始人和平台，从一开始就在优化两套不同的目标</p>
+
+    <p>
+      很多创始人说 Organic Marketing 不工作。换句话说：他们把内容当广告发出去，但平台并不把它当成值得分发的内容。
+    </p>
+    <p>
+      根本原因不是执行不够，而是问题定义错了。创始人的心智模型通常是：<em>我做了一个好产品，需要让更多人知道。</em> 平台的心智模型完全不同：<em>这条内容能否让用户停下来，继续待在信息流里？</em>
+    </p>
+    <p>
+      所以，「讲功能」「直接上 CTA」常常一发出去就沉。你在第 1 秒就把第 20 秒的理解负担扔给用户，产品还没赢得注意力，就已经开始索要行动。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">创始人视角</div>
+        <p><strong>产品</strong> → 曝光 → 下载</p>
+        <p>内容的任务：把产品介绍清楚。</p>
+      </div>
+      <div class="v-mid">vs</div>
+      <div class="v-side v-right">
+        <div class="v-label">平台视角</div>
+        <p><strong>停留</strong> → 互动 → 更多分发</p>
+        <p>内容的任务：为平台创造 retention。</p>
+      </div>
+    </div>
+
+    <div class="figure">
+      <svg viewBox="0 0 580 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <text x="18" y="40" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#4A8060" font-weight="700" letter-spacing="0.06em">创始人</text>
+        <text x="18" y="92" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#C0503A" font-weight="700" letter-spacing="0.06em">平台</text>
+
+        <line x1="80" y1="60" x2="520" y2="60" stroke="#E5DDD0" stroke-width="1" stroke-dasharray="4 4"/>
+
+        <rect x="84" y="22" width="94" height="32" rx="16" fill="#EAF6EE" stroke="#C0D8C8" stroke-width="1"/>
+        <text x="131" y="42" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#1A1714">讲产品</text>
+        <path d="M182 38h20" stroke="#776E62" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M198 34l4 4-4 4" stroke="#776E62" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="210" y="22" width="82" height="32" rx="16" fill="#EAF6EE" stroke="#C0D8C8" stroke-width="1"/>
+        <text x="251" y="42" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#1A1714">曝光</text>
+        <path d="M296 38h20" stroke="#776E62" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M312 34l4 4-4 4" stroke="#776E62" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="324" y="22" width="82" height="32" rx="16" fill="#EAF6EE" stroke="#C0D8C8" stroke-width="1"/>
+        <text x="365" y="42" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#1A1714">下载</text>
+
+        <rect x="84" y="74" width="72" height="32" rx="16" fill="#FCEFEB" stroke="#E0C7BC" stroke-width="1"/>
+        <text x="120" y="94" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#1A1714">停下</text>
+        <path d="M160 90h14" stroke="#776E62" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M170 86l4 4-4 4" stroke="#776E62" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="182" y="74" width="72" height="32" rx="16" fill="#FCEFEB" stroke="#E0C7BC" stroke-width="1"/>
+        <text x="218" y="94" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#1A1714">留下</text>
+        <path d="M258 90h14" stroke="#776E62" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M268 86l4 4-4 4" stroke="#776E62" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="280" y="74" width="72" height="32" rx="16" fill="#FCEFEB" stroke="#E0C7BC" stroke-width="1"/>
+        <text x="316" y="94" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#1A1714">互动</text>
+        <path d="M356 90h14" stroke="#776E62" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M366 86l4 4-4 4" stroke="#776E62" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="378" y="74" width="112" height="32" rx="16" fill="#1A2540"/>
+        <text x="434" y="94" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#F5F0EB">算法放大</text>
+      </svg>
+      <div class="figure-caption">平台判断的是内容的留存力，跟产品本身无关。</div>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">核心洞见</div>
+      <p>
+        最好的产品内容，即使观众最后<strong>没有下载</strong>，内容本身也应该独立成立。它先要对平台有价值，才有机会对产品有价值。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="sequence">
+    <div class="section-num">01</div>
+    <h2>注意力顺序，不能倒着来</h2>
+    <p class="section-hook">Hook → Curiosity → Emotion → Product：注意力的自然推进顺序，跳过任何一步都会断裂</p>
+
+    <p>
+      用户不会先关心你的 app，再决定要不要看下去。顺序正好相反：他先被一句话、一幕画面、一个冲突拦住；再因为未知的缺口产生好奇；再因为看见自己的问题而被情绪卷入；最后，才轮到你把产品作为答案端出来。
+    </p>
+    <p>
+      「我们做了一个 app，可以帮助你……」几乎总是错误开场。问题不在内容本身，而在时机太早：用户还没决定继续看，你就已经开始索取理解，甚至下载。
+    </p>
+
+    <div class="figure">
+      <svg viewBox="0 0 580 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <rect x="16" y="82" width="118" height="46" rx="10" fill="#EEF4F9" stroke="#C0D4E0" stroke-width="1"/>
+        <text x="75" y="100" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#5A7A90" font-weight="700">Hook</text>
+        <text x="75" y="117" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9.5" fill="#776E62">先停下</text>
+
+        <path d="M138 100l18-14" stroke="#776E62" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M152 83l5 2-2 5" stroke="#776E62" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+
+        <rect x="160" y="62" width="118" height="46" rx="10" fill="#F0ECF5" stroke="#CCC0DA" stroke-width="1"/>
+        <text x="219" y="80" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#7B6892" font-weight="700">Curiosity</text>
+        <text x="219" y="97" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9.5" fill="#776E62">留缺口</text>
+
+        <path d="M282 80l18-14" stroke="#776E62" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M296 63l5 2-2 5" stroke="#776E62" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+
+        <rect x="304" y="42" width="118" height="46" rx="10" fill="#F8F0E4" stroke="#DBC8A6" stroke-width="1"/>
+        <text x="363" y="60" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#B8864A" font-weight="700">Emotion</text>
+        <text x="363" y="77" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9.5" fill="#776E62">成为我的问题</text>
+
+        <path d="M426 60l18-14" stroke="#776E62" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M440 43l5 2-2 5" stroke="#776E62" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+
+        <rect x="448" y="22" width="118" height="46" rx="10" fill="#EAF6EE" stroke="#B8D4C2" stroke-width="1"/>
+        <text x="507" y="40" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#4A8060" font-weight="700">Product</text>
+        <text x="507" y="57" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9.5" fill="#776E62">答案出现</text>
+
+        <path d="M507 70C490 110 380 130 75 132" stroke="#C0503A" stroke-width="1.2" stroke-dasharray="5 4" fill="none"/>
+        <text x="340" y="145" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9.5" fill="#C0503A">跳过前三步 = 把注意力的建立外包给用户</text>
+      </svg>
+      <div class="figure-caption">产品是叙事的终点，不是起点。跳过前三步，它只会显得像插播广告。</div>
+    </div>
+
+    <ol class="causal">
+      <li><strong>Hook</strong> — 用最小的认知扰动，买下一秒注意力。</li>
+      <li><strong>Curiosity</strong> — 保留一个未闭合的缺口，让用户愿意继续往下走。</li>
+      <li><strong>Emotion</strong> — 让用户从「这是你的产品」切换到「这是我的问题」。</li>
+      <li><strong>Product</strong> — 把已经建立的张力转译为解决方案。</li>
+    </ol>
+
+    <div class="note note-problem">
+      <div class="note-label">常见误区</div>
+      <p>
+        从产品开讲，本质上是在要求用户先相信你，再决定继续看。信息流里的顺序恰好相反。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="format">
+    <div class="section-num">02</div>
+    <h2>Format 是你的实验单位</h2>
+    <p class="section-hook">Organic Marketing 的核心竞争力来自可重复的格式，而非一次性创意</p>
+
+    <p>
+      一旦接受平台优化的是 retention，下一步结论就很清楚了：Organic Marketing 的核心竞争力来自 <strong>format</strong>，也就是可重复测试的内容结构。
+    </p>
+    <p>
+      Format 的价值在于，它把原本混乱的变量压缩成一个可以反复验证的结构。你持续回答的其实是同一个问题：<em>哪一种叙事外壳，最稳定地把人带入那个问题？</em>
+    </p>
+    <p>
+      这也是为什么最有效的创作者看起来常常「不够新」。他们只是在做增长系统该做的事：先探索，再利用。找到一个有效 format 后，就继续放大，换 hooks，而不是换结构。
+    </p>
+
+    <table class="iso-table">
+      <thead>
+        <tr><th>Format</th><th>它真正提供的东西</th><th>为什么对 app 有效</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Reaction + Demo</td>
+          <td>先给问题情绪，再给解决路径</td>
+          <td>用户先感到痛，再愿意看工具怎样把痛拿掉</td>
+        </tr>
+        <tr>
+          <td>POV</td>
+          <td>让观众瞬间把自己放进情景里</td>
+          <td>自我投射越快，产品越容易被理解成"给我"的</td>
+        </tr>
+        <tr>
+          <td>UGC Screen Story</td>
+          <td>把产品嵌进一个更可信的使用片段</td>
+          <td>降低"广告感"，提高真实感与模仿欲</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="figure">
+      <svg viewBox="0 0 580 200" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <text x="290" y="100" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9.5" fill="#D0C8BC" font-weight="700" letter-spacing="0.10em">FEEDBACK LOOP</text>
+
+        <circle cx="90" cy="100" r="38" fill="white" stroke="#E5DDD0" stroke-width="1.2"/>
+        <text x="90" y="94" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#5A7A90" font-weight="700">发布</text>
+        <text x="90" y="112" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62">选 format</text>
+
+        <circle cx="290" cy="38" r="38" fill="white" stroke="#E5DDD0" stroke-width="1.2"/>
+        <text x="290" y="32" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#B8864A" font-weight="700">观测</text>
+        <text x="290" y="50" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62">看停留与评论</text>
+
+        <circle cx="490" cy="100" r="38" fill="white" stroke="#E5DDD0" stroke-width="1.2"/>
+        <text x="490" y="94" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#4A8060" font-weight="700">提炼</text>
+        <text x="490" y="112" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62">留有效信号</text>
+
+        <circle cx="290" cy="162" r="38" fill="white" stroke="#E5DDD0" stroke-width="1.2"/>
+        <text x="290" y="156" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="11" fill="#7B6892" font-weight="700">重跑</text>
+        <text x="290" y="174" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="9" fill="#776E62">同 format 换 hook</text>
+
+        <line x1="120" y1="76" x2="258" y2="50" stroke="#1A2540" stroke-width="1.2"/>
+        <path d="M254 54l6-5-1 6" stroke="#1A2540" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <line x1="322" y1="50" x2="460" y2="76" stroke="#1A2540" stroke-width="1.2"/>
+        <path d="M456 72l6 5-5 1" stroke="#1A2540" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <line x1="460" y1="124" x2="322" y2="150" stroke="#1A2540" stroke-width="1.2"/>
+        <path d="M326 146l-6 5 1-6" stroke="#1A2540" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <line x1="258" y1="150" x2="120" y2="124" stroke="#1A2540" stroke-width="1.2"/>
+        <path d="M124 128l-6-5 5-1" stroke="#1A2540" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+      </svg>
+      <div class="figure-caption">没有重复，就没有学习；没有学习，就没有放大。</div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card stat-accent">
+        <div class="stat-value">50–100</div>
+        <div class="stat-label">前期内容更像学习样本</div>
+      </div>
+      <div class="stat-card stat-pos">
+        <div class="stat-value">1</div>
+        <div class="stat-label">先找到一个能跑通的 format</div>
+      </div>
+      <div class="stat-card stat-neg">
+        <div class="stat-value">N</div>
+        <div class="stat-label">同一 format 上迭代 hooks</div>
+      </div>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">反直觉</div>
+      <p>
+        重复往往意味着，你终于从「自我表达」切进了「系统学习」；这才是 Organic Marketing 真正开始运转的时刻。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="friction">
+    <div class="section-num">03</div>
+    <h2>为什么 App 比电商更吃情绪</h2>
+    <p class="section-hook">因为你要求的不是平台内点击，而是一次跨平台迁移</p>
+
+    <p>
+      许多创始人最容易误判的指标，是播放量。播放量说明你拿到了平台的注意力，不代表你拿到了自己的转化。
+    </p>
+    <p>
+      对 app 来说，真正的挑战在后面：让人离开平台，去另一个界面完成一串摩擦更高的动作：打开商店、搜索、确认是不是你、下载，再通过 onboarding。每多一步，意图就泄漏一次。
+    </p>
+    <p>
+      这就是为什么 app 内容需要更强的情绪驱动力：你争取的，是一次完整的跨平台行为迁移。
+    </p>
+
+    <table class="iso-table">
+      <thead>
+        <tr><th>路径</th><th>电商 / 店铺型</th><th>App 下载型</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>内容后的第一步</td>
+          <td>点链接或站内下单</td>
+          <td>离开平台</td>
+        </tr>
+        <tr>
+          <td>摩擦长度</td>
+          <td>短</td>
+          <td>长</td>
+        </tr>
+        <tr>
+          <td>对情绪强度的要求</td>
+          <td>中等即可</td>
+          <td>通常更高</td>
+        </tr>
+        <tr>
+          <td>为什么</td>
+          <td>用户的动作大多在原生流程里完成</td>
+          <td>用户必须跨平台完成一次自发搜索与安装</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="figure">
+      <svg viewBox="0 0 580 232" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <text x="140" y="16" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#4A8060" font-weight="700" letter-spacing="0.06em">电商路径</text>
+        <text x="430" y="16" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#C0503A" font-weight="700" letter-spacing="0.06em">App 路径</text>
+
+        <rect x="40" y="30" width="200" height="32" rx="16" fill="white" stroke="#C0D8C8" stroke-width="1"/>
+        <text x="140" y="50" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10.5" fill="#1A1714">刷到内容</text>
+        <path d="M140 62v12" stroke="#4A8060" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M136 70l4 4 4-4" stroke="#4A8060" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="40" y="80" width="200" height="32" rx="16" fill="white" stroke="#C0D8C8" stroke-width="1"/>
+        <text x="140" y="100" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10.5" fill="#1A1714">点链接或站内下单</text>
+        <path d="M140 112v12" stroke="#4A8060" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M136 120l4 4 4-4" stroke="#4A8060" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="40" y="130" width="200" height="32" rx="16" fill="#1A2540"/>
+        <text x="140" y="150" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10.5" fill="#F5F0EB">成交</text>
+
+        <rect x="330" y="30" width="200" height="28" rx="14" fill="white" stroke="#E0C7BC" stroke-width="1"/>
+        <text x="430" y="48" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#1A1714">刷到内容</text>
+        <path d="M430 58v10" stroke="#C0503A" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M426 64l4 4 4-4" stroke="#C0503A" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="330" y="72" width="200" height="28" rx="14" fill="white" stroke="#E0C7BC" stroke-width="1"/>
+        <text x="430" y="90" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#1A1714">离开平台</text>
+        <path d="M430 100v10" stroke="#C0503A" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M426 106l4 4 4-4" stroke="#C0503A" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="330" y="114" width="200" height="28" rx="14" fill="white" stroke="#E0C7BC" stroke-width="1"/>
+        <text x="430" y="132" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#1A1714">搜索应用商店</text>
+        <path d="M430 142v10" stroke="#C0503A" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M426 148l4 4 4-4" stroke="#C0503A" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="330" y="156" width="200" height="28" rx="14" fill="white" stroke="#E0C7BC" stroke-width="1"/>
+        <text x="430" y="174" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#1A1714">判断并下载</text>
+        <path d="M430 184v10" stroke="#C0503A" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M426 190l4 4 4-4" stroke="#C0503A" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="330" y="198" width="200" height="28" rx="14" fill="#1A2540"/>
+        <text x="430" y="216" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#F5F0EB">通过 onboarding</text>
+      </svg>
+      <div class="figure-caption">链路越长，需要的情绪推力越大。</div>
+    </div>
+
+    <div class="note note-problem">
+      <div class="note-label">指标陷阱</div>
+      <p>
+        播放量可以很高，但如果它没有制造足够的情绪张力去推动下一步动作，那它更像平台上的热闹，而不是产品上的增长。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="moat">
+    <div class="section-num">04</div>
+    <h2>Organic Marketing 的真正位置：Paid 之前的验证层</h2>
+    <p class="section-hook">先做 Organic，目的是用最低成本搞清楚什么 hook、format、情绪真正有效</p>
+
+    <p>
+      更准确的理解方式，是把 Organic Marketing 和 Paid 放进同一条链路里看。Organic 负责用最低成本验证三件事：什么 hook 能让人停下，什么 format 能让人看完，什么情绪会把人推向产品。
+    </p>
+    <p>
+      如果这些答案都还不清楚就直接上 Paid，本质上是在花钱买一个教训：原来这套说法根本没人关心。那不叫投放，更像昂贵的调研。
+    </p>
+    <p>
+      AI 已经大幅压低了开发端的成本，把产品做出来越来越容易。真正稀缺的能力，是把注意力稳定转成分发，再把分发转成安装。分发能力正在成为新的护城河。
+    </p>
+
+    <div class="figure">
+      <svg viewBox="0 0 580 136" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <text x="20" y="40" font-family="Inter,-apple-system,sans-serif" font-size="14" fill="#C0503A" font-weight="700">✕</text>
+        <rect x="44" y="22" width="190" height="32" rx="16" fill="#FCEFEB" stroke="#E0C7BC" stroke-width="1"/>
+        <text x="139" y="42" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10.5" fill="#1A1714">未验证叙事 + 直接 Paid</text>
+        <path d="M238 38h18" stroke="#776E62" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M252 34l4 4-4 4" stroke="#776E62" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="264" y="22" width="190" height="32" rx="16" fill="#FCEFEB" stroke="#E0C7BC" stroke-width="1"/>
+        <text x="359" y="42" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10.5" fill="#C0503A">花钱发现没人在乎</text>
+
+        <line x1="20" y1="68" x2="520" y2="68" stroke="#E5DDD0" stroke-width="1" stroke-dasharray="4 4"/>
+
+        <text x="20" y="100" font-family="Inter,-apple-system,sans-serif" font-size="14" fill="#4A8060" font-weight="700">✓</text>
+        <rect x="44" y="82" width="130" height="32" rx="16" fill="#EAF6EE" stroke="#C0D8C8" stroke-width="1"/>
+        <text x="109" y="102" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10.5" fill="#1A1714">Organic 验证</text>
+        <path d="M178 98h16" stroke="#776E62" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M190 94l4 4-4 4" stroke="#776E62" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="202" y="82" width="120" height="32" rx="16" fill="#EAF6EE" stroke="#C0D8C8" stroke-width="1"/>
+        <text x="262" y="102" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10.5" fill="#1A1714">有效信号</text>
+        <path d="M326 98h16" stroke="#776E62" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M338 94l4 4-4 4" stroke="#776E62" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+        <rect x="350" y="82" width="140" height="32" rx="16" fill="#1A2540"/>
+        <text x="420" y="102" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="10.5" fill="#F5F0EB">Paid 放大</text>
+      </svg>
+      <div class="figure-caption">先验证，再放大。顺序比预算更重要。</div>
+    </div>
+
+    <ol class="causal">
+      <li><strong>Organic Marketing</strong> 用来发现信号——什么会让对的人停下来。</li>
+      <li><strong>Paid</strong> 用来放大信号——既然已经有效，如何稳定扩大覆盖。</li>
+      <li><strong>Onboarding</strong> 用来兑现信号——点击与下载之后，产品能否接住这份意图。</li>
+    </ol>
+
+    <div class="note note-neutral">
+      <div class="note-label">边界</div>
+      <p>
+        这个框架最适合短视频信息流驱动的 B2C 分发。对 B2B、搜索型产品、强信任决策产品，retention 依然重要，但未必是唯一的主导变量。注意力能带来入口，却不会自动带来正确的人群与定位。
+      </p>
+    </div>
+  </section>
+
+  <div class="takeaway">
+    <div class="thesis-label">结论</div>
+    <p>
+      Organic Marketing 最难的一步，是先承认一个不太舒服的事实：<strong>平台并不在意你的产品。</strong><br><br>
+      它只在意你的内容能否制造 retention。于是，真正有效的创始人内容，必须先解决注意力问题，再解决产品问题。AI 让开发变便宜了，但没有让<strong>被人想要</strong>变便宜。谁能把注意力稳定地转成分发，再把分发转成安装，谁就更可能握住新的护城河。
+    </p>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
