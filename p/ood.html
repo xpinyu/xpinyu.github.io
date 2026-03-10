@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="真正能做出颠覆性成就的创始人，常常不在主流筛选系统的视野中。创伤、神经多样性与跨域广度，不只是标签，更是通向独立判断力的三条路径。">
+<title>Out of Distribution</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background: var(--accent);
+    z-index: 999;
+    transition: width 80ms linear;
+    pointer-events: none;
+  }
+
+  .topbar {
+    position: fixed;
+    top: 2px;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250, 246, 238, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229, 221, 208, 0.6);
+  }
+
+  .topbar a {
+    font-size: 0.72rem;
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  .container {
+    max-width: var(--content-w);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+
+  header .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    max-width: 560px;
+  }
+
+  header .subtitle {
+    font-size: 1rem;
+    color: var(--text-2);
+    line-height: 1.9;
+    max-width: 620px;
+  }
+
+  header .meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 24px;
+    font-size: 0.75rem;
+    color: var(--text-3);
+    flex-wrap: wrap;
+  }
+
+  .thesis {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+    margin-bottom: 72px;
+  }
+
+  .thesis .thesis-label,
+  .takeaway .thesis-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 14px;
+  }
+
+  .thesis p,
+  .takeaway p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+  }
+
+  .thesis strong { color: #E8B830; font-weight: 600; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  section { margin-bottom: 72px; }
+
+  .section-num {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  section > .section-hook {
+    font-size: 0.85rem;
+    color: var(--text-3);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  .sep {
+    height: 1px;
+    background: var(--border);
+    margin: 72px 0;
+    border: none;
+  }
+
+  .note {
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin: 24px 0;
+    font-size: 0.88rem;
+    line-height: 1.8;
+    border-left: 3px solid;
+  }
+
+  .note-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .note-insight { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem { background: var(--red-bg); border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-neutral { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    margin: 24px 0;
+    font-size: 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .versus .v-side { padding: 20px 24px; }
+
+  .versus .v-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .versus .v-left { background: var(--green-bg); }
+  .versus .v-left .v-label { color: var(--green); }
+  .versus .v-right { background: var(--red-bg); }
+  .versus .v-right .v-label { color: var(--red); }
+
+  .versus .v-mid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    font-weight: 700;
+    color: var(--text-3);
+    background: var(--bg);
+    font-size: 0.75rem;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    margin: 24px 0;
+  }
+
+  .iso-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    min-width: 620px;
+  }
+
+  .iso-table thead th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .iso-table tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .iso-table tbody tr:last-child td { border-bottom: none; }
+  .iso-table tbody td:first-child {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .principle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .principle {
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .principle:hover {
+    border-color: #D0C8BD;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  }
+
+  .principle-tag {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  .principle h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .principle p {
+    font-size: 0.82rem;
+    color: var(--text-2);
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  .takeaway {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+
+  footer {
+    padding-bottom: 24px;
+    color: var(--text-3);
+    font-size: 0.72rem;
+  }
+
+  nav.toc {
+    position: fixed;
+    top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    z-index: 50;
+  }
+
+  nav.toc a {
+    display: block;
+    padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  nav.toc a:hover,
+  nav.toc a.active {
+    color: var(--text-1);
+    border-color: var(--text-1);
+    text-decoration: none;
+  }
+
+  @media (max-width: 1100px) {
+    nav.toc { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 0 18px; }
+    .topbar { padding: 10px 18px; }
+    header { padding: 92px 0 40px; margin-bottom: 56px; }
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .principle-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    header { animation: none; }
+    .principle,
+    .topbar a,
+    nav.toc a,
+    #progress { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+
+<div class="topbar">
+  <a class="home-link" href="/">← pinyu.ai</a>
+</div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">核心判断</a>
+  <a href="#signal">被漏掉的信号</a>
+  <a href="#paths">三条生成路径</a>
+  <a href="#variable">认知独立</a>
+  <a href="#system">制度为什么失明</a>
+  <a href="#look">如果真要判断人</a>
+  <a href="#cost">盲点与代价</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Founder Selection × Venture</div>
+    <h1>Out of Distribution</h1>
+    <p class="subtitle">
+      真正能做出颠覆性成就的创始人，常常不在主流筛选系统的视野中。创伤、神经多样性与跨领域广度，不只是他们的标签，更是形成独立判断力的三条路径。
+    </p>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.03</span>
+      <span>Founder Profiles Vol. 2</span>
+      <span><a href="https://x.com/richzou/status/2031054790130901211" target="_blank">原文 ↗</a></span>
+    </div>
+  </header>
+
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">核心判断</div>
+    <p>
+      筛选系统总说自己在寻找能改变世界的人，但它们更擅长的，往往是筛掉不符合标准模板的“异类”。学校擅长识别好学生，公司擅长筛选好员工，VC 擅长判断谁能讲出一个好故事；它们共同遗漏的，往往是那些处在<strong>“分布外”的可能性</strong>。创伤、神经多样性和跨域广度之所以反复出现在顶级创始人身上，不是因为这些特质本身值得浪漫化，而是因为它们迫使人偏离常规路径，去<strong>建立自己的认知模型</strong>。
+    </p>
+  </div>
+
+  <section id="signal">
+    <div class="section-num">00</div>
+    <h2>主流系统漏掉的，往往是最关键的信号</h2>
+    <p class="section-hook">追求“可解释性”的系统，往往会错过极值</p>
+
+    <p>
+      我研究了二十五位在三十岁前就把公司做到估值五十亿美元的创始人。一个突出的事实是，<strong>如果把他们放进今天标准化的筛选流程里，不少人可能在第一轮就会被淘汰。</strong>他们的履历并不连贯，表达也不够规范，有些人甚至从气质上就不像“适合纳入组织体系”的人。
+    </p>
+    <p>
+      原因并不复杂。学校、公司和创投机构的判断力，本质上都服务于“已知游戏”。它们擅长找出那些能在既定规则里稳定把事做对的人。但创业需要的是另一类人：在规则尚未形成时，就先看到别人还没承认的机会，并敢在证据尚不充分时持续下注。
+    </p>
+    <p>
+      在已知游戏里，履历是能力的摘要；在未知游戏里，履历更多只是服从性的证明。只要一个系统需要向上级、LP（有限合伙人）或投资委员会解释决策，它就会自然偏好那些<strong>可比较、易复述、还能免责</strong>的信号。这套机制本身没错，但代价也很清楚：它会稳定地错过那些尾部的极值天才。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">系统偏好</div>
+        <p>名校背景、大厂经历、连贯的职业叙事、流畅的表达、符合社交直觉，以及能向委员会解释得通的风险。</p>
+      </div>
+      <div class="v-mid">vs</div>
+      <div class="v-side v-right">
+        <div class="v-label">真正稀缺</div>
+        <p>对问题的切身痛感、逆共识的判断、在长期不适中持续推进的韧性、跨领域重组的能力，以及愿意被现实修正、却不轻易向共识低头的心智。</p>
+      </div>
+    </div>
+
+    <p>
+      所以，比起传统意义上的“优秀”，“分布外”更重要。所谓优秀，是在既有坐标系里名列前茅；而“分布外”的人，可能带着另一套坐标系。前者更容易得到现行规则的奖励，后者才可能改写规则。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="paths">
+    <div class="section-num">01</div>
+    <h2>与其说是三个标签，不如说是三条路径</h2>
+    <p class="section-hook">它们之所以反复出现，是因为它们会把人从默认的人生轨道上推开</p>
+
+    <p>
+      有人把创伤（Trauma）、神经多样性（Neurodivergence）和跨域广度（Polymathic Range）概括成三种创始人信号。这个观察很准，但更贴切地说，它们不是标签，而是路径。每一条路径都会打断人生中的某种默认设置，也因此催生出一种少见的替代能力。
+    </p>
+
+    <div class="table-wrap">
+      <table class="iso-table">
+        <thead>
+          <tr>
+            <th>路径</th>
+            <th>它打断了什么</th>
+            <th>可能带来的优势</th>
+            <th>常见代价</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Trauma</td>
+            <td>对世界公平、规则可靠的默认信任与安全感</td>
+            <td>深刻的痛感记忆、更高的痛苦阈值，以及强烈的修复冲动</td>
+            <td>情感上的脆弱、过度补偿的倾向，以及人际和情绪摩擦</td>
+          </tr>
+          <tr>
+            <td>Neurodivergence</td>
+            <td>与主流社会同步运转的认知节奏</td>
+            <td>更强的模式识别能力、极端的偏执，以及对社会认同的低依赖</td>
+            <td>团队协作成本更高，日常结构化管理也更艰难</td>
+          </tr>
+          <tr>
+            <td>Polymathic Range</td>
+            <td>单一学科提供的稳定安全感与坐标系</td>
+            <td>跨领域重组能力，以及把审美与工程压缩进同一次判断的直觉</td>
+            <td>履历显得跳跃，极易被外界误判为缺乏专注力</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Vlad Tenev、Ara Mahdessian、Tony Xu 的故事，并不是对苦难的简单歌颂。他们要解决的问题，正是自己长期身处其中的现实：金融体系的排斥、小承包商繁复的运营摩擦、餐馆里的高强度劳动。对他们来说，这些不是抽象议题，而是切身经验。创伤最初留下的是痛感，但在极少数人身上，这种痛感最终会被转化为持续行动，并凝结成一家公司。
+    </p>
+    <p>
+      Tobi Lutke、Jack Dorsey 和 Drew Houston 的经历，则指向另一件事：他们的心智运作方式并不贴合主流轨道。学校教育偏好稳定、规律、便于协作的注意力配置；而创业早期往往需要相反的能力：对某个问题近乎病态的专注、对社会认同的低依赖，以及在所有人都觉得“这不重要”时，仍愿意独自坚持数年。
+    </p>
+    <p>
+      Ivan Zhao、Brian Chesky 和 Ben Silbermann 则说明，跨域广度的价值不只是“兴趣广泛”。它能把不同领域的专业能力压缩进一次产品判断里。与其说这是跨界，不如说是把原本无关的能力接在一起，最终形成新的判断。
+    </p>
+
+    <div class="note note-problem">
+      <div class="note-label">边界</div>
+      <p>
+        这三条路径不该被浪漫化。对大多数带着创伤或认知差异的人来说，这些经历不会自然变成创业优势，反而常常带来更沉重的代价。本文无意赞美苦难。需要解释的是，为什么在创业这个极端场景里，极少数人能把这些代价转化为洞察、耐受力和行动力。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="variable">
+    <div class="section-num">02</div>
+    <h2>贯穿始终的核心变量：认知独立</h2>
+    <p class="section-hook">拨开三条路径的表象，底层真正决定性的能力只有一个</p>
+
+    <p>
+      进一步看，这三条路径最后都会指向同一种底层特质：<strong>认知独立</strong>。它意味着即使没有外部认可，你也能形成并坚持自己的判断；意味着在长期模糊、长期低位、长期没有掌声时，仍能继续向前；也意味着在被现实反复修正后，能够迅速更新自己的认知模型，而不是陷入自我神话。
+    </p>
+    <p>
+      偏执不等于笃定。真正的认知独立，一方面要求你和大众共识保持距离，另一方面也要求你在试错后快速更新。少了后者，所谓“非共识”会变成自恋；少了前者，再聪明也只是更精致的模仿。
+    </p>
+    <p>
+      创业的本质，是在大多数人还没看清问题、甚至不承认答案存在的时候，把那个答案变成现实。这也解释了为什么最强的创始人，往往看起来不像“优质候选人”：那些让他们难以融入现有系统的“瑕疵”，恰恰是驱使他们创造新系统的动力。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">洞见</div>
+      <p>
+        聪明并不稀缺。真正稀缺的是，带着一个非共识判断，承受长期不适，持续向前，并在现实反馈里不断更新自己。很多时候，顶级创始人的核心优势不过是：他们比普通人更早、更深地经历过现实的压力与冲击。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="system">
+    <div class="section-num">03</div>
+    <h2>为什么制度会系统性失明</h2>
+    <p class="section-hook">因为制度首先要对当下负责，而不是替未知的未来下注</p>
+
+    <p>
+      认知独立如此关键，主流机制却长期难以捕捉。<strong>原因很现实：在制度里，“可读性”和“安全感”通常排在识别极值成功者之前。</strong>对机构来说，投资或雇佣一个名校出身、履历光鲜的人，即便最后失败了，也可以解释成“正常的系统性风险”；但如果押注一个履历崎岖、表达古怪的边缘人而失败，往往就会被归因为“个人判断失误”。
+    </p>
+    <p>
+      于是，系统真正追求的东西慢慢变成了一种可交代性：即便失败，我也能体面地交代。久而久之，筛选机制就退化成一套免责机制。它确实抬高了下限，但也稳定地砍掉了那些最可能创造奇迹的尾部。
+    </p>
+    <p>
+      更糟的是，“分布内”的信号还在被内卷和博弈快速透支。名校光环、名企背景、漂亮的 PPT 叙事、流畅的路演技巧，越来越像一套可以后天训练出来的社交接口，而不再是原始创造力的可靠映射。一个指标一旦被群体反复优化和迎合，它就会越来越擅长测试“谁最会满足指标”，却越来越难测出“谁真的有改写现实的魄力”。
+    </p>
+
+    <div class="note note-neutral">
+      <div class="note-label">重构</div>
+      <p>
+        要修复这种系统性失明，靠纠正几条刻板偏见远远不够，因为病根埋在系统的目标函数里。一个为稳定和可解释性而设计的系统，不可能自然具备识别“异常值”的能力。想真正看见那些游离在分布之外的异类，评判者自己先得有一套分布之外的框架。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="look">
+    <div class="section-num">04</div>
+    <h2>如果真要识别天才，我们该看什么</h2>
+    <p class="section-hook">别再问他“像不像”成功创始人，而要问他是否早已深陷那个问题</p>
+
+    <p>
+      如果你要找的是那种能完成从零到一突破的人，就别再去找“看起来像创始人”的样板。评估框架必须重构：先撕掉所有标签，只看一件事：这个人和他想解决的问题之间，是否存在某种别人拿不走、也学不会的深层联结。
+    </p>
+
+    <div class="principle-grid">
+      <div class="principle">
+        <div class="principle-tag">01</div>
+        <h4>Problem Intimacy</h4>
+        <p>关键不在于他如何谈市场规模，而在于他是否能说出只有长期亲历者才懂的痛点细节。最顶级的创始人通常不是先去“选赛道”，而是长期生活在那个问题里。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">02</div>
+        <h4>Non-Consensus Model</h4>
+        <p>他不仅要能说清主流视角错在哪里，还要说明什么事实一旦出现，自己的判断就会被推翻。不能被证伪的“非共识”，通常只是包装自我的口号。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">03</div>
+        <h4>Discomfort Endurance</h4>
+        <p>真正稀缺的，不是短期热情，而是在长期没有掌声、处于低位、还要反复推倒重来的阶段，依然能够稳定前进。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">04</div>
+        <h4>Cross-Domain Compression</h4>
+        <p>关键不在于技能是否足够多，而在于能否把看似无关的技能压缩成一次精准的产品判断。真正的跨界，最后会沉淀成一种新的思考语法，而不是技能拼盘。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">05</div>
+        <h4>Reality Contact</h4>
+        <p>面对现实，他是否愿意让数据纠正自己，而不是把所有阻力都解释为“众人不懂我”。如果不能，这样的异类就更容易停留在幻觉里，也更难管理。</p>
+      </div>
+    </div>
+
+    <p>
+      真正值得下注的创始人，很少会使用那些被反复咀嚼过的套话。当他描述问题时，细节通常足够具体，也足够扎实。这些判断不是包装出来的，而是被现实反复检验过的。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="cost">
+    <div class="section-num">05</div>
+    <h2>盲点：高方差不是美德，代价是真实存在的</h2>
+    <p class="section-hook">那些能孕育传奇的路径，往往也更容易制造废墟</p>
+
+    <p>
+      这里需要把边界说清楚。高方差不等于高期望，异常值也不等于天赋证明。创伤首先是伤口；神经差异首先意味着持续的摩擦和误解；跨领域广度在大多数时候，也可能只是注意力涣散的另一种说法。如果把这一切浪漫化，就很容易把幸存者的结果误认成这些路径本身的价值。
+    </p>
+    <p>
+      即便他们凭这些特质把公司做成了，更难的问题也才刚开始。那些曾让创始人提前看见未来的特质，往往也会成为他建设稳定高效组织的阻力。伟大的公司不能停留在“某个人看到了别人没看到的东西”这一步；更难的是把这种私人的洞察，翻译成一套其他人也能协作、执行，并持续传承的系统。
+    </p>
+    <p>
+      归根到底，真正的挑战是：我们能不能比现有制度更准确地从“异常值”里剥离出真实信号，同时过滤掉其中巨大的噪音。未来很少以标准答案的形式出现；它更常先表现为噪音、秩序的断裂，以及一个让整个系统都感到不适的“异类”。
+    </p>
+  </section>
+
+  <div class="takeaway">
+    <div class="thesis-label">结语</div>
+    <p>
+      那些最顶级的创始人，往往就藏在主流筛选系统的盲区里。创伤、神经多样性和跨域广度之所以会在他们身上反复出现，不是因为这些经历本身神圣，而是因为它们迫使人重建自己的认知模型。在一个充满不确定性的世界里，真正值得下注的，始终是那些在缺乏共识时仍然靠近真实、并在被现实反复修正后，依然不愿把判断完全交给大众共识的人。
+    </p>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
