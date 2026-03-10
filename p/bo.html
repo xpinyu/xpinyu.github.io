@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="对活着的身体来说，世界一开始就带着利害，从没中性过。人类文化则把这种利害继续写进语言、神话、艺术与科学。">
+<title>Before Objects</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --ochre: #E8B830;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 999;
+    transition: width 80ms linear;
+    pointer-events: none;
+  }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+
+  .topbar {
+    position: fixed;
+    top: 2px;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250, 246, 238, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229, 221, 208, 0.6);
+  }
+
+  .topbar a {
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+
+  header .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    max-width: 560px;
+  }
+
+  header .subtitle {
+    font-size: 1rem;
+    color: var(--text-2);
+    line-height: 1.9;
+    max-width: 620px;
+  }
+
+  header .meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 24px;
+    font-size: 0.75rem;
+    color: var(--text-3);
+    flex-wrap: wrap;
+  }
+
+  .thesis {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+    margin-bottom: 48px;
+  }
+
+  .thesis .thesis-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 12px;
+  }
+
+  .thesis p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    font-weight: 400;
+  }
+
+  .thesis strong {
+    color: var(--ochre);
+    font-weight: 600;
+  }
+
+  .epigraph {
+    margin: -12px 0 72px;
+    padding: 22px 24px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  .epigraph-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  .epigraph p {
+    font-family: var(--serif);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 10px;
+  }
+
+  .epigraph p:last-child { margin-bottom: 0; }
+
+  .epigraph .epigraph-translation {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    color: var(--text-2);
+  }
+
+  .epigraph-source {
+    font-size: 0.74rem;
+    color: var(--text-3);
+  }
+
+  section { margin-bottom: 72px; }
+
+  .section-num {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  section > .section-hook {
+    font-size: 0.85rem;
+    color: var(--text-3);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 40px 0 12px;
+    letter-spacing: -0.01em;
+  }
+
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    background: #EDE8DF;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .sep {
+    height: 1px;
+    background: var(--border);
+    margin: 72px 0;
+    border: none;
+  }
+
+  blockquote {
+    margin: 28px 0;
+    padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.03);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.95rem;
+    line-height: 1.85;
+  }
+
+  blockquote p { margin-bottom: 0; }
+
+  .note {
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin: 24px 0;
+    font-size: 0.88rem;
+    line-height: 1.8;
+    border-left: 3px solid;
+  }
+
+  .note-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .note-insight  { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem  { background: var(--red-bg); border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok       { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral  { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    margin: 24px 0;
+    font-size: 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .versus .v-side { padding: 20px 24px; }
+
+  .versus .v-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .versus .v-left  { background: var(--green-bg); }
+  .versus .v-left .v-label  { color: var(--green); }
+  .versus .v-right { background: var(--red-bg); }
+  .versus .v-right .v-label { color: var(--red); }
+
+  .versus .v-mid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    font-weight: 700;
+    color: var(--text-3);
+    background: var(--bg);
+    font-size: 0.75rem;
+  }
+
+  .causal {
+    margin: 24px 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: cause;
+  }
+
+  .causal li {
+    counter-increment: cause;
+    position: relative;
+    padding: 8px 0 8px 44px;
+    font-size: 0.9rem;
+    line-height: 1.75;
+  }
+
+  .causal li::before {
+    content: counter(cause);
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #1A2540;
+    color: #F5F0EB;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .iso-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 0.82rem;
+  }
+
+  .iso-table thead th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .iso-table tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .iso-table tbody tr:last-child td { border-bottom: none; }
+  .iso-table tbody td:first-child { font-weight: 600; white-space: nowrap; }
+
+  .takeaway {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+
+  .takeaway .thesis-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 12px;
+  }
+
+  .takeaway p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+  }
+
+  .takeaway strong {
+    color: #8EC5A0;
+    font-weight: 600;
+  }
+
+  footer {
+    text-align: center;
+    padding: 48px 0 64px;
+    font-size: 0.72rem;
+    color: var(--text-3);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  nav.toc {
+    position: fixed;
+    top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    z-index: 50;
+  }
+
+  nav.toc a {
+    display: block;
+    padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  nav.toc a:hover,
+  nav.toc a.active {
+    color: var(--text-1);
+    border-color: var(--text-1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 1100px) {
+    nav.toc { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .iso-table { font-size: 0.75rem; }
+    .iso-table thead th,
+    .iso-table tbody td { padding: 8px 10px; }
+    blockquote { padding: 16px 20px; }
+  }
+
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+
+<div class="topbar">
+  <a href="/" class="home-link">&larr; pinyu.ai</a>
+</div>
+
+<nav class="toc" id="toc">
+  <a href="#reframe">世界从未中性</a>
+  <a href="#valence">对象从利害中长出</a>
+  <a href="#cassirer">符号再造世界</a>
+  <a href="#spiral">第二次诞生</a>
+  <a href="#ai">AI 的盲区</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Consciousness &times; Symbolic Forms</div>
+    <h1>Before Objects</h1>
+    <div class="subtitle">对活着的身体来说，世界一开始就带着利害，从没中性过。人类文化则把这种利害继续写进语言、神话、艺术与科学。</div>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.03</span>
+      <span>Ernst Cassirer</span>
+      <span><a href="https://arxiv.org/html/2409.14545v6" target="_blank" rel="noopener noreferrer">Bennett et al., Why is anything conscious? &nearr;</a></span>
+    </div>
+  </header>
+
+  <div class="thesis">
+    <div class="thesis-label">核心判断</div>
+    <p>
+      <strong>意义有两次诞生。</strong>第一次在生命的脆弱性里：只要一个系统会受伤、会崩解，世界对它就不可能中性——好坏、趋近与回避总是先于一切概念到来。第二次在符号形式里：语言、神话、艺术与科学把原初利害重新编织，做出一个人类可以居住、共享和争论的世界。
+    </p>
+    <p>
+      Bennett 解释意义如何点燃，卡西尔解释世界如何长厚。两者放在一起，意识更像一条从生命通向文化的生成链，而非一块突然亮起的屏幕。
+    </p>
+  </div>
+
+  <div class="epigraph">
+    <div class="epigraph-label">Cassirer</div>
+    <p>Instead of defining man as an animal rationale, we should define him as an animal symbolicum.</p>
+    <p class="epigraph-translation">与其把人定义为理性动物，不如把人定义为符号的动物。</p>
+    <div class="epigraph-source">Ernst Cassirer, <em>An Essay on Man</em></div>
+  </div>
+
+  <!-- 00 -->
+  <section id="reframe">
+    <div class="section-num">00</div>
+    <h2>世界一开始就带着利害</h2>
+    <p class="section-hook">在对象之前，是利害。</p>
+
+    <p>
+      余光里有个影子在动。身体已经侧开了——然后你才看清，是窗帘被风吹起来。你没来得及认出「窗帘」再决定要不要躲；威胁先到，辨认后到。
+    </p>
+    <p>
+      多数意识讨论默认了相反的顺序：世界先是一堆中性对象，大脑再给它们贴上感受。感知先于评价，表征先于关切。Bennett 跳过这个前提，直接从一个随时可能崩解的身体出发提问：<em>为什么对活物来说，信息处理从一开始就不可能完全中性？</em>
+    </p>
+    <p>
+      他的回答是：因为世界对生命有 <code>valence</code>——天然带着利害倾向。某些状态有利于维持自身，另一些把系统推向受损与死亡。只要一个系统必须在这种不对称中生存，它遇到的就永远是好坏、轻重、趋近与回避。
+    </p>
+
+    <blockquote>
+      <p>Put provocatively, death grounds meaning.</p>
+    </blockquote>
+
+    <p>
+      如果一个系统不会失败、不会被环境压垮，环境的差异对它就无从分出「要紧」和「不要紧」。没有脆弱性，就没有意义。
+    </p>
+    <p>
+      这篇论文的价值未必在于终结 <code>hard problem</code>，而在于改写了问题本身。旧问题问：中性信息为何会突然带上 qualia？新问题问：对活物来说，信息处理为何从来就不中性？
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- 01 -->
+  <section id="valence">
+    <div class="section-num">01</div>
+    <h2>对象是从利害里长出来的</h2>
+    <p class="section-hook">先有饥饿，才有苹果——顺序从来都是这样。</p>
+
+    <p>
+      Bennett 更反直觉的一步，是他所说的 <code>valence-first ontology</code>：身体先分出趋近与回避，对象概念才从中逐渐长出来——作为追踪「什么东西造成了这些好坏」的工具。
+    </p>
+    <p>
+      想想一个初生的身体。它首先必须分辨的是：什么会伤到我，什么会养活我，什么需要立刻行动。对象、属性、因果关系——这些后来显得理所当然的认知结构，更像是为压缩利害地图而发明出来的工具。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">常见看法</div>
+        <p>先有中性的对象世界，再由感受给对象着色。表征先于关切。</p>
+      </div>
+      <div class="v-mid">vs</div>
+      <div class="v-side v-right">
+        <div class="v-label">Bennett</div>
+        <p>先有身体的脆弱性与利害判断，对象概念才从中生长。关切先于表征。</p>
+      </div>
+    </div>
+
+    <p>
+      一旦接受这个翻转，<code>qualia</code> 就更像系统最初切分世界的方式本身：身体先被世界压出一条「必须在意」的轴线，然后才沿着它长出较稳定的对象和因果判断。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">关键翻转</div>
+      <p>
+        对象是意识为了追踪利害之因做出的压缩——世界并没有预先分好这些单元。对象化是生存逼出来的整理。
+      </p>
+    </div>
+
+    <p>
+      这也解释了为什么 Bennett 把「世界如何被分成 relevant 与 irrelevant」放在论证中心。活物面对环境时，第一件事是裁出一个足够小的世界来活下去。相关性是生存落下的第一刀。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <!-- 02 -->
+  <section id="cassirer">
+    <div class="section-num">02</div>
+    <h2>卡西尔补上了一整层世界</h2>
+    <p class="section-hook">效价解释了意义如何点燃，但没有解释世界如何长厚。</p>
+
+    <p>
+      Bennett 的解释有力，但只完成了一半。它说明了世界为什么先以利害出现，却留下一个问题未答：为什么人类最终活在语言、法律、货币、宗教、艺术与科学这些远超生存的结构中？
+    </p>
+    <p>
+      卡西尔补上的正是这一层。在他看来，从来没有「裸事实」的世界等着人去贴标签。人总是通过 <code>symbolic forms</code>——符号形式——把经验编织成世界。
+    </p>
+    <p>
+      神话、语言、艺术、科学，各自构成一种不同的世界。我们通过符号把世界做成可居住、可记忆、可争论的样子，而非先拿到一个完成的世界再去描述它。
+    </p>
+
+    <table class="iso-table">
+      <thead>
+        <tr><th>维度</th><th>Bennett</th><th>卡西尔</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>起点</td>
+          <td>会失败、会崩解的身体</td>
+          <td>会编织经验的符号形式</td>
+        </tr>
+        <tr>
+          <td>核心问题</td>
+          <td>为什么信息处理天然带着好坏</td>
+          <td>为什么人住在一个符号宇宙里</td>
+        </tr>
+        <tr>
+          <td>对象如何出现</td>
+          <td>作为利害之因的压缩</td>
+          <td>作为经验被组织后的产物</td>
+        </tr>
+        <tr>
+          <td>各自盲点</td>
+          <td>难解释文化形式的相对自主</td>
+          <td>不解释意识的生物起点</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      卡西尔对神话意识的分析尤其值得注意。神话一开始就面对一个带着威胁与召唤的世界——雷，在经验还没被充分对象化的阶段，首先就是可畏的。这一点与 Bennett 的 <code>valence-first</code> 结构几乎同型。差别在于卡西尔追问的是：这种原初利害如何被符号接住，变成可传递、可积累、可反过来改写利害本身的文化形式。
+    </p>
+    <p>
+      所以，卡西尔补充的是一层生成机制：效价可以点燃意义，却无法解释意义如何脱离即时生存，发展出自己的逻辑与规范。人为什么会为悲剧买票，为一个数学证明兴奋，为一面旗帜流泪？因为符号形式会重新定义什么才算好坏。
+    </p>
+
+    <div class="note note-ok">
+      <div class="note-label">连接点</div>
+      <p>
+        Bennett 让我们看到对象如何从利害里长出来。卡西尔让我们看到世界如何在符号里长厚。两人的交叉处，正是「意义的第二次诞生」。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- 03 -->
+  <section id="spiral">
+    <div class="section-num">03</div>
+    <h2>意义不止一次诞生</h2>
+    <p class="section-hook">文化不只承接效价，也会制造新的效价。</p>
+
+    <p>
+      把 Bennett 与卡西尔连在一起，会得到一个更强的判断：意义一旦点燃就会继续生长，并反向改写自己的起点。
+    </p>
+
+    <ol class="causal">
+      <li><strong>脆弱性先把世界变成不对称的。</strong>某些状态有利，某些有害，系统不能无所谓。这是第一刀——世界被分成了要紧的和不要紧的。</li>
+      <li><strong>心智把这种不对称压缩成对象与因果。</strong>它需要追踪是什么反复导致好坏。「苹果」和「火」就是这样被发明出来的。</li>
+      <li><strong>符号形式把压缩外化、共享、传递。</strong>语言让它可说，神话让它可共享，科学让它可检验，艺术让它可以被重新感受。</li>
+      <li><strong>新符号反过来制造新效价。</strong>荣誉、羞耻、神圣、证伪、美感、债务——裸生理从未给定过它们，它们是符号形式反向写入身体的。</li>
+    </ol>
+
+    <p>
+      关键在第四步：好坏不再只由身体给定，还会被语言、制度、传统与共同体重新定义。观众会主动去看悲剧，数学家会为一个证明失眠，作家会为一句还没写对的话感到痛苦。驱动力已经被符号形式深度改写过了。
+    </p>
+    <p>
+      这也解释了一件看似简单的事。学了和声学之后，你听到的是全新的可感受差异——懂和声的人和不懂和声的人听同一首肖邦，听到的已经是两首曲子。文化会扩大经验本身。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">一句话</div>
+      <p>
+        文化会制造全新的感受类型。这些新感受又成为下一轮意义生成的起点。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- 04 -->
+  <section id="ai">
+    <div class="section-num">04</div>
+    <h2>AI 会写诗，但它住在谁的世界里</h2>
+    <p class="section-hook">操纵符号和住进一个世界之间，隔着整条生成链。</p>
+
+    <p>
+      从 Bennett 与卡西尔交叉的视角看，今天的 AI 讨论常常在两个层次上跳跃而不自知。
+    </p>
+    <p>
+      第一层是 Bennett 的。没有脆弱性结构，信息处理就缺少最初的利害轴线。大模型当然可以写出「我害怕」「我失去了一个朋友」——但这些表达的上游是统计上最合理的下一个词，不是一段会崩解的存在。
+    </p>
+    <p>
+      第二层是卡西尔的。大模型操纵的全部符号——语言、概念、隐喻——都来自人类已经编织好的符号宇宙。它没有给雷命过名，没有从红色的液体中造出「血」这个概念。操纵别人的符号，与在自己的脆弱性中生成符号并承担后果，是两回事。
+    </p>
+    <p>
+      这不意味着 AI 永远不可能有意识。更准确地说：沿着这条路径，缺少具身脆弱性的系统很难拥有第一次意义诞生，缺少自生符号形式的系统很难拥有第二次。当前的大模型，两层都未从自身经历中生成。
+    </p>
+
+    <div class="note note-problem">
+      <div class="note-label">需要克制的地方</div>
+      <p>
+        Bennett 给出的是有力的结构重排，未及终局证明；卡西尔提供的是文化生成学，未及神经机制。两者合在一起时，最该避免的是把它压缩成一句口号。意识的生成条件可能比我们今天理解的更宽，也可能更窄。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- 05 -->
+  <section>
+    <div class="section-num">05</div>
+    <h2>两次造世界</h2>
+    <p class="section-hook">一条从生命到文化的链。</p>
+
+    <p>
+      把 Bennett 和卡西尔放在同一条线上，意识的故事远不止「脑中亮起一块体验屏幕」。它更像两次造世界。
+    </p>
+    <p>
+      第一次，生命把世界造成不对称的。因为可以受伤、可以死，世界才有了方向——某些事变得要紧，某些事可以忽略。这是意义的起点，在一切概念之前就已经发生。
+    </p>
+    <p>
+      第二次，符号把世界造成可共享的。语言让利害可以被说出，神话让恐惧可以被传递，科学让因果可以被检验，艺术让体验可以被重新打开。而这些符号又反向制造新的利害——世界越来越厚，远远溢出了最初的生存坐标。
+    </p>
+    <p>
+      真正值得追问的也许就在这里：为什么有些存在者会先被世界击中，又有能力把被击中的方式写成制度、语言、艺术与文明？意识问题最深的地方，也许恰在意义如何从一次脆弱的触碰开始，一步步长成一个可以居住的世界。
+    </p>
+  </section>
+
+  <div class="takeaway">
+    <div class="thesis-label">结语</div>
+    <p>
+      世界从来没有先摆好，等着我们加上意义。因为会失败、会受伤、会死，世界才先以利害的方式到来；因为会说、会命名、会制作符号，世界又被继续写进语言、神话、艺术与科学。
+    </p>
+    <p>
+      <strong>意义有两次诞生：先在脆弱性里，后在符号里。</strong>这两次之间的链条——生命如何把被世界击中的方式，慢慢写成一个可以居住的世界——才是意识问题最深的地方。
+    </p>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map((a) => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
