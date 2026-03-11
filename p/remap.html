@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="从涡虫再生到 Transformer 与扩散模型，系统会怎样在扰动里重组问题空间，并继续逼近目标。">
+<title>Redrawing the Map</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --ochre: #E8B830;
+    --blue: #5A7A90;
+    --blue-soft: #EAF0F5;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 999;
+    transition: width 80ms linear;
+    pointer-events: none;
+  }
+
+  .container {
+    max-width: var(--content-w);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+
+  header .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    max-width: 560px;
+  }
+
+  header .subtitle {
+    font-size: 1rem;
+    color: var(--text-2);
+    line-height: 1.9;
+    max-width: 610px;
+  }
+
+  header .meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 24px;
+    font-size: 0.75rem;
+    color: var(--text-3);
+    flex-wrap: wrap;
+  }
+
+  .thesis {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+    margin-bottom: 72px;
+  }
+
+  .thesis .thesis-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 14px;
+  }
+
+  .thesis p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+  }
+
+  .thesis strong { color: #E8B830; font-weight: 600; }
+
+  section { margin-bottom: 72px; }
+
+  .section-num {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  section > .section-hook {
+    font-size: 0.85rem;
+    color: var(--text-3);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  a:hover { text-decoration: underline; }
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+  code { font-family: var(--mono); font-size: 0.94em; }
+
+  .sep {
+    height: 1px;
+    background: var(--border);
+    margin: 72px 0;
+    border: none;
+  }
+
+  blockquote {
+    margin: 28px 0;
+    padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.03);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.95rem;
+    line-height: 1.85;
+  }
+
+  blockquote p { margin-bottom: 0; }
+
+  .note {
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin: 24px 0;
+    font-size: 0.88rem;
+    line-height: 1.8;
+    border-left: 3px solid;
+  }
+
+  .note-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .note-insight { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem { background: var(--red-bg); border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    margin: 24px 0;
+    font-size: 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .versus .v-side { padding: 20px 24px; }
+
+  .versus .v-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .versus .v-left { background: var(--green-bg); }
+  .versus .v-left .v-label { color: var(--green); }
+  .versus .v-right { background: var(--red-bg); }
+  .versus .v-right .v-label { color: var(--red); }
+
+  .versus .v-mid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    font-weight: 700;
+    color: var(--text-3);
+    background: var(--bg);
+    font-size: 0.75rem;
+  }
+
+  .causal {
+    margin: 24px 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: cause;
+  }
+
+  .causal li {
+    counter-increment: cause;
+    position: relative;
+    padding: 8px 0 8px 44px;
+    font-size: 0.9rem;
+    line-height: 1.75;
+  }
+
+  .causal li::before {
+    content: counter(cause);
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #1A2540;
+    color: #F5F0EB;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .diagram-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin: 28px 0;
+    overflow-x: auto;
+  }
+
+  .diagram-card svg {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .principle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .principle {
+    padding: 22px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  .principle-tag {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  .principle h3 {
+    font-size: 0.98rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .principle p {
+    font-size: 0.82rem;
+    color: var(--text-2);
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  .takeaway {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+    margin: 72px 0 24px;
+  }
+
+  .takeaway .thesis-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 12px;
+  }
+
+  .takeaway p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+  }
+
+  .takeaway strong {
+    color: #8EC5A0;
+    font-weight: 600;
+  }
+
+  .topbar {
+    position: fixed;
+    top: 2px;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250, 246, 238, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229, 221, 208, 0.6);
+  }
+
+  .topbar a {
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center;
+    padding: 48px 0 64px;
+    font-size: 0.72rem;
+    color: var(--text-3);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  nav.toc {
+    position: fixed;
+    top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    z-index: 50;
+  }
+
+  nav.toc a {
+    display: block;
+    padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  nav.toc a:hover,
+  nav.toc a.active {
+    color: var(--text-1);
+    border-color: var(--text-1);
+  }
+
+  @media (max-width: 1100px) {
+    nav.toc { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .principle-grid { grid-template-columns: 1fr; }
+    .diagram-card { padding: 16px 12px; }
+    blockquote { padding: 16px 20px; }
+  }
+
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+
+<div class="topbar">
+  <a class="home-link" href="/">← pinyu.ai</a>
+</div>
+
+<nav class="toc" id="toc">
+  <a href="#anomaly">一个异常</a>
+  <a href="#frame">先换问题</a>
+  <a href="#biology">生物证据</a>
+  <a href="#ai">AI 映照</a>
+  <a href="#boundary">意义与边界</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Biology × AI</div>
+    <h1>Redrawing the Map</h1>
+    <p class="subtitle">
+      涡虫、蝾螈、Transformer 和扩散模型看上去相距很远，但它们都在逼我们重想同一个问题：系统怎样在扰动里重组问题空间，然后继续逼近目标。
+    </p>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.03</span>
+      <span><a href="https://arxiv.org/html/2601.14096v2" target="_blank" rel="noopener noreferrer">Remapping and Navigation ↗</a></span>
+    </div>
+  </header>
+
+  <section id="anomaly">
+    <div class="section-num">00</div>
+    <h2>一条没有大脑的虫，为什么还能纠错？</h2>
+    <p class="section-hook">涡虫的异常看上去像个猎奇故事，真正被撬动的是我们判断智能的起点</p>
+
+    <p>一条涡虫的头被钡离子毒素毁掉了。按常识，它应该死掉，或者至少卡在原地。可后来它长回了一个新头，新头还带着抗毒能力。</p>
+    <p>更怪的是，这里看不到什么中央指挥者。大量局部细胞各自感知、比较、修正，最后把整体拉回一个新的可行状态。</p>
+    <p>只要把这个例子放在眼前，我们平时那套提问方式就会开始松动。有没有脑，像不像人，是不是神经网络，这些问题一下没那么中心了。更靠近核心的问题变成了：这种纠错能力到底是怎么被组织起来的？</p>
+    <p>顺着这个问题往下走，智能的轮廓会变得很不一样。</p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="frame">
+    <div class="section-num">01</div>
+    <h2>先换问题，再谈智能</h2>
+    <p class="section-hook">找路很好理解，难点在地图怎么画，什么时候又该重画</p>
+
+    <p>可以先把认知想成一种找路能力：系统在某个问题空间里，持续朝目标态逼近。这就是 <code>navigation</code>。</p>
+    <p>这个说法很有用，因为这里的“空间”也可以是形态空间、转录组空间、语言空间，或者任何一个能分出“更接近目标”和“更偏离目标”的结构。</p>
+    <p>可真正麻烦的地方也藏在这里。只要你说“找路”，地图就已经默认摆在那儿了。会学习的系统，常常还得先决定地图该怎么画：哪些差异重要，哪些状态彼此接近，哪些路径还走得通。</p>
+    <p>这就是 <code>remapping</code>。它动的是题目在系统内部的组织方式。答案会跟着变，更关键的是系统怎么看见这道题。</p>
+    <p>所以谈智能时，先看组织方式，再看材料。材料会变，组织反馈、重排表征、持续纠偏的能力，才是更稳的起点。</p>
+
+    <div class="versus">
+      <div class="v-side v-right">
+        <div class="v-label">Navigation</div>
+        <p>问题空间已经给定。系统要做的是在既有结构里逼近目标，像是在一张已知地图上找更好的路径。</p>
+      </div>
+      <div class="v-mid">vs</div>
+      <div class="v-side v-left">
+        <div class="v-label">Remapping</div>
+        <p>问题空间本身也是变量。系统会在新经验到来时，重写哪些差异重要、哪些状态彼此更近、哪些路径真正可走。</p>
+      </div>
+    </div>
+
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Navigation keeps the map fixed, remapping changes the map itself" style="width:100%;max-width:680px;">
+        <defs>
+          <marker id="nav-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <polygon points="0 0, 7 3.5, 0 7" fill="#1B3F8B"/>
+          </marker>
+          <marker id="remap-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <polygon points="0 0, 7 3.5, 0 7" fill="#E8432A"/>
+          </marker>
+        </defs>
+
+        <rect x="24" y="24" width="292" height="272" rx="18" fill="#F7F2E9" stroke="#E5DDD0"/>
+        <rect x="364" y="24" width="292" height="272" rx="18" fill="#F7F2E9" stroke="#E5DDD0"/>
+
+        <text x="52" y="56" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="700" fill="#1B3F8B">Navigation</text>
+        <text x="392" y="56" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="700" fill="#E8432A">Remapping</text>
+        <text x="52" y="76" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#776E62">地图已知，重点是找路径</text>
+        <text x="392" y="76" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#776E62">地图本身在更新，重点是改结构</text>
+
+        <g stroke="#CFC4B3" stroke-width="1.2">
+          <line x1="70" y1="105" x2="270" y2="105"/>
+          <line x1="70" y1="155" x2="270" y2="155"/>
+          <line x1="70" y1="205" x2="270" y2="205"/>
+          <line x1="120" y1="90" x2="120" y2="235"/>
+          <line x1="190" y1="90" x2="190" y2="235"/>
+        </g>
+
+        <g fill="#1B3F8B">
+          <circle cx="85" cy="205" r="8"/>
+          <circle cx="190" cy="155" r="8"/>
+          <circle cx="255" cy="105" r="8"/>
+        </g>
+        <path d="M92 199 C128 189 150 174 183 161 C210 149 227 132 248 111" fill="none" stroke="#1B3F8B" stroke-width="3" stroke-dasharray="6 6" marker-end="url(#nav-arrow)"/>
+        <text x="76" y="226" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#776E62">起点</text>
+        <text x="242" y="95" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#776E62">目标</text>
+
+        <g stroke="#D9CCBC" stroke-width="1.2" fill="none" opacity="0.55">
+          <line x1="406" y1="112" x2="468" y2="96"/>
+          <line x1="468" y1="96" x2="556" y2="118"/>
+          <line x1="406" y1="112" x2="432" y2="194"/>
+          <line x1="468" y1="96" x2="500" y2="188"/>
+          <line x1="556" y1="118" x2="572" y2="208"/>
+          <line x1="432" y1="194" x2="500" y2="188"/>
+          <line x1="500" y1="188" x2="572" y2="208"/>
+        </g>
+
+        <g stroke="#E8432A" stroke-width="2.3" fill="none">
+          <line x1="398" y1="128" x2="490" y2="88"/>
+          <line x1="490" y1="88" x2="590" y2="140"/>
+          <line x1="398" y1="128" x2="450" y2="222"/>
+          <line x1="490" y1="88" x2="524" y2="200"/>
+          <line x1="590" y1="140" x2="556" y2="228"/>
+          <line x1="450" y1="222" x2="524" y2="200"/>
+          <line x1="524" y1="200" x2="556" y2="228"/>
+        </g>
+
+        <g fill="#E8432A">
+          <circle cx="398" cy="128" r="8"/>
+          <circle cx="490" cy="88" r="8"/>
+          <circle cx="590" cy="140" r="8"/>
+          <circle cx="450" cy="222" r="8"/>
+          <circle cx="524" cy="200" r="8"/>
+          <circle cx="556" cy="228" r="8"/>
+        </g>
+
+        <path d="M406 133 C430 156 462 175 516 195" fill="none" stroke="#E8432A" stroke-width="3" stroke-dasharray="6 6" marker-end="url(#remap-arrow)"/>
+        <text x="450" y="264" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#776E62">what matters?</text>
+        <text x="520" y="104" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#776E62">what is close?</text>
+        <text x="560" y="164" font-family="Inter,-apple-system,sans-serif" font-size="10" fill="#776E62">what is reachable?</text>
+      </svg>
+    </div>
+    <p>真正拉开差距的时刻，经常发生在地图开始变化的时候。</p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="biology">
+    <div class="section-num">02</div>
+    <h2>为什么生物是这套框架最强的证据</h2>
+    <p class="section-hook">再生、可塑性和物理约束，把“改地图”这件事讲得非常具体</p>
+
+    <p>涡虫只是开头。蝾螈能从不同截断面再生出完整肢体，被打乱面部结构的蝌蚪，最后也能长回接近正常的蛙脸。</p>
+    <p>这些例子放在一起，会出现同一个画面：系统一直在比较“现在”和“目标”之间的差距，然后靠许多局部更新把整体往回拉。</p>
+    <p>这样看，基因更像一组偏好、边界和可行域。方向大致在那里，具体怎么长、怎么修、怎么恢复，要在反馈里现场算出来。身体更像是在纠错里长出来的。</p>
+    <p>地图重画也会发生在发育和再生之外。盲人的视觉皮层会开始处理听觉信息，脑机接口会让运动皮层学会控制外部机械臂。任务和约束一变，内部地图也会跟着变。</p>
+    <p>还有一层很关键。生命并不需要先穷尽那个几乎不可算完的生化空间，它只要把过程放进三维物理世界。空间邻近、扩散限制、蛋白折叠这些约束，会先替系统删掉大量错误选项。</p>
+    <p>所以生物给出的启发很直接：能持续纠错的系统，往往也有办法把局部更新拼成整体。</p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="ai">
+    <div class="section-num">03</div>
+    <h2>AI 为什么也开始像这样工作</h2>
+    <p class="section-hook">材料完全不同，动作却开始出现相似的骨架</p>
+
+    <p>如果细胞和组织已经展示了这种能力，AI 值得放在一起看，原因也就清楚了：它正在另一套材料里做出相似的动作。</p>
+    <p><strong>Transformer。</strong> 同一段输入换了上下文，token 之间的关系就会被重新排列。地图会跟着语境一起变化。<code>self-attention</code> 和现代 <code>Hopfield</code> 联想记忆之间的数学等价，又给这种直觉补上了一层支撑：这里还牵涉模式检索和误差修正，词序预测更像最表层的结果。</p>
+    <p><strong>Diffusion。</strong> 这个过程更直观。模型从噪声出发，一步步去噪、纠偏，最后逼近清晰结构。整个过程很像连续修形。</p>
+    <p><strong>Neural Cellular Automata。</strong> 很多只看局部邻域的单元，靠局部更新长出整体结构，受损后还能继续修复。它更像一块会组织自己的材料。</p>
+    <p>把这些现象放在一起看，最有价值的是：重排表征、局部纠偏、逐步逼近结构，这套操作骨架正在不同材料里反复出现。</p>
+    <p>顺着这个方向继续往前走，下一代更强的 AI，未必主要体现在答案更快、参数更大。真正拉开差距的，也许是它能不能长期维护内部世界，能不能在扰动里修复关键表征，能不能让多个局部模块一起协同。</p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="boundary">
+    <div class="section-num">04</div>
+    <h2>这张地图能带我们走多远</h2>
+    <p class="section-hook">它改变了我们看智能的方式，也留下了几条不能跳过的边界</p>
+
+    <p>如果顺着这条线继续看，评估智能的方式会变得很不一样。比起反复追问“有没有脑”“像不像人”“是不是神经网络”，更值得问的是：这个系统能不能构造一个内部问题空间？环境变了以后，它会不会重组表征，还能不能继续纠错？</p>
+    <p>但这张地图还远没有画完。有几条边界最好先记住。</p>
+
+    <ol class="causal">
+      <li><strong>目标从哪里来？</strong> 误差最小化总要相对于某个目标态。但谁规定了什么才算“正确形态”，什么才算“值得修正的偏差”？</li>
+      <li><strong>框架会不会过宽？</strong> 如果任何复杂反馈系统都能被装进“导航 + 重映射 + 纠错”，那“认知”最后很可能会失去区分力。</li>
+      <li><strong>相似还不能直接等于同一种机制。</strong> 涡虫再生、扩散模型、<code>Transformer</code> 可以共享一个比较框架，但这还不够支撑“它们本来就是同一件事”。</li>
+    </ol>
+
+    <p>把它当成一张新坐标来用，会比把它当成总理论更稳妥。它能帮我们换问题，也能提醒我们别把类比走得太快。</p>
+  </section>
+
+  <div class="takeaway">
+    <div class="thesis-label">Takeaway</div>
+    <p>
+      也许智能最深的一层，是把混乱重新整理成自己还能继续行动的形状。<br><br>
+      <strong>更强的系统，往往会一边找路，一边重画地图。</strong>
+    </p>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', function() {
+  var h = document.documentElement;
+  var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+var toc = document.getElementById('toc');
+if (toc) {
+  var links = Array.from(toc.querySelectorAll('a'));
+  var targets = links.map(function(a) {
+    return document.querySelector(a.getAttribute('href'));
+  }).filter(Boolean);
+
+  var update = function() {
+    var current = '';
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].getBoundingClientRect().top <= 140) current = targets[i].id;
+    }
+    links.forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
