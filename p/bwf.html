@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="用 Midjourney 做品牌图，真正拉开差距的，在于把风格一致性做成一套可复用的工作流。">
+<title>Prompts Don't Build Brands</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --ochre: #E8B830;
+    --blue: #5A7A90;
+    --blue-soft: #EAF0F5;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 999;
+    transition: width 80ms linear;
+    pointer-events: none;
+  }
+
+  .container {
+    max-width: var(--content-w);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .wide { max-width: var(--wide-w); }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+
+  header .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    max-width: 580px;
+  }
+
+  header .subtitle {
+    font-size: 1rem;
+    color: var(--text-2);
+    line-height: 1.9;
+    max-width: 610px;
+  }
+
+  header .meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 24px;
+    font-size: 0.75rem;
+    color: var(--text-3);
+    flex-wrap: wrap;
+  }
+
+  .thesis {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+    margin-bottom: 72px;
+  }
+
+  .thesis .thesis-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 14px;
+  }
+
+  .thesis p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+  }
+
+  .thesis strong { color: #E8B830; font-weight: 600; }
+
+  .thesis .evidence {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem;
+    opacity: 0.72;
+    line-height: 1.7;
+  }
+
+  section { margin-bottom: 72px; }
+
+  .section-num {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  section > .section-hook {
+    font-size: 0.85rem;
+    color: var(--text-3);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  h3 {
+    font-size: 1.08rem;
+    font-weight: 600;
+    margin: 38px 0 12px;
+    letter-spacing: -0.01em;
+  }
+
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.84em;
+    background: #EDE8E0;
+    padding: 2px 7px;
+    border-radius: 5px;
+  }
+
+  .sep {
+    height: 1px;
+    background: var(--border);
+    margin: 72px 0;
+    border: none;
+  }
+
+  blockquote {
+    margin: 28px 0;
+    padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.03);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.95rem;
+    line-height: 1.85;
+  }
+
+  blockquote p { margin-bottom: 0; }
+
+  .quote-attr {
+    margin-top: 10px;
+    font-size: 0.72rem;
+    color: var(--text-3);
+  }
+
+  .note {
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin: 24px 0;
+    font-size: 0.88rem;
+    line-height: 1.8;
+    border-left: 3px solid;
+  }
+
+  .note-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .note-insight { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem { background: var(--red-bg); border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .versus {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    margin: 24px 0;
+    font-size: 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .versus .v-side { padding: 20px 24px; }
+
+  .versus .v-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .versus .v-left { background: var(--red-bg); }
+  .versus .v-left .v-label { color: var(--red); }
+  .versus .v-right { background: var(--green-bg); }
+  .versus .v-right .v-label { color: var(--green); }
+
+  .versus .v-mid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    font-weight: 700;
+    color: var(--text-3);
+    background: var(--bg);
+    font-size: 0.75rem;
+  }
+
+  .system-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin: 28px 0;
+    font-size: 0.8rem;
+  }
+
+  .flow-node {
+    padding: 11px 16px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    white-space: nowrap;
+  }
+
+  .flow-node:first-child { border-radius: 8px 0 0 8px; }
+  .flow-node:last-child { border-radius: 0 8px 8px 0; }
+  .flow-node + .flow-node { border-left: none; }
+  .flow-node.flow-accent { background: var(--amber-bg); border-color: #DCC9A8; font-weight: 600; }
+  .flow-node.flow-output { background: var(--green-bg); border-color: #B8D4C0; font-weight: 600; }
+  .flow-node.flow-tool { background: var(--blue-soft); border-color: #D3DFE7; }
+
+  .principle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .principle {
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .principle:hover { border-color: #D0C8BD; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+
+  .principle-tag {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  .principle h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .principle p {
+    font-size: 0.82rem;
+    color: var(--text-2);
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  .causal {
+    margin: 24px 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: cause;
+  }
+
+  .causal li {
+    counter-increment: cause;
+    position: relative;
+    padding: 8px 0 8px 44px;
+    font-size: 0.9rem;
+    line-height: 1.75;
+  }
+
+  .causal li::before {
+    content: counter(cause);
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #1A2540;
+    color: #F5F0EB;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .takeaway {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+    margin: 72px 0 48px;
+  }
+
+  .takeaway .thesis-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 12px;
+  }
+
+  .takeaway p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+  }
+
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .topbar {
+    position: fixed;
+    top: 2px;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,246,238,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229,221,208,0.6);
+  }
+
+  .topbar a {
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center;
+    padding: 48px 0 64px;
+    font-size: 0.72rem;
+    color: var(--text-3);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .principle-grid { grid-template-columns: 1fr; }
+    .system-flow { font-size: 0.76rem; }
+    .flow-node {
+      border-left: 1px solid var(--border);
+      margin-top: -1px;
+      border-radius: 0;
+    }
+    .flow-node + .flow-node {
+      border-left: 1px solid var(--border);
+    }
+    .flow-node:first-child,
+    .flow-node:last-child {
+      border-radius: 0;
+    }
+  }
+
+  nav.toc {
+    position: fixed;
+    top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    z-index: 50;
+  }
+
+  @media (max-width: 1100px) { nav.toc { display: none; } }
+
+  nav.toc a {
+    display: block;
+    padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  nav.toc a:hover,
+  nav.toc a.active {
+    color: var(--text-1);
+    border-color: var(--text-1);
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← pinyu.ai</a>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">核心判断</a>
+  <a href="#mood-board">Mood Board</a>
+  <a href="#srf">Style Reference</a>
+  <a href="#personalization">Personalization</a>
+  <a href="#shortcuts">捷径词</a>
+  <a href="#brand-code">Brand Code</a>
+  <a href="#retouch">AI 修图</a>
+  <a href="#stuck">卡住时</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Midjourney × Brand Systems</div>
+    <h1>Prompts Don't Build Brands</h1>
+    <p class="subtitle">
+      用 Midjourney 做品牌图，真正拉开差距的，在于能不能把风格一致性沉淀成一套可复用的流程。
+    </p>
+    <div class="meta">
+      <span><a href="https://x.com/clairevo/status/2031073881457569861" target="_blank" rel="noopener noreferrer">基于 How I AI Podcast 对 Jamie Ganon 的访谈整理 · 2026.03</a></span>
+    </div>
+  </header>
+
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">核心判断</div>
+    <p>
+      用 Midjourney 做品牌图，最常卡住的其实都是同一个问题：<strong>偶尔能出一张好图，却凑不出一整套风格统一的视觉系统</strong>。<br>
+      单张图再好看，也还不是品牌。真正的品牌，是一百张图放在一起，别人仍然一眼认得出“这是你”。
+    </p>
+    <div class="evidence">
+      Jamie Ganon 的判断很直接：一致性靠流程，不靠手感。她交付给客户的，也早已从单张作品升级为一套能持续生成同风格素材的系统。
+    </div>
+  </div>
+
+  <section id="mood-board">
+    <div class="section-num">01</div>
+    <h2>先用图说话，再用字说话</h2>
+    <p class="section-hook">品牌视觉的起点，在视觉语言本身</p>
+
+    <p>
+      一上来就写 prompt，几乎是所有人的本能反应。但 Midjourney 首先是一个视觉模型：你给它看的东西，往往比你写给它的东西更有力量。
+    </p>
+    <p>
+      所以第一步别急着打字，先去 Pinterest 或 Cosmos 做一个 mood board，把你想要的“感觉”拼出来。每张图不必精准对应最终成品，关键是它们放在一起之后，能不能形成一种稳定的视觉语言。
+    </p>
+
+    <div class="system-flow">
+      <div class="flow-node flow-tool">Pinterest / Cosmos</div>
+      <div class="flow-node">mood board</div>
+      <div class="flow-node flow-accent">视觉语言</div>
+      <div class="flow-node flow-output">品牌方向</div>
+    </div>
+
+    <blockquote>
+      <p>一张图对 LLM 来说，字面意义上等于一千个词。</p>
+      <div class="quote-attr">Claire · How I AI</div>
+    </blockquote>
+
+    <p>
+      你可能没有足够的设计词汇，去精确描述自己想要的风格。但没关系。你只需要能指着一张图说：“对，就是这个感觉。”
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">关键判断</div>
+      mood board 就是你的视觉词汇表。不会说，不代表不会选。对 Midjourney 来说，会选往往比会写更重要。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="srf">
+    <div class="section-num">02</div>
+    <h2>把 mood board 变成 Style Reference</h2>
+    <p class="section-hook">真正有效的控制，往往来自先删掉干扰源</p>
+
+    <p>
+      mood board 可以直接喂给 Midjourney，但它有个问题：如果参考图之间差异太大，模型往往会去“取平均值”。最后出来的结果，既不像 A，也不像 B，只剩下一种模糊的中间态。
+    </p>
+    <p>
+      Jamie 的经验是，把同一组图改成 Style Reference 的喂法，结果通常会更稳定。SRF 让 Midjourney 去抓的是整体风格，包括色调、对比度、质感、镜头感，以及那种你很难用文字说清的氛围，而不只是某个具体构图。
+    </p>
+    <p>
+      更重要的是，SRF 让“减法”真正变得可操作。比如参考图里有绿色眼影，输出就开始整体偏绿；参考图里有人吹泡泡糖，模型就会不断模仿那个局部元素。Jamie 的做法很直接：删掉那张图，或者把泡泡糖那一块裁掉，再重新拖回参考区。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">低效做法</div>
+        在 prompt 里不断补 <code>--no green</code>、<code>--no bubble gum</code>，试图用文字去压住一个过强的视觉信号。
+      </div>
+      <div class="v-mid">vs</div>
+      <div class="v-side v-right">
+        <div class="v-label">高效做法</div>
+        直接删图、裁图、替换参考图，从源头移除那个过强的元素，让模型没有机会继续误读。
+      </div>
+    </div>
+
+    <div class="note note-ok">
+      <div class="note-label">原则</div>
+      当某个视觉元素太强势时，与其用文字去压它，不如直接把它从参考系统里拿掉。先清理源头，通常比和 prompt 对抗更快。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="personalization">
+    <div class="section-num">03</div>
+    <h2>用 Personalization Code 注入“你自己的味道”</h2>
+    <p class="section-hook">风格方向确定后，把个人偏好变成可调用的代码</p>
+
+    <p>
+      走到这一步，你已经有了品牌方向，但还不一定有“这是你的”那层识别度。Midjourney 的 Personalization Code，就是用来补上这一层的。
+    </p>
+    <p>
+      方法很简单：系统持续给你看图，你不断点选喜欢的、跳过不喜欢的。做完之后，它会生成一个风格代码，之后你可以在不同任务里反复调用。
+    </p>
+    <p>
+      Jamie 在做自己的评分时，会刻意偏向那些更现代、更像 iPhone 质感、更高清、也更当代的图。加上这个代码之后，原本“还差一口气”的结果，整体观感会从“AI 生成得还不错”变成“看起来像真实拍摄的品牌素材”。
+    </p>
+
+    <div class="system-flow">
+      <div class="flow-node">大量评分</div>
+      <div class="flow-node flow-accent">Personalization Code</div>
+      <div class="flow-node">跨项目调用</div>
+      <div class="flow-node flow-output">稳定偏好沉淀</div>
+    </div>
+
+    <div class="note note-problem">
+      <div class="note-label">风险</div>
+      Personalization Code 也会带来“风格渗透”。如果你在评分时点了太多文艺复兴风格的图，即便你喜欢的只是它们的色彩，生成结果也可能开始往油画方向跑。
+    </div>
+
+    <p>
+      所以评分时要清楚自己到底在选什么、为什么选。否则训练出来的，可能只是被系统放大的偏差。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="shortcuts">
+    <div class="section-num">04</div>
+    <h2>用捷径词代替长 prompt</h2>
+    <p class="section-hook">最强的 prompt，往往更像人类世界里现成的风格标签</p>
+
+    <p>
+      到了真正写 prompt 的阶段，Jamie 的原则反而是：越短越好。因为很多视觉信息，其实早就被文化语境提前压缩好了。
+    </p>
+
+    <div class="principle-grid">
+      <div class="principle">
+        <div class="principle-tag">Publication</div>
+        <h4>杂志名是风格快捷键</h4>
+        <p>
+          写 <code>Daze editorial photo shoot</code>，高对比、粗粝、街头感这些你可能要用十几个形容词才说得清的东西，一个杂志名就已经打包好了。<code>Vogue</code> 也是一样。
+        </p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">Camera</div>
+        <h4>相机型号是质感快捷键</h4>
+        <p>
+          你不需要记住 aperture 和 ISO。想要 90 年代数码感、胶片感、消费级闪光灯感，直接调用对应的相机型号，通常比堆一串形容词更稳定。
+        </p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">Scene Compression</div>
+        <h4>一个形容词，压缩整段场景设定</h4>
+        <p>
+          Jamie 想要“一只鹿站在纽约高层公寓里”，但不想写一大段场景说明，于是只用了一个词：<code>luxury</code>。训练数据已经替模型把高层、大窗、城市天际线这些元素打包好了。
+        </p>
+      </div>
+      <div class="principle">
+        <div class="principle-tag">Prompt Economy</div>
+        <h4>好的 prompt 往往越写越短</h4>
+        <p>
+          真正有效的 prompt 往往更短，因为它依靠最精炼的人类语言，去唤起完整的视觉先验。长 prompt 往往是在弥补前面没搭好的系统。
+        </p>
+      </div>
+    </div>
+
+    <div class="note note-insight">
+      <div class="note-label">反直觉结论</div>
+      如果你已经有了足够好的视觉参考，prompt 更像是在用最短的词，把模型推到正确的先验上；它不需要替你把整个世界描述清楚。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="brand-code">
+    <div class="section-num">05</div>
+    <h2>最终交付的是 Brand Code，不只是一组图片</h2>
+    <p class="section-hook">把成功结果重新打包，交付一套可复用的配方</p>
+
+    <p>
+      这一步是整个流程里最容易被忽略的，也是 Jamie 认为最有价值的部分。生成出一批满意结果之后，她会反过来用这些最终成品再做一个新的 mood board，然后把这个 mood board、对应的 SRF、Personalization Code，以及最终的 prompt 结构，一起整理到 Figma 里交付给客户。
+    </p>
+
+    <div class="system-flow">
+      <div class="flow-node">最佳成品</div>
+      <div class="flow-node">新 mood board</div>
+      <div class="flow-node">SRF + Code</div>
+      <div class="flow-node">Prompt Skeleton</div>
+      <div class="flow-node flow-output">Figma Handoff</div>
+    </div>
+
+    <p>
+      这意味着客户拿到的，已经从一组能发的图升级成一套知道该如何继续生成的“品牌代码”。以后无论要做新品图、社媒图还是活动图，团队都不必每次从零碰运气，可以沿着同一套视觉系统继续扩展。
+    </p>
+
+    <div class="versus">
+      <div class="v-side v-left">
+        <div class="v-label">旧交付</div>
+        交一批图，用完再买下一批。价值主要来自反复执行，客户没法延续这套系统。
+      </div>
+      <div class="v-mid">vs</div>
+      <div class="v-side v-right">
+        <div class="v-label">新交付</div>
+        交一套可复用的品牌配方。客户可以继续生成，而创作者则把精力放到更高价值的“定义风格”上。
+      </div>
+    </div>
+
+    <div class="note note-ok">
+      <div class="note-label">真正升级的地方</div>
+      这会把你的价值，从“重复执行”提升到“定义视觉空间”。你交出去的是钥匙，不是一次性的成品。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="retouch">
+    <div class="section-num">06</div>
+    <h2>把 Nano Banana 当成 AI 版 Photoshop</h2>
+    <p class="section-hook">生成负责大方向，精修负责最后一口气</p>
+
+    <p>
+      Midjourney 生成得再好，最后也可能卡在细节上：多一根手指、电脑太旧、质感不够现代、分辨率不够高。Jamie 的做法，是把这类问题转去 Flora 或 Nano Banana 做精修，而不是继续扔回 Midjourney。
+    </p>
+    <p>
+      在她看来，Nano Banana 就像 Photoshop，只不过是用语言代替鼠标。
+    </p>
+
+    <blockquote>
+      <p>Replace the computer she's typing on with a 2026 Midnight Black MacBook Pro. Keep the position and the size of the computer exactly the same. Only the left side and the keyboard is visible.</p>
+    </blockquote>
+
+    <p>
+      这类修改不靠漂亮的 prompt，靠的是把编辑目标说得足够具体：改什么、不改什么、位置保持不变、可见区域要限定。对推理型编辑模型来说，这种“用语言做局部修图”的方式，通常比重新生成高效得多。
+    </p>
+
+    <div class="note note-neutral">
+      <div class="note-label">额外收益</div>
+      Jamie 还提到，Nano Banana 往往会顺手把图片从 800 × 800 拉到 4000 × 4000。一次编辑，同时完成局部修正和画质升级。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="stuck">
+    <div class="section-num">07</div>
+    <h2>卡住时，先走开，然后残酷地诚实</h2>
+    <p class="section-hook">不要把所有失败都归咎于 prompt</p>
+
+    <p>
+      Jamie 被问到“当 AI 总是给不出想要的结果怎么办”时，回答很简单：“先走开。”盯太久，眼睛会失准，很容易被自己刚生成出来的东西骗住。
+    </p>
+    <p>
+      回来之后，先别急着继续撞，先做诊断：到底是哪一层出了问题。是 SRF 里某张图太强势？是 mood board 风格太散？还是 prompt 塞了太多彼此冲突的要求？问题不同，就该回到不同层去修。
+    </p>
+
+    <ol class="causal">
+      <li><strong>先看参考图</strong>：有没有某张图在“绑架”整个输出？如果有，就删掉、裁掉，或者直接换掉。</li>
+      <li><strong>再看 mood board</strong>：整体方向是不是太散？如果视觉语言本身都不统一，后面所有控制都只是在把混乱放大。</li>
+      <li><strong>最后看 prompt</strong>：是不是写得太满、太长、太贪心？大多数时候，砍掉大半形容词，比再加一层修饰更有效。</li>
+      <li><strong>用品牌视角判断</strong>：别问“这张图单独看好不好”，要问“把它放回整个品牌组合里，它像不像从同一个系统里长出来的”。</li>
+    </ol>
+
+    <div class="note note-problem">
+      <div class="note-label">最重要的心态</div>
+      对自己的生成结果要足够残酷地诚实。流程能解决“风格统一”，却解决不了“审美品位”。如果你的输入本身没有方向感，工具只会把这种混乱进一步放大。
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="takeaway-section">
+    <div class="section-num">综合</div>
+    <h2>这套方法真正解决了什么</h2>
+    <p class="section-hook">重点不在出图更快，而在一致性可控</p>
+
+    <ol class="causal">
+      <li><strong>用 mood board 建立视觉语言</strong>，而不是一开始就写 prompt。</li>
+      <li><strong>用 Style Reference 注入风格</strong>，再用减法去掉干扰元素。</li>
+      <li><strong>用 Personalization Code 写入审美偏好</strong>，把“你喜欢什么”从临场手感变成可反复调用的系统参数。</li>
+      <li><strong>用杂志名、相机型号和高压缩词代替长 prompt</strong>，让模型直接落到正确的文化先验上。</li>
+      <li><strong>把成功结果重新打包成品牌代码</strong>，把交付从“一批图”升级成“一套配方”。</li>
+    </ol>
+  </section>
+
+  <div class="takeaway">
+    <div class="thesis-label">结论</div>
+    <p>
+      这套工作流最强的地方，在于它把<strong>一致性变成了一件可操作、可诊断、可复用的事</strong>。但它也有明确边界：流程只能放大你的方向，不能替你建立品位。真正的第零步，仍然是大量地看、存、比、练，先把自己的眼睛练准。
+    </p>
+  </div>
+
+  <footer>
+    内容整理自 How I AI Podcast，嘉宾 Jamie Ganon，主持 Claire。
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+const toc = document.getElementById('toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a')];
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const update = () => {
+    let current = '';
+    for (const t of targets) {
+      if (t.getBoundingClientRect().top <= 140) current = t.id;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
