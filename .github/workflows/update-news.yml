@@ -1,0 +1,37 @@
+name: Update News
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-news
+  cancel-in-progress: false
+
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Rebuild news feed
+        run: node scripts/update-news.mjs
+        env:
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+
+      - name: Commit updated feed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: update news feed
+          file_pattern: data/news

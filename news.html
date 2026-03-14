@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A compact external feed of recurring high-signal finds.">
+<title>News - pinyu.ai</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --vert: #2D8B47;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: max(72px, 10vh) 24px 96px;
+    width: 100%;
+    flex: 1;
+    animation: enter 0.5s ease both;
+  }
+
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(6px); }
+  }
+
+  .nav {
+    margin-bottom: 36px;
+  }
+
+  .nav a {
+    font-size: 0.72rem;
+    color: var(--text-3);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.15s;
+  }
+
+  .nav a:hover {
+    color: var(--text-1);
+  }
+
+  .hero {
+    margin-bottom: 24px;
+  }
+
+  .hero-main {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .page-title {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    margin-bottom: 0;
+  }
+
+  .hero-main::after {
+    content: '';
+    display: block;
+    width: 88px;
+    height: 7px;
+    margin-top: 18px;
+    background:
+      linear-gradient(var(--accent), var(--accent)) 0 0 / 48px 100% no-repeat,
+      linear-gradient(var(--vert), var(--vert)) 54px 0 / 22px 100% no-repeat,
+      linear-gradient(var(--vermillion), var(--vermillion)) 80px 0 / 8px 100% no-repeat;
+  }
+
+  .notice {
+    margin-top: 14px;
+    padding: 10px 12px;
+    background: rgba(27, 63, 139, 0.05);
+    border: 1px solid rgba(27, 63, 139, 0.15);
+    color: var(--text-2);
+    font-size: 0.73rem;
+  }
+
+  .feed {
+    list-style: none;
+    margin-top: 10px;
+  }
+
+  .feed-item {
+    border-top: 1px solid var(--border);
+    animation: enter 0.35s ease both;
+  }
+
+  .feed-item:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .feed-card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    margin: 0 -10px;
+    padding: 14px 10px 16px;
+    border-radius: 10px;
+    transition: background-color 0.18s ease, transform 0.18s ease;
+  }
+
+  .feed-card:hover {
+    background: rgba(27, 63, 139, 0.04);
+  }
+
+  .feed-card:hover .feed-title,
+  .feed-card:hover .feed-link {
+    color: var(--accent);
+  }
+
+  .feed-topline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 7px;
+  }
+
+  .source-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
+    border-radius: 999px;
+    border: 1px solid rgba(27, 63, 139, 0.18);
+    background: rgba(27, 63, 139, 0.06);
+    color: var(--accent);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.035em;
+    text-transform: uppercase;
+    line-height: 1.35;
+  }
+
+  .source-pill.source-artist {
+    border-color: rgba(45, 139, 71, 0.16);
+    background: rgba(45, 139, 71, 0.06);
+    color: var(--vert);
+  }
+
+  .source-pill.source-general {
+    border-color: rgba(27, 63, 139, 0.18);
+    background: rgba(27, 63, 139, 0.06);
+    color: var(--accent);
+  }
+
+  .feed-time {
+    font-size: 0.62rem;
+    color: var(--text-3);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .feed-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.66rem;
+    color: var(--text-3);
+    margin-top: 5px;
+    margin-bottom: 0;
+  }
+
+  .feed-title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.32;
+    letter-spacing: 0.005em;
+  }
+
+  .feed-item:first-child .feed-title {
+    font-size: 1.06rem;
+  }
+
+  .feed-card:focus-visible,
+  .pagination a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .feed-blurb {
+    margin-top: 6px;
+    width: 100%;
+    font-size: 0.72rem;
+    color: var(--text-2);
+    line-height: 1.62;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .feed-link {
+    display: inline-block;
+    margin-top: 7px;
+    font-size: 0.66rem;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .empty-state {
+    padding: 36px 0;
+    color: var(--text-2);
+    font-size: 0.77rem;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 20px;
+    padding-top: 4px;
+  }
+
+  .pagination a,
+  .pagination span {
+    font-size: 0.72rem;
+    color: var(--text-3);
+    text-decoration: none;
+  }
+
+  .pagination a:hover {
+    color: var(--accent);
+  }
+
+  .pagination .disabled {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  .page-chip {
+    min-width: 88px;
+    text-align: center;
+  }
+
+  footer {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+    width: 100%;
+    font-size: 0.7rem;
+    color: var(--text-3);
+  }
+
+  footer a {
+    color: var(--text-3);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.15s;
+  }
+
+  footer a:hover {
+    color: var(--text-1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page, .feed-item { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="nav">
+    <a href="/">← pinyu.ai</a>
+  </div>
+
+  <header class="hero">
+    <div class="hero-main">
+      <h1 class="page-title">News</h1>
+    </div>
+  </header>
+
+  <div class="notice" id="notice" hidden></div>
+
+  <ol class="feed" id="feed"></ol>
+  <div class="empty-state" id="empty-state" hidden>No items yet. Add `XAI_API_KEY` to the GitHub Actions secrets and run the workflow to populate this feed.</div>
+
+  <nav class="pagination" id="pagination" hidden>
+    <span id="prev-slot"></span>
+    <span class="page-chip" id="page-chip"></span>
+    <span id="next-slot"></span>
+  </nav>
+</div>
+
+<footer>
+  <a href="mailto:pinyu@fastmail.com">Contact</a>
+</footer>
+
+<noscript>
+  <div style="max-width:620px;margin:0 auto;padding:0 24px 48px;color:#5C5349;font-size:0.75rem;">
+    This page needs JavaScript to load the feed.
+  </div>
+</noscript>
+
+<script>
+  const INDEX_URL = "data/news/index.json";
+  const PAGE_PREFIX = "data/news/pages/";
+
+  const noticeEl = document.getElementById("notice");
+  const feedEl = document.getElementById("feed");
+  const emptyStateEl = document.getElementById("empty-state");
+  const paginationEl = document.getElementById("pagination");
+  const pageChipEl = document.getElementById("page-chip");
+  const prevSlotEl = document.getElementById("prev-slot");
+  const nextSlotEl = document.getElementById("next-slot");
+
+  loadFeed().catch((error) => {
+    showNotice(`Failed to load the feed: ${error.message}`);
+    emptyStateEl.hidden = false;
+    emptyStateEl.textContent = "Try again later. The last build may still be running.";
+  });
+
+  async function loadFeed() {
+    const indexData = await fetchJson(INDEX_URL);
+    const totalPages = normalizePositiveNumber(indexData.total_pages, 1);
+    const requestedPage = getRequestedPage();
+    const currentPage = clamp(requestedPage, 1, totalPages);
+
+    if (requestedPage !== currentPage) {
+      replacePageQuery(currentPage);
+    }
+
+    const pageData = await fetchJson(`${PAGE_PREFIX}${currentPage}.json`);
+    renderFeed(indexData, pageData);
+  }
+
+  async function fetchJson(url) {
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`${response.status} ${response.statusText}`);
+    }
+    return response.json();
+  }
+
+  function renderFeed(indexData, pageData) {
+    const items = Array.isArray(pageData.items) ? pageData.items : [];
+    const currentPage = normalizePositiveNumber(pageData.current_page, 1);
+    const totalPages = normalizePositiveNumber(pageData.total_pages || indexData.total_pages, 1);
+
+    pageChipEl.textContent = `${currentPage} / ${totalPages}`;
+
+    if (!items.length) {
+      emptyStateEl.hidden = false;
+      feedEl.innerHTML = "";
+    } else {
+      emptyStateEl.hidden = true;
+      feedEl.innerHTML = items.map(renderItem).join("");
+    }
+
+    renderPagination(currentPage, totalPages);
+    renderNotice(indexData);
+  }
+
+  function renderItem(item) {
+    const sourceClass = item.source_type === "artist"
+      ? "source-pill source-artist"
+      : "source-pill source-general";
+    const metaParts = [
+      item.platform,
+      item.author,
+    ].filter(Boolean);
+
+    return `
+      <li class="feed-item">
+        <a class="feed-card" href="${escapeAttribute(item.link)}" target="_blank" rel="noopener noreferrer">
+          <div class="feed-topline">
+            <span class="${sourceClass}">${escapeHtml(item.source_name || "Source")}</span>
+            ${item.published_at ? `<span class="feed-time">${escapeHtml(formatTime(item.published_at))} HKT</span>` : ""}
+          </div>
+          <h2 class="feed-title">
+            ${escapeHtml(item.title || "Untitled")}
+          </h2>
+          ${metaParts.length ? `<div class="feed-meta">${metaParts.map(escapeHtml).join(" · ")}</div>` : ""}
+          ${item.blurb ? `<p class="feed-blurb">${escapeHtml(item.blurb)}</p>` : ""}
+          <span class="feed-link">Open link →</span>
+        </a>
+      </li>
+    `;
+  }
+
+  function renderPagination(currentPage, totalPages) {
+    if (totalPages <= 1) {
+      paginationEl.hidden = true;
+      return;
+    }
+
+    paginationEl.hidden = false;
+    prevSlotEl.innerHTML = currentPage > 1
+      ? `<a href="${pageHref(currentPage - 1)}">← Newer</a>`
+      : `<span class="disabled">← Newer</span>`;
+    nextSlotEl.innerHTML = currentPage < totalPages
+      ? `<a href="${pageHref(currentPage + 1)}">Older →</a>`
+      : `<span class="disabled">Older →</span>`;
+  }
+
+  function renderNotice(indexData) {
+    const sources = Array.isArray(indexData.sources) ? indexData.sources : [];
+    const hasSuccessfulSource = sources.some((source) => Boolean(source && source.updated_at));
+
+    if (!hasSuccessfulSource) {
+      showNotice("The page is ready, but the feed has not been populated yet. Add `XAI_API_KEY` to GitHub Actions secrets, then run the workflow once.");
+      return;
+    }
+
+    noticeEl.hidden = true;
+  }
+
+  function showNotice(message) {
+    noticeEl.hidden = false;
+    noticeEl.textContent = message;
+  }
+
+  function getRequestedPage() {
+    const params = new URLSearchParams(window.location.search);
+    return normalizePositiveNumber(params.get("page"), 1);
+  }
+
+  function pageHref(pageNumber) {
+    return pageNumber <= 1 ? "news.html" : `news.html?page=${pageNumber}`;
+  }
+
+  function replacePageQuery(pageNumber) {
+    const nextUrl = pageHref(pageNumber);
+    window.history.replaceState({}, "", nextUrl);
+  }
+
+  function normalizePositiveNumber(value, fallback) {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed) || parsed < 1) {
+      return fallback;
+    }
+    return Math.floor(parsed);
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function formatTime(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return "Unknown";
+    }
+
+    return new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Hong_Kong",
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(date);
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function escapeAttribute(value) {
+    return escapeHtml(value);
+  }
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
