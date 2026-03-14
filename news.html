@@ -213,7 +213,7 @@
     line-height: 1.35;
   }
 
-  .source-pill.source-artist {
+  .source-pill.source-art {
     border-color: rgba(45, 139, 71, 0.16);
     background: rgba(45, 139, 71, 0.06);
     color: var(--vert);
@@ -399,10 +399,11 @@
   const PAGE_PREFIX = "data/news/pages/";
   const FILTER_ALL = "all";
   const FILTER_TOP_PICKS = "top-picks";
-  const FILTER_ARTIST = "artist";
+  const FILTER_ART = "art";
+  const SOURCE_TYPE_ARTIST = "artist";
   const FILTER_PAPER = "paper";
   const TOP_PICKS_MIN_SCORE = 9;
-  const VALID_FILTERS = new Set([FILTER_ALL, FILTER_TOP_PICKS, FILTER_ARTIST, FILTER_PAPER]);
+  const VALID_FILTERS = new Set([FILTER_ALL, FILTER_TOP_PICKS, FILTER_ART, FILTER_PAPER]);
 
   const noticeEl = document.getElementById("notice");
   const filtersEl = document.getElementById("filters");
@@ -464,8 +465,8 @@
     const items = filteredItems.slice(start, start + pageSize);
     const emptyMessage = currentFilter === FILTER_TOP_PICKS
       ? "No top items yet."
-      : currentFilter === FILTER_ARTIST
-        ? "No artist items yet."
+      : currentFilter === FILTER_ART
+        ? "No art items yet."
         : "No paper items yet.";
 
     renderFeed(
@@ -511,13 +512,13 @@
 
   function renderItem(item) {
     const itemType = getItemType(item);
-    const pillClass = itemType === FILTER_ARTIST
-      ? "source-pill source-artist"
+    const pillClass = itemType === FILTER_ART
+      ? "source-pill source-art"
       : itemType === FILTER_PAPER
         ? "source-pill source-paper"
         : "";
-    const pillLabel = itemType === FILTER_ARTIST
-      ? "Artist"
+    const pillLabel = itemType === FILTER_ART
+      ? "Art"
       : itemType === FILTER_PAPER
         ? "Paper"
         : "";
@@ -548,7 +549,7 @@
     const filters = [
       { id: FILTER_ALL, label: "All" },
       { id: FILTER_TOP_PICKS, label: "Top" },
-      { id: FILTER_ARTIST, label: "Artist" },
+      { id: FILTER_ART, label: "Art" },
       { id: FILTER_PAPER, label: "Paper" },
     ];
 
@@ -637,8 +638,8 @@
   }
 
   function getItemType(item) {
-    if (normalizeText(item && item.source_type) === FILTER_ARTIST) {
-      return FILTER_ARTIST;
+    if (normalizeText(item && item.source_type) === SOURCE_TYPE_ARTIST) {
+      return FILTER_ART;
     }
     if (isPaperItem(item)) {
       return FILTER_PAPER;
