@@ -18,6 +18,10 @@ const MAX_ARCHIVE_ITEMS = 1000;
 const GENERAL_LOOKBACK_HOURS = 14;
 const GENERAL_MAX_ITEMS = 10;
 const GENERAL_REFRESH_HOURS = 12;
+const DAILY_DIGEST_REFRESH_HOURS = 12;
+const DAILY_DIGEST_MAX_ITEMS = 20;
+const DAILY_DIGEST_PAGE_CHAR_LIMIT = 12_000;
+const DAILY_DIGEST_FALLBACK_HOUR_UTC = 12;
 const ARTIST_LOOKBACK_HOURS = 8;
 const ARTIST_REFRESH_HOURS = 6;
 const ARTIST_BATCH_SIZE = 8;
@@ -34,11 +38,20 @@ const X_AI_SIGNALS_MAX_CONCURRENCY = 6;
 const X_AI_SIGNALS_MAX_ITEMS = 40;
 const HKT_OFFSET_MS = 8 * 60 * 60 * 1000;
 const TIMEZONE_NAME = "HKT";
+const SOURCE_ARG_PREFIX = "--source=";
+const NEWS_BOT_USER_AGENT = "Mozilla/5.0 (compatible; XPinyuNewsBot/1.0; +https://xpinyu.github.io)";
 const API_KEY = process.env.XAI_API_KEY || "";
 const NOW = new Date();
-const ARGS = new Set(process.argv.slice(2));
+const RAW_ARGS = process.argv.slice(2);
+const ARGS = new Set(RAW_ARGS);
 const FORCE_REFRESH = ARGS.has("--force");
 const REBUILD_ONLY = ARGS.has("--rebuild-only");
+const REQUESTED_SOURCE_IDS = new Set(
+  RAW_ARGS.filter((arg) => arg.startsWith(SOURCE_ARG_PREFIX))
+    .flatMap((arg) => arg.slice(SOURCE_ARG_PREFIX.length).split(","))
+    .map((value) => value.trim())
+    .filter(Boolean),
+);
 
 const ARTIST_HANDLES = [
   "Samann_ai",
@@ -302,6 +315,13 @@ const SOURCES = [
     fetch: fetchArtistSource,
   },
   {
+    id: "daily_ai_briefs",
+    name: "Daily AI Briefs",
+    type: "daily_ai_briefs",
+    refreshHours: DAILY_DIGEST_REFRESH_HOURS,
+    fetch: fetchDailyAiBriefsSource,
+  },
+  {
     id: "x_ai_signals",
     name: "X AI Signals",
     type: "x_ai_signals",
@@ -310,13 +330,38 @@ const SOURCES = [
   },
 ];
 
+function resolveRequestedSourceIds() {
+  if (!REQUESTED_SOURCE_IDS.size) {
+    return new Set();
+  }
+
+  const availableSourceIds = new Set(SOURCES.map((source) => source.id));
+  const unknownSourceIds = [...REQUESTED_SOURCE_IDS].filter((sourceId) => !availableSourceIds.has(sourceId));
+  if (unknownSourceIds.length) {
+    throw new Error(`Unknown source ids: ${unknownSourceIds.join(", ")}`);
+  }
+
+  return new Set(REQUESTED_SOURCE_IDS);
+}
+
 async function main() {
   await ensureDir(DATA_DIR);
   await ensureDir(SOURCES_DIR);
   await ensureDir(PAGES_DIR);
 
+  const selectedSourceIds = resolveRequestedSourceIds();
+  if (selectedSourceIds.size) {
+    console.log(`[news] Refreshing selected sources only: ${[...selectedSourceIds].join(", ")}`);
+  }
+
   const snapshots = [];
   for (const source of SOURCES) {
+    if (selectedSourceIds.size && !selectedSourceIds.has(source.id)) {
+      const snapshot = (await readJsonOrNull(getSnapshotPath(source.id))) || makeEmptySnapshot(source);
+      snapshots.push(snapshot);
+      continue;
+    }
+
     const snapshot = await refreshSource(source);
     snapshots.push(snapshot);
   }
@@ -515,6 +560,41 @@ async function fetchArtistSource({ apiKey, now }) {
   };
 }
 
+async function fetchDailyAiBriefsSource({ apiKey, now }) {
+  const window = getDailyDigestTimeWindow(now);
+  const pages = await fetchDailyDigestPages(window);
+  if (!pages.length) {
+    throw new Error("Daily AI briefs source pages are unavailable.");
+  }
+
+  const prompt = buildDailyDigestPrompt(pages, window, DAILY_DIGEST_MAX_ITEMS);
+  const { data } = await callXai({
+    apiKey,
+    systemPrompt: DAILY_DIGEST_SYSTEM_PROMPT,
+    userPrompt: prompt,
+  });
+  const rawText = extractOutputText(data);
+  if (!rawText) {
+    throw new Error("Daily AI briefs source returned empty model output.");
+  }
+
+  const report = extractJsonPayload(rawText);
+  const validatedItems = validateDailyDigestItems(report?.items, {
+    pages,
+    window,
+    maxItems: DAILY_DIGEST_MAX_ITEMS,
+  });
+  const items = validatedItems.map((item) => mapDailyDigestItemToFeed(item)).filter(Boolean);
+  const pageWindow = resolveDailyDigestSourceWindow(pages, window);
+
+  return {
+    updatedAt: formatHktIso(window.end),
+    windowStart: pageWindow.start,
+    windowEnd: pageWindow.end,
+    items,
+  };
+}
+
 async function fetchXAiSignalsSource({ apiKey, now }) {
   const window = getHandleSourceTimeWindow(now, X_AI_SIGNALS_LOOKBACK_HOURS);
   const handles = uniqueHandles(X_AI_SIGNALS_HANDLES);
@@ -598,7 +678,78 @@ JSON schema:
 const ARTIST_SYSTEM_PROMPT =
   "You are a rigorous curator of AI artist signals. Use x_search only. Return strict JSON only.";
 
+const DAILY_DIGEST_SYSTEM_PROMPT =
+  "You are a rigorous curator of high-value daily AI digests. Work only from the provided source excerpts, prefer original links when available, and return strict JSON only.";
+
 const X_AI_SIGNALS_SYSTEM_PROMPT = `你是中文 X（Twitter）高价值 AI 信号挖掘专家，服务对象是 AI 创业者、独立开发者、SaaS 玩家、AI 出海与产品增长从业者。你的目标不是找热闹，而是找真正值得跟进的实战信号：产品进展、增长方法、工具链、工作流、商业机会、行业判断、执行细节与风险提示。判断标准是信息密度、原创性、可执行性与前瞻性，不唯热度。`;
+
+function buildDailyDigestPrompt(pages, window, maxItems) {
+  const excerpts = pages
+    .map(
+      (page) => `Source: ${page.label}
+- source_date_key: ${page.source_date_key}
+- source_page: ${page.source_page}
+- fetched_url: ${page.fetched_url}
+- fallback_published_at: ${page.fallback_published_at}
+- excerpt:
+${page.excerpt}`,
+    )
+    .join("\n\n");
+
+  return `You are curating a compact high-value AI briefing from daily digest pages.
+
+Current UTC context:
+- now: ${formatIsoUtc(window.end)}
+- utc_date: ${window.utc_date}
+- previous_utc_date: ${window.previous_utc_date}
+
+Task:
+1. Work only from the source excerpts below.
+2. Keep only high-value AI items: papers, benchmarks, model releases, product launches, agents, tooling, workflows, infra, data, safety, and concrete business signals.
+3. Prefer the original paper/article/repo/product URL when the excerpt includes it. If not, use the digest page URL.
+4. Deduplicate repeated stories that appear across multiple digest sites.
+5. Downrank generic opinion, low-information roundups, vague hype, and repeated summaries with no new details.
+6. Return fewer than ${maxItems} items if the signal is weak. Do not pad.
+
+Output rules:
+- Return strict JSON only.
+- Write descriptive fields in Simplified Chinese.
+- Keep the title in its original language when useful.
+- platform must be one of: Hacker News, Hugging Face Papers, ClawFeed, TLDR AI, AlphaSignal.
+- published_at must be ISO 8601 with timezone. If the original timestamp is unclear, use the fallback_published_at from the digest page that surfaced the item.
+- link must point to the original item when available.
+- source_page must be the digest page URL that surfaced the item.
+- topic must be one of: research, model-release, benchmark, agent, tooling, workflow, infra, product, business, safety, data.
+- scores.novelty, scores.value, scores.heat, and scores.overall must be numbers from 0 to 10.
+
+JSON schema:
+{
+  "items": [
+    {
+      "platform": "Hacker News | Hugging Face Papers | ClawFeed | TLDR AI | AlphaSignal",
+      "title": "Title",
+      "author": "Author or publisher",
+      "published_at": "ISO 8601 with timezone",
+      "link": "https://...",
+      "source_page": "https://...",
+      "source_signal": "Why this source surfaced it and why it matters",
+      "recommendation": "1-2 sentence Simplified Chinese blurb",
+      "summary": "2-4 sentence Simplified Chinese summary",
+      "takeaways": ["Takeaway 1", "Takeaway 2"],
+      "topic": "research/model-release/benchmark/agent/tooling/workflow/infra/product/business/safety/data",
+      "scores": {
+        "novelty": 0,
+        "value": 0,
+        "heat": 0,
+        "overall": 0
+      }
+    }
+  ]
+}
+
+Source excerpts:
+${excerpts}`;
+}
 
 function buildArtistBatchPrompt(batch, window) {
   const since = formatSearchUtc(window.start);
@@ -991,6 +1142,41 @@ function mapGeneralItemToFeed(item) {
   });
 }
 
+function mapDailyDigestItemToFeed(item) {
+  const feedItem = createFeedItem({
+    sourceId: "daily_ai_briefs",
+    sourceName: "Daily AI Briefs",
+    sourceType: "daily_ai_briefs",
+    platform: item.platform,
+    author: normalizeText(item.author) || item.platform,
+    title: normalizeText(item.title) || "Untitled",
+    blurb: pickFirstText([
+      item.recommendation,
+      item.summary,
+      item.source_signal,
+      ...(Array.isArray(item.takeaways) ? item.takeaways : []),
+    ]),
+    link: item.link,
+    publishedAt: item.published_at,
+    score: item?.scores?.overall ?? averageScores(item?.scores),
+    tags: [item.platform, item.topic].filter(Boolean),
+  });
+
+  if (!feedItem) {
+    return null;
+  }
+
+  return {
+    ...feedItem,
+    source_page: normalizeText(item.source_page),
+    source_signal: normalizeText(item.source_signal),
+    recommendation: normalizeText(item.recommendation),
+    summary: normalizeText(item.summary),
+    takeaways: uniqueStrings(item.takeaways),
+    topic: normalizeText(item.topic),
+  };
+}
+
 function createFeedItem({
   sourceId,
   sourceName,
@@ -1260,6 +1446,334 @@ function extractOutputText(data) {
   return chunks.join("\n").trim();
 }
 
+async function fetchDailyDigestPages(window) {
+  const configs = buildDailyDigestPageConfigs(window);
+  const pages = await Promise.all(configs.map((config) => fetchDailyDigestPage(config, window)));
+  return pages.filter(Boolean);
+}
+
+function buildDailyDigestPageConfigs(window) {
+  return [
+    {
+      id: "hacker_news",
+      label: "Hacker News",
+      maxChars: 10_000,
+      candidates: [
+        {
+          url: "https://news.ycombinator.com/",
+          sourcePage: "https://news.ycombinator.com/",
+          sourceDateKey: window.utc_date,
+        },
+      ],
+    },
+    {
+      id: "huggingface_papers",
+      label: "Hugging Face Papers",
+      maxChars: 14_000,
+      candidates: [
+        {
+          url: `https://huggingface.co/papers/date/${window.utc_date}`,
+          sourcePage: `https://huggingface.co/papers/date/${window.utc_date}`,
+          sourceDateKey: window.utc_date,
+        },
+        {
+          url: `https://huggingface.co/papers/date/${window.previous_utc_date}`,
+          sourcePage: `https://huggingface.co/papers/date/${window.previous_utc_date}`,
+          sourceDateKey: window.previous_utc_date,
+        },
+      ],
+    },
+    {
+      id: "clawfeed",
+      label: "ClawFeed",
+      maxChars: 8_000,
+      candidates: [
+        {
+          url: "https://clawfeed.kevinhe.io/",
+          sourcePage: "https://clawfeed.kevinhe.io/#daily",
+          sourceDateKey: window.utc_date,
+        },
+      ],
+    },
+    {
+      id: "tldr_ai",
+      label: "TLDR AI",
+      maxChars: 14_000,
+      candidates: [
+        {
+          url: "https://tldr.tech/api/latest/ai",
+          sourcePage: "https://tldr.tech/api/latest/ai",
+          sourceDateKey: window.utc_date,
+        },
+        {
+          url: `https://tldr.tech/ai/${window.utc_date}`,
+          sourcePage: `https://tldr.tech/ai/${window.utc_date}`,
+          sourceDateKey: window.utc_date,
+        },
+        {
+          url: `https://tldr.tech/ai/${window.previous_utc_date}`,
+          sourcePage: `https://tldr.tech/ai/${window.previous_utc_date}`,
+          sourceDateKey: window.previous_utc_date,
+        },
+      ],
+    },
+    {
+      id: "alpha_signal",
+      label: "AlphaSignal",
+      maxChars: 14_000,
+      candidates: [
+        {
+          url: "https://alphasignal.ai/last-email",
+          sourcePage: "https://alphasignal.ai/last-email",
+          sourceDateKey: window.utc_date,
+        },
+      ],
+    },
+  ];
+}
+
+async function fetchDailyDigestPage(config, window) {
+  const failures = [];
+
+  for (const candidate of config.candidates) {
+    try {
+      const response = await fetch(candidate.url, {
+        headers: {
+          accept: "text/html,application/xhtml+xml,application/xml;q=0.9,text/plain;q=0.8,*/*;q=0.7",
+          "user-agent": NEWS_BOT_USER_AGENT,
+        },
+        signal: AbortSignal.timeout(20_000),
+      });
+      const html = await response.text();
+      if (!response.ok) {
+        failures.push(`${candidate.url} (${response.status})`);
+        continue;
+      }
+
+      const excerpt = truncateText(
+        joinTextBlocks(extractReadablePageText(html, response.url), extractEmbeddedJsonText(html)),
+        config.maxChars || DAILY_DIGEST_PAGE_CHAR_LIMIT,
+      );
+      if (excerpt.length < 200) {
+        failures.push(`${candidate.url} (sparse content)`);
+        continue;
+      }
+
+      const sourcePage = canonicalizeExternalUrl(response.url) || candidate.sourcePage;
+      const sourceDateKey = resolveDailyDigestDateKey({
+        config,
+        responseUrl: response.url,
+        sourcePage,
+        excerpt,
+        fallbackDateKey: candidate.sourceDateKey,
+        window,
+      });
+
+      console.log(`[news] Daily AI briefs page ready: ${config.label} <- ${candidate.sourcePage}`);
+      return {
+        id: config.id,
+        label: config.label,
+        source_date_key: sourceDateKey,
+        source_page: sourcePage,
+        fetched_url: response.url,
+        fallback_published_at: makeUtcMiddayIso(sourceDateKey),
+        excerpt,
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error || "Unknown page fetch error");
+      failures.push(`${candidate.url} (${message})`);
+    }
+  }
+
+  console.warn(`[news] Daily AI briefs page skipped: ${config.label}. ${failures.join(" | ")}`);
+  return null;
+}
+
+function extractReadablePageText(html, baseUrl) {
+  let text = String(html || "");
+  text = text.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ");
+  text = text.replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ");
+  text = text.replace(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/gi, " ");
+  text = text.replace(/<svg\b[^>]*>[\s\S]*?<\/svg>/gi, " ");
+  text = text.replace(/<a\b[^>]*href=(["'])(.*?)\1[^>]*>([\s\S]*?)<\/a>/gi, (_, __, href, inner) => {
+    const label = decodeHtmlEntities(String(inner || "").replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+    const resolvedUrl = resolveUrl(href, baseUrl);
+    if (!label) {
+      return resolvedUrl;
+    }
+    if (!resolvedUrl) {
+      return label;
+    }
+    return `${label} (${resolvedUrl})`;
+  });
+  text = text.replace(/<\/(p|div|section|article|li|ul|ol|tr|td|th|h\d)>/gi, "\n");
+  text = text.replace(/<br\s*\/?>/gi, "\n");
+  text = text.replace(/<[^>]+>/g, " ");
+  text = decodeHtmlEntities(text);
+  text = text.replace(/\r/g, "");
+  text = text.replace(/[ \t]+\n/g, "\n");
+  text = text.replace(/\n[ \t]+/g, "\n");
+  text = text.replace(/[ \t]{2,}/g, " ");
+  text = text.replace(/\n{3,}/g, "\n\n");
+  return text.trim();
+}
+
+function extractEmbeddedJsonText(html) {
+  const chunks = [];
+  const nextDataMatch = String(html || "").match(/<script[^>]*id=(["'])__NEXT_DATA__\1[^>]*>([\s\S]*?)<\/script>/i);
+  if (nextDataMatch?.[2]) {
+    const parsed = tryParseJson(nextDataMatch[2]);
+    if (parsed) {
+      collectJsonTextChunks(parsed, chunks);
+    }
+  }
+  return uniqueStrings(chunks).join("\n\n");
+}
+
+function collectJsonTextChunks(value, chunks) {
+  if (typeof value === "string") {
+    const text = normalizeText(decodeHtmlEntities(value).replace(/\s+/g, " "));
+    if (text.length >= 24 && !/^https?:\/\//i.test(text)) {
+      chunks.push(text);
+    }
+    return;
+  }
+
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      collectJsonTextChunks(item, chunks);
+    }
+    return;
+  }
+
+  if (!value || typeof value !== "object") {
+    return;
+  }
+
+  for (const item of Object.values(value)) {
+    collectJsonTextChunks(item, chunks);
+  }
+}
+
+function joinTextBlocks(...values) {
+  return values.map((value) => normalizeText(value)).filter(Boolean).join("\n\n");
+}
+
+function resolveDailyDigestDateKey({ config, responseUrl, sourcePage, excerpt, fallbackDateKey, window }) {
+  return (
+    extractDateKeyFromDailyDigestText(config, excerpt) ||
+    extractDateKeyFromDailyDigestUrl(responseUrl) ||
+    extractDateKeyFromDailyDigestUrl(sourcePage) ||
+    fallbackDateKey ||
+    window.previous_utc_date ||
+    window.utc_date
+  );
+}
+
+function extractDateKeyFromDailyDigestUrl(value) {
+  if (typeof value !== "string" || !value.trim()) {
+    return "";
+  }
+
+  const match = value.match(/\/(20\d{2}-\d{2}-\d{2})(?:[/?#]|$)/i);
+  return match?.[1] || "";
+}
+
+function extractDateKeyFromDailyDigestText(config, value) {
+  const text = normalizeText(value);
+  if (!text) {
+    return "";
+  }
+
+  if (config?.id === "tldr_ai") {
+    const tldrMatch = text.match(/\btldr ai\s+(20\d{2}-\d{2}-\d{2})\b/i);
+    if (tldrMatch?.[1]) {
+      return tldrMatch[1];
+    }
+  }
+
+  if (config?.id === "alpha_signal") {
+    const genericMatch = text.match(/\b(20\d{2}-\d{2}-\d{2})\b/);
+    if (genericMatch?.[1]) {
+      return genericMatch[1];
+    }
+  }
+
+  return "";
+}
+
+function resolveDailyDigestSourceWindow(pages, window) {
+  const dateKeys = uniqueStrings(pages.map((page) => page?.source_date_key)).sort();
+  if (!dateKeys.length) {
+    return {
+      start: makeUtcDayStartIso(window.previous_utc_date || window.utc_date),
+      end: formatIsoUtc(window.end),
+    };
+  }
+
+  const latestDateKey = dateKeys[dateKeys.length - 1];
+  return {
+    start: makeUtcDayStartIso(dateKeys[0]),
+    end: latestDateKey === window.utc_date ? formatIsoUtc(window.end) : makeUtcDayEndIso(latestDateKey),
+  };
+}
+
+function decodeHtmlEntities(value) {
+  return String(value || "").replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, (match, entity) => {
+    const normalized = String(entity).toLowerCase();
+    if (normalized === "amp") {
+      return "&";
+    }
+    if (normalized === "lt") {
+      return "<";
+    }
+    if (normalized === "gt") {
+      return ">";
+    }
+    if (normalized === "quot") {
+      return "\"";
+    }
+    if (normalized === "apos" || normalized === "#39") {
+      return "'";
+    }
+    if (normalized === "nbsp") {
+      return " ";
+    }
+    if (normalized.startsWith("#x")) {
+      const parsed = Number.parseInt(normalized.slice(2), 16);
+      return Number.isFinite(parsed) ? String.fromCodePoint(parsed) : match;
+    }
+    if (normalized.startsWith("#")) {
+      const parsed = Number.parseInt(normalized.slice(1), 10);
+      return Number.isFinite(parsed) ? String.fromCodePoint(parsed) : match;
+    }
+    return match;
+  });
+}
+
+function resolveUrl(value, baseUrl) {
+  if (typeof value !== "string" || !value.trim()) {
+    return "";
+  }
+
+  try {
+    return new URL(value.trim(), baseUrl).toString();
+  } catch {
+    return "";
+  }
+}
+
+function getDailyDigestTimeWindow(now) {
+  const end = new Date(now);
+  const previousDay = new Date(end.getTime() - 24 * 60 * 60 * 1000);
+  return {
+    end,
+    timezone: "UTC",
+    utc_date: getUtcDateKey(end),
+    previous_utc_date: getUtcDateKey(previousDay),
+  };
+}
+
 function getGeneralTimeWindow(now, lookbackHours) {
   const end = new Date(now);
   const dayStart = getHktDayStartUtc(end);
@@ -1335,6 +1849,14 @@ function formatSearchUtc(date) {
   return `${year}-${month}-${day}_${hour}:${minute}:${second}_UTC`;
 }
 
+function getUtcDateKey(date) {
+  const value = new Date(date);
+  const year = value.getUTCFullYear();
+  const month = pad2(value.getUTCMonth() + 1);
+  const day = pad2(value.getUTCDate());
+  return `${year}-${month}-${day}`;
+}
+
 function getHktDateKey(date) {
   const shifted = getHktShiftedDate(date);
   const year = shifted.getUTCFullYear();
@@ -1355,6 +1877,22 @@ function getHktDayStartUtc(now = new Date()) {
     0,
   );
   return new Date(shiftedMidnightUtcMs - HKT_OFFSET_MS);
+}
+
+function getUtcDayStart(now = new Date()) {
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0));
+}
+
+function makeUtcMiddayIso(dateKey) {
+  return `${dateKey}T${pad2(DAILY_DIGEST_FALLBACK_HOUR_UTC)}:00:00.000Z`;
+}
+
+function makeUtcDayStartIso(dateKey) {
+  return `${dateKey}T00:00:00.000Z`;
+}
+
+function makeUtcDayEndIso(dateKey) {
+  return `${dateKey}T23:59:59.999Z`;
 }
 
 function normalizeScore(value) {
@@ -1511,6 +2049,70 @@ function canonicalKind(item) {
   return detectAllowedSource(item) === "official_blog" ? "article" : "post";
 }
 
+function canonicalDailyDigestPlatform(value, sourcePage) {
+  const normalized = normalizedText(value);
+  const host = normalizeHost(sourcePage);
+
+  if (normalized.includes("hacker news") || host.endsWith("news.ycombinator.com")) {
+    return "Hacker News";
+  }
+  if (normalized.includes("hugging face") || host.endsWith("huggingface.co")) {
+    return "Hugging Face Papers";
+  }
+  if (normalized.includes("clawfeed") || host.endsWith("clawfeed.kevinhe.io")) {
+    return "ClawFeed";
+  }
+  if (normalized.includes("tldr") || host.endsWith("tldr.tech")) {
+    return "TLDR AI";
+  }
+  if (normalized.includes("alpha") || host.endsWith("alphasignal.ai")) {
+    return "AlphaSignal";
+  }
+
+  return "";
+}
+
+function canonicalDailyDigestTopic(value) {
+  const normalized = normalizedText(value);
+  if (!normalized) {
+    return "";
+  }
+  if (normalized.includes("research") || normalized.includes("paper")) {
+    return "research";
+  }
+  if (normalized.includes("model")) {
+    return "model-release";
+  }
+  if (normalized.includes("benchmark")) {
+    return "benchmark";
+  }
+  if (normalized.includes("agent")) {
+    return "agent";
+  }
+  if (normalized.includes("tool")) {
+    return "tooling";
+  }
+  if (normalized.includes("workflow")) {
+    return "workflow";
+  }
+  if (normalized.includes("infra")) {
+    return "infra";
+  }
+  if (normalized.includes("product")) {
+    return "product";
+  }
+  if (normalized.includes("business") || normalized.includes("growth") || normalized.includes("startup")) {
+    return "business";
+  }
+  if (normalized.includes("safety")) {
+    return "safety";
+  }
+  if (normalized.includes("data")) {
+    return "data";
+  }
+  return "";
+}
+
 function validateGeneralItems(items, window, maxItems) {
   const validItems = [];
 
@@ -1571,6 +2173,91 @@ function validateGeneralItems(items, window, maxItems) {
     }
 
     return 0;
+  });
+
+  return validItems.slice(0, maxItems);
+}
+
+function validateDailyDigestItems(items, { pages, window, maxItems }) {
+  const pageBySourcePage = new Map();
+  const pageByPlatform = new Map();
+
+  for (const page of pages) {
+    pageBySourcePage.set(page.source_page, page);
+    pageByPlatform.set(page.label, page);
+  }
+
+  const validItems = [];
+  for (const item of Array.isArray(items) ? items : []) {
+    if (!item || typeof item !== "object") {
+      continue;
+    }
+
+    const hintedPlatform = canonicalDailyDigestPlatform(item.platform, item.source_page);
+    const sourcePage =
+      canonicalizeExternalUrl(item.source_page) || pageByPlatform.get(hintedPlatform)?.source_page || "";
+    const platform = canonicalDailyDigestPlatform(item.platform, sourcePage);
+    if (!platform) {
+      continue;
+    }
+
+    const link = canonicalizeExternalUrl(item.link) || sourcePage;
+    if (!link) {
+      continue;
+    }
+
+    const sourcePageRecord = pageBySourcePage.get(sourcePage) || pageByPlatform.get(platform);
+    const fallbackPublishedAt = sourcePageRecord?.fallback_published_at || makeUtcMiddayIso(window.utc_date);
+    const publishedAt = parseIsoDate(item.published_at) || parseIsoDate(fallbackPublishedAt);
+    if (!publishedAt) {
+      continue;
+    }
+
+    const scores = item?.scores && typeof item.scores === "object" ? item.scores : {};
+    validItems.push({
+      platform,
+      title: normalizeText(item.title) || "Untitled",
+      author: normalizeText(item.author) || platform,
+      published_at: formatHktIso(publishedAt),
+      link,
+      source_page: sourcePage || link,
+      source_signal: normalizeText(item.source_signal),
+      recommendation: normalizeText(item.recommendation),
+      summary: normalizeText(item.summary),
+      takeaways: uniqueStrings(item.takeaways),
+      topic: canonicalDailyDigestTopic(item.topic),
+      scores: {
+        novelty: normalizeScore(scores.novelty),
+        value: normalizeScore(scores.value),
+        heat: normalizeScore(scores.heat),
+        overall: normalizeScore(scores.overall),
+      },
+    });
+  }
+
+  validItems.sort((left, right) => {
+    const leftRank = [
+      left?.scores?.overall || 0,
+      left?.scores?.value || 0,
+      left?.scores?.novelty || 0,
+      left?.scores?.heat || 0,
+      parseIsoDate(left.published_at)?.getTime() || 0,
+    ];
+    const rightRank = [
+      right?.scores?.overall || 0,
+      right?.scores?.value || 0,
+      right?.scores?.novelty || 0,
+      right?.scores?.heat || 0,
+      parseIsoDate(right.published_at)?.getTime() || 0,
+    ];
+
+    for (let index = 0; index < leftRank.length; index += 1) {
+      if (leftRank[index] !== rightRank[index]) {
+        return rightRank[index] - leftRank[index];
+      }
+    }
+
+    return String(left.title || "").localeCompare(String(right.title || ""));
   });
 
   return validItems.slice(0, maxItems);
@@ -1694,6 +2381,17 @@ function normalizeText(value) {
 
 function compressText(value, limit) {
   const text = normalizeText(value).replace(/\s+/g, " ");
+  if (!text) {
+    return "";
+  }
+  if (text.length <= limit) {
+    return text;
+  }
+  return `${text.slice(0, limit - 1).trimEnd()}…`;
+}
+
+function truncateText(value, limit) {
+  const text = normalizeText(value);
   if (!text) {
     return "";
   }
