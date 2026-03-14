@@ -398,9 +398,11 @@
   const ARCHIVE_URL = "data/news/archive.json";
   const PAGE_PREFIX = "data/news/pages/";
   const FILTER_ALL = "all";
+  const FILTER_TOP_PICKS = "top-picks";
   const FILTER_ARTIST = "artist";
   const FILTER_PAPER = "paper";
-  const VALID_FILTERS = new Set([FILTER_ALL, FILTER_ARTIST, FILTER_PAPER]);
+  const TOP_PICKS_MIN_SCORE = 9;
+  const VALID_FILTERS = new Set([FILTER_ALL, FILTER_TOP_PICKS, FILTER_ARTIST, FILTER_PAPER]);
 
   const noticeEl = document.getElementById("notice");
   const filtersEl = document.getElementById("filters");
@@ -460,9 +462,11 @@
 
     const start = (currentPage - 1) * pageSize;
     const items = filteredItems.slice(start, start + pageSize);
-    const emptyMessage = currentFilter === FILTER_ARTIST
-      ? "No artist items yet."
-      : "No paper items yet.";
+    const emptyMessage = currentFilter === FILTER_TOP_PICKS
+      ? "No top items yet."
+      : currentFilter === FILTER_ARTIST
+        ? "No artist items yet."
+        : "No paper items yet.";
 
     renderFeed(
       indexData,
@@ -543,6 +547,7 @@
   function renderFilters(currentFilter) {
     const filters = [
       { id: FILTER_ALL, label: "All" },
+      { id: FILTER_TOP_PICKS, label: "Top" },
       { id: FILTER_ARTIST, label: "Artist" },
       { id: FILTER_PAPER, label: "Paper" },
     ];
@@ -621,7 +626,14 @@
     if (filter === FILTER_ALL) {
       return true;
     }
+    if (filter === FILTER_TOP_PICKS) {
+      return isTopPick(item);
+    }
     return getItemType(item) === filter;
+  }
+
+  function isTopPick(item) {
+    return Number(item && item.score) >= TOP_PICKS_MIN_SCORE;
   }
 
   function getItemType(item) {
