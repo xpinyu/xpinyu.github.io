@@ -3,11 +3,11 @@
     "id": "daily_ai_briefs",
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
-    "refresh_hours": 6,
-    "updated_at": "2026-03-14T21:01:00.592+08:00",
-    "item_count": 10,
+    "refresh_hours": 12,
+    "updated_at": "2026-03-14T21:45:49.000+08:00",
+    "item_count": 9,
     "window_start": "2026-03-13T00:00:00.000Z",
-    "window_end": "2026-03-14T13:01:00.592Z"
+    "window_end": "2026-03-14T13:45:49.000Z"
   },
   "items": [
     {
@@ -16,161 +16,26 @@
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "claude.com",
+      "author": "Anthropic",
       "title": "1M context is now generally available for Opus 4.6 and Sonnet 4.6",
-      "blurb": "Claude Opus 4.6 和 Sonnet 4.6 现支持 100 万 token 上下文窗口，对长文档分析和复杂推理任务意义重大。",
+      "blurb": "Claude模型上下文窗口扩展至100万token通用可用，大幅提升长文档处理能力，值得开发者优先测试。",
       "link": "https://claude.com/blog/1m-context-ga",
       "canonical_link": "https://claude.com/blog/1m-context-ga",
-      "published_at": "2026-03-14T08:00:00.000+08:00",
-      "score": 9,
+      "published_at": "2026-03-14T20:00:00.000+08:00",
+      "score": 10,
       "tags": [
         "Hacker News",
         "model-release"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Top HN story with 828 points and 323 comments, highlighting major capability upgrade for Anthropic's flagship models.",
-      "recommendation": "Claude Opus 4.6 和 Sonnet 4.6 现支持 100 万 token 上下文窗口，对长文档分析和复杂推理任务意义重大。",
-      "summary": "Anthropic 宣布 Claude Opus 4.6 和 Sonnet 4.6 模型的 100 万 token 上下文窗口正式可用，提升了处理大型代码库、长文档和多轮对话的能力。该功能已在生产环境中优化，支持更可靠的长上下文性能。开发者可立即用于实际应用。",
+      "source_signal": "Top HN story with 860 points and 331 comments; signals major capability upgrade for leading AI models, enabling handling of massive documents and codebases.",
+      "recommendation": "Claude模型上下文窗口扩展至100万token通用可用，大幅提升长文档处理能力，值得开发者优先测试。",
+      "summary": "Anthropic宣布Opus 4.6和Sonnet 4.6模型的100万token上下文窗口现已通用可用。此更新支持更长的输入，提升复杂任务如代码审查和长文档分析的表现。已在Claude平台全面部署。",
       "takeaways": [
-        "100 万 token 上下文显著扩展模型适用场景",
-        "适用于代码审查和企业级文档处理"
+        "100万上下文适用于生产环境，显著降低分块需求",
+        "与竞争对手的长上下文能力拉平，推动企业级应用"
       ],
       "topic": "model-release"
-    },
-    {
-      "id": "257866233b35573d",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Z.ai",
-      "title": "IndexCache: Accelerating Sparse Attention via Cross-Layer Index Reuse",
-      "blurb": "IndexCache 通过跨层索引复用加速稀疏注意力，优化 Transformer 推理效率。",
-      "link": "https://huggingface.co/papers/2603.12201",
-      "canonical_link": "https://huggingface.co/papers/2603.12201",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hugging Face Papers",
-        "infra"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-13",
-      "source_signal": "High trending on HF papers (33 trends), key infra optimization for transformers.",
-      "recommendation": "IndexCache 通过跨层索引复用加速稀疏注意力，优化 Transformer 推理效率。",
-      "summary": "IndexCache 引入跨层索引复用机制，减少稀疏注意力计算冗余，提升长序列模型速度。基准测试显示显著加速而无精度损失。",
-      "takeaways": [
-        "跨层复用降低计算开销",
-        "适用于长上下文 Transformer"
-      ],
-      "topic": "infra"
-    },
-    {
-      "id": "d35625589d71082e",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "NY Times",
-      "title": "Axiom raised a $200M Series A at a $1.6B valuation",
-      "blurb": "Axiom 以 16 亿美元估值获 2 亿美元融资，专注形式化验证的 AI 代码生成。",
-      "link": "https://nytimes.com/2026/03/12/technology/axiom-ai-code-funding.html",
-      "canonical_link": "https://nytimes.com/2026/03/12/technology/axiom-ai-code-funding.html",
-      "published_at": "2026-03-12T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "business"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "Featured in TLDR AI launches, funding for verified AI coding.",
-      "recommendation": "Axiom 以 16 亿美元估值获 2 亿美元融资，专注形式化验证的 AI 代码生成。",
-      "summary": "Axiom 开发 Verified AI 系统，使用 Lean 语言形式化验证代码输出，避免统计性错误。公司从数学证明转移技能至代码验证，仅一年获巨额融资。",
-      "takeaways": [
-        "形式化验证提升代码安全性",
-        "Menlo Ventures 领投 A 轮"
-      ],
-      "topic": "business"
-    },
-    {
-      "id": "7182f4f2b84b8241",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "tomshardware.com",
-      "title": "Qatar helium shutdown puts chip supply chain on a two-week clock",
-      "blurb": "卡塔尔氦气供应中断威胁芯片供应链，对 AI 硬件生产构成短期风险。",
-      "link": "https://tomshardware.com/tech-industry/qatar-helium-shutdown-puts-chip-supply-chain-on-a-two-week-clock",
-      "canonical_link": "https://tomshardware.com/tech-industry/qatar-helium-shutdown-puts-chip-supply-chain-on-a-two-week-clock",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hacker News",
-        "infra"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "High HN traction with 626 points and 528 comments, critical infra risk for semiconductors.",
-      "recommendation": "卡塔尔氦气供应中断威胁芯片供应链，对 AI 硬件生产构成短期风险。",
-      "summary": "卡塔尔氦厂关闭导致全球氦供应紧张，芯片制造面临两周倒计时。该事件凸显半导体供应链脆弱性，可能波及 AI 加速器生产。",
-      "takeaways": [
-        "氦气短缺影响芯片蚀刻",
-        "供应链中断风险加剧"
-      ],
-      "topic": "infra"
-    },
-    {
-      "id": "0e4f414f9dfee1ea",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Tencent Hunyuan",
-      "title": "Spatial-TTT: Streaming Visual-based Spatial Intelligence with Test-Time Training",
-      "blurb": "Spatial-TTT 通过测试时训练实现流式视觉空间智能，提升代理实时感知。",
-      "link": "https://huggingface.co/papers/2603.12255",
-      "canonical_link": "https://huggingface.co/papers/2603.12255",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hugging Face Papers",
-        "research"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-13",
-      "source_signal": "Top trending paper on HF daily with 84 trends, advancing visual agents.",
-      "recommendation": "Spatial-TTT 通过测试时训练实现流式视觉空间智能，提升代理实时感知。",
-      "summary": "该论文提出 Spatial-TTT 框架，利用测试时训练增强视觉代理的空间推理能力，支持流式输入。实验显示在空间任务中显著优于基线。",
-      "takeaways": [
-        "测试时训练适应流式视觉",
-        "提升多模态代理空间智能"
-      ],
-      "topic": "research"
-    },
-    {
-      "id": "b53039b370014990",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Anthropic",
-      "title": "Anthropic invests $100 million into the Claude Partner Network",
-      "blurb": "Anthropic 投资 1 亿美元支持 Claude 合作伙伴网络，推动企业级采用。",
-      "link": "https://anthropic.com/news/claude-partner-network",
-      "canonical_link": "https://anthropic.com/news/claude-partner-network",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "business"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "Quick link in TLDR AI, major enterprise push by Anthropic.",
-      "recommendation": "Anthropic 投资 1 亿美元支持 Claude 合作伙伴网络，推动企业级采用。",
-      "summary": "Anthropic 推出 Claude Partner Network，投资 1 亿美元助力企业集成 Claude 模型。该计划针对开发者和服务提供商，提供资源和技术支持。",
-      "takeaways": [
-        "加速 Claude 在企业生态落地",
-        "1 亿美元资金注入伙伴生态"
-      ],
-      "topic": "business"
     },
     {
       "id": "13c0963ae105bbbc",
@@ -178,26 +43,53 @@
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "claude.com",
+      "author": "Anthropic",
       "title": "Claude now creates interactive charts, diagrams, and visualizations",
-      "blurb": "Claude 新增生成交互式图表和可视化功能，提升数据分析和报告生成效率。",
+      "blurb": "Claude新增生成交互式图表和可视化功能，提升数据分析交互体验，适用于报告和原型设计。",
       "link": "https://claude.com/blog/claude-builds-visuals",
       "canonical_link": "https://claude.com/blog/claude-builds-visuals",
       "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 8,
+      "score": 9,
       "tags": [
         "TLDR AI",
         "product"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "Featured in TLDR AI headlines as key product launch, enabling dynamic visual generation in chats.",
-      "recommendation": "Claude 新增生成交互式图表和可视化功能，提升数据分析和报告生成效率。",
-      "summary": "Claude 推出 Imagine beta 功能，可自动或按需创建自定义图表、流程图等可视化内容，并支持迭代修改。该功能默认开启，集成于聊天界面，便于数据解释和演示。示例视频展示其在实际对话中的应用。",
+      "source_signal": "Featured in TLDR AI headlines; introduces generative UI for visuals in Claude, enhancing interactive data presentation and agentic workflows.",
+      "recommendation": "Claude新增生成交互式图表和可视化功能，提升数据分析交互体验，适用于报告和原型设计。",
+      "summary": "Claude推出Imagine beta功能，可创建自定义图表、流程图等可视化内容，并支持实时修改。功能默认开启，用户可直接请求。示例视频展示其在对话中动态生成和迭代视觉元素。",
       "takeaways": [
-        "支持交互式可视化编辑",
-        "自动判断何时生成图形"
+        "生成式UI注入HTML，支持增量流式渲染",
+        "Claude自动判断何时生成视觉，提升用户体验"
       ],
       "topic": "product"
+    },
+    {
+      "id": "d35625589d71082e",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Axiom / NYT",
+      "title": "AI Writes Buggy Code. A Silicon Valley Start-Up Wants to Fix It",
+      "blurb": "Axiom获2亿美元融资，专注形式化验证AI代码生成，提升软件可靠性。",
+      "link": "https://nytimes.com/2026/03/12/technology/axiom-ai-code-funding.html",
+      "canonical_link": "https://nytimes.com/2026/03/12/technology/axiom-ai-code-funding.html",
+      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "TLDR AI",
+        "business"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-13",
+      "source_signal": "Headlines in TLDR; Axiom raises $200M at $1.6B val for formally verified AI code generation using Lean, concrete business signal in AI safety for coding.",
+      "recommendation": "Axiom获2亿美元融资，专注形式化验证AI代码生成，提升软件可靠性。",
+      "summary": "Axiom以Lean语言构建可形式验证的AI系统，从数学证明转移至代码验证，确保无漏洞输出。公司一年内融资2亿美元，估值16亿美元。",
+      "takeaways": [
+        "形式化验证捕捉确定性错误",
+        "从数学证明迁移至代码安全"
+      ],
+      "topic": "business"
     },
     {
       "id": "60f34e302a06ac9b",
@@ -205,26 +97,134 @@
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "cursor.com",
-      "title": "How we compare model quality in Cursor",
-      "blurb": "CursorBench 是 Cursor 内部基准套件，用于评估编码代理的多维度性能。",
+      "author": "Cursor",
+      "title": "How we compare model quality in Cursor (CursorBench)",
+      "blurb": "CursorBench基准测试真实编码场景，推动代理模型质量评估标准化。",
       "link": "https://cursor.com/blog/cursorbench",
       "canonical_link": "https://cursor.com/blog/cursorbench",
       "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 7,
+      "score": 9,
       "tags": [
         "TLDR AI",
         "benchmark"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "Highlighted in TLDR AI engineering section, introducing CursorBench for agent eval.",
-      "recommendation": "CursorBench 是 Cursor 内部基准套件，用于评估编码代理的多维度性能。",
-      "summary": "Cursor 采用混合在线-离线评估流程，CursorBench 基于真实会话测试代码正确性、质量和效率。结合生产流量分析，确保模型质量与开发者需求对齐。该方法捕捉离线基准遗漏的回归。",
+      "source_signal": "Engineering deep dive in TLDR; CursorBench is a real-world benchmark for coding agents, combining offline evals with live traffic analysis.",
+      "recommendation": "CursorBench基准测试真实编码场景，推动代理模型质量评估标准化。",
+      "summary": "Cursor使用混合在线离线评估，包括基于真实会话的CursorBench，衡量代码正确性、效率和交互行为。结合生产流量分析，捕捉离线评估遗漏的回归。",
       "takeaways": [
-        "多维度代理评估包括协作行为",
-        "生产流量验证模型鲁棒性"
+        "多维度代理性能评估",
+        "生产级模型质量对齐"
       ],
       "topic": "benchmark"
+    },
+    {
+      "id": "33fed319432d1dd1",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "Z.ai",
+      "title": "IndexCache: Accelerating Sparse Attention via Cross-Layer Index Reuse",
+      "blurb": "跨层索引复用加速稀疏注意力，优化长序列Transformer效率。",
+      "link": "https://arxiv.org/abs/2603.12201",
+      "canonical_link": "https://arxiv.org/abs/2603.12201",
+      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "infra"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-13",
+      "source_signal": "Top trending paper on HF daily; optimizes sparse attention in transformers via index reuse, direct infra impact for efficient long-context models.",
+      "recommendation": "跨层索引复用加速稀疏注意力，优化长序列Transformer效率。",
+      "summary": "IndexCache通过跨层索引复用加速稀疏注意力计算，减少冗余索引构建。适用于长上下文模型，提升推理速度。",
+      "takeaways": [
+        "显著降低计算开销",
+        "易集成现有Transformer架构"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "4ede10247fae21ef",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "Language, Intelligence, and Model Evaluation Lab",
+      "title": "Video-Based Reward Modeling for Computer-Use Agents",
+      "blurb": "视频奖励建模提升计算机使用代理训练，推动多模态代理发展。",
+      "link": "https://arxiv.org/abs/2603.10178",
+      "canonical_link": "https://arxiv.org/abs/2603.10178",
+      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-13",
+      "source_signal": "High-ranked HF paper; advances reward modeling for video-based computer-use agents, key for multimodal agent training.",
+      "recommendation": "视频奖励建模提升计算机使用代理训练，推动多模态代理发展。",
+      "summary": "提出视频基奖励建模方法，用于计算机使用代理训练。通过视频观察优化奖励信号，提高代理在屏幕交互任务的表现。",
+      "takeaways": [
+        "视频输入增强奖励精度",
+        "适用于代理自主学习"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "9e2051dbbddf3778",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Gen-Verse",
+      "title": "OpenClaw Reinforcement Learning Framework",
+      "blurb": "开源强化学习框架，支持从对话训练个性化代理，大规模并行环境。",
+      "link": "https://github.com/Gen-Verse/OpenClaw-RL",
+      "canonical_link": "https://github.com/Gen-Verse/OpenClaw-RL",
+      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "tooling"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-13",
+      "source_signal": "Featured repo in TLDR engineering; open-source RL framework for training personalized agents from conversations, supports massive parallelization.",
+      "recommendation": "开源强化学习框架，支持从对话训练个性化代理，大规模并行环境。",
+      "summary": "OpenClaw-RL异步RL框架，用于从日常对话训练个性化AI代理。支持大规模环境并行化，推动通用代理开发。",
+      "takeaways": [
+        "对话驱动代理训练",
+        "高效并行化提升泛化"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "1e518e33851d16b2",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Can I Run AI",
+      "title": "Can I run AI locally?",
+      "blurb": "便捷工具检查本地硬件是否支持运行AI模型，帮助用户快速评估边缘部署可行性。",
+      "link": "https://canirun.ai/",
+      "canonical_link": "https://canirun.ai/",
+      "published_at": "2026-03-14T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "tooling"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN top story with 1280 points; practical tool for assessing hardware compatibility with local LLMs, democratizing edge AI deployment.",
+      "recommendation": "便捷工具检查本地硬件是否支持运行AI模型，帮助用户快速评估边缘部署可行性。",
+      "summary": "CanIRun.ai提供硬件基准测试，判断用户设备能否本地运行特定AI模型。支持多种LLM和GPU配置，已获广泛讨论。",
+      "takeaways": [
+        "实时硬件兼容性评分",
+        "加速本地AI实验和优化"
+      ],
+      "topic": "tooling"
     },
     {
       "id": "fd7244b2e67423d7",
@@ -232,53 +232,26 @@
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "NY Times",
+      "author": "Meta / NYT",
       "title": "Meta Delays Rollout of New AI Model After Performance Concerns",
-      "blurb": "Meta Avocado 模型因性能不足推迟发布至少至五月。",
+      "blurb": "Meta Avocado模型因性能不足推迟发布，反映前沿模型竞争激烈。",
       "link": "https://nytimes.com/2026/03/12/technology/meta-avocado-ai-model-delayed.html",
       "canonical_link": "https://nytimes.com/2026/03/12/technology/meta-avocado-ai-model-delayed.html",
-      "published_at": "2026-03-12T20:00:00.000+08:00",
-      "score": 7,
+      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "score": 8,
       "tags": [
         "TLDR AI",
-        "model-release"
+        "business"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "Headlines in TLDR AI, signaling competitive dynamics in frontier models.",
-      "recommendation": "Meta Avocado 模型因性能不足推迟发布至少至五月。",
-      "summary": "Meta 的 Avocado 模型优于 Llama 4 和 Gemini 2.5，但落后于 OpenAI/Anthropic/Google 领先者。公司决定延期优化，以追赶竞争对手。",
+      "source_signal": "TLDR headline; Meta's Avocado model delayed due to lagging top competitors, highlighting competitive pressures and safety/performance tradeoffs.",
+      "recommendation": "Meta Avocado模型因性能不足推迟发布，反映前沿模型竞争激烈。",
+      "summary": "Meta Avocado优于前代和Gemini 2.5，但落后OpenAI/Anthropic/Google模型，至少延至5月发布。专家认为Meta仍有追赶空间。",
       "takeaways": [
-        "Avocado 未达前沿水平",
-        "Meta 仍有追赶窗口"
+        "性能差距导致延期",
+        "Llama 4教训推动谨慎发布"
       ],
-      "topic": "model-release"
-    },
-    {
-      "id": "f39e79b17e911036",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "backnotprop.com",
-      "title": "Claude Code conducts A/B tests on core features",
-      "blurb": "Claude Code 通过 A/B 测试优化核心功能，揭示代理式编码工作流的迭代方法。",
-      "link": "https://backnotprop.com/blog/do-not-ab-test-my-workflow",
-      "canonical_link": "https://backnotprop.com/blog/do-not-ab-test-my-workflow",
-      "published_at": "2026-03-14T20:00:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "Hacker News",
-        "agent"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "HN frontpage with 95 points and 79 comments, discussing agentic coding workflow experimentation.",
-      "recommendation": "Claude Code 通过 A/B 测试优化核心功能，揭示代理式编码工作流的迭代方法。",
-      "summary": "文章探讨 Claude Code 在核心功能上的 A/B 测试实践，强调避免干扰用户工作流的重要性。测试结果显示特定调整提升了编码代理性能。该方法适用于 AI 工具的快速迭代。",
-      "takeaways": [
-        "A/B 测试需谨慎避免破坏用户习惯",
-        "代理编码功能持续优化中"
-      ],
-      "topic": "agent"
+      "topic": "business"
     }
   ]
 }
