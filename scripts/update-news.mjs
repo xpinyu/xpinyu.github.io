@@ -1195,6 +1195,7 @@ function createFeedItem({
     return null;
   }
 
+  const preferredLink = preferredExternalUrl(link) || canonicalLink;
   const publishedDate = parseIsoDate(publishedAt);
   if (!publishedDate) {
     return null;
@@ -1209,7 +1210,7 @@ function createFeedItem({
     author: normalizeText(author),
     title: normalizeText(title) || "Untitled",
     blurb: compressText(blurb, 220),
-    link: String(link).trim(),
+    link: preferredLink,
     canonical_link: canonicalLink,
     published_at: formatHktIso(publishedDate),
     score: normalizeScore(score) ?? 0,
@@ -1243,7 +1244,7 @@ function mergeFeedItems(items) {
       author: normalizeText(item.author),
       title: normalizeText(item.title) || "Untitled",
       blurb: compressText(item.blurb, 220),
-      link: String(item.link || "").trim(),
+      link: preferredExternalUrl(item.link || canonicalLink) || canonicalLink,
     };
 
     const existing = itemMap.get(canonicalLink);
@@ -2336,6 +2337,11 @@ function canonicalizeExternalUrl(value) {
 
   try {
     const url = new URL(value.trim());
+    const canonicalPaperUrl = canonicalizePaperUrl(url);
+    if (canonicalPaperUrl) {
+      return canonicalPaperUrl;
+    }
+
     url.protocol = "https:";
     url.hostname = url.hostname.replace(/^www\./i, "").toLowerCase();
     if (url.hostname === "twitter.com") {
@@ -2373,6 +2379,72 @@ function canonicalizeExternalUrl(value) {
   } catch {
     return "";
   }
+}
+
+function preferredExternalUrl(value) {
+  if (typeof value !== "string" || !value.trim()) {
+    return "";
+  }
+
+  try {
+    const url = new URL(value.trim());
+    const canonicalPaperUrl = canonicalizePaperUrl(url);
+    if (canonicalPaperUrl) {
+      return canonicalPaperUrl;
+    }
+    return value.trim();
+  } catch {
+    return String(value || "").trim();
+  }
+}
+
+function canonicalizePaperUrl(url) {
+  const paperId = extractPaperIdFromUrl(url);
+  if (!paperId) {
+    return "";
+  }
+
+  if (isArxivPaperId(paperId)) {
+    return `https://arxiv.org/abs/${paperId}`;
+  }
+
+  return `https://huggingface.co/papers/${paperId}`;
+}
+
+function extractPaperIdFromUrl(url) {
+  const host = String(url?.hostname || "").replace(/^www\./i, "").toLowerCase();
+  const pathname = String(url?.pathname || "").replace(/\/+$/, "");
+
+  if (host.endsWith("huggingface.co")) {
+    const match = pathname.match(/^\/papers\/(.+)$/i);
+    return normalizePaperId(match?.[1] || "");
+  }
+
+  if (host.endsWith("arxiv.org")) {
+    const match = pathname.match(/^\/(?:abs|pdf|html|format)\/(.+)$/i);
+    return normalizePaperId(match?.[1] || "");
+  }
+
+  return "";
+}
+
+function normalizePaperId(value) {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  return value
+    .trim()
+    .replace(/\.pdf$/i, "")
+    .replace(/v\d+$/i, "");
+}
+
+function isArxivPaperId(value) {
+  const normalized = normalizePaperId(value);
+  return (
+    /^\d{4}\.\d{4,5}$/i.test(normalized) ||
+    /^[a-z-]+(?:\.[a-z-]+)?\/\d{7}$/i.test(normalized)
+  );
 }
 
 function normalizeText(value) {

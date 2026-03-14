@@ -3,7 +3,7 @@
   "current_page": 2,
   "total_pages": 2,
   "page_size": 60,
-  "total_items": 68,
+  "total_items": 65,
   "items": [
     {
       "id": "b53039b370014990",
@@ -33,7 +33,7 @@
       "topic": "business"
     },
     {
-      "id": "257866233b35573d",
+      "id": "33fed319432d1dd1",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
@@ -41,8 +41,8 @@
       "author": "Z.ai",
       "title": "IndexCache: Accelerating Sparse Attention via Cross-Layer Index Reuse",
       "blurb": "IndexCache 通过跨层索引复用加速稀疏注意力，优化 Transformer 推理效率。",
-      "link": "https://huggingface.co/papers/2603.12201",
-      "canonical_link": "https://huggingface.co/papers/2603.12201",
+      "link": "https://arxiv.org/abs/2603.12201",
+      "canonical_link": "https://arxiv.org/abs/2603.12201",
       "published_at": "2026-03-13T20:00:00.000+08:00",
       "score": 8,
       "tags": [
@@ -139,87 +139,6 @@
         "测试时训练提升泛化"
       ],
       "topic": "research"
-    },
-    {
-      "id": "0e4f414f9dfee1ea",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Tencent Hunyuan",
-      "title": "Spatial-TTT: Streaming Visual-based Spatial Intelligence with Test-Time Training",
-      "blurb": "Spatial-TTT 通过测试时训练实现流式视觉空间智能，提升代理实时感知。",
-      "link": "https://huggingface.co/papers/2603.12255",
-      "canonical_link": "https://huggingface.co/papers/2603.12255",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hugging Face Papers",
-        "research"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-13",
-      "source_signal": "Top trending paper on HF daily with 84 trends, advancing visual agents.",
-      "recommendation": "Spatial-TTT 通过测试时训练实现流式视觉空间智能，提升代理实时感知。",
-      "summary": "该论文提出 Spatial-TTT 框架，利用测试时训练增强视觉代理的空间推理能力，支持流式输入。实验显示在空间任务中显著优于基线。",
-      "takeaways": [
-        "测试时训练适应流式视觉",
-        "提升多模态代理空间智能"
-      ],
-      "topic": "research"
-    },
-    {
-      "id": "4ede10247fae21ef",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Language, Intelligence, and Model Evaluation Lab",
-      "title": "Video-Based Reward Modeling for Computer-Use Agents",
-      "blurb": "提出视频基奖励建模，用于计算机使用代理训练。",
-      "link": "https://arxiv.org/abs/2603.10178",
-      "canonical_link": "https://arxiv.org/abs/2603.10178",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hugging Face Papers",
-        "agent"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-13",
-      "source_signal": "Prominent HF paper; introduces video-based rewards for training computer-use agents, key for agentic AI progress.",
-      "recommendation": "提出视频基奖励建模，用于计算机使用代理训练。",
-      "summary": "利用视频轨迹建模奖励函数，提升代理在计算机交互任务的表现。解决传统奖励稀疏问题，支持更真实的用户模拟环境。",
-      "takeaways": [
-        "视频奖励提升代理计算机操作",
-        "适用于真实世界代理训练"
-      ],
-      "topic": "agent"
-    },
-    {
-      "id": "33fed319432d1dd1",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Z.ai",
-      "title": "IndexCache: Accelerating Sparse Attention via Cross-Layer Index Reuse",
-      "blurb": "IndexCache通过跨层索引复用加速稀疏注意力，优化长序列推理。",
-      "link": "https://arxiv.org/abs/2603.12201",
-      "canonical_link": "https://arxiv.org/abs/2603.12201",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "Hugging Face Papers",
-        "infra"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-13",
-      "source_signal": "High-ranked daily paper on HF; proposes efficient sparse attention mechanism via index caching, key for scaling long-context models.",
-      "recommendation": "IndexCache通过跨层索引复用加速稀疏注意力，优化长序列推理。",
-      "summary": "提出IndexCache方法，通过跨层复用索引加速稀疏注意力计算。显著降低Transformer长序列计算开销。适用于高效部署大模型。",
-      "takeaways": [
-        "提升稀疏注意力效率",
-        "利好长上下文模型"
-      ],
-      "topic": "infra"
     }
   ]
 }
