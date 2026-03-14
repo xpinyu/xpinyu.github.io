@@ -65,7 +65,11 @@
   }
 
   .hero {
-    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 18px;
   }
 
   .hero-main {
@@ -100,6 +104,58 @@
     border: 1px solid rgba(27, 63, 139, 0.15);
     color: var(--text-2);
     font-size: 0.73rem;
+  }
+
+  .filters {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  .filter-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 0;
+    color: var(--text-3);
+    font-size: 0.62rem;
+    font-weight: 500;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: color 0.15s ease, opacity 0.15s ease, text-decoration-color 0.15s ease;
+  }
+
+  .filter-chip + .filter-chip {
+    margin-left: 12px;
+    padding-left: 13px;
+  }
+
+  .filter-chip + .filter-chip::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 1px;
+    height: 10px;
+    background: rgba(92, 83, 73, 0.18);
+    transform: translateY(-50%);
+  }
+
+  .filter-chip:hover {
+    color: var(--text-2);
+  }
+
+  .filter-chip.is-active {
+    color: var(--text-1);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.34em;
+    text-decoration-color: rgba(26, 23, 20, 0.42);
   }
 
   .feed {
@@ -137,7 +193,7 @@
 
   .feed-topline {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     gap: 8px;
     margin-bottom: 7px;
@@ -151,10 +207,9 @@
     border: 1px solid rgba(27, 63, 139, 0.18);
     background: rgba(27, 63, 139, 0.06);
     color: var(--accent);
-    font-size: 0.58rem;
+    font-size: 0.6rem;
     font-weight: 600;
-    letter-spacing: 0.035em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
     line-height: 1.35;
   }
 
@@ -164,7 +219,7 @@
     color: var(--vert);
   }
 
-  .source-pill.source-general {
+  .source-pill.source-paper {
     border-color: rgba(27, 63, 139, 0.18);
     background: rgba(27, 63, 139, 0.06);
     color: var(--accent);
@@ -175,6 +230,7 @@
     color: var(--text-3);
     white-space: nowrap;
     flex-shrink: 0;
+    margin-left: auto;
   }
 
   .feed-meta {
@@ -286,6 +342,19 @@
   @media (prefers-reduced-motion: reduce) {
     .page, .feed-item { animation: none; }
   }
+
+  @media (max-width: 640px) {
+    .hero {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .filters {
+      margin-left: 0;
+      align-self: flex-end;
+    }
+  }
 </style>
 </head>
 <body>
@@ -299,6 +368,7 @@
     <div class="hero-main">
       <h1 class="page-title">News</h1>
     </div>
+    <nav class="filters" id="filters" hidden aria-label="Filter news"></nav>
   </header>
 
   <div class="notice" id="notice" hidden></div>
@@ -325,15 +395,22 @@
 
 <script>
   const INDEX_URL = "data/news/index.json";
+  const ARCHIVE_URL = "data/news/archive.json";
   const PAGE_PREFIX = "data/news/pages/";
+  const FILTER_ALL = "all";
+  const FILTER_ARTIST = "artist";
+  const FILTER_PAPER = "paper";
+  const VALID_FILTERS = new Set([FILTER_ALL, FILTER_ARTIST, FILTER_PAPER]);
 
   const noticeEl = document.getElementById("notice");
+  const filtersEl = document.getElementById("filters");
   const feedEl = document.getElementById("feed");
   const emptyStateEl = document.getElementById("empty-state");
   const paginationEl = document.getElementById("pagination");
   const pageChipEl = document.getElementById("page-chip");
   const prevSlotEl = document.getElementById("prev-slot");
   const nextSlotEl = document.getElementById("next-slot");
+  const defaultEmptyStateMessage = emptyStateEl.textContent;
 
   loadFeed().catch((error) => {
     showNotice(`Failed to load the feed: ${error.message}`);
@@ -343,16 +420,60 @@
 
   async function loadFeed() {
     const indexData = await fetchJson(INDEX_URL);
-    const totalPages = normalizePositiveNumber(indexData.total_pages, 1);
+    const currentFilter = getRequestedFilter();
+    renderFilters(currentFilter);
+
+    if (currentFilter === FILTER_ALL) {
+      const totalPages = normalizePositiveNumber(indexData.total_pages, 1);
+      const requestedPage = getRequestedPage();
+      const currentPage = clamp(requestedPage, 1, totalPages);
+
+      if (requestedPage !== currentPage) {
+        replacePageQuery(currentPage, currentFilter);
+      }
+
+      const pageData = await fetchJson(`${PAGE_PREFIX}${currentPage}.json`);
+      renderFeed(
+        indexData,
+        {
+          items: Array.isArray(pageData.items) ? pageData.items : [],
+          currentPage,
+          totalPages,
+          emptyMessage: defaultEmptyStateMessage,
+        },
+        currentFilter,
+      );
+      return;
+    }
+
+    const archiveData = await fetchJson(ARCHIVE_URL);
+    const allItems = Array.isArray(archiveData.items) ? archiveData.items : [];
+    const filteredItems = allItems.filter((item) => matchesFilter(item, currentFilter));
+    const pageSize = normalizePositiveNumber(indexData.page_size || archiveData.page_size, 60);
+    const totalPages = Math.max(1, Math.ceil(filteredItems.length / pageSize));
     const requestedPage = getRequestedPage();
     const currentPage = clamp(requestedPage, 1, totalPages);
 
     if (requestedPage !== currentPage) {
-      replacePageQuery(currentPage);
+      replacePageQuery(currentPage, currentFilter);
     }
 
-    const pageData = await fetchJson(`${PAGE_PREFIX}${currentPage}.json`);
-    renderFeed(indexData, pageData);
+    const start = (currentPage - 1) * pageSize;
+    const items = filteredItems.slice(start, start + pageSize);
+    const emptyMessage = currentFilter === FILTER_ARTIST
+      ? "No artist items yet."
+      : "No paper items yet.";
+
+    renderFeed(
+      indexData,
+      {
+        items,
+        currentPage,
+        totalPages,
+        emptyMessage,
+      },
+      currentFilter,
+    );
   }
 
   async function fetchJson(url) {
@@ -363,29 +484,39 @@
     return response.json();
   }
 
-  function renderFeed(indexData, pageData) {
-    const items = Array.isArray(pageData.items) ? pageData.items : [];
-    const currentPage = normalizePositiveNumber(pageData.current_page, 1);
-    const totalPages = normalizePositiveNumber(pageData.total_pages || indexData.total_pages, 1);
+  function renderFeed(indexData, viewState, currentFilter) {
+    const items = Array.isArray(viewState.items) ? viewState.items : [];
+    const currentPage = normalizePositiveNumber(viewState.currentPage, 1);
+    const totalPages = normalizePositiveNumber(viewState.totalPages || indexData.total_pages, 1);
 
     pageChipEl.textContent = `${currentPage} / ${totalPages}`;
 
     if (!items.length) {
       emptyStateEl.hidden = false;
+      emptyStateEl.textContent = viewState.emptyMessage || defaultEmptyStateMessage;
       feedEl.innerHTML = "";
     } else {
       emptyStateEl.hidden = true;
+      emptyStateEl.textContent = defaultEmptyStateMessage;
       feedEl.innerHTML = items.map(renderItem).join("");
     }
 
-    renderPagination(currentPage, totalPages);
+    renderPagination(currentPage, totalPages, currentFilter);
     renderNotice(indexData);
   }
 
   function renderItem(item) {
-    const sourceClass = item.source_type === "artist"
+    const itemType = getItemType(item);
+    const pillClass = itemType === FILTER_ARTIST
       ? "source-pill source-artist"
-      : "source-pill source-general";
+      : itemType === FILTER_PAPER
+        ? "source-pill source-paper"
+        : "";
+    const pillLabel = itemType === FILTER_ARTIST
+      ? "Artist"
+      : itemType === FILTER_PAPER
+        ? "Paper"
+        : "";
     const metaParts = [
       item.platform,
       item.author,
@@ -395,7 +526,7 @@
       <li class="feed-item">
         <a class="feed-card" href="${escapeAttribute(item.link)}" target="_blank" rel="noopener noreferrer">
           <div class="feed-topline">
-            <span class="${sourceClass}">${escapeHtml(item.source_name || "Source")}</span>
+            ${pillLabel ? `<span class="${pillClass}">${escapeHtml(pillLabel)}</span>` : ""}
             ${item.published_at ? `<span class="feed-time">${escapeHtml(formatTime(item.published_at))} HKT</span>` : ""}
           </div>
           <h2 class="feed-title">
@@ -409,7 +540,24 @@
     `;
   }
 
-  function renderPagination(currentPage, totalPages) {
+  function renderFilters(currentFilter) {
+    const filters = [
+      { id: FILTER_ALL, label: "All" },
+      { id: FILTER_ARTIST, label: "Artist" },
+      { id: FILTER_PAPER, label: "Paper" },
+    ];
+
+    filtersEl.hidden = false;
+    filtersEl.innerHTML = filters
+      .map((filter) => {
+        const activeClass = filter.id === currentFilter ? " is-active" : "";
+        const ariaCurrent = filter.id === currentFilter ? ' aria-current="page"' : "";
+        return `<a class="filter-chip${activeClass}" href="${pageHref(1, filter.id)}"${ariaCurrent}>${escapeHtml(filter.label)}</a>`;
+      })
+      .join("");
+  }
+
+  function renderPagination(currentPage, totalPages, currentFilter) {
     if (totalPages <= 1) {
       paginationEl.hidden = true;
       return;
@@ -417,10 +565,10 @@
 
     paginationEl.hidden = false;
     prevSlotEl.innerHTML = currentPage > 1
-      ? `<a href="${pageHref(currentPage - 1)}">← Newer</a>`
+      ? `<a href="${pageHref(currentPage - 1, currentFilter)}">← Newer</a>`
       : `<span class="disabled">← Newer</span>`;
     nextSlotEl.innerHTML = currentPage < totalPages
-      ? `<a href="${pageHref(currentPage + 1)}">Older →</a>`
+      ? `<a href="${pageHref(currentPage + 1, currentFilter)}">Older →</a>`
       : `<span class="disabled">Older →</span>`;
   }
 
@@ -446,13 +594,67 @@
     return normalizePositiveNumber(params.get("page"), 1);
   }
 
-  function pageHref(pageNumber) {
-    return pageNumber <= 1 ? "news.html" : `news.html?page=${pageNumber}`;
+  function getRequestedFilter() {
+    const params = new URLSearchParams(window.location.search);
+    const filter = normalizeText(params.get("filter"));
+    return VALID_FILTERS.has(filter) ? filter : FILTER_ALL;
   }
 
-  function replacePageQuery(pageNumber) {
-    const nextUrl = pageHref(pageNumber);
+  function pageHref(pageNumber, filter = FILTER_ALL) {
+    const params = new URLSearchParams();
+    if (filter && filter !== FILTER_ALL) {
+      params.set("filter", filter);
+    }
+    if (pageNumber > 1) {
+      params.set("page", String(pageNumber));
+    }
+    const query = params.toString();
+    return query ? `news.html?${query}` : "news.html";
+  }
+
+  function replacePageQuery(pageNumber, filter = FILTER_ALL) {
+    const nextUrl = pageHref(pageNumber, filter);
     window.history.replaceState({}, "", nextUrl);
+  }
+
+  function matchesFilter(item, filter) {
+    if (filter === FILTER_ALL) {
+      return true;
+    }
+    return getItemType(item) === filter;
+  }
+
+  function getItemType(item) {
+    if (normalizeText(item && item.source_type) === FILTER_ARTIST) {
+      return FILTER_ARTIST;
+    }
+    if (isPaperItem(item)) {
+      return FILTER_PAPER;
+    }
+    return "";
+  }
+
+  function isPaperItem(item) {
+    if (normalizeText(item && item.platform) === "hugging face papers") {
+      return true;
+    }
+
+    return [item && item.link, item && item.canonical_link, item && item.source_page].some(isPaperUrl);
+  }
+
+  function isPaperUrl(value) {
+    if (typeof value !== "string" || !value.trim()) {
+      return false;
+    }
+
+    try {
+      const url = new URL(value.trim());
+      const host = url.hostname.replace(/^www\./i, "").toLowerCase();
+      const path = url.pathname.toLowerCase();
+      return host.endsWith("arxiv.org") || (host.endsWith("huggingface.co") && path.startsWith("/papers/"));
+    } catch {
+      return false;
+    }
   }
 
   function normalizePositiveNumber(value, fallback) {
@@ -495,6 +697,10 @@
 
   function escapeAttribute(value) {
     return escapeHtml(value);
+  }
+
+  function normalizeText(value) {
+    return String(value ?? "").trim().toLowerCase();
   }
 </script>
 
