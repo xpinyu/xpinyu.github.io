@@ -2,7 +2,7 @@ name: Update News
 
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 */2 * * *"
   workflow_dispatch:
 
 permissions:
@@ -18,12 +18,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: "20"
+          node-version: "24"
 
       - name: Rebuild news feed
         run: node scripts/update-news.mjs
@@ -31,7 +31,7 @@ jobs:
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
 
       - name: Commit updated feed
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: update news feed
           file_pattern: data/news
