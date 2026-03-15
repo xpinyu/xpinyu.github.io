@@ -431,10 +431,23 @@ async function refreshSource(source) {
 
 async function buildArchive(snapshots) {
   const existingArchive = await readJsonOrNull(ARCHIVE_PATH);
-  const archiveItems = Array.isArray(existingArchive?.items) ? existingArchive.items : [];
-  const incomingItems = snapshots.flatMap((snapshot) => (Array.isArray(snapshot?.items) ? snapshot.items : []));
-  const mergedItems = mergeFeedItems([...archiveItems, ...incomingItems]);
   const updatedAt = resolveFeedUpdatedAt(snapshots, existingArchive);
+  const sourceUpdatedAtById = new Map(
+    snapshots
+      .map((snapshot) => [snapshot?.source?.id, snapshot?.source?.updated_at])
+      .filter(([sourceId, sourceUpdatedAt]) => sourceId && sourceUpdatedAt),
+  );
+  const archiveItems = sanitizeFeedItems(
+    Array.isArray(existingArchive?.items) ? existingArchive.items : [],
+    sourceUpdatedAtById,
+    updatedAt,
+  );
+  const incomingItems = sanitizeFeedItems(
+    snapshots.flatMap((snapshot) => (Array.isArray(snapshot?.items) ? snapshot.items : [])),
+    sourceUpdatedAtById,
+    updatedAt,
+  );
+  const mergedItems = mergeFeedItems([...archiveItems, ...incomingItems]);
   const totalItems = mergedItems.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
   const pages = [];
@@ -483,6 +496,30 @@ function resolveFeedUpdatedAt(snapshots, existingArchive) {
   }
 
   return formatHktIso(NOW);
+}
+
+function sanitizeFeedItems(items, sourceUpdatedAtById, defaultUpdatedAt) {
+  return items
+    .map((item) => sanitizeFeedItem(item, sourceUpdatedAtById, defaultUpdatedAt))
+    .filter(Boolean);
+}
+
+function sanitizeFeedItem(item, sourceUpdatedAtById, defaultUpdatedAt) {
+  if (!item || typeof item !== "object") {
+    return null;
+  }
+
+  const sourceUpdatedAt = parseIsoDate(sourceUpdatedAtById.get(item.source_id));
+  const fallbackUpdatedAt = parseIsoDate(defaultUpdatedAt) || NOW;
+  const ceiling = sourceUpdatedAt || fallbackUpdatedAt;
+  const publishedAt = parseIsoDate(item.published_at);
+  const effectivePublishedAt =
+    publishedAt && publishedAt.getTime() <= ceiling.getTime() ? publishedAt : ceiling;
+
+  return {
+    ...item,
+    published_at: formatHktIso(effectivePublishedAt),
+  };
 }
 
 async function writePages(pages) {
@@ -1577,7 +1614,7 @@ async function fetchDailyDigestPage(config, window) {
         source_date_key: sourceDateKey,
         source_page: sourcePage,
         fetched_url: response.url,
-        fallback_published_at: makeUtcMiddayIso(sourceDateKey),
+        fallback_published_at: resolveDailyDigestFallbackPublishedAt(sourceDateKey, window.end),
         excerpt,
       };
     } catch (error) {
@@ -1886,6 +1923,24 @@ function getUtcDayStart(now = new Date()) {
 
 function makeUtcMiddayIso(dateKey) {
   return `${dateKey}T${pad2(DAILY_DIGEST_FALLBACK_HOUR_UTC)}:00:00.000Z`;
+}
+
+function resolveDailyDigestFallbackPublishedAt(dateKey, windowEnd) {
+  const fallbackDate = resolveDailyDigestFallbackDate(dateKey, windowEnd);
+  return fallbackDate ? formatIsoUtc(fallbackDate) : "";
+}
+
+function resolveDailyDigestFallbackDate(dateKey, windowEnd) {
+  const fallbackDate = parseIsoDate(makeUtcMiddayIso(dateKey));
+  if (!fallbackDate) {
+    return windowEnd ? new Date(windowEnd) : null;
+  }
+
+  if (windowEnd && getUtcDateKey(windowEnd) === dateKey && fallbackDate.getTime() > windowEnd.getTime()) {
+    return new Date(windowEnd);
+  }
+
+  return fallbackDate;
 }
 
 function makeUtcDayStartIso(dateKey) {
@@ -2208,8 +2263,15 @@ function validateDailyDigestItems(items, { pages, window, maxItems }) {
     }
 
     const sourcePageRecord = pageBySourcePage.get(sourcePage) || pageByPlatform.get(platform);
-    const fallbackPublishedAt = sourcePageRecord?.fallback_published_at || makeUtcMiddayIso(window.utc_date);
-    const publishedAt = parseIsoDate(item.published_at) || parseIsoDate(fallbackPublishedAt);
+    const fallbackDateKey = String(sourcePageRecord?.source_date_key || window.utc_date || "").trim();
+    const fallbackPublishedAt =
+      resolveDailyDigestFallbackDate(fallbackDateKey, window.end) ||
+      parseIsoDate(sourcePageRecord?.fallback_published_at) ||
+      resolveDailyDigestFallbackDate(window.utc_date, window.end);
+    let publishedAt = parseIsoDate(item.published_at);
+    if (!publishedAt || publishedAt.getTime() > window.end.getTime()) {
+      publishedAt = fallbackPublishedAt;
+    }
     if (!publishedAt) {
       continue;
     }
