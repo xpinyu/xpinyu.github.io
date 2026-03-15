@@ -4,38 +4,65 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 12,
-    "updated_at": "2026-03-15T14:16:59.856+08:00",
-    "item_count": 5,
+    "updated_at": "2026-03-16T02:30:29.519+08:00",
+    "item_count": 8,
     "window_start": "2026-03-13T00:00:00.000Z",
-    "window_end": "2026-03-15T06:16:59.856Z"
+    "window_end": "2026-03-15T18:30:29.519Z"
   },
   "items": [
     {
-      "id": "b53039b370014990",
+      "id": "d35625589d71082e",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "Anthropic",
-      "title": "Launching the Claude Partner Network",
-      "blurb": "Anthropic推出Claude合作伙伴网络，投资1亿美元加速企业级Claude模型采用。这是AI商业化重要信号。",
-      "link": "https://anthropic.com/news/claude-partner-network",
-      "canonical_link": "https://anthropic.com/news/claude-partner-network",
-      "published_at": "2026-03-15T06:17:00.000+08:00",
+      "platform": "TLDR AI",
+      "author": "Axiom",
+      "title": "AI Writes Buggy Code. A Silicon Valley Start-Up Wants to Fix It",
+      "blurb": "Axiom 获 2 亿美元融资，开发形式化验证 AI 代码生成。",
+      "link": "https://nytimes.com/2026/03/12/technology/axiom-ai-code-funding.html",
+      "canonical_link": "https://nytimes.com/2026/03/12/technology/axiom-ai-code-funding.html",
+      "published_at": "2026-03-13T20:00:00.000+08:00",
       "score": 9,
       "tags": [
-        "Hacker News",
+        "TLDR AI",
         "business"
       ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Top HN story with 122 points and 55 comments, signaling strong community interest in Anthropic's enterprise expansion and $100M investment.",
-      "recommendation": "Anthropic推出Claude合作伙伴网络，投资1亿美元加速企业级Claude模型采用。这是AI商业化重要信号。",
-      "summary": "Anthropic发布Claude合作伙伴网络计划，投资1亿美元支持开发者、企业和服务提供商构建基于Claude的应用。网络包括技术支持、联合营销和定制解决方案，推动Claude在企业场景落地。该举措标志Anthropic从模型提供商向生态构建者转型。",
+      "source_page": "https://tldr.tech/ai/2026-03-13",
+      "source_signal": "TLDR launch; Axiom raises $200M for formally verified AI code generation.",
+      "recommendation": "Axiom 获 2 亿美元融资，开发形式化验证 AI 代码生成。",
+      "summary": "Axiom 构建 Verified AI，使用 Lean 语言形式验证代码输出。从数学证明转移到代码验证，确保无 bug 和安全。该初创一年内估值 16 亿美元。",
       "takeaways": [
-        "1亿美元投资凸显Anthropic企业战略重点",
-        "合作伙伴网络将加速Claude商业部署"
+        "形式化验证防 AI 代码错误",
+        "数学证明转代码安全"
       ],
       "topic": "business"
+    },
+    {
+      "id": "a40ac27d6d03a19d",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "Tencent Hunyuan",
+      "title": "Spatial-TTT: Streaming Visual-based Spatial Intelligence with Test-Time Training",
+      "blurb": "实时视觉空间智能新方法，适用于流式代理任务。",
+      "link": "https://arxiv.org/abs/2603.12255",
+      "canonical_link": "https://arxiv.org/abs/2603.12255",
+      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "Hugging Face Papers",
+        "research"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-13",
+      "source_signal": "Top trending paper on HF daily with 102 scores; introduces test-time training for real-time spatial reasoning in vision agents.",
+      "recommendation": "实时视觉空间智能新方法，适用于流式代理任务。",
+      "summary": "Spatial-TTT 通过测试时训练提升视觉代理的空间智能，支持流式处理。结合测试时适应和空间推理，提高了动态环境中的性能。该技术对机器人和自动驾驶有重要意义。",
+      "takeaways": [
+        "测试时训练提升空间推理",
+        "支持流式视觉输入"
+      ],
+      "topic": "research"
     },
     {
       "id": "60f34e302a06ac9b",
@@ -45,7 +72,7 @@
       "platform": "TLDR AI",
       "author": "Cursor",
       "title": "How we compare model quality in Cursor",
-      "blurb": "Cursor发布CursorBench基准，结合在线离线评估真实编码代理性能。关键工具开发信号。",
+      "blurb": "CursorBench：真实开发者会话基准，用于代理模型评估。",
       "link": "https://cursor.com/blog/cursorbench",
       "canonical_link": "https://cursor.com/blog/cursorbench",
       "published_at": "2026-03-13T20:00:00.000+08:00",
@@ -55,41 +82,95 @@
         "benchmark"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "Featured in TLDR AI engineering section, introduces CursorBench as a new benchmark for AI coding agents grounded in real developer workflows.",
-      "recommendation": "Cursor发布CursorBench基准，结合在线离线评估真实编码代理性能。关键工具开发信号。",
-      "summary": "CursorBench是基于真实Cursor会话的内部评估套件，衡量代理的正确性、代码质量、效率和交互行为。结合在线流量分析捕捉回归。该混合方法确保模型质量与生产开发对齐，支持快速迭代。",
+      "source_signal": "TLDR engineering section; introduces CursorBench, a real-world benchmark for coding agents.",
+      "recommendation": "CursorBench：真实开发者会话基准，用于代理模型评估。",
+      "summary": "Cursor 使用 CursorBench 评估模型质量，基于真实工程会话。结合在线离线评估，测量代码正确性、效率和交互行为。确保模型与生产环境对齐。",
       "takeaways": [
-        "混合评估捕捉真实代理性能",
-        "CursorBench聚焦开发者工作流"
+        "混合评估捕捉回归",
+        "聚焦代理性能维度"
       ],
       "topic": "benchmark"
     },
     {
-      "id": "d35625589d71082e",
+      "id": "4ede10247fae21ef",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "New York Times",
-      "title": "AI Writes Buggy Code. A Silicon Valley Start-Up Wants to Fix It",
-      "blurb": "Axiom获2亿美元融资，开发形式化验证AI代码生成。安全与工具重大商业信号。",
-      "link": "https://nytimes.com/2026/03/12/technology/axiom-ai-code-funding.html",
-      "canonical_link": "https://nytimes.com/2026/03/12/technology/axiom-ai-code-funding.html",
-      "published_at": "2026-03-12T20:00:00.000+08:00",
+      "platform": "Hugging Face Papers",
+      "author": "Language, Intelligence, and Model Evaluation Lab",
+      "title": "Video-Based Reward Modeling for Computer-Use Agents",
+      "blurb": "视频奖励建模提升计算机使用代理训练效率。",
+      "link": "https://arxiv.org/abs/2603.10178",
+      "canonical_link": "https://arxiv.org/abs/2603.10178",
+      "published_at": "2026-03-13T20:00:00.000+08:00",
       "score": 8,
       "tags": [
-        "TLDR AI",
-        "business"
+        "Hugging Face Papers",
+        "agent"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "TLDR AI coverage of Axiom's $200M funding at $1.6B valuation for verified AI code generation using formal methods.",
-      "recommendation": "Axiom获2亿美元融资，开发形式化验证AI代码生成。安全与工具重大商业信号。",
-      "summary": "Axiom专注Verified AI，使用Lean语言形式化验证代码输出，避免统计性错误。公司从数学证明转移技能至代码验证，已获Menlo Ventures领投2亿美元A轮。目标证明代码正确性和无攻击面。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-13",
+      "source_signal": "High-ranked HF paper; develops video rewards for training agents on computer tasks, critical for RLHF in GUIs.",
+      "recommendation": "视频奖励建模提升计算机使用代理训练效率。",
+      "summary": "提出基于视频的奖励模型，用于计算机使用代理的强化学习。从屏幕录像生成密集奖励信号，提高代理在GUI交互中的表现。该方法桥接了视觉观察与动作奖励。",
       "takeaways": [
-        "形式化验证解决AI代码bug",
-        "16亿美元估值反映市场需求"
+        "视频奖励适用于GUI代理",
+        "提升RL训练稳定性"
       ],
-      "topic": "business"
+      "topic": "agent"
+    },
+    {
+      "id": "9dc6d181cdb171a4",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "zzk273",
+      "title": "Learning athletic humanoid tennis skills from imperfect human motion data",
+      "blurb": "这项研究展示了人形机器人从不完美人类动作数据中学习网球技能的创新方法，具有高度实用性。",
+      "link": "https://zzk273.github.io/LATENT",
+      "canonical_link": "https://zzk273.github.io/LATENT",
+      "published_at": "2026-03-15T23:30:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "research"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Surfaced on HN frontpage with 24 points and discussion; advances humanoid robotics via imitation learning from noisy data, key for real-world agent deployment.",
+      "recommendation": "这项研究展示了人形机器人从不完美人类动作数据中学习网球技能的创新方法，具有高度实用性。",
+      "summary": "研究提出从不完美人类运动数据中训练人形机器人网球技能的方法。通过模仿学习和数据增强，机器人能在真实环境中表现出色。该工作桥接了模拟与现实的差距，推动机器人代理发展。",
+      "takeaways": [
+        "利用不完美数据训练提升机器人鲁棒性",
+        "适用于体育和复杂运动任务"
+      ],
+      "topic": "research"
+    },
+    {
+      "id": "3f15890759eb05cb",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "5 authors",
+      "title": "XSkill: Continual Learning from Experience and Skills in Multimodal Agents",
+      "blurb": "多模态代理持续学习框架，支持经验复用。",
+      "link": "https://arxiv.org/abs/2603.12056",
+      "canonical_link": "https://arxiv.org/abs/2603.12056",
+      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-13",
+      "source_signal": "HF trending; enables continual skill learning in multimodal agents from experience replay.",
+      "recommendation": "多模态代理持续学习框架，支持经验复用。",
+      "summary": "XSkill 框架让多模态代理从经验和技能中持续学习。通过经验回放和技能库，提高长期任务适应性。该工作针对代理的终身学习挑战。",
+      "takeaways": [
+        "经验驱动持续学习",
+        "适用于多模态环境"
+      ],
+      "topic": "agent"
     },
     {
       "id": "13c0963ae105bbbc",
@@ -99,7 +180,7 @@
       "platform": "TLDR AI",
       "author": "Anthropic",
       "title": "Claude now creates interactive charts, diagrams, and visualizations",
-      "blurb": "Claude新增交互式图表和可视化生成功能，支持对话中动态修改。产品迭代亮点。",
+      "blurb": "Claude 新增交互式图表和可视化生成功能，提升用户体验。",
       "link": "https://claude.com/blog/claude-builds-visuals",
       "canonical_link": "https://claude.com/blog/claude-builds-visuals",
       "published_at": "2026-03-13T20:00:00.000+08:00",
@@ -109,41 +190,41 @@
         "product"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "Headline launch in TLDR AI, showcasing Claude's new generative UI for visuals, enhancing multimodal capabilities.",
-      "recommendation": "Claude新增交互式图表和可视化生成功能，支持对话中动态修改。产品迭代亮点。",
-      "summary": "Claude现可自动或按需创建自定义图表、流程图等可视化，并在对话中迭代修改。功能默认开启，利用生成式UI注入HTML。示例包括数据图表和动态调整，支持复杂数据呈现。",
+      "source_signal": "Featured in TLDR headlines; new Claude feature for generative visuals, enhancing interactive AI tools.",
+      "recommendation": "Claude 新增交互式图表和可视化生成功能，提升用户体验。",
+      "summary": "Claude 推出生成交互图表、图解和可视化功能，支持对话中动态修改。用户可直接请求视觉元素，Claude 自动决定生成。该 beta 特性默认开启。",
       "takeaways": [
-        "生成式UI实现交互可视化",
-        "提升Claude多模态实用性"
+        "生成式 UI 提升交互",
+        "适用于数据可视化任务"
       ],
       "topic": "product"
     },
     {
-      "id": "3bc84f381ea78a7f",
+      "id": "9e2051dbbddf3778",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "Ayush Tambde",
-      "title": "Tree Search Distillation for Language Models Using PPO",
-      "blurb": "使用PPO的树搜索蒸馏方法提升语言模型推理能力。高价值研究，适用于模型优化。",
-      "link": "https://ayushtambde.com/blog/tree-search-distillation-for-language-models-using-ppo",
-      "canonical_link": "https://ayushtambde.com/blog/tree-search-distillation-for-language-models-using-ppo",
-      "published_at": "2026-03-15T09:17:00.000+08:00",
+      "platform": "TLDR AI",
+      "author": "Gen-Verse",
+      "title": "OpenClaw Reinforcement Learning Framework",
+      "blurb": "OpenClaw-RL：从对话训练个性化代理的异步 RL 框架。",
+      "link": "https://github.com/Gen-Verse/OpenClaw-RL",
+      "canonical_link": "https://github.com/Gen-Verse/OpenClaw-RL",
+      "published_at": "2026-03-13T20:00:00.000+08:00",
       "score": 7,
       "tags": [
-        "Hacker News",
-        "research"
+        "TLDR AI",
+        "tooling"
       ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "HN story with 43 points, highlighting novel research on improving language model reasoning via tree search and PPO distillation.",
-      "recommendation": "使用PPO的树搜索蒸馏方法提升语言模型推理能力。高价值研究，适用于模型优化。",
-      "summary": "文章探讨通过PPO强化学习将树搜索能力蒸馏到语言模型中，提升复杂推理性能。方法结合蒙特卡洛树搜索生成高质量轨迹，并用PPO训练策略模型。实验显示在数学和代码基准上显著优于基线。该技术可降低推理时计算开销。",
+      "source_page": "https://tldr.tech/ai/2026-03-13",
+      "source_signal": "TLDR repo highlight; async RL framework for training agents from conversations.",
+      "recommendation": "OpenClaw-RL：从对话训练个性化代理的异步 RL 框架。",
+      "summary": "OpenClaw-RL 支持大规模环境并行，用于从日常对话训练通用代理。异步设计加速开发个性化 AI。该 GitHub 开源工具简化 RL 工作流。",
       "takeaways": [
-        "树搜索蒸馏提升LM推理效率",
-        "PPO训练生成高质量蒸馏数据"
+        "对话驱动 RL",
+        "支持大规模并行"
       ],
-      "topic": "research"
+      "topic": "tooling"
     }
   ]
 }

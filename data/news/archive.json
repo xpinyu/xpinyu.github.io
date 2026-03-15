@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-03-16T01:21:54.325+08:00",
+  "updated_at": "2026-03-16T02:30:29.519+08:00",
   "page_size": 60,
-  "total_items": 284,
+  "total_items": 286,
   "sources": [
     {
       "id": "general",
@@ -28,10 +28,10 @@
       "name": "Daily AI Briefs",
       "type": "daily_ai_briefs",
       "refresh_hours": 12,
-      "updated_at": "2026-03-15T14:16:59.856+08:00",
-      "item_count": 5,
+      "updated_at": "2026-03-16T02:30:29.519+08:00",
+      "item_count": 8,
       "window_start": "2026-03-13T00:00:00.000Z",
-      "window_end": "2026-03-15T06:16:59.856Z"
+      "window_end": "2026-03-15T18:30:29.519Z"
     },
     {
       "id": "x_ai_signals",
@@ -357,6 +357,33 @@
         "workflow",
         "tooling"
       ]
+    },
+    {
+      "id": "9dc6d181cdb171a4",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "zzk273",
+      "title": "Learning athletic humanoid tennis skills from imperfect human motion data",
+      "blurb": "这项研究展示了人形机器人从不完美人类动作数据中学习网球技能的创新方法，具有高度实用性。",
+      "link": "https://zzk273.github.io/LATENT",
+      "canonical_link": "https://zzk273.github.io/LATENT",
+      "published_at": "2026-03-15T23:30:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "research"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Surfaced on HN frontpage with 24 points and discussion; advances humanoid robotics via imitation learning from noisy data, key for real-world agent deployment.",
+      "recommendation": "这项研究展示了人形机器人从不完美人类动作数据中学习网球技能的创新方法，具有高度实用性。",
+      "summary": "研究提出从不完美人类运动数据中训练人形机器人网球技能的方法。通过模仿学习和数据增强，机器人能在真实环境中表现出色。该工作桥接了模拟与现实的差距，推动机器人代理发展。",
+      "takeaways": [
+        "利用不完美数据训练提升机器人鲁棒性",
+        "适用于体育和复杂运动任务"
+      ],
+      "topic": "research"
     },
     {
       "id": "59c86ca6bae8af76",
@@ -5424,6 +5451,33 @@
       "takeaways": [
         "视频监督增强代理奖励信号。",
         "适用于 GUI 和计算机控制任务。"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "3f15890759eb05cb",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "5 authors",
+      "title": "XSkill: Continual Learning from Experience and Skills in Multimodal Agents",
+      "blurb": "多模态代理持续学习框架，支持经验复用。",
+      "link": "https://arxiv.org/abs/2603.12056",
+      "canonical_link": "https://arxiv.org/abs/2603.12056",
+      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-13",
+      "source_signal": "HF trending; enables continual skill learning in multimodal agents from experience replay.",
+      "recommendation": "多模态代理持续学习框架，支持经验复用。",
+      "summary": "XSkill 框架让多模态代理从经验和技能中持续学习。通过经验回放和技能库，提高长期任务适应性。该工作针对代理的终身学习挑战。",
+      "takeaways": [
+        "经验驱动持续学习",
+        "适用于多模态环境"
       ],
       "topic": "agent"
     }
