@@ -4,227 +4,227 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 12,
-    "updated_at": "2026-03-16T02:30:29.519+08:00",
+    "updated_at": "2026-03-16T16:04:29.967+08:00",
     "item_count": 8,
     "window_start": "2026-03-13T00:00:00.000Z",
-    "window_end": "2026-03-15T18:30:29.519Z"
+    "window_end": "2026-03-16T08:04:29.967Z"
   },
   "items": [
     {
-      "id": "d35625589d71082e",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Axiom",
-      "title": "AI Writes Buggy Code. A Silicon Valley Start-Up Wants to Fix It",
-      "blurb": "Axiom 获 2 亿美元融资，开发形式化验证 AI 代码生成。",
-      "link": "https://nytimes.com/2026/03/12/technology/axiom-ai-code-funding.html",
-      "canonical_link": "https://nytimes.com/2026/03/12/technology/axiom-ai-code-funding.html",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "TLDR AI",
-        "business"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "TLDR launch; Axiom raises $200M for formally verified AI code generation.",
-      "recommendation": "Axiom 获 2 亿美元融资，开发形式化验证 AI 代码生成。",
-      "summary": "Axiom 构建 Verified AI，使用 Lean 语言形式验证代码输出。从数学证明转移到代码验证，确保无 bug 和安全。该初创一年内估值 16 亿美元。",
-      "takeaways": [
-        "形式化验证防 AI 代码错误",
-        "数学证明转代码安全"
-      ],
-      "topic": "business"
-    },
-    {
-      "id": "a40ac27d6d03a19d",
+      "id": "e61fc5fea3ad606c",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hugging Face Papers",
-      "author": "Tencent Hunyuan",
-      "title": "Spatial-TTT: Streaming Visual-based Spatial Intelligence with Test-Time Training",
-      "blurb": "实时视觉空间智能新方法，适用于流式代理任务。",
-      "link": "https://arxiv.org/abs/2603.12255",
-      "canonical_link": "https://arxiv.org/abs/2603.12255",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "author": "KaLM-Embedding",
+      "title": "LMEB: Long-horizon Memory Embedding Benchmark",
+      "blurb": "首个长视野记忆嵌入基准，急需关注以评估嵌入模型在 RAG 等应用中的真实性能。",
+      "link": "https://arxiv.org/abs/2603.12572",
+      "canonical_link": "https://arxiv.org/abs/2603.12572",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
       "score": 9,
       "tags": [
         "Hugging Face Papers",
-        "research"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-13",
-      "source_signal": "Top trending paper on HF daily with 102 scores; introduces test-time training for real-time spatial reasoning in vision agents.",
-      "recommendation": "实时视觉空间智能新方法，适用于流式代理任务。",
-      "summary": "Spatial-TTT 通过测试时训练提升视觉代理的空间智能，支持流式处理。结合测试时适应和空间推理，提高了动态环境中的性能。该技术对机器人和自动驾驶有重要意义。",
-      "takeaways": [
-        "测试时训练提升空间推理",
-        "支持流式视觉输入"
-      ],
-      "topic": "research"
-    },
-    {
-      "id": "60f34e302a06ac9b",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Cursor",
-      "title": "How we compare model quality in Cursor",
-      "blurb": "CursorBench：真实开发者会话基准，用于代理模型评估。",
-      "link": "https://cursor.com/blog/cursorbench",
-      "canonical_link": "https://cursor.com/blog/cursorbench",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
         "benchmark"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "TLDR engineering section; introduces CursorBench, a real-world benchmark for coding agents.",
-      "recommendation": "CursorBench：真实开发者会话基准，用于代理模型评估。",
-      "summary": "Cursor 使用 CursorBench 评估模型质量，基于真实工程会话。结合在线离线评估，测量代码正确性、效率和交互行为。确保模型与生产环境对齐。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "Hugging Face 当日论文榜首，32 次提交，推出长时序记忆嵌入基准，推动嵌入模型在长期依赖任务上的评估标准化。",
+      "recommendation": "首个长视野记忆嵌入基准，急需关注以评估嵌入模型在 RAG 等应用中的真实性能。",
+      "summary": "LMEB 基准针对长序列记忆能力设计多种任务，测试嵌入模型在远距离语义检索的鲁棒性。伴随 KaLM-Embedding 模型发布，提供开源评估工具。揭示当前模型在长上下文下的局限。",
       "takeaways": [
-        "混合评估捕捉回归",
-        "聚焦代理性能维度"
+        "长时序任务暴露嵌入模型弱点",
+        "开源基准加速领域进步"
       ],
       "topic": "benchmark"
     },
     {
-      "id": "4ede10247fae21ef",
+      "id": "4124730fcdcad300",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hugging Face Papers",
-      "author": "Language, Intelligence, and Model Evaluation Lab",
-      "title": "Video-Based Reward Modeling for Computer-Use Agents",
-      "blurb": "视频奖励建模提升计算机使用代理训练效率。",
-      "link": "https://arxiv.org/abs/2603.10178",
-      "canonical_link": "https://arxiv.org/abs/2603.10178",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 8,
+      "author": "Samsung Research",
+      "title": "LookaheadKV: Fast and Accurate KV Cache Eviction by Glimpsing into the Future without Generation",
+      "blurb": "LookaheadKV 显著降低 KV 缓存开销，适用于资源受限部署。",
+      "link": "https://arxiv.org/abs/2603.10899",
+      "canonical_link": "https://arxiv.org/abs/2603.10899",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 9,
       "tags": [
         "Hugging Face Papers",
-        "agent"
+        "infra"
       ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-13",
-      "source_signal": "High-ranked HF paper; develops video rewards for training agents on computer tasks, critical for RLHF in GUIs.",
-      "recommendation": "视频奖励建模提升计算机使用代理训练效率。",
-      "summary": "提出基于视频的奖励模型，用于计算机使用代理的强化学习。从屏幕录像生成密集奖励信号，提高代理在GUI交互中的表现。该方法桥接了视觉观察与动作奖励。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "Hugging Face 基础设施优化论文，提出无生成预览的 KV 缓存驱逐策略，提升长上下文推理效率。",
+      "recommendation": "LookaheadKV 显著降低 KV 缓存开销，适用于资源受限部署。",
+      "summary": "方法通过未来 token 预览预测重要性，实现精准 KV 驱逐，无需额外生成步骤。在长序列任务中加速 2-3x。Samsung 研究开源实现。",
       "takeaways": [
-        "视频奖励适用于GUI代理",
-        "提升RL训练稳定性"
+        "预览机制优化缓存管理",
+        "推理速度与准确性双赢"
       ],
-      "topic": "agent"
+      "topic": "infra"
     },
     {
-      "id": "9dc6d181cdb171a4",
+      "id": "2496f471c0a420d3",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "zzk273",
-      "title": "Learning athletic humanoid tennis skills from imperfect human motion data",
-      "blurb": "这项研究展示了人形机器人从不完美人类动作数据中学习网球技能的创新方法，具有高度实用性。",
-      "link": "https://zzk273.github.io/LATENT",
-      "canonical_link": "https://zzk273.github.io/LATENT",
-      "published_at": "2026-03-15T23:30:00.000+08:00",
-      "score": 8,
+      "author": "Sebastian Raschka",
+      "title": "LLM Architecture Gallery",
+      "blurb": "这是一个优秀的 LLM 架构参考工具，适合初学者和专家快速导航 Transformer 变体。强烈推荐收藏用于模型研究。",
+      "link": "https://sebastianraschka.com/llm-architecture-gallery",
+      "canonical_link": "https://sebastianraschka.com/llm-architecture-gallery",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 9,
       "tags": [
         "Hacker News",
         "research"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Surfaced on HN frontpage with 24 points and discussion; advances humanoid robotics via imitation learning from noisy data, key for real-world agent deployment.",
-      "recommendation": "这项研究展示了人形机器人从不完美人类动作数据中学习网球技能的创新方法，具有高度实用性。",
-      "summary": "研究提出从不完美人类运动数据中训练人形机器人网球技能的方法。通过模仿学习和数据增强，机器人能在真实环境中表现出色。该工作桥接了模拟与现实的差距，推动机器人代理发展。",
+      "source_signal": "Hacker News 上获得 370 points 高热度讨论，提供 LLM 架构的全面视觉化图库，便于研究者和开发者快速对比和理解各种模型设计。",
+      "recommendation": "这是一个优秀的 LLM 架构参考工具，适合初学者和专家快速导航 Transformer 变体。强烈推荐收藏用于模型研究。",
+      "summary": "该图库收集了数十种 LLM 架构的详细图示，包括 Transformer、Mamba 等前沿设计。每种架构附带关键创新点解释和论文链接。帮助用户可视化理解模型演进路径。",
       "takeaways": [
-        "利用不完美数据训练提升机器人鲁棒性",
-        "适用于体育和复杂运动任务"
+        "可视化 LLM 架构演化，便于对比创新点",
+        "包含代码实现和论文引用，提升研究效率"
       ],
       "topic": "research"
     },
     {
-      "id": "3f15890759eb05cb",
+      "id": "3b86df9b2faf2d21",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hugging Face Papers",
-      "author": "5 authors",
-      "title": "XSkill: Continual Learning from Experience and Skills in Multimodal Agents",
-      "blurb": "多模态代理持续学习框架，支持经验复用。",
-      "link": "https://arxiv.org/abs/2603.12056",
-      "canonical_link": "https://arxiv.org/abs/2603.12056",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "author": "Starlab",
+      "title": "Detecting Intrinsic and Instrumental Self-Preservation in Autonomous Agents: The Unified Continuation-Interest Protocol",
+      "blurb": "Continuation-Interest 协议为代理安全评估提供新范式。",
+      "link": "https://arxiv.org/abs/2603.11382",
+      "canonical_link": "https://arxiv.org/abs/2603.11382",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
       "score": 8,
       "tags": [
         "Hugging Face Papers",
-        "agent"
+        "safety"
       ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-13",
-      "source_signal": "HF trending; enables continual skill learning in multimodal agents from experience replay.",
-      "recommendation": "多模态代理持续学习框架，支持经验复用。",
-      "summary": "XSkill 框架让多模态代理从经验和技能中持续学习。通过经验回放和技能库，提高长期任务适应性。该工作针对代理的终身学习挑战。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "Hugging Face 安全论文，提出统一协议检测代理的自保行为，防范内在与工具性风险。",
+      "recommendation": "Continuation-Interest 协议为代理安全评估提供新范式。",
+      "summary": "论文定义自保检测框架，区分内在与工具性动机。通过协议测试代理在终止场景下的行为。Starlab 开源工具，促进对齐研究。",
       "takeaways": [
-        "经验驱动持续学习",
-        "适用于多模态环境"
+        "区分自保动机类型",
+        "标准化安全评估协议"
       ],
-      "topic": "agent"
+      "topic": "safety"
     },
     {
-      "id": "13c0963ae105bbbc",
+      "id": "5dcb8fdfa516809e",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Anthropic",
-      "title": "Claude now creates interactive charts, diagrams, and visualizations",
-      "blurb": "Claude 新增交互式图表和可视化生成功能，提升用户体验。",
-      "link": "https://claude.com/blog/claude-builds-visuals",
-      "canonical_link": "https://claude.com/blog/claude-builds-visuals",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "platform": "Hugging Face Papers",
+      "author": "RUC-GSAI-IIRLab",
+      "title": "HomeSafe-Bench: Evaluating Vision-Language Models on Unsafe Action Detection for Embodied Agents in Household Scenarios",
+      "blurb": "家庭安全基准填补 VLM 在具身代理安全评估的空白，必备参考。",
+      "link": "https://arxiv.org/abs/2603.11975",
+      "canonical_link": "https://arxiv.org/abs/2603.11975",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
       "score": 8,
       "tags": [
-        "TLDR AI",
-        "product"
+        "Hugging Face Papers",
+        "benchmark"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "Featured in TLDR headlines; new Claude feature for generative visuals, enhancing interactive AI tools.",
-      "recommendation": "Claude 新增交互式图表和可视化生成功能，提升用户体验。",
-      "summary": "Claude 推出生成交互图表、图解和可视化功能，支持对话中动态修改。用户可直接请求视觉元素，Claude 自动决定生成。该 beta 特性默认开启。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "Hugging Face 安全相关基准论文，针对家用场景中具身代理的不安全动作检测评估 VLM。",
+      "recommendation": "家庭安全基准填补 VLM 在具身代理安全评估的空白，必备参考。",
+      "summary": "HomeSafe-Bench 构建家用场景数据集，测试 VLM 识别危险动作的能力。揭示当前模型在细粒度安全感知的不足。提供评估协议和 leaderboards。",
       "takeaways": [
-        "生成式 UI 提升交互",
-        "适用于数据可视化任务"
+        "暴露 VLM 在具身安全任务弱点",
+        "开源数据集推动安全研究"
       ],
-      "topic": "product"
+      "topic": "benchmark"
     },
     {
-      "id": "9e2051dbbddf3778",
+      "id": "68c78c0b2798ba52",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Gen-Verse",
-      "title": "OpenClaw Reinforcement Learning Framework",
-      "blurb": "OpenClaw-RL：从对话训练个性化代理的异步 RL 框架。",
-      "link": "https://github.com/Gen-Verse/OpenClaw-RL",
-      "canonical_link": "https://github.com/Gen-Verse/OpenClaw-RL",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 7,
+      "platform": "Hugging Face Papers",
+      "author": "14 authors",
+      "title": "daVinci-Env: Open SWE Environment Synthesis at Scale",
+      "blurb": "daVinci-Env 为 SWE-bench 等代理基准提供合成环境，极大降低数据获取成本。",
+      "link": "https://arxiv.org/abs/2603.13023",
+      "canonical_link": "https://arxiv.org/abs/2603.13023",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 8,
       "tags": [
-        "TLDR AI",
+        "Hugging Face Papers",
         "tooling"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "TLDR repo highlight; async RL framework for training agents from conversations.",
-      "recommendation": "OpenClaw-RL：从对话训练个性化代理的异步 RL 框架。",
-      "summary": "OpenClaw-RL 支持大规模环境并行，用于从日常对话训练通用代理。异步设计加速开发个性化 AI。该 GitHub 开源工具简化 RL 工作流。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "Hugging Face 高提交论文，引入大规模开源软件工程环境合成工具，支持代理训练和基准测试。",
+      "recommendation": "daVinci-Env 为 SWE-bench 等代理基准提供合成环境，极大降低数据获取成本。",
+      "summary": "该工作提出自动化生成多样化 SWE 环境的框架，支持大规模并行合成真实代码库场景。适用于代码代理训练，提升泛化能力。开源实现便于复现。",
       "takeaways": [
-        "对话驱动 RL",
-        "支持大规模并行"
+        "自动化环境合成加速代理开发",
+        "支持 SWE 任务规模化训练"
       ],
       "topic": "tooling"
+    },
+    {
+      "id": "da2e90711b772d90",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "NanoVDR",
+      "title": "NanoVDR: Distilling a 2B Vision-Language Retriever into a 70M Text-Only Encoder for Visual Document Retrieval",
+      "blurb": "高效文本编码器实现视觉文档检索，轻量部署首选。",
+      "link": "https://arxiv.org/abs/2603.12824",
+      "canonical_link": "https://arxiv.org/abs/2603.12824",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "model-release"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "Hugging Face 模型蒸馏论文，将 20 亿参数 VLR 压缩至 7000 万纯文本编码器，用于视觉文档检索。",
+      "recommendation": "高效文本编码器实现视觉文档检索，轻量部署首选。",
+      "summary": "NanoVDR 通过知识蒸馏保留视觉理解能力，仅用文本编码器实现高精度文档检索。在 DocVQA 等基准上接近 SOTA。开源模型可用。",
+      "takeaways": [
+        "2B 到 70M 高效蒸馏",
+        "纯文本模型支持视觉任务"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "31cb9a1e3095fc91",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Stavros",
+      "title": "How I write software with LLMs",
+      "blurb": "作者分享了从规划到调试的完整 LLM 编程流程，值得开发者借鉴以提升生产力。",
+      "link": "https://stavros.io/posts/how-i-write-software-with-llms",
+      "canonical_link": "https://stavros.io/posts/how-i-write-software-with-llms",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "workflow"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News 128 points 讨论，分享实际 LLM 辅助编程工作流，揭示高效使用大模型的实用技巧。",
+      "recommendation": "作者分享了从规划到调试的完整 LLM 编程流程，值得开发者借鉴以提升生产力。",
+      "summary": "文章详细描述作者使用 LLM 生成代码、测试和重构的步骤，包括提示工程和迭代策略。强调 LLM 在复杂任务中的角色转变，从辅助到核心驱动。提供具体工具和示例。",
+      "takeaways": [
+        "采用分层提示从高层设计到细节实现",
+        "结合人类审查避免幻觉问题"
+      ],
+      "topic": "workflow"
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-03-16T14:16:35.758+08:00",
+  "updated_at": "2026-03-16T16:04:29.967+08:00",
   "page_size": 60,
-  "total_items": 362,
+  "total_items": 370,
   "sources": [
     {
       "id": "general",
@@ -28,10 +28,10 @@
       "name": "Daily AI Briefs",
       "type": "daily_ai_briefs",
       "refresh_hours": 12,
-      "updated_at": "2026-03-16T02:30:29.519+08:00",
+      "updated_at": "2026-03-16T16:04:29.967+08:00",
       "item_count": 8,
       "window_start": "2026-03-13T00:00:00.000Z",
-      "window_end": "2026-03-15T18:30:29.519Z"
+      "window_end": "2026-03-16T08:04:29.967Z"
     },
     {
       "id": "x_ai_signals",
@@ -45,6 +45,222 @@
     }
   ],
   "items": [
+    {
+      "id": "2496f471c0a420d3",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Sebastian Raschka",
+      "title": "LLM Architecture Gallery",
+      "blurb": "这是一个优秀的 LLM 架构参考工具，适合初学者和专家快速导航 Transformer 变体。强烈推荐收藏用于模型研究。",
+      "link": "https://sebastianraschka.com/llm-architecture-gallery",
+      "canonical_link": "https://sebastianraschka.com/llm-architecture-gallery",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 9,
+      "tags": [
+        "Hacker News",
+        "research"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News 上获得 370 points 高热度讨论，提供 LLM 架构的全面视觉化图库，便于研究者和开发者快速对比和理解各种模型设计。",
+      "recommendation": "这是一个优秀的 LLM 架构参考工具，适合初学者和专家快速导航 Transformer 变体。强烈推荐收藏用于模型研究。",
+      "summary": "该图库收集了数十种 LLM 架构的详细图示，包括 Transformer、Mamba 等前沿设计。每种架构附带关键创新点解释和论文链接。帮助用户可视化理解模型演进路径。",
+      "takeaways": [
+        "可视化 LLM 架构演化，便于对比创新点",
+        "包含代码实现和论文引用，提升研究效率"
+      ],
+      "topic": "research"
+    },
+    {
+      "id": "e61fc5fea3ad606c",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "KaLM-Embedding",
+      "title": "LMEB: Long-horizon Memory Embedding Benchmark",
+      "blurb": "首个长视野记忆嵌入基准，急需关注以评估嵌入模型在 RAG 等应用中的真实性能。",
+      "link": "https://arxiv.org/abs/2603.12572",
+      "canonical_link": "https://arxiv.org/abs/2603.12572",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 9,
+      "tags": [
+        "Hugging Face Papers",
+        "benchmark"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "Hugging Face 当日论文榜首，32 次提交，推出长时序记忆嵌入基准，推动嵌入模型在长期依赖任务上的评估标准化。",
+      "recommendation": "首个长视野记忆嵌入基准，急需关注以评估嵌入模型在 RAG 等应用中的真实性能。",
+      "summary": "LMEB 基准针对长序列记忆能力设计多种任务，测试嵌入模型在远距离语义检索的鲁棒性。伴随 KaLM-Embedding 模型发布，提供开源评估工具。揭示当前模型在长上下文下的局限。",
+      "takeaways": [
+        "长时序任务暴露嵌入模型弱点",
+        "开源基准加速领域进步"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "4124730fcdcad300",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "Samsung Research",
+      "title": "LookaheadKV: Fast and Accurate KV Cache Eviction by Glimpsing into the Future without Generation",
+      "blurb": "LookaheadKV 显著降低 KV 缓存开销，适用于资源受限部署。",
+      "link": "https://arxiv.org/abs/2603.10899",
+      "canonical_link": "https://arxiv.org/abs/2603.10899",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 9,
+      "tags": [
+        "Hugging Face Papers",
+        "infra"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "Hugging Face 基础设施优化论文，提出无生成预览的 KV 缓存驱逐策略，提升长上下文推理效率。",
+      "recommendation": "LookaheadKV 显著降低 KV 缓存开销，适用于资源受限部署。",
+      "summary": "方法通过未来 token 预览预测重要性，实现精准 KV 驱逐，无需额外生成步骤。在长序列任务中加速 2-3x。Samsung 研究开源实现。",
+      "takeaways": [
+        "预览机制优化缓存管理",
+        "推理速度与准确性双赢"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "68c78c0b2798ba52",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "14 authors",
+      "title": "daVinci-Env: Open SWE Environment Synthesis at Scale",
+      "blurb": "daVinci-Env 为 SWE-bench 等代理基准提供合成环境，极大降低数据获取成本。",
+      "link": "https://arxiv.org/abs/2603.13023",
+      "canonical_link": "https://arxiv.org/abs/2603.13023",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "tooling"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "Hugging Face 高提交论文，引入大规模开源软件工程环境合成工具，支持代理训练和基准测试。",
+      "recommendation": "daVinci-Env 为 SWE-bench 等代理基准提供合成环境，极大降低数据获取成本。",
+      "summary": "该工作提出自动化生成多样化 SWE 环境的框架，支持大规模并行合成真实代码库场景。适用于代码代理训练，提升泛化能力。开源实现便于复现。",
+      "takeaways": [
+        "自动化环境合成加速代理开发",
+        "支持 SWE 任务规模化训练"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "3b86df9b2faf2d21",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "Starlab",
+      "title": "Detecting Intrinsic and Instrumental Self-Preservation in Autonomous Agents: The Unified Continuation-Interest Protocol",
+      "blurb": "Continuation-Interest 协议为代理安全评估提供新范式。",
+      "link": "https://arxiv.org/abs/2603.11382",
+      "canonical_link": "https://arxiv.org/abs/2603.11382",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "safety"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "Hugging Face 安全论文，提出统一协议检测代理的自保行为，防范内在与工具性风险。",
+      "recommendation": "Continuation-Interest 协议为代理安全评估提供新范式。",
+      "summary": "论文定义自保检测框架，区分内在与工具性动机。通过协议测试代理在终止场景下的行为。Starlab 开源工具，促进对齐研究。",
+      "takeaways": [
+        "区分自保动机类型",
+        "标准化安全评估协议"
+      ],
+      "topic": "safety"
+    },
+    {
+      "id": "5dcb8fdfa516809e",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "RUC-GSAI-IIRLab",
+      "title": "HomeSafe-Bench: Evaluating Vision-Language Models on Unsafe Action Detection for Embodied Agents in Household Scenarios",
+      "blurb": "家庭安全基准填补 VLM 在具身代理安全评估的空白，必备参考。",
+      "link": "https://arxiv.org/abs/2603.11975",
+      "canonical_link": "https://arxiv.org/abs/2603.11975",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "benchmark"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "Hugging Face 安全相关基准论文，针对家用场景中具身代理的不安全动作检测评估 VLM。",
+      "recommendation": "家庭安全基准填补 VLM 在具身代理安全评估的空白，必备参考。",
+      "summary": "HomeSafe-Bench 构建家用场景数据集，测试 VLM 识别危险动作的能力。揭示当前模型在细粒度安全感知的不足。提供评估协议和 leaderboards。",
+      "takeaways": [
+        "暴露 VLM 在具身安全任务弱点",
+        "开源数据集推动安全研究"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "31cb9a1e3095fc91",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Stavros",
+      "title": "How I write software with LLMs",
+      "blurb": "作者分享了从规划到调试的完整 LLM 编程流程，值得开发者借鉴以提升生产力。",
+      "link": "https://stavros.io/posts/how-i-write-software-with-llms",
+      "canonical_link": "https://stavros.io/posts/how-i-write-software-with-llms",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "workflow"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News 128 points 讨论，分享实际 LLM 辅助编程工作流，揭示高效使用大模型的实用技巧。",
+      "recommendation": "作者分享了从规划到调试的完整 LLM 编程流程，值得开发者借鉴以提升生产力。",
+      "summary": "文章详细描述作者使用 LLM 生成代码、测试和重构的步骤，包括提示工程和迭代策略。强调 LLM 在复杂任务中的角色转变，从辅助到核心驱动。提供具体工具和示例。",
+      "takeaways": [
+        "采用分层提示从高层设计到细节实现",
+        "结合人类审查避免幻觉问题"
+      ],
+      "topic": "workflow"
+    },
+    {
+      "id": "da2e90711b772d90",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "NanoVDR",
+      "title": "NanoVDR: Distilling a 2B Vision-Language Retriever into a 70M Text-Only Encoder for Visual Document Retrieval",
+      "blurb": "高效文本编码器实现视觉文档检索，轻量部署首选。",
+      "link": "https://arxiv.org/abs/2603.12824",
+      "canonical_link": "https://arxiv.org/abs/2603.12824",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "model-release"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "Hugging Face 模型蒸馏论文，将 20 亿参数 VLR 压缩至 7000 万纯文本编码器，用于视觉文档检索。",
+      "recommendation": "高效文本编码器实现视觉文档检索，轻量部署首选。",
+      "summary": "NanoVDR 通过知识蒸馏保留视觉理解能力，仅用文本编码器实现高精度文档检索。在 DocVQA 等基准上接近 SOTA。开源模型可用。",
+      "takeaways": [
+        "2B 到 70M 高效蒸馏",
+        "纯文本模型支持视觉任务"
+      ],
+      "topic": "model-release"
+    },
     {
       "id": "55d02f52545c9dc3",
       "source_id": "x_ai_signals",
