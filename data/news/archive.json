@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-03-17T03:50:14.599+08:00",
+  "updated_at": "2026-03-17T04:31:59.754+08:00",
   "page_size": 60,
-  "total_items": 461,
+  "total_items": 468,
   "sources": [
     {
       "id": "general",
@@ -28,10 +28,10 @@
       "name": "Daily AI Briefs",
       "type": "daily_ai_briefs",
       "refresh_hours": 12,
-      "updated_at": "2026-03-16T16:04:29.967+08:00",
-      "item_count": 8,
-      "window_start": "2026-03-13T00:00:00.000Z",
-      "window_end": "2026-03-16T08:04:29.967Z"
+      "updated_at": "2026-03-17T04:31:59.754+08:00",
+      "item_count": 10,
+      "window_start": "2026-03-16T00:00:00.000Z",
+      "window_end": "2026-03-16T20:31:59.754Z"
     },
     {
       "id": "x_ai_signals",
@@ -45,6 +45,33 @@
     }
   ],
   "items": [
+    {
+      "id": "deea7d973fc34b92",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "NVIDIA",
+      "title": "Nvidia Launches Vera CPU, Purpose-Built for Agentic AI",
+      "blurb": "NVIDIA推出专为代理AI设计的Vera CPU，值得关注其在基础设施层面对AI代理的优化。",
+      "link": "https://nvidianews.nvidia.com/news/nvidia-launches-vera-cpu-purpose-built-for-agentic-ai",
+      "canonical_link": "https://nvidianews.nvidia.com/news/nvidia-launches-vera-cpu-purpose-built-for-agentic-ai",
+      "published_at": "2026-03-17T04:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "Hacker News",
+        "infra"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Top HN story with recent traction; signals major hardware push for agentic AI workflows.",
+      "recommendation": "NVIDIA推出专为代理AI设计的Vera CPU，值得关注其在基础设施层面对AI代理的优化。",
+      "summary": "NVIDIA发布Vera CPU，专为代理式AI构建，提供高效计算支持代理任务。该CPU针对代理AI工作负载优化，提升性能和能效。适用于大规模AI代理部署。",
+      "takeaways": [
+        "Vera CPU针对代理AI优化，标志硬件向代理时代转型",
+        "提升代理AI在复杂任务中的计算效率"
+      ],
+      "topic": "infra"
+    },
     {
       "id": "5cf5c91affa48d51",
       "source_id": "artist",
@@ -342,6 +369,33 @@
       ]
     },
     {
+      "id": "0a42108743bc9890",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Chamber",
+      "title": "Launch HN: Chamber (YC W26) – An AI Teammate for GPU Infrastructure",
+      "blurb": "YC新品Chamber，提供GPU基础设施的AI助手，优化AI训练管理。",
+      "link": "https://usechamber.io/",
+      "canonical_link": "https://usechamber.io/",
+      "published_at": "2026-03-17T01:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "infra"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "YC launch on HN; targets GPU infra pain points for AI teams.",
+      "recommendation": "YC新品Chamber，提供GPU基础设施的AI助手，优化AI训练管理。",
+      "summary": "Chamber是YC W26项目，作为GPU基础设施的AI队友，帮助管理集群、调度和优化。简化AI基础设施运维，支持大规模训练。",
+      "takeaways": [
+        "专注GPU基础设施自动化",
+        "YC背景，潜力高"
+      ],
+      "topic": "infra"
+    },
+    {
       "id": "a7847f82b4746a8d",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -454,6 +508,33 @@
         "独立开发",
         "增长"
       ]
+    },
+    {
+      "id": "a211dd1e401658dd",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Voygr",
+      "title": "Launch HN: Voygr (YC W26) – A better maps API for agents and AI apps",
+      "blurb": "Voygr为AI代理和应用提供优化的地图API，提升空间智能。",
+      "link": "https://news.ycombinator.com/item?id=47401042",
+      "canonical_link": "https://news.ycombinator.com/item?id=47401042",
+      "published_at": "2026-03-17T00:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "tooling"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "YC launch focused on agent tooling; addresses maps integration gaps.",
+      "recommendation": "Voygr为AI代理和应用提供优化的地图API，提升空间智能。",
+      "summary": "Voygr是YC W26推出的地图API，专为代理和AI应用设计，提供更精确和高效的地理服务。支持代理决策中的位置数据。",
+      "takeaways": [
+        "针对代理优化的地图API",
+        "YC支持，适用于AI应用"
+      ],
+      "topic": "tooling"
     },
     {
       "id": "40203e64e77cf82e",
@@ -651,6 +732,33 @@
         "AI",
         "出海"
       ]
+    },
+    {
+      "id": "c1431e895c70fdde",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Apideck",
+      "title": "Apideck CLI – An AI-agent interface with much lower context consumption than MCP",
+      "blurb": "Apideck CLI降低AI代理上下文消耗，提供高效接口。",
+      "link": "https://apideck.com/blog/mcp-server-eating-context-window-cli-alternative",
+      "canonical_link": "https://apideck.com/blog/mcp-server-eating-context-window-cli-alternative",
+      "published_at": "2026-03-16T23:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "tooling"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "High comments on HN; practical agent tooling alternative to MCP.",
+      "recommendation": "Apideck CLI降低AI代理上下文消耗，提供高效接口。",
+      "summary": "Apideck CLI作为AI代理接口，比MCP节省上下文窗口。简化代理与API交互，支持低token使用的高效工作流。",
+      "takeaways": [
+        "显著降低上下文消耗",
+        "CLI优于MCP在token效率"
+      ],
+      "topic": "tooling"
     },
     {
       "id": "775ba93a2d3caa87",
@@ -1115,6 +1223,87 @@
         "独立开发",
         "风险"
       ]
+    },
+    {
+      "id": "e790ef7d544f9dc0",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "Multiple authors",
+      "title": "EvoScientist: Towards Multi-Agent Evolving AI Scientists for End-to-End Scientific Discovery",
+      "blurb": "EvoScientist提出多代理演化AI科学家，实现端到端科学发现。",
+      "link": "https://arxiv.org/abs/2603.08127",
+      "canonical_link": "https://arxiv.org/abs/2603.08127",
+      "published_at": "2026-03-16T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "High engagement on HF (479 likes); advances multi-agent scientific AI.",
+      "recommendation": "EvoScientist提出多代理演化AI科学家，实现端到端科学发现。",
+      "summary": "EvoScientist框架使用多代理系统演化AI科学家，进行自主科学发现。结合演化和协作机制。",
+      "takeaways": [
+        "多代理科学发现",
+        "高HF热度"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "04414d1a4f1c0cd2",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Cerebras",
+      "title": "Cerebras is coming to AWS",
+      "blurb": "Cerebras系统登陆AWS，提升AI推理速度5倍。",
+      "link": "https://cerebras.ai/blog/cerebras-is-coming-to-aws",
+      "canonical_link": "https://cerebras.ai/blog/cerebras-is-coming-to-aws",
+      "published_at": "2026-03-16T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "infra"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-16",
+      "source_signal": "Major infra partnership; boosts AI inference on cloud.",
+      "recommendation": "Cerebras系统登陆AWS，提升AI推理速度5倍。",
+      "summary": "AWS部署Cerebras CS-3，提供最快AI推理。通过Trainium预填充和WSE解码分离架构。",
+      "takeaways": [
+        "5倍token吞吐提升",
+        "云端高速推理新标杆"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "baeb24a855918a08",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Z.ai",
+      "title": "GLM-5-Turbo",
+      "blurb": "GLM-5-Turbo提供高效文本生成API，支持实时流式响应。",
+      "link": "https://docs.z.ai/guides/llm/glm-5-turbo",
+      "canonical_link": "https://docs.z.ai/guides/llm/glm-5-turbo",
+      "published_at": "2026-03-16T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-16",
+      "source_signal": "New model release in TLDR engineering section; streamlined API.",
+      "recommendation": "GLM-5-Turbo提供高效文本生成API，支持实时流式响应。",
+      "summary": "Z.ai的GLM-5-Turbo模型API用于文本生成，支持角色自定义、流式输出和温度调节。适用于营销等任务。",
+      "takeaways": [
+        "实时流式生成",
+        "创意控制灵活"
+      ],
+      "topic": "model-release"
     },
     {
       "id": "b2d9c645df1f50f0",

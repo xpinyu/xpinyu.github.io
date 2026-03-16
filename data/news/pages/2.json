@@ -1,10 +1,165 @@
 {
-  "updated_at": "2026-03-17T03:50:14.599+08:00",
+  "updated_at": "2026-03-17T04:31:59.754+08:00",
   "current_page": 2,
   "total_pages": 8,
   "page_size": 60,
-  "total_items": 461,
+  "total_items": 468,
   "items": [
+    {
+      "id": "9e8a8dd2dd50a86f",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@marclou",
+      "title": "TrustMRR 首创创始人实时更新 Feed，买家可跟踪产品方向",
+      "blurb": "TrustMRR 作为 startup 市场，新增社交功能：创始人发布构建更新，买家实时跟踪以评估方向。提供 verified MRR、churn、增长趋势和流量数据。实现‘unhinged due diligence’，买家在出价前观察创始人动态。 展示收购市场如何通过社交+数据透明降低风险，实战机会：复制到其他垂直市场；风险：匿名买家可能导致信息不对称。",
+      "link": "https://x.com/marclou/status/2033521327693295655",
+      "canonical_link": "https://x.com/marclou/status/2033521327693295655",
+      "published_at": "2026-03-16T20:30:40.000+08:00",
+      "score": 9,
+      "tags": [
+        "SaaS",
+        "创业",
+        "独立开发"
+      ]
+    },
+    {
+      "id": "1a71fed10bfb381f",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@chuhaiqu",
+      "title": "OpenClaw Agent长上下文缓存失效Debug经验",
+      "blurb": "开发者400小时OpenClaw高强度使用突发行使GitHub skill失效，经排查为缓存快照卡旧路径+路由改动乌龙。解决：清缓存重启。启发：AI‘玄学’病多为底层状态问题。 揭示Agent生产级风险，用传统Debug思维避坑，执行细节实用。",
+      "link": "https://x.com/chuhaiqu/status/2033517177219973378",
+      "canonical_link": "https://x.com/chuhaiqu/status/2033517177219973378",
+      "published_at": "2026-03-16T20:14:10.000+08:00",
+      "score": 8,
+      "tags": [
+        "AI",
+        "独立开发",
+        "风险"
+      ]
+    },
+    {
+      "id": "e790ef7d544f9dc0",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "Multiple authors",
+      "title": "EvoScientist: Towards Multi-Agent Evolving AI Scientists for End-to-End Scientific Discovery",
+      "blurb": "EvoScientist提出多代理演化AI科学家，实现端到端科学发现。",
+      "link": "https://arxiv.org/abs/2603.08127",
+      "canonical_link": "https://arxiv.org/abs/2603.08127",
+      "published_at": "2026-03-16T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "High engagement on HF (479 likes); advances multi-agent scientific AI.",
+      "recommendation": "EvoScientist提出多代理演化AI科学家，实现端到端科学发现。",
+      "summary": "EvoScientist框架使用多代理系统演化AI科学家，进行自主科学发现。结合演化和协作机制。",
+      "takeaways": [
+        "多代理科学发现",
+        "高HF热度"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "04414d1a4f1c0cd2",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Cerebras",
+      "title": "Cerebras is coming to AWS",
+      "blurb": "Cerebras系统登陆AWS，提升AI推理速度5倍。",
+      "link": "https://cerebras.ai/blog/cerebras-is-coming-to-aws",
+      "canonical_link": "https://cerebras.ai/blog/cerebras-is-coming-to-aws",
+      "published_at": "2026-03-16T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "infra"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-16",
+      "source_signal": "Major infra partnership; boosts AI inference on cloud.",
+      "recommendation": "Cerebras系统登陆AWS，提升AI推理速度5倍。",
+      "summary": "AWS部署Cerebras CS-3，提供最快AI推理。通过Trainium预填充和WSE解码分离架构。",
+      "takeaways": [
+        "5倍token吞吐提升",
+        "云端高速推理新标杆"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "baeb24a855918a08",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Z.ai",
+      "title": "GLM-5-Turbo",
+      "blurb": "GLM-5-Turbo提供高效文本生成API，支持实时流式响应。",
+      "link": "https://docs.z.ai/guides/llm/glm-5-turbo",
+      "canonical_link": "https://docs.z.ai/guides/llm/glm-5-turbo",
+      "published_at": "2026-03-16T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-16",
+      "source_signal": "New model release in TLDR engineering section; streamlined API.",
+      "recommendation": "GLM-5-Turbo提供高效文本生成API，支持实时流式响应。",
+      "summary": "Z.ai的GLM-5-Turbo模型API用于文本生成，支持角色自定义、流式输出和温度调节。适用于营销等任务。",
+      "takeaways": [
+        "实时流式生成",
+        "创意控制灵活"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "b2d9c645df1f50f0",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@servasyy_ai",
+      "title": "私藏公众号文章爬取开源项目",
+      "blurb": "分享一个独特开源项目，可通过公众号名称直接爬取文章。不同于常见爬虫，按名称批量获取历史内容。GitHub链接：https://github.com/klin-h/wechat_articles_spider。 提供高效工具链，适用于AI数据收集、出海内容分析，原创分享高可执行性。",
+      "link": "https://x.com/servasyy_ai/status/2033511269962272985",
+      "canonical_link": "https://x.com/servasyy_ai/status/2033511269962272985",
+      "published_at": "2026-03-16T19:50:42.000+08:00",
+      "score": 8,
+      "tags": [
+        "工具链",
+        "AI数据采集"
+      ]
+    },
+    {
+      "id": "995f6066541de4f8",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@umesh_ai",
+      "title": "Kling平面图到3D可视化无缝变形动画提示",
+      "blurb": "提供Kling提示将建筑平面图流畅变形成3D室内外视图，保持俯视视角，强调体积渐增和一致照明。结合DraftedAI工具生成初始图像后动画化，提升抽象设计直观性。线程总结工作流价值。 桥接平面设计与动态演示，助力建筑师/设计师用AI增强客户沟通和创意迭代。",
+      "link": "https://x.com/umesh_ai/status/2033511056572891517",
+      "canonical_link": "https://x.com/umesh_ai/status/2033511056572891517",
+      "published_at": "2026-03-16T19:49:51.000+08:00",
+      "score": 7,
+      "tags": [
+        "workflow",
+        "prompting"
+      ]
+    },
     {
       "id": "19edc513213473f0",
       "source_id": "x_ai_signals",
@@ -1050,134 +1205,6 @@
         "AI",
         "工具链",
         "独立开发"
-      ]
-    },
-    {
-      "id": "84ff11ba5213550c",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@luoleiorg",
-      "title": "Vibe Coding 语音输入设备推荐：Rode 定向麦",
-      "blurb": "分享桌面编程场景下的语音输入设备，使用 Rode 定向麦代替 DJI Mic Mini。不用电池，定向收音效果更好，价格便宜，只需 3.5mm 转接线。附两张实拍图。 提供低成本、高效的编程工作流优化工具，实战可复制，避免常见消费陷阱。",
-      "link": "https://x.com/luoleiorg/status/2033404637714518278",
-      "canonical_link": "https://x.com/luoleiorg/status/2033404637714518278",
-      "published_at": "2026-03-16T12:46:59.000+08:00",
-      "score": 8,
-      "tags": [
-        "工具链",
-        "独立开发"
-      ]
-    },
-    {
-      "id": "0b5e62f813ac0c42",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@jiqizhixin",
-      "title": "StitchCUDA：多代理端到端GPU编程框架",
-      "blurb": "明尼苏达大学提出StitchCUDA框架，包括Planner、Coder和Verifier代理。Coder采用基于rubric的强化学习，从真实代码执行反馈中掌握高级CUDA技巧如自定义内核融合。在端到端GPU编程任务上成功率近100%，比多代理基线加速1.72x，比RL模型加速2.73x。提供论文和报告链接。 自动化GPU编程实战价值高，解决ML工作负载优化痛点，前瞻性强，可能成为AI工具链新机会。",
-      "link": "https://x.com/jiqizhixin/status/2033404139481526731",
-      "canonical_link": "https://x.com/jiqizhixin/status/2033404139481526731",
-      "published_at": "2026-03-16T12:45:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链"
-      ]
-    },
-    {
-      "id": "3c5630e6ba6fd4ea",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@seclink",
-      "title": "stepfun 与 kimi 上市竞争，先上市享高估值",
-      "blurb": "预测 stepfun 和 kimi 加速上市，港股/美股/A股均可能。先发者获估值溢价。 AI 大模型行业判断，前瞻上市窗口与估值风险。",
-      "link": "https://x.com/seclink/status/2033401196933730583",
-      "canonical_link": "https://x.com/seclink/status/2033401196933730583",
-      "published_at": "2026-03-16T12:33:18.000+08:00",
-      "score": 6,
-      "tags": [
-        "AI",
-        "创业"
-      ]
-    },
-    {
-      "id": "c5f7ea8dcef7aad7",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@karpathy",
-      "title": "Attention旋转90度，泛化残差连接的自然演进",
-      "blurb": "评论Kimi Attention Residuals，将attention视为残差连接的深度泛化。类比LSTM/ResNet旋转，SGD也是ResNet，呼吁更深挖Attention is All You Need理念。 karpathy一线洞见预示模型架构新范式，高效drop-in替换有1.25x计算优势，对AI开发者工具链优化有前瞻指导。",
-      "link": "https://x.com/karpathy/status/2033400893346107835",
-      "canonical_link": "https://x.com/karpathy/status/2033400893346107835",
-      "published_at": "2026-03-16T12:32:06.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI",
-        "模型架构",
-        "工具链"
-      ]
-    },
-    {
-      "id": "1eb187188421447c",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@luoleiorg",
-      "title": "AI 时代程序员是否会被取代？",
-      "blurb": "分享抖音评论：程序员是将人类语言转机器语言，如今 AI 懂人类语言，程序员或不需要。引发行业讨论。 捕捉 AI 对编程岗位冲击的前瞻判断，提醒技能升级。",
-      "link": "https://x.com/luoleiorg/status/2033399128894669158",
-      "canonical_link": "https://x.com/luoleiorg/status/2033399128894669158",
-      "published_at": "2026-03-16T12:25:05.000+08:00",
-      "score": 6,
-      "tags": [
-        "AI",
-        "行业判断"
-      ]
-    },
-    {
-      "id": "5611aefe73e1bc76",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@gefei55",
-      "title": "出海产品利润低？先试着涨价",
-      "blurb": "针对出海SaaS/工具，利润偏低常见原因是定价过低。涨价是最快速提升利润的方法，配图展示定价策略影响。 出海创业者常见痛点，提供简单有效增长技巧，实战性强。",
-      "link": "https://x.com/gefei55/status/2033398359973822603",
-      "canonical_link": "https://x.com/gefei55/status/2033398359973822603",
-      "published_at": "2026-03-16T12:22:02.000+08:00",
-      "score": 7,
-      "tags": [
-        "出海",
-        "SaaS",
-        "增长"
-      ]
-    },
-    {
-      "id": "d2ad57b7cace8d2b",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@lidangzzz",
-      "title": "无人机政策拉动住房与低空经济",
-      "blurb": "建议工信住建部试点无人机送货至第四代住宅，成本0.5-2元/单。保就业同时刺激购房，赛博朋克服务差异化。 商业机会点：低空经济+房地产结合，AI无人机应用潜力；风险：政策落地难，安全监管。",
-      "link": "https://x.com/lidangzzz/status/2033398013318557930",
-      "canonical_link": "https://x.com/lidangzzz/status/2033398013318557930",
-      "published_at": "2026-03-16T12:20:39.000+08:00",
-      "score": 6,
-      "tags": [
-        "创业",
-        "行业判断"
       ]
     }
   ]
