@@ -49,6 +49,18 @@
     from { opacity: 0; transform: translateY(6px); }
   }
 
+  @keyframes news-link-underline {
+    0%, 100% { opacity: 0.28; transform: scaleX(0.68); }
+    42% { opacity: 0.72; transform: scaleX(1.04); }
+    58% { opacity: 0.48; transform: scaleX(0.86); }
+  }
+
+  @keyframes news-link-dot {
+    0%, 100% { opacity: 0.16; transform: translate3d(0, -50%, 0) scale(1); }
+    42% { opacity: 0.48; transform: translate3d(-1px, -50%, 0) scale(1.55); }
+    58% { opacity: 0.28; transform: translate3d(0, -50%, 0) scale(1.18); }
+  }
+
   .identity {
     margin-bottom: 80px;
   }
@@ -124,6 +136,69 @@
     outline: 2px solid var(--accent);
     outline-offset: 2px;
     border-radius: 2px;
+  }
+
+  .section-link-news {
+    position: relative;
+    display: inline-block;
+    padding-right: 11px;
+    padding-bottom: 2px;
+    color: var(--text-2);
+  }
+
+  .section-link-news::before,
+  .section-link-news::after {
+    content: '';
+    position: absolute;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .section-link-news::before {
+    top: 50%;
+    right: 0;
+    width: 4px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--accent);
+    transform: translateY(-50%) scale(1);
+    opacity: 0.18;
+    animation: news-link-dot 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  .section-link-news::after {
+    left: 0;
+    right: 11px;
+    bottom: -1px;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      rgba(27, 63, 139, 0.08) 0%,
+      rgba(27, 63, 139, 0.6) 50%,
+      rgba(27, 63, 139, 0.08) 100%
+    );
+    transform-origin: left center;
+    transform: scaleX(0.68);
+    opacity: 0.34;
+    animation: news-link-underline 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  .section-link-news:hover,
+  .section-link-news:focus-visible {
+    color: var(--accent);
+  }
+
+  .section-link-news:hover::before,
+  .section-link-news:focus-visible::before {
+    animation: none;
+    opacity: 0.42;
+    transform: translateY(-50%) scale(1.2);
+  }
+
+  .section-link-news:hover::after,
+  .section-link-news:focus-visible::after {
+    animation: none;
+    opacity: 0.72;
+    transform: scaleX(1);
   }
 
   .section-divider {
@@ -283,6 +358,16 @@
     .page, .articles li { animation: none; }
     .article-detail { transition: none; }
     .articles a::before { transition: none; }
+    .section-link-news::before,
+    .section-link-news::after { animation: none; }
+    .section-link-news::before {
+      opacity: 0.34;
+      transform: translateY(-50%) scale(1.1);
+    }
+    .section-link-news::after {
+      opacity: 0.56;
+      transform: scaleX(1);
+    }
   }
 </style>
 </head>
@@ -299,7 +384,7 @@
     <div class="section-links">
       <a href="all.html" class="section-link">Archive</a>
       <span class="section-divider" aria-hidden="true">·</span>
-      <a href="news.html" class="section-link">News</a>
+      <a href="news.html" class="section-link section-link-news">News</a>
     </div>
   </div>
   <ul class="articles">
