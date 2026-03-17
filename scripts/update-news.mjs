@@ -132,6 +132,7 @@ const ARTIST_HANDLES = [
   "ReviAIART",
   "Niniellissime",
   "xerias_x",
+  "Lordofacca",
   "midjourney",
 ];
 
