@@ -116,7 +116,6 @@ const ARTIST_HANDLES = [
   "remi_molettee",
   "omokage_AIsOK",
   "op7418",
-  "dotey",
   "linchen_ox",
   "MANISH1027512",
   "jesselaunz",
@@ -282,6 +281,25 @@ const X_AI_SIGNALS_HANDLES = [
   "MengTo",
   "emollick",
   "kloss_xyz",
+  "dotey",
+  "charliebilello",
+  "EricBalchunas",
+  "TurnerNovak",
+  "AswathDamodaran",
+  "MacroAlf",
+  "simonw",
+  "swyx",
+  "hwchase17",
+  "jxnlco",
+  "ggerganov",
+  "rauchg",
+  "searchliaison",
+  "lilyraynyc",
+  "brodieseo",
+  "steventey",
+  "RestOfWorld",
+  "edzitron",
+  "benthompson",
 ];
 
 const AIINDIE_HANDLES = [
@@ -342,6 +360,11 @@ const AIINDIE_HANDLES = [
   "@li_wujie",
   "@xiongchun007",
   "@yihui_indie",
+  "@patio11",
+  "@RevenueCat",
+  "@PaddleHQ",
+  "@appfigures",
+  "@Shpigford",
 ];
 
 const SOURCES = [
@@ -797,7 +820,7 @@ const ARTIST_SYSTEM_PROMPT =
 const DAILY_DIGEST_SYSTEM_PROMPT =
   "You are a rigorous curator of high-value daily AI digests. Work only from the provided source excerpts, prefer original links when available, and return strict JSON only.";
 
-const X_AI_SIGNALS_SYSTEM_PROMPT = `你是中文 X（Twitter）高价值 AI 信号挖掘专家，服务对象是 AI 创业者、独立开发者、SaaS 玩家、AI 出海与产品增长从业者。你的目标不是找热闹，而是找真正值得跟进的实战信号：产品进展、增长方法、工具链、工作流、商业机会、行业判断、执行细节与风险提示。判断标准是信息密度、原创性、可执行性与前瞻性，不唯热度。`;
+const X_AI_SIGNALS_SYSTEM_PROMPT = `你是中文 X（Twitter）高价值 AI 信号挖掘专家，服务对象是 AI 创业者、独立开发者、SaaS 玩家、AI 出海与产品增长从业者。你的目标不是找热闹，而是找真正值得跟进的实战信号：产品进展、增长方法、工具链、工作流、商业机会、行业判断、执行细节与风险提示。同时关注影响 AI 创业决策的基础设施变化：算力经济学、模型部署成本、开发框架迭代、搜索与分发平台规则变动、金融市场与 AI 投资信号、监管与政策动向。判断标准是信息密度、原创性、可执行性与前瞻性，不唯热度。`;
 
 const AIINDIE_SYSTEM_PROMPT =
   "You are a rigorous curator of AI indie hacker signals on X. Serve a builder who wants to become a top AI indie hacker. Prefer concrete execution details, distribution insight, monetization learning, workflow leverage, and original operator judgment. Ignore low-information hype, memes, reposts, and vague motivation. Use x_search only. Return strict JSON only.";
@@ -834,7 +857,7 @@ Output rules:
 - Return strict JSON only.
 - Write descriptive fields in Simplified Chinese.
 - Keep the title in its original language when useful.
-- platform must be one of: Hacker News, Hugging Face Papers, ClawFeed, TLDR AI, AlphaSignal.
+ - platform must be one of: Hacker News, Hugging Face Papers, ClawFeed, TLDR AI.
 - published_at must be ISO 8601 with timezone. If the original timestamp is unclear, use the fallback_published_at from the digest page that surfaced the item.
 - link must point to the original item when available.
 - source_page must be the digest page URL that surfaced the item.
@@ -845,7 +868,7 @@ JSON schema:
 {
   "items": [
     {
-      "platform": "Hacker News | Hugging Face Papers | ClawFeed | TLDR AI | AlphaSignal",
+      "platform": "Hacker News | Hugging Face Papers | ClawFeed | TLDR AI",
       "title": "Title",
       "author": "Author or publisher",
       "published_at": "ISO 8601 with timezone",
@@ -1734,18 +1757,6 @@ function buildDailyDigestPageConfigs(window) {
         },
       ],
     },
-    {
-      id: "alpha_signal",
-      label: "AlphaSignal",
-      maxChars: 14_000,
-      candidates: [
-        {
-          url: "https://alphasignal.ai/last-email",
-          sourcePage: "https://alphasignal.ai/last-email",
-          sourceDateKey: window.utc_date,
-        },
-      ],
-    },
   ];
 }
 
@@ -1906,13 +1917,6 @@ function extractDateKeyFromDailyDigestText(config, value) {
     const tldrMatch = text.match(/\btldr ai\s+(20\d{2}-\d{2}-\d{2})\b/i);
     if (tldrMatch?.[1]) {
       return tldrMatch[1];
-    }
-  }
-
-  if (config?.id === "alpha_signal") {
-    const genericMatch = text.match(/\b(20\d{2}-\d{2}-\d{2})\b/);
-    if (genericMatch?.[1]) {
-      return genericMatch[1];
     }
   }
 
@@ -2300,10 +2304,6 @@ function canonicalDailyDigestPlatform(value, sourcePage) {
   if (normalized.includes("tldr") || host.endsWith("tldr.tech")) {
     return "TLDR AI";
   }
-  if (normalized.includes("alpha") || host.endsWith("alphasignal.ai")) {
-    return "AlphaSignal";
-  }
-
   return "";
 }
 

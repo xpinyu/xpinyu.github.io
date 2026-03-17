@@ -4,92 +4,65 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 12,
-    "updated_at": "2026-03-17T04:31:59.754+08:00",
-    "item_count": 10,
+    "updated_at": "2026-03-17T18:35:10.022+08:00",
+    "item_count": 8,
     "window_start": "2026-03-16T00:00:00.000Z",
-    "window_end": "2026-03-16T20:31:59.754Z"
+    "window_end": "2026-03-17T10:35:10.022Z"
   },
   "items": [
     {
-      "id": "deea7d973fc34b92",
+      "id": "d68ff90808904c08",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "NVIDIA",
-      "title": "Nvidia Launches Vera CPU, Purpose-Built for Agentic AI",
-      "blurb": "NVIDIA推出专为代理AI设计的Vera CPU，值得关注其在基础设施层面对AI代理的优化。",
-      "link": "https://nvidianews.nvidia.com/news/nvidia-launches-vera-cpu-purpose-built-for-agentic-ai",
-      "canonical_link": "https://nvidianews.nvidia.com/news/nvidia-launches-vera-cpu-purpose-built-for-agentic-ai",
-      "published_at": "2026-03-17T04:00:00.000+08:00",
+      "author": "Mistral AI",
+      "title": "Leanstral: Open-source agent for trustworthy coding and formal proof engineering",
+      "blurb": "Mistral 的 Leanstral 是首个结合大模型与 Lean 定理证明器的开源代理，适合追求代码可靠性的开发者。",
+      "link": "https://mistral.ai/news/leanstral",
+      "canonical_link": "https://mistral.ai/news/leanstral",
+      "published_at": "2026-03-17T18:35:10.022+08:00",
       "score": 9,
       "tags": [
         "Hacker News",
-        "infra"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Top HN story with recent traction; signals major hardware push for agentic AI workflows.",
-      "recommendation": "NVIDIA推出专为代理AI设计的Vera CPU，值得关注其在基础设施层面对AI代理的优化。",
-      "summary": "NVIDIA发布Vera CPU，专为代理式AI构建，提供高效计算支持代理任务。该CPU针对代理AI工作负载优化，提升性能和能效。适用于大规模AI代理部署。",
-      "takeaways": [
-        "Vera CPU针对代理AI优化，标志硬件向代理时代转型",
-        "提升代理AI在复杂任务中的计算效率"
-      ],
-      "topic": "infra"
-    },
-    {
-      "id": "e790ef7d544f9dc0",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Multiple authors",
-      "title": "EvoScientist: Towards Multi-Agent Evolving AI Scientists for End-to-End Scientific Discovery",
-      "blurb": "EvoScientist提出多代理演化AI科学家，实现端到端科学发现。",
-      "link": "https://arxiv.org/abs/2603.08127",
-      "canonical_link": "https://arxiv.org/abs/2603.08127",
-      "published_at": "2026-03-16T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "Hugging Face Papers",
         "agent"
       ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-16",
-      "source_signal": "High engagement on HF (479 likes); advances multi-agent scientific AI.",
-      "recommendation": "EvoScientist提出多代理演化AI科学家，实现端到端科学发现。",
-      "summary": "EvoScientist框架使用多代理系统演化AI科学家，进行自主科学发现。结合演化和协作机制。",
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News 热门榜单，565 分高热度，Mistral 发布开源代理，针对可信编码和形式证明，推动 AI 在软件验证领域的应用。",
+      "recommendation": "Mistral 的 Leanstral 是首个结合大模型与 Lean 定理证明器的开源代理，适合追求代码可靠性的开发者。",
+      "summary": "Leanstral 是一个开源 AI 代理，专为可信编码和形式证明工程设计。它整合 Mistral 模型与 Lean 证明系统，能生成并验证数学证明和代码。项目强调长期维护和错误最小化，在 HN 上引发广泛讨论。",
       "takeaways": [
-        "多代理科学发现",
-        "高HF热度"
+        "开源代理提升形式化验证自动化",
+        "桥接 LLM 与定理证明器，减少编码错误"
       ],
       "topic": "agent"
     },
     {
-      "id": "cff7b56956cd1ce2",
+      "id": "396fcc7d981afd0b",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Anthropic",
-      "title": "1M context is now generally available for Opus 4.6 and Sonnet 4.6",
-      "blurb": "Claude模型1M上下文窗口正式可用，推动长上下文应用落地。",
-      "link": "https://claude.com/blog/1m-context-ga",
-      "canonical_link": "https://claude.com/blog/1m-context-ga",
-      "published_at": "2026-03-16T20:00:00.000+08:00",
-      "score": 9,
+      "platform": "Hugging Face Papers",
+      "author": "taesiri et al.",
+      "title": "EvoClaw: Evaluating AI Agents on Continuous Software Evolution",
+      "blurb": "EvoClaw 基准揭示代理在连续任务中性能暴跌，开发者需关注长期软件演化挑战。",
+      "link": "https://evo-claw.com/",
+      "canonical_link": "https://evo-claw.com/",
+      "published_at": "2026-03-13T07:20:40.000+08:00",
+      "score": 8,
       "tags": [
-        "TLDR AI",
-        "model-release"
+        "Hugging Face Papers",
+        "benchmark"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-16",
-      "source_signal": "Headline launch in TLDR; major capability upgrade for long-context reasoning in production.",
-      "recommendation": "Claude模型1M上下文窗口正式可用，推动长上下文应用落地。",
-      "summary": "Claude Opus 4.6和Sonnet 4.6现支持完整1M上下文窗口，按标准定价提供。减少压缩需求，保留更多对话历史。适用于Max、Team和Enterprise用户。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-17",
+      "source_signal": "Hugging Face 当日论文，引入 EvoClaw 基准测试 AI 代理在连续软件演化中的表现，暴露代理长期维护弱点。",
+      "recommendation": "EvoClaw 基准揭示代理在连续任务中性能暴跌，开发者需关注长期软件演化挑战。",
+      "summary": "EvoClaw 通过 DeepCommit 重建可验证里程碑 DAG，评估代理在动态环境下的系统完整性和错误累积。12 个前沿模型在孤立任务超 80%，连续设置仅 38%。基准强调真实世界软件演化的时间依赖和技术债。",
       "takeaways": [
-        "1M上下文标准定价，无额外乘数",
-        "提升Claude在代码和长文档任务的表现"
+        "代理在长期任务中易受错误传播影响",
+        "新基准推动连续演化评估"
       ],
-      "topic": "model-release"
+      "topic": "benchmark"
     },
     {
       "id": "04414d1a4f1c0cd2",
@@ -99,7 +72,7 @@
       "platform": "TLDR AI",
       "author": "Cerebras",
       "title": "Cerebras is coming to AWS",
-      "blurb": "Cerebras系统登陆AWS，提升AI推理速度5倍。",
+      "blurb": "Cerebras 与 AWS 合作，分拆预填充与解码硬件，加速大模型推理。",
       "link": "https://cerebras.ai/blog/cerebras-is-coming-to-aws",
       "canonical_link": "https://cerebras.ai/blog/cerebras-is-coming-to-aws",
       "published_at": "2026-03-16T20:00:00.000+08:00",
@@ -109,149 +82,122 @@
         "infra"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-16",
-      "source_signal": "Major infra partnership; boosts AI inference on cloud.",
-      "recommendation": "Cerebras系统登陆AWS，提升AI推理速度5倍。",
-      "summary": "AWS部署Cerebras CS-3，提供最快AI推理。通过Trainium预填充和WSE解码分离架构。",
+      "source_signal": "TLDR AI 杂项，Cerebras CS-3 部署 AWS Bedrock，提升 AI 推理吞吐 5 倍。",
+      "recommendation": "Cerebras 与 AWS 合作，分拆预填充与解码硬件，加速大模型推理。",
+      "summary": "AWS 部署 Cerebras CS-3 系统，支持开源 LLM 和 Nova 模型。通过 Trainium 预填充 + WSE 解码架构，提升 token 吞吐 5 倍。",
       "takeaways": [
-        "5倍token吞吐提升",
-        "云端高速推理新标杆"
+        "行业最快 AI 推理服务",
+        "专用硬件分拆优化阶段"
       ],
       "topic": "infra"
     },
     {
-      "id": "e61fc5fea3ad606c",
+      "id": "6e3438eb7bda1236",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hugging Face Papers",
-      "author": "KaLM-Embedding",
-      "title": "LMEB: Long-horizon Memory Embedding Benchmark",
-      "blurb": "LMEB基准测试长时程记忆嵌入，推动记忆模型评估标准化。",
-      "link": "https://arxiv.org/abs/2603.12572",
-      "canonical_link": "https://arxiv.org/abs/2603.12572",
-      "published_at": "2026-03-16T20:00:00.000+08:00",
+      "author": "Heng Fang et al.",
+      "title": "Towards Generalizable Robotic Manipulation in Dynamic Environments",
+      "blurb": "DOMINO 数据集超 11 万轨迹，PUMA 模型在动态任务中提升 6.3% 成功率，机器人研究必看。",
+      "link": "https://h-embodvis.github.io/DOMINO",
+      "canonical_link": "https://h-embodvis.github.io/DOMINO",
+      "published_at": "2026-03-17T01:59:57.000+08:00",
       "score": 8,
       "tags": [
         "Hugging Face Papers",
-        "benchmark"
+        "research"
       ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-16",
-      "source_signal": "Top daily paper on HF; new benchmark for long-term memory in embeddings.",
-      "recommendation": "LMEB基准测试长时程记忆嵌入，推动记忆模型评估标准化。",
-      "summary": "LMEB是长时程记忆嵌入基准，用于评估嵌入模型在长期记忆任务的表现。提供标准化数据集和指标。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-17",
+      "source_signal": "Hugging Face 论文，发布 DOMINO 数据集和 PUMA 模型，针对动态机器人操作，提升 VLA 时空推理。",
+      "recommendation": "DOMINO 数据集超 11 万轨迹，PUMA 模型在动态任务中提升 6.3% 成功率，机器人研究必看。",
+      "summary": "DOMINO 提供 35 个动态操作任务数据集和基准，评估 VLA 模型。PUMA 通过历史光流和预测查询实现动态感知，在动态环境中 SOTA 性能。动态数据训练还能转移到静态任务。",
       "takeaways": [
-        "专注长时程记忆评估",
-        "HF顶级论文"
+        "动态数据集填补 VLA 时空推理空白",
+        "PUMA 架构结合历史感知与短期预测"
       ],
-      "topic": "benchmark"
+      "topic": "research"
     },
     {
-      "id": "0a42108743bc9890",
+      "id": "cff7b56956cd1ce2",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "Chamber",
-      "title": "Launch HN: Chamber (YC W26) – An AI Teammate for GPU Infrastructure",
-      "blurb": "YC新品Chamber，提供GPU基础设施的AI助手，优化AI训练管理。",
-      "link": "https://usechamber.io/",
-      "canonical_link": "https://usechamber.io/",
-      "published_at": "2026-03-17T01:00:00.000+08:00",
-      "score": 7,
+      "platform": "TLDR AI",
+      "author": "Anthropic",
+      "title": "1M context is now generally available for Opus 4.6 and Sonnet 4.6",
+      "blurb": "Claude 1M 上下文 GA，标准定价覆盖全窗口，适用于企业级长上下文任务。",
+      "link": "https://claude.com/blog/1m-context-ga",
+      "canonical_link": "https://claude.com/blog/1m-context-ga",
+      "published_at": "2026-03-16T20:00:00.000+08:00",
+      "score": 8,
       "tags": [
-        "Hacker News",
-        "infra"
+        "TLDR AI",
+        "model-release"
       ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "YC launch on HN; targets GPU infra pain points for AI teams.",
-      "recommendation": "YC新品Chamber，提供GPU基础设施的AI助手，优化AI训练管理。",
-      "summary": "Chamber是YC W26项目，作为GPU基础设施的AI队友，帮助管理集群、调度和优化。简化AI基础设施运维，支持大规模训练。",
+      "source_page": "https://tldr.tech/ai/2026-03-16",
+      "source_signal": "TLDR AI 头条，Claude Opus/Sonnet 4.6 正式支持 1M 上下文，无额外费用，提升长对话能力。",
+      "recommendation": "Claude 1M 上下文 GA，标准定价覆盖全窗口，适用于企业级长上下文任务。",
+      "summary": "Claude Opus 4.6 和 Sonnet 4.6 在 Claude 平台上全面启用 1M 上下文窗口，无需压缩更多对话。Claude Code for Max/Team/Enterprise 用户同样支持，提升系统完整性。",
       "takeaways": [
-        "专注GPU基础设施自动化",
-        "YC背景，潜力高"
+        "减少上下文压缩，保留完整对话",
+        "标准定价，无窗口倍数"
       ],
-      "topic": "infra"
+      "topic": "model-release"
     },
     {
-      "id": "68c78c0b2798ba52",
+      "id": "b79115819296ee34",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "THUDM",
+      "title": "Faster Sparse Attention with IndexCache",
+      "blurb": "IndexCache 跨层复用索引，大幅降低稀疏注意力计算成本。",
+      "link": "https://github.com/THUDM/IndexCache",
+      "canonical_link": "https://github.com/THUDM/IndexCache",
+      "published_at": "2026-03-16T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "tooling"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-16",
+      "source_signal": "TLDR AI GitHub 推荐，IndexCache 复用 top-k 索引加速 DeepSeek 稀疏注意力。",
+      "recommendation": "IndexCache 跨层复用索引，大幅降低稀疏注意力计算成本。",
+      "summary": "IndexCache 通过层间复用 top-k 令牌索引，避免重复计算，维持模型质量的同时加速 DeepSeek 稀疏注意力。",
+      "takeaways": [
+        "移除大部分索引器计算",
+        "高效稀疏注意力优化"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "295a4050a8c52a4c",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hugging Face Papers",
-      "author": "14 authors",
-      "title": "daVinci-Env: Open SWE Environment Synthesis at Scale",
-      "blurb": "daVinci-Env大规模合成开放SWE环境，支持软件工程代理训练。",
-      "link": "https://arxiv.org/abs/2603.13023",
-      "canonical_link": "https://arxiv.org/abs/2603.13023",
-      "published_at": "2026-03-16T20:00:00.000+08:00",
+      "author": "Dilxat Muhtar et al.",
+      "title": "When Does Sparsity Mitigate the Curse of Depth in LLMs",
+      "blurb": "稀疏性调节方差传播，提升 LLM 深层利用率，下游任务提升 4.6%。",
+      "link": "https://pumpkin-co.github.io/SparsityAndCoD",
+      "canonical_link": "https://pumpkin-co.github.io/SparsityAndCoD",
+      "published_at": "2026-03-16T23:04:16.000+08:00",
       "score": 7,
       "tags": [
         "Hugging Face Papers",
-        "data"
+        "research"
       ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-16",
-      "source_signal": "HF daily paper; scales SWE env for agent training.",
-      "recommendation": "daVinci-Env大规模合成开放SWE环境，支持软件工程代理训练。",
-      "summary": "daVinci-Env提供大规模开放软件工程环境合成，用于代理训练和评估。提升SWE代理能力。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-17",
+      "source_signal": "Hugging Face 论文，探讨稀疏性如何缓解 LLM 深度诅咒，提供深度扩展实用配方。",
+      "recommendation": "稀疏性调节方差传播，提升 LLM 深层利用率，下游任务提升 4.6%。",
+      "summary": "论文揭示 LLM 深层利用不足源于 Pre-LN 方差增长，稀疏性（隐式/显式）降低方差，促进功能分化。实验覆盖权重衰减、GQA、MoE 等，提炼深度有效训练规则。",
       "takeaways": [
-        "SWE环境合成规模化",
-        "开源，支持代理开发"
+        "稀疏性改善深层块非恒等行为",
+        "实用配方提升下游准确率"
       ],
-      "topic": "data"
-    },
-    {
-      "id": "c1431e895c70fdde",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "Apideck",
-      "title": "Apideck CLI – An AI-agent interface with much lower context consumption than MCP",
-      "blurb": "Apideck CLI降低AI代理上下文消耗，提供高效接口。",
-      "link": "https://apideck.com/blog/mcp-server-eating-context-window-cli-alternative",
-      "canonical_link": "https://apideck.com/blog/mcp-server-eating-context-window-cli-alternative",
-      "published_at": "2026-03-16T23:00:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "Hacker News",
-        "tooling"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "High comments on HN; practical agent tooling alternative to MCP.",
-      "recommendation": "Apideck CLI降低AI代理上下文消耗，提供高效接口。",
-      "summary": "Apideck CLI作为AI代理接口，比MCP节省上下文窗口。简化代理与API交互，支持低token使用的高效工作流。",
-      "takeaways": [
-        "显著降低上下文消耗",
-        "CLI优于MCP在token效率"
-      ],
-      "topic": "tooling"
-    },
-    {
-      "id": "a211dd1e401658dd",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "Voygr",
-      "title": "Launch HN: Voygr (YC W26) – A better maps API for agents and AI apps",
-      "blurb": "Voygr为AI代理和应用提供优化的地图API，提升空间智能。",
-      "link": "https://news.ycombinator.com/item?id=47401042",
-      "canonical_link": "https://news.ycombinator.com/item?id=47401042",
-      "published_at": "2026-03-17T00:00:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "Hacker News",
-        "tooling"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "YC launch focused on agent tooling; addresses maps integration gaps.",
-      "recommendation": "Voygr为AI代理和应用提供优化的地图API，提升空间智能。",
-      "summary": "Voygr是YC W26推出的地图API，专为代理和AI应用设计，提供更精确和高效的地理服务。支持代理决策中的位置数据。",
-      "takeaways": [
-        "针对代理优化的地图API",
-        "YC支持，适用于AI应用"
-      ],
-      "topic": "tooling"
+      "topic": "research"
     },
     {
       "id": "baeb24a855918a08",
@@ -261,22 +207,22 @@
       "platform": "TLDR AI",
       "author": "Z.ai",
       "title": "GLM-5-Turbo",
-      "blurb": "GLM-5-Turbo提供高效文本生成API，支持实时流式响应。",
+      "blurb": "GLM-5-Turbo 提供流式文本生成和温度调节，高效创意任务工具。",
       "link": "https://docs.z.ai/guides/llm/glm-5-turbo",
       "canonical_link": "https://docs.z.ai/guides/llm/glm-5-turbo",
       "published_at": "2026-03-16T20:00:00.000+08:00",
-      "score": 7,
+      "score": 6,
       "tags": [
         "TLDR AI",
         "model-release"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-16",
-      "source_signal": "New model release in TLDR engineering section; streamlined API.",
-      "recommendation": "GLM-5-Turbo提供高效文本生成API，支持实时流式响应。",
-      "summary": "Z.ai的GLM-5-Turbo模型API用于文本生成，支持角色自定义、流式输出和温度调节。适用于营销等任务。",
+      "source_signal": "TLDR AI 工程部分，Z.ai GLM-5-Turbo API 支持实时流式生成，适用于营销等任务。",
+      "recommendation": "GLM-5-Turbo 提供流式文本生成和温度调节，高效创意任务工具。",
+      "summary": "GLM-5-Turbo 是 Z.ai 的精简 API，支持角色自定义、实时流式输出和温度控制创意度。适用于生成营销口号等文本任务。",
       "takeaways": [
-        "实时流式生成",
-        "创意控制灵活"
+        "实时流式响应提升交互性",
+        "可调温度优化生成质量"
       ],
       "topic": "model-release"
     }
