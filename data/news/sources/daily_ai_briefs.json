@@ -4,39 +4,12 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 12,
-    "updated_at": "2026-03-17T18:35:10.022+08:00",
+    "updated_at": "2026-03-18T07:26:21.769+08:00",
     "item_count": 8,
-    "window_start": "2026-03-16T00:00:00.000Z",
-    "window_end": "2026-03-17T10:35:10.022Z"
+    "window_start": "2026-03-17T00:00:00.000Z",
+    "window_end": "2026-03-17T23:26:21.769Z"
   },
   "items": [
-    {
-      "id": "d68ff90808904c08",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "Mistral AI",
-      "title": "Leanstral: Open-source agent for trustworthy coding and formal proof engineering",
-      "blurb": "Mistral 的 Leanstral 是首个结合大模型与 Lean 定理证明器的开源代理，适合追求代码可靠性的开发者。",
-      "link": "https://mistral.ai/news/leanstral",
-      "canonical_link": "https://mistral.ai/news/leanstral",
-      "published_at": "2026-03-17T18:35:10.022+08:00",
-      "score": 9,
-      "tags": [
-        "Hacker News",
-        "agent"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Hacker News 热门榜单，565 分高热度，Mistral 发布开源代理，针对可信编码和形式证明，推动 AI 在软件验证领域的应用。",
-      "recommendation": "Mistral 的 Leanstral 是首个结合大模型与 Lean 定理证明器的开源代理，适合追求代码可靠性的开发者。",
-      "summary": "Leanstral 是一个开源 AI 代理，专为可信编码和形式证明工程设计。它整合 Mistral 模型与 Lean 证明系统，能生成并验证数学证明和代码。项目强调长期维护和错误最小化，在 HN 上引发广泛讨论。",
-      "takeaways": [
-        "开源代理提升形式化验证自动化",
-        "桥接 LLM 与定理证明器，减少编码错误"
-      ],
-      "topic": "agent"
-    },
     {
       "id": "396fcc7d981afd0b",
       "source_id": "daily_ai_briefs",
@@ -45,186 +18,213 @@
       "platform": "Hugging Face Papers",
       "author": "taesiri et al.",
       "title": "EvoClaw: Evaluating AI Agents on Continuous Software Evolution",
-      "blurb": "EvoClaw 基准揭示代理在连续任务中性能暴跌，开发者需关注长期软件演化挑战。",
+      "blurb": "EvoClaw基准揭示AI代理在连续软件演化中的痛点，是评估长期代理能力的必备工具。",
       "link": "https://evo-claw.com/",
       "canonical_link": "https://evo-claw.com/",
       "published_at": "2026-03-13T07:20:40.000+08:00",
-      "score": 8,
+      "score": 9,
       "tags": [
         "Hugging Face Papers",
         "benchmark"
       ],
       "source_page": "https://huggingface.co/papers/date/2026-03-17",
-      "source_signal": "Hugging Face 当日论文，引入 EvoClaw 基准测试 AI 代理在连续软件演化中的表现，暴露代理长期维护弱点。",
-      "recommendation": "EvoClaw 基准揭示代理在连续任务中性能暴跌，开发者需关注长期软件演化挑战。",
-      "summary": "EvoClaw 通过 DeepCommit 重建可验证里程碑 DAG，评估代理在动态环境下的系统完整性和错误累积。12 个前沿模型在孤立任务超 80%，连续设置仅 38%。基准强调真实世界软件演化的时间依赖和技术债。",
+      "source_signal": "Featured on HF daily papers; new benchmark exposing agent weaknesses in long-term software maintenance.",
+      "recommendation": "EvoClaw基准揭示AI代理在连续软件演化中的痛点，是评估长期代理能力的必备工具。",
+      "summary": "EvoClaw引入DeepCommit管道，从提交日志重建里程碑DAG，用于连续软件演化基准测试。12个前沿模型在连续任务中性能从80%降至38%，暴露维护和错误传播问题。适用于动态环境中的代理部署。",
       "takeaways": [
-        "代理在长期任务中易受错误传播影响",
-        "新基准推动连续演化评估"
+        "连续任务性能急剧下降",
+        "强调长期维护挑战"
       ],
       "topic": "benchmark"
     },
     {
-      "id": "04414d1a4f1c0cd2",
+      "id": "13b1f908226f010f",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "gsd-build",
+      "title": "Get Shit Done: A Meta-Prompting, Context Engineering and Spec-Driven Dev System",
+      "blurb": "这是一个基于元提示和规范驱动的AI开发系统，能大幅提升编码效率，推荐给AI代理爱好者。",
+      "link": "https://github.com/gsd-build/get-shit-done",
+      "canonical_link": "https://github.com/gsd-build/get-shit-done",
+      "published_at": "2026-03-17T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "Hacker News",
+        "agent"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Top HN item with 136 points and 78 comments; innovative AI agent for dev workflows using meta-prompting.",
+      "recommendation": "这是一个基于元提示和规范驱动的AI开发系统，能大幅提升编码效率，推荐给AI代理爱好者。",
+      "summary": "Get Shit Done 通过元提示工程、上下文管理和规范驱动，帮助AI代理高效完成开发任务。GitHub仓库开源，包含完整系统。HN讨论热烈，突出其在实际DevOps中的潜力。",
+      "takeaways": [
+        "元提示优化代理性能",
+        "支持复杂上下文工程"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "54895d4961d64e13",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Cerebras",
-      "title": "Cerebras is coming to AWS",
-      "blurb": "Cerebras 与 AWS 合作，分拆预填充与解码硬件，加速大模型推理。",
-      "link": "https://cerebras.ai/blog/cerebras-is-coming-to-aws",
-      "canonical_link": "https://cerebras.ai/blog/cerebras-is-coming-to-aws",
-      "published_at": "2026-03-16T20:00:00.000+08:00",
-      "score": 8,
+      "author": "Mistral AI",
+      "title": "Introducing Mistral Small 4",
+      "blurb": "Mistral Small 4整合多模态和推理能力，开源高效，适合部署在边缘设备。",
+      "link": "https://mistral.ai/news/mistral-small-4",
+      "canonical_link": "https://mistral.ai/news/mistral-small-4",
+      "published_at": "2026-03-17T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-17",
+      "source_signal": "Featured in TLDR AI engineering section; new MoE model release with multimodal capabilities.",
+      "recommendation": "Mistral Small 4整合多模态和推理能力，开源高效，适合部署在边缘设备。",
+      "summary": "Mistral Small 4采用119B参数MoE架构，支持文本图像输入，可配置推理努力。融合Magistral、Pixtral和Devstral能力，在短输出中实现高性能。开源，支持vLLM、llama.cpp等平台。",
+      "takeaways": [
+        "多模态统一模型",
+        "高效推理缩放"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "b641883842038fa6",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "NVIDIA",
+      "title": "OpenShell",
+      "blurb": "OpenShell提供安全的AI代理运行时，YAML策略治理，保护数据和基础设施。",
+      "link": "https://github.com/NVIDIA/OpenShell",
+      "canonical_link": "https://github.com/NVIDIA/OpenShell",
+      "published_at": "2026-03-17T20:00:00.000+08:00",
+      "score": 9,
       "tags": [
         "TLDR AI",
         "infra"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-16",
-      "source_signal": "TLDR AI 杂项，Cerebras CS-3 部署 AWS Bedrock，提升 AI 推理吞吐 5 倍。",
-      "recommendation": "Cerebras 与 AWS 合作，分拆预填充与解码硬件，加速大模型推理。",
-      "summary": "AWS 部署 Cerebras CS-3 系统，支持开源 LLM 和 Nova 模型。通过 Trainium 预填充 + WSE 解码架构，提升 token 吞吐 5 倍。",
+      "source_page": "https://tldr.tech/ai/2026-03-17",
+      "source_signal": "NVIDIA GTC launch in TLDR; safe runtime for autonomous AI agents with sandboxing.",
+      "recommendation": "OpenShell提供安全的AI代理运行时，YAML策略治理，保护数据和基础设施。",
+      "summary": "OpenShell是NVIDIA的私有代理运行时，支持沙箱执行，防止未授权访问和数据外泄。包含集群调试等技能，支持多租户企业部署。GTC发布，强调安全自主代理。",
       "takeaways": [
-        "行业最快 AI 推理服务",
-        "专用硬件分拆优化阶段"
+        "声明式YAML策略",
+        "沙箱保护代理执行"
       ],
       "topic": "infra"
     },
     {
-      "id": "6e3438eb7bda1236",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Heng Fang et al.",
-      "title": "Towards Generalizable Robotic Manipulation in Dynamic Environments",
-      "blurb": "DOMINO 数据集超 11 万轨迹，PUMA 模型在动态任务中提升 6.3% 成功率，机器人研究必看。",
-      "link": "https://h-embodvis.github.io/DOMINO",
-      "canonical_link": "https://h-embodvis.github.io/DOMINO",
-      "published_at": "2026-03-17T01:59:57.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hugging Face Papers",
-        "research"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-17",
-      "source_signal": "Hugging Face 论文，发布 DOMINO 数据集和 PUMA 模型，针对动态机器人操作，提升 VLA 时空推理。",
-      "recommendation": "DOMINO 数据集超 11 万轨迹，PUMA 模型在动态任务中提升 6.3% 成功率，机器人研究必看。",
-      "summary": "DOMINO 提供 35 个动态操作任务数据集和基准，评估 VLA 模型。PUMA 通过历史光流和预测查询实现动态感知，在动态环境中 SOTA 性能。动态数据训练还能转移到静态任务。",
-      "takeaways": [
-        "动态数据集填补 VLA 时空推理空白",
-        "PUMA 架构结合历史感知与短期预测"
-      ],
-      "topic": "research"
-    },
-    {
-      "id": "cff7b56956cd1ce2",
+      "id": "c468a324b4220415",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Anthropic",
-      "title": "1M context is now generally available for Opus 4.6 and Sonnet 4.6",
-      "blurb": "Claude 1M 上下文 GA，标准定价覆盖全窗口，适用于企业级长上下文任务。",
-      "link": "https://claude.com/blog/1m-context-ga",
-      "canonical_link": "https://claude.com/blog/1m-context-ga",
-      "published_at": "2026-03-16T20:00:00.000+08:00",
+      "author": "NVIDIA",
+      "title": "The First Healthcare Robotics Dataset and Foundational Physical AI Models for Healthcare Robotics",
+      "blurb": "Open-H-Embodiment数据集推动医疗机器人AI自主性，是物理AI基础模型的关键资源。",
+      "link": "https://huggingface.co/blog/nvidia/physical-ai-for-healthcare-robotics",
+      "canonical_link": "https://huggingface.co/blog/nvidia/physical-ai-for-healthcare-robotics",
+      "published_at": "2026-03-17T20:00:00.000+08:00",
       "score": 8,
       "tags": [
         "TLDR AI",
-        "model-release"
+        "data"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-16",
-      "source_signal": "TLDR AI 头条，Claude Opus/Sonnet 4.6 正式支持 1M 上下文，无额外费用，提升长对话能力。",
-      "recommendation": "Claude 1M 上下文 GA，标准定价覆盖全窗口，适用于企业级长上下文任务。",
-      "summary": "Claude Opus 4.6 和 Sonnet 4.6 在 Claude 平台上全面启用 1M 上下文窗口，无需压缩更多对话。Claude Code for Max/Team/Enterprise 用户同样支持，提升系统完整性。",
+      "source_page": "https://tldr.tech/ai/2026-03-17",
+      "source_signal": "Quick link in TLDR; new dataset for healthcare robotics AI training.",
+      "recommendation": "Open-H-Embodiment数据集推动医疗机器人AI自主性，是物理AI基础模型的关键资源。",
+      "summary": "Open-H-Embodiment是社区驱动的医疗机器人数据集，用于训练和评估医疗应用的AI自主性和世界基础模型。支持药物发现和模拟等场景。NVIDIA GTC相关发布。",
       "takeaways": [
-        "减少上下文压缩，保留完整对话",
-        "标准定价，无窗口倍数"
+        "首个医疗机器人数据集",
+        "支持物理AI基础模型"
       ],
-      "topic": "model-release"
+      "topic": "data"
     },
     {
-      "id": "b79115819296ee34",
+      "id": "3f54f9f058175ab1",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "THUDM",
-      "title": "Faster Sparse Attention with IndexCache",
-      "blurb": "IndexCache 跨层复用索引，大幅降低稀疏注意力计算成本。",
-      "link": "https://github.com/THUDM/IndexCache",
-      "canonical_link": "https://github.com/THUDM/IndexCache",
-      "published_at": "2026-03-16T20:00:00.000+08:00",
+      "platform": "Hacker News",
+      "author": "Unsloth",
+      "title": "Unsloth Studio",
+      "blurb": "Unsloth Studio 提供高效的模型微调和部署工具，值得开发者尝试以加速AI工作流。",
+      "link": "https://unsloth.ai/docs/new/studio",
+      "canonical_link": "https://unsloth.ai/docs/new/studio",
+      "published_at": "2026-03-17T20:00:00.000+08:00",
       "score": 8,
       "tags": [
-        "TLDR AI",
+        "Hacker News",
         "tooling"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-16",
-      "source_signal": "TLDR AI GitHub 推荐，IndexCache 复用 top-k 索引加速 DeepSeek 稀疏注意力。",
-      "recommendation": "IndexCache 跨层复用索引，大幅降低稀疏注意力计算成本。",
-      "summary": "IndexCache 通过层间复用 top-k 令牌索引，避免重复计算，维持模型质量的同时加速 DeepSeek 稀疏注意力。",
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Surfaced on HN frontpage with 104 points and 27 comments; high-value AI tooling for efficient model training/fine-tuning.",
+      "recommendation": "Unsloth Studio 提供高效的模型微调和部署工具，值得开发者尝试以加速AI工作流。",
+      "summary": "Unsloth Studio 是 Unsloth 推出的新工具，支持快速模型训练和推理优化。适用于各种LLM微调场景，显著降低计算成本。HN社区反馈积极，显示其实用性。",
       "takeaways": [
-        "移除大部分索引器计算",
-        "高效稀疏注意力优化"
+        "支持GPU加速微调，速度提升显著",
+        "集成Studio界面，便于可视化操作"
       ],
       "topic": "tooling"
     },
     {
-      "id": "295a4050a8c52a4c",
+      "id": "bd56a3917a833e4d",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hugging Face Papers",
-      "author": "Dilxat Muhtar et al.",
-      "title": "When Does Sparsity Mitigate the Curse of Depth in LLMs",
-      "blurb": "稀疏性调节方差传播，提升 LLM 深层利用率，下游任务提升 4.6%。",
-      "link": "https://pumpkin-co.github.io/SparsityAndCoD",
-      "canonical_link": "https://pumpkin-co.github.io/SparsityAndCoD",
-      "published_at": "2026-03-16T23:04:16.000+08:00",
-      "score": 7,
+      "author": "Junyao Hu et al.",
+      "title": "Garments2Look: A Multi-Reference Dataset for High-Fidelity Outfit-Level Virtual Try-On with Clothing and Accessories",
+      "blurb": "Garments2Look数据集填补服装虚拟试穿的多件套装空白，推动时尚AI应用发展。",
+      "link": "https://artmesciencelab.github.io/Garments2Look",
+      "canonical_link": "https://artmesciencelab.github.io/Garments2Look",
+      "published_at": "2026-03-15T07:30:32.000+08:00",
+      "score": 8,
       "tags": [
         "Hugging Face Papers",
-        "research"
+        "data"
       ],
       "source_page": "https://huggingface.co/papers/date/2026-03-17",
-      "source_signal": "Hugging Face 论文，探讨稀疏性如何缓解 LLM 深度诅咒，提供深度扩展实用配方。",
-      "recommendation": "稀疏性调节方差传播，提升 LLM 深层利用率，下游任务提升 4.6%。",
-      "summary": "论文揭示 LLM 深层利用不足源于 Pre-LN 方差增长，稀疏性（隐式/显式）降低方差，促进功能分化。实验覆盖权重衰减、GQA、MoE 等，提炼深度有效训练规则。",
+      "source_signal": "Daily HF paper with project page and GitHub; first large-scale dataset for outfit-level VTON.",
+      "recommendation": "Garments2Look数据集填补服装虚拟试穿的多件套装空白，推动时尚AI应用发展。",
+      "summary": "Garments2Look包含80K多件服装到完整造型对，支持40大类300+子类。每个对包括3-12件参考图像、模特图和文本标注。通过合成管道确保真实性和多样性。基准测试显示现有VTON方法在分层和风格上挣扎。",
       "takeaways": [
-        "稀疏性改善深层块非恒等行为",
-        "实用配方提升下游准确率"
+        "80K多模态对，平均4.48件/套",
+        "暴露当前方法局限"
       ],
-      "topic": "research"
+      "topic": "data"
     },
     {
-      "id": "baeb24a855918a08",
+      "id": "d68ff90808904c08",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Z.ai",
-      "title": "GLM-5-Turbo",
-      "blurb": "GLM-5-Turbo 提供流式文本生成和温度调节，高效创意任务工具。",
-      "link": "https://docs.z.ai/guides/llm/glm-5-turbo",
-      "canonical_link": "https://docs.z.ai/guides/llm/glm-5-turbo",
-      "published_at": "2026-03-16T20:00:00.000+08:00",
-      "score": 6,
+      "author": "Mistral AI",
+      "title": "Leanstral",
+      "blurb": "Leanstral针对形式化验证的编码代理，开源权重，适用于数学证明任务。",
+      "link": "https://mistral.ai/news/leanstral",
+      "canonical_link": "https://mistral.ai/news/leanstral",
+      "published_at": "2026-03-17T20:00:00.000+08:00",
+      "score": 8,
       "tags": [
         "TLDR AI",
-        "model-release"
+        "agent"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-16",
-      "source_signal": "TLDR AI 工程部分，Z.ai GLM-5-Turbo API 支持实时流式生成，适用于营销等任务。",
-      "recommendation": "GLM-5-Turbo 提供流式文本生成和温度调节，高效创意任务工具。",
-      "summary": "GLM-5-Turbo 是 Z.ai 的精简 API，支持角色自定义、实时流式输出和温度控制创意度。适用于生成营销口号等文本任务。",
+      "source_page": "https://tldr.tech/ai/2026-03-17",
+      "source_signal": "TLDR AI highlight; open-source coding agent for Lean 4 proof assistant.",
+      "recommendation": "Leanstral针对形式化验证的编码代理，开源权重，适用于数学证明任务。",
+      "summary": "Leanstral是为Lean 4设计的开源编码代理，训练于真实形式仓库，高效率操作。Apache 2.0许可，支持Mistral vibe代理模式和免费API。提升形式数学对象的处理能力。",
       "takeaways": [
-        "实时流式响应提升交互性",
-        "可调温度优化生成质量"
+        "Lean 4专用代理",
+        "高效形式仓库操作"
       ],
-      "topic": "model-release"
+      "topic": "agent"
     }
   ]
 }
