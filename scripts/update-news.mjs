@@ -30,8 +30,8 @@ const ARTIST_MAX_CONCURRENCY = 3;
 const ARTIST_MAX_ITEMS = 40;
 const HANDLE_BATCH_MAX_RETRIES = 1;
 const HANDLE_BATCH_RETRY_DELAY_MS = 1500;
-const X_AI_SIGNALS_LOOKBACK_HOURS = 8;
-const X_AI_SIGNALS_REFRESH_HOURS = 6;
+const X_AI_SIGNALS_LOOKBACK_HOURS = 14;
+const X_AI_SIGNALS_REFRESH_HOURS = 12;
 const X_AI_SIGNALS_BATCH_SIZE = 8;
 const X_AI_SIGNALS_BATCH_LIMIT = 8;
 const X_AI_SIGNALS_MAX_CONCURRENCY = 6;
@@ -136,13 +136,10 @@ const ARTIST_HANDLES = [
 ];
 
 const X_AI_SIGNALS_HANDLES = [
-  "dotey",
-  "op7418",
   "Gorden_Sun",
   "xiaohu",
   "shao__meng",
   "thinkingjimmy",
-  "goocarlos",
   "Tumeng05",
   "AxtonLiu",
   "haibun",
@@ -182,15 +179,11 @@ const X_AI_SIGNALS_HANDLES = [
   "nextify2024",
   "readyfor2025",
   "weijunext",
-  "yihui_indie",
   "JinsFavorites",
-  "xiongchun007",
   "Junyu",
   "luoleiorg",
   "Plidezus",
-  "jesselaunz",
   "lewangx",
-  "axtonliu",
   "tualatrix",
   "luinlee",
   "yupi996",
@@ -211,10 +204,8 @@ const X_AI_SIGNALS_HANDLES = [
   "EvaCmore",
   "shuziyimin",
   "itangtalk",
-  "austinit",
   "guishou_56",
   "9yearfish",
-  "benshandebiao",
   "hwwaanng",
   "OwenYoungZh",
   "waylybaye",
@@ -241,7 +232,6 @@ const X_AI_SIGNALS_HANDLES = [
   "ruanyf",
   "Svwang1",
   "sspai_com",
-  "OwenYoungZh",
   "foxshuo",
   "pongba",
   "Francis_YAO_",
@@ -267,19 +257,11 @@ const X_AI_SIGNALS_HANDLES = [
   "KirkDBorne",
   "antgrasso",
   "Ronald_vanLoon",
-  "steipete",
   "geoffreyhinton",
   "goodfellow_ian",
   "jeffdean",
   "erikbryn",
   "thatroblennon",
-  "levelsio",
-  "marclou",
-  "yongfook",
-  "SimonHoiberg",
-  "dannypostmaa",
-  "tdinh_me",
-  "jakobgreenfeld",
   "jackfriks",
   "rileybrown",
   "corbin_braun",
@@ -287,11 +269,9 @@ const X_AI_SIGNALS_HANDLES = [
   "hnshah",
   "jasonlk",
   "danmartell",
-  "robwalling",
   "nathanlatka",
   "aprildunford",
   "Patticus",
-  "Pauline_Cx",
   "MakadiaHarsh",
   "naval",
   "paulg",
@@ -301,7 +281,6 @@ const X_AI_SIGNALS_HANDLES = [
   "MengTo",
   "emollick",
   "kloss_xyz",
-  "egeberkina",
 ];
 
 const AIINDIE_HANDLES = [
