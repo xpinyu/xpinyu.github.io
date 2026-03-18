@@ -300,6 +300,7 @@ const X_AI_SIGNALS_HANDLES = [
   "RestOfWorld",
   "edzitron",
   "benthompson",
+  "lennysan",
 ];
 
 const AIINDIE_HANDLES = [
@@ -857,7 +858,7 @@ Output rules:
 - Return strict JSON only.
 - Write descriptive fields in Simplified Chinese.
 - Keep the title in its original language when useful.
- - platform must be one of: Hacker News, Hugging Face Papers, ClawFeed, TLDR AI.
+- platform must be one of: Hacker News, Hugging Face Papers, ClawFeed, TLDR AI.
 - published_at must be ISO 8601 with timezone. If the original timestamp is unclear, use the fallback_published_at from the digest page that surfaced the item.
 - link must point to the original item when available.
 - source_page must be the digest page URL that surfaced the item.
