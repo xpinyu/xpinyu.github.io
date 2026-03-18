@@ -6,8 +6,15 @@
 <meta name="description" content="Signal over consensus.">
 <title>pinyu.ai</title>
 <link rel="stylesheet" href="/fonts/fonts.css">
+<script>
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const requested = String(params.get("filter") || "").trim().toLowerCase();
+    const validFilters = new Set(["news", "voices", "builders", "art", "paper", "essays"]);
+    document.documentElement.dataset.initialFilter = validFilters.has(requested) ? requested : "news";
+  }());
+</script>
 <style>
-
   :root {
     --bg: #FAF6EE;
     --surface: #FFFFFF;
@@ -37,7 +44,7 @@
   }
 
   .page {
-    max-width: 560px;
+    max-width: 640px;
     margin: 0 auto;
     padding: max(72px, 10vh) 24px 96px;
     width: 100%;
@@ -49,20 +56,8 @@
     from { opacity: 0; transform: translateY(6px); }
   }
 
-  @keyframes news-link-underline {
-    0%, 100% { opacity: 0.28; transform: scaleX(0.68); }
-    42% { opacity: 0.72; transform: scaleX(1.04); }
-    58% { opacity: 0.48; transform: scaleX(0.86); }
-  }
-
-  @keyframes news-link-dot {
-    0%, 100% { opacity: 0.16; transform: translate3d(0, -50%, 0) scale(1); }
-    42% { opacity: 0.48; transform: translate3d(-1px, -50%, 0) scale(1.55); }
-    58% { opacity: 0.28; transform: translate3d(0, -50%, 0) scale(1.18); }
-  }
-
   .identity {
-    margin-bottom: 80px;
+    margin-bottom: 20px;
   }
 
   .identity h1 {
@@ -70,7 +65,7 @@
     font-size: 2.8rem;
     font-weight: 400;
     letter-spacing: 0.01em;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
 
   .identity h1 .dot {
@@ -87,125 +82,249 @@
     line-height: 1.6;
   }
 
-  .identity::after {
-    content: '';
-    display: block;
-    width: 104px;
-    height: 8px;
-    margin-top: 32px;
-    background:
-      linear-gradient(var(--accent), var(--accent)) 0 0 / 56px 100% no-repeat,
-      linear-gradient(var(--vert), var(--vert)) 62px 0 / 24px 100% no-repeat,
-      linear-gradient(var(--vermillion), var(--vermillion)) 92px 0 / 12px 100% no-repeat;
-  }
-
-  .section-header {
+  .filter-nav {
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
   }
 
-  .section-links {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-  }
-
-  .section-label {
-    font-size: 0.70rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+  .filter-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 0;
     color: var(--text-3);
-  }
-
-  .section-link {
-    font-size: 0.72rem;
-    color: var(--text-3);
+    font-size: 0.68rem;
+    font-weight: 500;
     text-decoration: none;
     letter-spacing: 0.02em;
-    transition: color 0.15s;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease;
   }
 
-  .section-link:hover {
-    color: var(--accent);
+  .filter-chip:hover {
+    color: var(--text-2);
   }
 
-  .section-link:focus-visible {
+  .filter-chip.is-active {
+    color: var(--text-1);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.34em;
+    text-decoration-color: rgba(26, 23, 20, 0.42);
+  }
+
+  .filter-chip:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
     border-radius: 2px;
   }
 
-  .section-link-news {
-    position: relative;
-    display: inline-block;
-    padding-right: 11px;
-    padding-bottom: 2px;
+  .notice {
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    background: rgba(27, 63, 139, 0.05);
+    border: 1px solid rgba(27, 63, 139, 0.15);
     color: var(--text-2);
+    font-size: 0.73rem;
   }
 
-  .section-link-news::before,
-  .section-link-news::after {
-    content: '';
-    position: absolute;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+  .news-view {
+    display: none;
   }
 
-  .section-link-news::before {
-    top: 50%;
-    right: 0;
-    width: 4px;
-    height: 4px;
-    border-radius: 999px;
-    background: var(--accent);
-    transform: translateY(-50%) scale(1);
-    opacity: 0.18;
-    animation: news-link-dot 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  .essays-view {
+    display: block;
   }
 
-  .section-link-news::after {
-    left: 0;
-    right: 11px;
-    bottom: -1px;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      rgba(27, 63, 139, 0.08) 0%,
-      rgba(27, 63, 139, 0.6) 50%,
-      rgba(27, 63, 139, 0.08) 100%
-    );
-    transform-origin: left center;
-    transform: scaleX(0.68);
-    opacity: 0.34;
-    animation: news-link-underline 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  html[data-initial-filter]:not([data-initial-filter="essays"]) .news-view {
+    display: block;
   }
 
-  .section-link-news:hover,
-  .section-link-news:focus-visible {
+  html[data-initial-filter]:not([data-initial-filter="essays"]) .essays-view {
+    display: none;
+  }
+
+  .feed {
+    list-style: none;
+  }
+
+  .feed-item {
+    border-top: 1px solid var(--border);
+    animation: enter 0.35s ease both;
+  }
+
+  .feed-item:first-child {
+    border-top: none;
+  }
+
+  .feed-item:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .feed-card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    margin: 0 -10px;
+    padding: 14px 10px 16px;
+    border-radius: 10px;
+    transition: background-color 0.18s ease, transform 0.18s ease;
+  }
+
+  .feed-card:hover {
+    background: rgba(27, 63, 139, 0.04);
+  }
+
+  .feed-card:hover .feed-title,
+  .feed-card:hover .feed-link {
     color: var(--accent);
   }
 
-  .section-link-news:hover::before,
-  .section-link-news:focus-visible::before {
-    animation: none;
-    opacity: 0.42;
-    transform: translateY(-50%) scale(1.2);
+  .feed-card:focus-visible,
+  .pagination a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 2px;
   }
 
-  .section-link-news:hover::after,
-  .section-link-news:focus-visible::after {
-    animation: none;
-    opacity: 0.72;
-    transform: scaleX(1);
+  .feed-topline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 7px;
   }
 
-  .section-divider {
+  .source-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
+    border-radius: 999px;
+    border: 1px solid rgba(27, 63, 139, 0.18);
+    background: rgba(27, 63, 139, 0.06);
+    color: var(--accent);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+  }
+
+  .source-pill.source-art {
+    border-color: rgba(45, 139, 71, 0.16);
+    background: rgba(45, 139, 71, 0.06);
+    color: var(--vert);
+  }
+
+  .source-pill.source-builders {
+    border-color: rgba(232, 67, 42, 0.18);
+    background: rgba(232, 67, 42, 0.07);
+    color: var(--vermillion);
+  }
+
+  .source-pill.source-voices {
+    border-color: rgba(110, 79, 211, 0.18);
+    background: rgba(110, 79, 211, 0.08);
+    color: #6E4FD3;
+  }
+
+  .source-pill.source-paper {
+    border-color: rgba(27, 63, 139, 0.18);
+    background: rgba(27, 63, 139, 0.06);
+    color: var(--accent);
+  }
+
+  .feed-time {
+    font-size: 0.62rem;
     color: var(--text-3);
-    opacity: 0.55;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  .feed-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.66rem;
+    color: var(--text-3);
+    margin-top: 5px;
+    margin-bottom: 0;
+  }
+
+  .feed-title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.32;
+    letter-spacing: 0.005em;
+  }
+
+  .feed-item:first-child .feed-title {
+    font-size: 1.06rem;
+  }
+
+  .feed-blurb {
+    margin-top: 6px;
+    width: 100%;
     font-size: 0.72rem;
-    line-height: 1;
+    color: var(--text-2);
+    line-height: 1.62;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .feed-link {
+    display: inline-block;
+    margin-top: 7px;
+    font-size: 0.66rem;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .empty-state {
+    padding: 36px 0;
+    color: var(--text-2);
+    font-size: 0.77rem;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 20px;
+    padding-top: 4px;
+  }
+
+  .pagination a,
+  .pagination span {
+    font-size: 0.72rem;
+    color: var(--text-3);
+    text-decoration: none;
+  }
+
+  .pagination a:hover {
+    color: var(--accent);
+  }
+
+  .pagination .disabled {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  .page-chip {
+    min-width: 88px;
+    text-align: center;
   }
 
   .articles {
@@ -318,9 +437,9 @@
   }
 
   footer {
-    max-width: 560px;
+    max-width: 640px;
     margin: 0 auto;
-    padding: 24px 24px 48px;
+    padding: 0 24px 48px;
     width: 100%;
     font-size: 0.7rem;
     color: var(--text-3);
@@ -342,318 +461,696 @@
     outline-offset: 2px;
   }
 
-  .pick .article-title::before {
-    content: '';
-    display: inline-block;
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--accent);
-    margin-right: 7px;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
+  @media (prefers-reduced-motion: reduce) {
+    .page,
+    .feed-item,
+    .articles li {
+      animation: none;
+    }
+
+    .feed-card,
+    .articles a::before,
+    .article-detail {
+      transition: none;
+    }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .page, .articles li { animation: none; }
-    .article-detail { transition: none; }
-    .articles a::before { transition: none; }
-    .section-link-news::before,
-    .section-link-news::after { animation: none; }
-    .section-link-news::before {
-      opacity: 0.34;
-      transform: translateY(-50%) scale(1.1);
+  @media (max-width: 640px) {
+    .identity {
+      margin-bottom: 18px;
     }
-    .section-link-news::after {
-      opacity: 0.56;
-      transform: scaleX(1);
+
+    .identity h1 {
+      font-size: 2.45rem;
+    }
+
+    .filter-nav {
+      gap: 8px 12px;
+    }
+
+    .feed-card {
+      margin: 0 -8px;
+      padding: 14px 8px 16px;
+    }
+
+    .article-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
     }
   }
 </style>
 </head>
 <body>
-
 <div class="page">
   <div class="identity">
     <h1>pinyu<span class="dot">.</span>ai</h1>
     <p>Signal over consensus.</p>
   </div>
 
-  <div class="section-header">
-    <h2 class="section-label">Selected</h2>
-    <div class="section-links">
-      <a href="all.html" class="section-link">Archive</a>
-      <span class="section-divider" aria-hidden="true">·</span>
-      <a href="news.html" class="section-link section-link-news">News</a>
-    </div>
-  </div>
-  <ul class="articles">
-    <li>
-      <a href="p/bwf.html">
-        <div class="article-header">
-          <div class="article-title">Prompts Don't Build Brands</div>
-          <div class="article-meta">Midjourney × Brand Systems · 2026</div>
-        </div>
-        <div class="article-desc">品牌图最难的，是把偶尔的好结果沉淀成稳定的一致性。</div>
-        <div class="article-detail"><span>文章拆开 Jamie Ganon 的工作流：先用 mood board 定义视觉语言，再用 Style Reference、Personalization Code 和 brand code 把风格固化成系统。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/remap.html">
-        <div class="article-header">
-          <div class="article-title">Redrawing the Map</div>
-          <div class="article-meta">Biology × AI · 2026</div>
-        </div>
-        <div class="article-desc">更强的系统，往往会一边找路，一边重画地图。</div>
-        <div class="article-detail"><span>从涡虫再生到 Transformer 与扩散模型，同一个问题被串了起来：系统怎样在扰动里重组问题空间，然后继续逼近目标。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/eagi.html">
-        <div class="article-header">
-          <div class="article-title">Some Simple Economics of AGI</div>
-          <div class="article-meta">AGI × Economics · 2026</div>
-        </div>
-        <div class="article-desc">为什么聊天、画图、短代码会先爆发？因为它们最容易验证。</div>
-        <div class="article-detail"><span>执行越来越便宜以后，真正稀缺的会变成验证。谁能更快验证结果，谁愿意为结果负责，价值就会慢慢往谁那边走。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/ood.html">
-        <div class="article-header">
-          <div class="article-title">Out of Distribution</div>
-          <div class="article-meta">Founder Selection × Venture · 2026</div>
-        </div>
-        <div class="article-desc">筛选系统越精密，越容易错过分布外的创始人。</div>
-        <div class="article-detail"><span>学校、公司与 VC 擅长识别分布内的优秀，却常常遗漏分布外的可能性。创伤、神经多样性与跨域广度，不只是特质，更是形成独立判断力的三条路径。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/bo.html">
-        <div class="article-header">
-          <div class="article-title">Before Objects</div>
-          <div class="article-meta">Consciousness × Symbolic Forms · 2026</div>
-        </div>
-        <div class="article-desc">世界不是先作为对象出现，而是先作为利害出现。</div>
-        <div class="article-detail"><span>Bennett 用 “death grounds meaning” 重写意识问题，卡西尔则解释人怎样把这种原初效价写成神话、语言、艺术与科学。意义有两次诞生：先在生命里，后在符号里。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/retention.html">
-        <div class="article-header">
-          <div class="article-title">Attention Before Product</div>
-          <div class="article-meta">Organic Marketing × Attention · 2026</div>
-        </div>
-        <div class="article-desc">平台不奖励好产品，它奖励能留住人的内容。</div>
-        <div class="article-detail"><span>先讲产品，通常等于先失去用户。先拿到注意力，再谈功能；产品只能最后出现。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/old.html">
-        <div class="article-header">
-          <div class="article-title">One Layer Down</div>
-          <div class="article-meta">Mental Models × First Principles · 2026</div>
-        </div>
-        <div class="article-desc">很多答案之所以换不掉，只是因为你一直站在同一层解题。</div>
-        <div class="article-detail"><span>这篇文章拆开了第一性原理真正可用的骨架：把一句“这东西就是这样”拆回成本栈、约束栈和假设栈。多数时候类比更便宜；到了关键处，再往下一层。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/self-flow.html">
-        <div class="article-header">
-          <div class="article-title">Self-Flow</div>
-          <div class="article-meta">Generative AI × Representation · 2026</div>
-        </div>
-        <div class="article-desc">生成模型不需要外部「家教」，正确的训练信号让它自己长出理解力。</div>
-        <div class="article-detail"><span>Self-Flow 用 Dual-Timestep 自蒸馏取代外部编码器，让生成模型自己学出强语义表征——在图像、视频、音频上全面超越 REPA，625M 模型超过 REPA 的 1B 模型。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/scheming.html">
-        <div class="article-header">
-          <div class="article-title">Will AI Cheat on Us?</div>
-          <div class="article-meta">AI Safety × Scheming · 2026</div>
-        </div>
-        <div class="article-desc">实验说几乎不会。但这个「几乎」有多脆弱，答案出人意料。</div>
-        <div class="article-detail"><span>LASR Labs 测试了前沿模型的 scheming 倾向。基线接近零——但一条生产级 prompt 把概率从 3% 推到 59%，移除一个工具又降回 3%。Scheming propensity 不是一个数字，是配置的函数。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/nfy.html">
-        <div class="article-header">
-          <div class="article-title">Not a Faster You</div>
-          <div class="article-meta">AI Safety × Epistemology · 2026</div>
-        </div>
-        <div class="article-desc">超级智能最可能的样子，不是你无法理解。是你以为你理解了。</div>
-        <div class="article-detail"><span>流行叙事说超级智能是"人类认知拧大旋钮"。但一个足够强的心智给你满意的解释，比它解决原始问题本身要容易得多。当解释变成翻译，你面对的不再是能力问题——而是认识论的结构性盲区。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/subagent.html">
-        <div class="article-header">
-          <div class="article-title">The Markdown Org</div>
-          <div class="article-meta">Cursor × Multi-Agent · 2026</div>
-        </div>
-        <div class="article-desc">一个 Markdown 就是一个 agent，一个文件夹就是一个团队。</div>
-        <div class="article-detail"><span>你以为 multi-agent 协作需要编排框架，Cursor 用一个 Markdown 文件定义了全部。上下文隔离让每个 agent 各管各的，反而更容易把一件事想深。文件夹就是团队——可以 git 管理、版本化、code review。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/sot.html">
-        <div class="article-header">
-          <div class="article-title">Trial Without a Judge</div>
-          <div class="article-meta">Reasoning × Society of Mind · 2026</div>
-        </div>
-        <div class="article-desc">推理模型学会了争论，却从未学会裁决。</div>
-        <div class="article-detail"><span>论文说推理模型通过内部辩论变强——但论文自己的数据拧成了问号：越激烈的冲突，条件准确率反而越低。辩论真正产出的是对错误的修剪。一个没有法官的审判，为什么比没有审判更接近正义？</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/moa.html">
-        <div class="article-header">
-          <div class="article-title">Mixture-of-Agents</div>
-          <div class="article-meta">Inference-Time Compute · 2026</div>
-        </div>
-        <div class="article-desc">看得更广，胜过想得更深。</div>
-        <div class="article-detail"><span>一群 AI「合写」凭什么超过任何单个 AI？答案藏在承诺困境里——自回归生成把每个模型锁死在 response space 的单条轨迹上。MoA 用模型差异铺开覆盖率，再由强 aggregator 做搜索与编辑。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/rot.html">
-        <div class="article-header">
-          <div class="article-title">The Rot</div>
-          <div class="article-meta">Context Engineering · 2026</div>
-        </div>
-        <div class="article-desc">上下文越长，智能越短。</div>
-        <div class="article-detail"><span>8 篇前沿文献、18 个模型的控制实验交汇于同一个结论：Context Rot。解法不是更大的窗口，而是更好的过滤——渐进式披露管理输入，强制验证管理输出，增量式工作管理时间跨度。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/soi.html">
-        <div class="article-header">
-          <div class="article-title">The Shape of Intelligence</div>
-          <div class="article-meta">Convexity × Intelligence · 2026</div>
-        </div>
-        <div class="article-desc">智能不解难题，它改变难题的形状。</div>
-        <div class="article-detail"><span>复杂问题的形状几乎都是陷阱密布的「鸡蛋盒」——贪心必死，穷举无解，连折中都是致命错误。五种凸化手法统一解释恒温器、AlphaGo 和爱因斯坦。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/snw.html">
-        <div class="article-header">
-          <div class="article-title">Stilts, Not Weights</div>
-          <div class="article-meta">AI Architecture · 2026</div>
-        </div>
-        <div class="article-desc">智能应该住在你架构的哪一层？</div>
-        <div class="article-detail"><span>Fine-tuning 把智能烧进即将过期的权重。7 人团队用 &lt;$100K 超过了数亿美元训练的前沿模型——他们站对了层。从耦合税到递归自改进，一个更好的 AI 架构范式。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/apmf.html">
-        <div class="article-header">
-          <div class="article-title">After PMF</div>
-          <div class="article-meta">Startup Strategy · 2026</div>
-        </div>
-        <div class="article-desc">PMF 是发令枪。找到之后你打算用它做什么？</div>
-        <div class="article-detail"><span>让你达到 PMF 的思维方式——对产品的偏执、小团队默契、创始人直觉——恰恰是 PMF 之后最可能杀死你的东西。分发、下一代产品、组织——三台引擎同时启动。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/sk.html">
-        <div class="article-header">
-          <div class="article-title">Skills, Explained</div>
-          <div class="article-meta">AI Workflow · 2026</div>
-        </div>
-        <div class="article-desc">Prompting, made reusable. 一个 Markdown 文件夹为什么如此有效。</div>
-        <div class="article-detail"><span>你有一个"大部分好用"的 prompt，然后它漂移成了四个版本。Skill 把这件事正规化——渐进式披露、目录语义、资源接入。做一次，所有人复用。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/tip.html">
-        <div class="article-header">
-          <div class="article-title">The Inverse Problem</div>
-          <div class="article-meta">Information Theory · 2026</div>
-        </div>
-        <div class="article-desc">沟通的默认结果是失败——哪怕双方都足够真诚。</div>
-        <div class="article-detail"><span>沟通是一个逆问题——从低维信号反推高维源，解不唯一。你的大脑用脑补把不确定性压成确定答案，但脑补素材和对方的真实状态没有必然关系。进化甚至没打算让你解对。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/tci.html">
-        <div class="article-header">
-          <div class="article-title">The Cognitive Inversion</div>
-          <div class="article-meta">Cognitive Psychology × AI · 2026</div>
-        </div>
-        <div class="article-desc">当执行被完全外包，「理解问题」本身成了唯一的生产力。</div>
-        <div class="article-detail"><span>Cursor CEO 描述的三个时代，实质是思考与执行之比的倒转。从 diff 到 live preview，评估成本被压缩，并行管理成为可能——但悖论在于：定义问题的能力，历来在执行中习得。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/cw.html">
-        <div class="article-header">
-          <div class="article-title">Structure Over Information</div>
-          <div class="article-meta">arXiv · 2026</div>
-        </div>
-        <div class="article-desc">结构化推理比信息注入有效 2.83 倍——一个洗车问题的变量隔离实验。</div>
-        <div class="article-detail"><span>每个主流 LLM 都建议走路去洗车——但车不会自己飞过去。STAR 框架从 0% 跳到 85%，而注入完整用户画像只有 30%。模型如何处理信息，比拥有多少信息更重要。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/tpr.html">
-        <div class="article-header">
-          <div class="article-title">The Profession, Refactored</div>
-          <div class="article-meta">The Pragmatic Engineer · 2026</div>
-        </div>
-        <div class="article-desc">AI 如何触发软件工程的认知转变。</div>
-        <div class="article-detail"><span>Karpathy 从"AI 是 slop"到"magnitude 9 earthquake"只用了两个月。2025 年末三个模型的密集发布触发软件工程的认知转变——从硬数据到正在贬值的技能清单。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/deme.html">
-        <div class="article-header">
-          <div class="article-title">Decouple-Then-Merge</div>
-          <div class="article-meta">CVPR 2025</div>
-        </div>
-        <div class="article-desc">将扩散模型训练视为多任务学习：先解耦、再合并。</div>
-        <div class="article-detail"><span>不同去噪时间步之间存在梯度冲突。DeMe 先解耦训练、再合并权重——零额外推理成本，6 个基准显著提升。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/ctl.html">
-        <div class="article-header">
-          <div class="article-title">Closing the Loop</div>
-          <div class="article-meta">Cybernetics × AGI · 2026</div>
-        </div>
-        <div class="article-desc">从控制论看 Agentic LLM 通往 AGI 的路径。</div>
-        <div class="article-detail"><span>大多数人对 AGI 的判断基于一个错误的直觉——他们在评估 LLM 的思考能力，却忽略了智能的真正来源：反馈回路。当 Agent 闭合了感知-行动环路，一切都变了。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/cc.html">
-        <div class="article-header">
-          <div class="article-title">Less Code, More Model</div>
-          <div class="article-meta">The Pragmatic Engineer · 2025</div>
-        </div>
-        <div class="article-desc">Claude Code 的构建哲学——一个关于"做减法"的产品故事。</div>
-        <div class="article-detail"><span>从 AppleScript 音乐控制到年营收 $500M+，7 个反直觉的构建原则。</span></div>
-      </a>
-    </li>
-    <li>
-      <a href="p/vrg.html">
-        <div class="article-header">
-          <div class="article-title">Better Reconstruction ≠ Better Generation</div>
-          <div class="article-meta">Linum · 2024</div>
-        </div>
-        <div class="article-desc">从零训练 Image-Video VAE 的 5 个月旅程。</div>
-        <div class="article-detail"><span>踩过 NaN 爆炸、神秘色斑、联合训练不稳定——最终学到一个违反直觉的教训。</span></div>
-      </a>
-    </li>
-  </ul>
+  <nav class="filter-nav" id="filters" aria-label="Browse content">
+    <a href="/" class="filter-chip" data-filter="news">News</a>
+    <a href="?filter=voices" class="filter-chip" data-filter="voices">Voices</a>
+    <a href="?filter=builders" class="filter-chip" data-filter="builders">Builders</a>
+    <a href="?filter=art" class="filter-chip" data-filter="art">Art</a>
+    <a href="?filter=paper" class="filter-chip" data-filter="paper">Paper</a>
+    <a href="?filter=essays" class="filter-chip" data-filter="essays">Essays</a>
+  </nav>
+
+  <section class="news-view" id="news-view" aria-live="polite">
+    <div class="notice" id="notice" hidden></div>
+    <ol class="feed" id="feed"></ol>
+    <div class="empty-state" id="empty-state" hidden>No items yet. Add `XAI_API_KEY` to the GitHub Actions secrets and run the workflow to populate this feed.</div>
+    <nav class="pagination" id="pagination" hidden>
+      <span id="prev-slot"></span>
+      <span class="page-chip" id="page-chip"></span>
+      <span id="next-slot"></span>
+    </nav>
+  </section>
+
+  <section class="essays-view" id="essays-view">
+    <ul class="articles">
+      <li>
+        <a href="p/bwf.html">
+          <div class="article-header">
+            <div class="article-title">Prompts Don't Build Brands</div>
+            <div class="article-meta">Midjourney × Brand Systems · 2026</div>
+          </div>
+          <div class="article-desc">品牌图最难的，是把偶尔的好结果沉淀成稳定的一致性。</div>
+          <div class="article-detail"><span>文章拆开 Jamie Ganon 的工作流：先用 mood board 定义视觉语言，再用 Style Reference、Personalization Code 和 brand code 把风格固化成系统。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/remap.html">
+          <div class="article-header">
+            <div class="article-title">Redrawing the Map</div>
+            <div class="article-meta">Biology × AI · 2026</div>
+          </div>
+          <div class="article-desc">更强的系统，往往会一边找路，一边重画地图。</div>
+          <div class="article-detail"><span>从涡虫再生到 Transformer 与扩散模型，同一个问题被串了起来：系统怎样在扰动里重组问题空间，然后继续逼近目标。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/eagi.html">
+          <div class="article-header">
+            <div class="article-title">Some Simple Economics of AGI</div>
+            <div class="article-meta">AGI × Economics · 2026</div>
+          </div>
+          <div class="article-desc">为什么聊天、画图、短代码会先爆发？因为它们最容易验证。</div>
+          <div class="article-detail"><span>执行越来越便宜以后，真正稀缺的会变成验证。谁能更快验证结果，谁愿意为结果负责，价值就会慢慢往谁那边走。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/ood.html">
+          <div class="article-header">
+            <div class="article-title">Out of Distribution</div>
+            <div class="article-meta">Founder Selection × Venture · 2026</div>
+          </div>
+          <div class="article-desc">筛选系统越精密，越容易错过分布外的创始人。</div>
+          <div class="article-detail"><span>学校、公司与 VC 擅长识别分布内的优秀，却常常遗漏分布外的可能性。创伤、神经多样性与跨域广度，不只是特质，更是形成独立判断力的三条路径。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/bo.html">
+          <div class="article-header">
+            <div class="article-title">Before Objects</div>
+            <div class="article-meta">Consciousness × Symbolic Forms · 2026</div>
+          </div>
+          <div class="article-desc">世界不是先作为对象出现，而是先作为利害出现。</div>
+          <div class="article-detail"><span>Bennett 用 “death grounds meaning” 重写意识问题，卡西尔则解释人怎样把这种原初效价写成神话、语言、艺术与科学。意义有两次诞生：先在生命里，后在符号里。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/retention.html">
+          <div class="article-header">
+            <div class="article-title">Attention Before Product</div>
+            <div class="article-meta">Organic Marketing × Attention · 2026</div>
+          </div>
+          <div class="article-desc">平台不奖励好产品，它奖励能留住人的内容。</div>
+          <div class="article-detail"><span>先讲产品，通常等于先失去用户。先拿到注意力，再谈功能；产品只能最后出现。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/old.html">
+          <div class="article-header">
+            <div class="article-title">One Layer Down</div>
+            <div class="article-meta">Mental Models × First Principles · 2026</div>
+          </div>
+          <div class="article-desc">很多答案之所以换不掉，只是因为你一直站在同一层解题。</div>
+          <div class="article-detail"><span>这篇文章拆开了第一性原理真正可用的骨架：把一句“这东西就是这样”拆回成本栈、约束栈和假设栈。多数时候类比更便宜；到了关键处，再往下一层。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/self-flow.html">
+          <div class="article-header">
+            <div class="article-title">Self-Flow</div>
+            <div class="article-meta">Generative AI × Representation · 2026</div>
+          </div>
+          <div class="article-desc">生成模型不需要外部「家教」，正确的训练信号让它自己长出理解力。</div>
+          <div class="article-detail"><span>Self-Flow 用 Dual-Timestep 自蒸馏取代外部编码器，让生成模型自己学出强语义表征，在图像、视频、音频上全面超越 REPA，625M 模型超过 REPA 的 1B 模型。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/scheming.html">
+          <div class="article-header">
+            <div class="article-title">Will AI Cheat on Us?</div>
+            <div class="article-meta">AI Safety × Scheming · 2026</div>
+          </div>
+          <div class="article-desc">实验说几乎不会。但这个「几乎」有多脆弱，答案出人意料。</div>
+          <div class="article-detail"><span>LASR Labs 测试了前沿模型的 scheming 倾向。基线接近零，但一条生产级 prompt 把概率从 3% 推到 59%，移除一个工具又降回 3%。Scheming propensity 不是一个数字，是配置的函数。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/nfy.html">
+          <div class="article-header">
+            <div class="article-title">Not a Faster You</div>
+            <div class="article-meta">AI Safety × Epistemology · 2026</div>
+          </div>
+          <div class="article-desc">超级智能最可能的样子，不是你无法理解。是你以为你理解了。</div>
+          <div class="article-detail"><span>流行叙事说超级智能是 "人类认知拧大旋钮"。但一个足够强的心智给你满意的解释，比它解决原始问题本身要容易得多。当解释变成翻译，你面对的不再是能力问题，而是认识论的结构性盲区。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/subagent.html">
+          <div class="article-header">
+            <div class="article-title">The Markdown Org</div>
+            <div class="article-meta">Cursor × Multi-Agent · 2026</div>
+          </div>
+          <div class="article-desc">一个 Markdown 就是一个 agent，一个文件夹就是一个团队。</div>
+          <div class="article-detail"><span>你以为 multi-agent 协作需要编排框架，Cursor 用一个 Markdown 文件定义了全部。上下文隔离让每个 agent 各管各的，反而更容易把一件事想深。文件夹就是团队，可以 git 管理、版本化、code review。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/sot.html">
+          <div class="article-header">
+            <div class="article-title">Trial Without a Judge</div>
+            <div class="article-meta">Reasoning × Society of Mind · 2026</div>
+          </div>
+          <div class="article-desc">推理模型学会了争论，却从未学会裁决。</div>
+          <div class="article-detail"><span>论文说推理模型通过内部辩论变强，但论文自己的数据拧成了问号：越激烈的冲突，条件准确率反而越低。辩论真正产出的是对错误的修剪。一个没有法官的审判，为什么比没有审判更接近正义？</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/moa.html">
+          <div class="article-header">
+            <div class="article-title">Mixture-of-Agents</div>
+            <div class="article-meta">Inference-Time Compute · 2026</div>
+          </div>
+          <div class="article-desc">看得更广，胜过想得更深。</div>
+          <div class="article-detail"><span>一群 AI “合写” 凭什么超过任何单个 AI？答案藏在承诺困境里，自回归生成把每个模型锁死在 response space 的单条轨迹上。MoA 用模型差异铺开覆盖率，再由强 aggregator 做搜索与编辑。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/rot.html">
+          <div class="article-header">
+            <div class="article-title">The Rot</div>
+            <div class="article-meta">Context Engineering · 2026</div>
+          </div>
+          <div class="article-desc">上下文越长，智能越短。</div>
+          <div class="article-detail"><span>8 篇前沿文献、18 个模型的控制实验交汇于同一个结论：Context Rot。解法不是更大的窗口，而是更好的过滤，渐进式披露管理输入，强制验证管理输出，增量式工作管理时间跨度。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/soi.html">
+          <div class="article-header">
+            <div class="article-title">The Shape of Intelligence</div>
+            <div class="article-meta">Convexity × Intelligence · 2026</div>
+          </div>
+          <div class="article-desc">智能不解难题，它改变难题的形状。</div>
+          <div class="article-detail"><span>复杂问题的形状几乎都是陷阱密布的“鸡蛋盒”，贪心必死，穷举无解，连折中都是致命错误。五种凸化手法统一解释恒温器、AlphaGo 和爱因斯坦。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/snw.html">
+          <div class="article-header">
+            <div class="article-title">Stilts, Not Weights</div>
+            <div class="article-meta">AI Architecture · 2026</div>
+          </div>
+          <div class="article-desc">智能应该住在你架构的哪一层？</div>
+          <div class="article-detail"><span>Fine-tuning 把智能烧进即将过期的权重。7 人团队用 &lt;$100K 超过了数亿美元训练的前沿模型，他们站对了层。从耦合税到递归自改进，一个更好的 AI 架构范式。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/apmf.html">
+          <div class="article-header">
+            <div class="article-title">After PMF</div>
+            <div class="article-meta">Startup Strategy · 2026</div>
+          </div>
+          <div class="article-desc">PMF 是发令枪。找到之后你打算用它做什么？</div>
+          <div class="article-detail"><span>让你达到 PMF 的思维方式，对产品的偏执、小团队默契、创始人直觉，恰恰是 PMF 之后最可能杀死你的东西。分发、下一代产品、组织，三台引擎同时启动。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/sk.html">
+          <div class="article-header">
+            <div class="article-title">Skills, Explained</div>
+            <div class="article-meta">AI Workflow · 2026</div>
+          </div>
+          <div class="article-desc">Prompting, made reusable. 一个 Markdown 文件夹为什么如此有效。</div>
+          <div class="article-detail"><span>你有一个 “大部分好用” 的 prompt，然后它漂移成了四个版本。Skill 把这件事正规化，渐进式披露、目录语义、资源接入。做一次，所有人复用。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/tip.html">
+          <div class="article-header">
+            <div class="article-title">The Inverse Problem</div>
+            <div class="article-meta">Information Theory · 2026</div>
+          </div>
+          <div class="article-desc">沟通的默认结果是失败，哪怕双方都足够真诚。</div>
+          <div class="article-detail"><span>沟通是一个逆问题，从低维信号反推高维源，解不唯一。你的大脑用脑补把不确定性压成确定答案，但脑补素材和对方的真实状态没有必然关系。进化甚至没打算让你解对。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/tci.html">
+          <div class="article-header">
+            <div class="article-title">The Cognitive Inversion</div>
+            <div class="article-meta">Cognitive Psychology × AI · 2026</div>
+          </div>
+          <div class="article-desc">当执行被完全外包，「理解问题」本身成了唯一的生产力。</div>
+          <div class="article-detail"><span>Cursor CEO 描述的三个时代，实质是思考与执行之比的倒转。从 diff 到 live preview，评估成本被压缩，并行管理成为可能，但悖论在于：定义问题的能力，历来在执行中习得。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/cw.html">
+          <div class="article-header">
+            <div class="article-title">Structure Over Information</div>
+            <div class="article-meta">arXiv · 2026</div>
+          </div>
+          <div class="article-desc">结构化推理比信息注入有效 2.83 倍，一个洗车问题的变量隔离实验。</div>
+          <div class="article-detail"><span>每个主流 LLM 都建议走路去洗车，但车不会自己飞过去。STAR 框架从 0% 跳到 85%，而注入完整用户画像只有 30%。模型如何处理信息，比拥有多少信息更重要。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/tpr.html">
+          <div class="article-header">
+            <div class="article-title">The Profession, Refactored</div>
+            <div class="article-meta">The Pragmatic Engineer · 2026</div>
+          </div>
+          <div class="article-desc">AI 如何触发软件工程的认知转变。</div>
+          <div class="article-detail"><span>Karpathy 从 “AI 是 slop” 到 “magnitude 9 earthquake” 只用了两个月。2025 年末三个模型的密集发布触发软件工程的认知转变，从硬数据到正在贬值的技能清单。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/deme.html">
+          <div class="article-header">
+            <div class="article-title">Decouple-Then-Merge</div>
+            <div class="article-meta">CVPR 2025</div>
+          </div>
+          <div class="article-desc">将扩散模型训练视为多任务学习：先解耦、再合并。</div>
+          <div class="article-detail"><span>不同去噪时间步之间存在梯度冲突。DeMe 先解耦训练、再合并权重，零额外推理成本，6 个基准显著提升。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/ctl.html">
+          <div class="article-header">
+            <div class="article-title">Closing the Loop</div>
+            <div class="article-meta">Cybernetics × AGI · 2026</div>
+          </div>
+          <div class="article-desc">从控制论看 Agentic LLM 通往 AGI 的路径。</div>
+          <div class="article-detail"><span>大多数人对 AGI 的判断基于一个错误的直觉，他们在评估 LLM 的思考能力，却忽略了智能的真正来源：反馈回路。当 Agent 闭合了感知-行动环路，一切都变了。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/cc.html">
+          <div class="article-header">
+            <div class="article-title">Less Code, More Model</div>
+            <div class="article-meta">The Pragmatic Engineer · 2025</div>
+          </div>
+          <div class="article-desc">Claude Code 的构建哲学，一个关于 “做减法” 的产品故事。</div>
+          <div class="article-detail"><span>从 AppleScript 音乐控制到年营收 $500M+，7 个反直觉的构建原则。</span></div>
+        </a>
+      </li>
+      <li>
+        <a href="p/vrg.html">
+          <div class="article-header">
+            <div class="article-title">Better Reconstruction ≠ Better Generation</div>
+            <div class="article-meta">Linum · 2024</div>
+          </div>
+          <div class="article-desc">从零训练 Image-Video VAE 的 5 个月旅程。</div>
+          <div class="article-detail"><span>踩过 NaN 爆炸、神秘色斑、联合训练不稳定，最终学到一个违反直觉的教训。</span></div>
+        </a>
+      </li>
+    </ul>
+  </section>
 </div>
 
 <footer>
   <a href="mailto:pinyu@fastmail.com">Contact</a>
 </footer>
+
+<noscript>
+  <div style="max-width:640px;margin:0 auto;padding:0 24px 48px;color:#5C5349;font-size:0.75rem;">
+    External channels need JavaScript to load. Essays remain available without it.
+  </div>
+</noscript>
+
+<script>
+  const INDEX_URL = "data/news/index.json";
+  const ARCHIVE_URL = "data/news/archive.json";
+  const PAGE_PREFIX = "data/news/pages/";
+  const FILTER_NEWS = "news";
+  const FILTER_VOICES = "voices";
+  const FILTER_BUILDERS = "builders";
+  const FILTER_ART = "art";
+  const FILTER_PAPER = "paper";
+  const FILTER_ESSAYS = "essays";
+  const SOURCE_TYPE_AI_VOICES = "x_ai_voices";
+  const SOURCE_TYPE_AI_INDIE = "aiindie";
+  const SOURCE_TYPE_ARTIST = "artist";
+  const VALID_FILTERS = new Set([FILTER_NEWS, FILTER_VOICES, FILTER_BUILDERS, FILTER_ART, FILTER_PAPER, FILTER_ESSAYS]);
+
+  const filtersEl = document.getElementById("filters");
+  const noticeEl = document.getElementById("notice");
+  const feedEl = document.getElementById("feed");
+  const emptyStateEl = document.getElementById("empty-state");
+  const paginationEl = document.getElementById("pagination");
+  const pageChipEl = document.getElementById("page-chip");
+  const prevSlotEl = document.getElementById("prev-slot");
+  const nextSlotEl = document.getElementById("next-slot");
+  const newsViewEl = document.getElementById("news-view");
+  const essaysViewEl = document.getElementById("essays-view");
+  const defaultEmptyStateMessage = emptyStateEl.textContent;
+  const currentFilter = getRequestedFilter();
+
+  setActiveFilter(currentFilter);
+
+  if (currentFilter === FILTER_ESSAYS) {
+    newsViewEl.hidden = true;
+    essaysViewEl.hidden = false;
+    if (new URLSearchParams(window.location.search).has("page")) {
+      replacePageQuery(1, FILTER_ESSAYS);
+    }
+  } else {
+    newsViewEl.hidden = false;
+    essaysViewEl.hidden = true;
+    loadFeed(currentFilter).catch((error) => {
+      showNotice(`Failed to load the feed: ${error.message}`);
+      emptyStateEl.hidden = false;
+      emptyStateEl.textContent = "Try again later. The last build may still be running.";
+      feedEl.innerHTML = "";
+      paginationEl.hidden = true;
+    });
+  }
+
+  async function loadFeed(currentFilter) {
+    const indexData = await fetchJson(INDEX_URL);
+
+    if (currentFilter === FILTER_NEWS) {
+      const totalPages = normalizePositiveNumber(indexData.total_pages, 1);
+      const requestedPage = getRequestedPage();
+      const currentPage = clamp(requestedPage, 1, totalPages);
+
+      if (requestedPage !== currentPage) {
+        replacePageQuery(currentPage, currentFilter);
+      }
+
+      const pageData = await fetchJson(`${PAGE_PREFIX}${currentPage}.json`);
+      renderFeed(
+        indexData,
+        {
+          items: Array.isArray(pageData.items) ? pageData.items : [],
+          currentPage,
+          totalPages,
+          emptyMessage: defaultEmptyStateMessage,
+        },
+        currentFilter
+      );
+      return;
+    }
+
+    const archiveData = await fetchJson(ARCHIVE_URL);
+    const allItems = Array.isArray(archiveData.items) ? archiveData.items : [];
+    const filteredItems = allItems.filter((item) => matchesFilter(item, currentFilter));
+    const pageSize = normalizePositiveNumber(indexData.page_size || archiveData.page_size, 60);
+    const totalPages = Math.max(1, Math.ceil(filteredItems.length / pageSize));
+    const requestedPage = getRequestedPage();
+    const currentPage = clamp(requestedPage, 1, totalPages);
+
+    if (requestedPage !== currentPage) {
+      replacePageQuery(currentPage, currentFilter);
+    }
+
+    const start = (currentPage - 1) * pageSize;
+    const items = filteredItems.slice(start, start + pageSize);
+    const emptyMessage = currentFilter === FILTER_VOICES
+      ? "No Voices items yet."
+      : currentFilter === FILTER_BUILDERS
+        ? "No Builders items yet."
+        : currentFilter === FILTER_ART
+          ? "No Art items yet."
+          : "No Paper items yet.";
+
+    renderFeed(
+      indexData,
+      {
+        items,
+        currentPage,
+        totalPages,
+        emptyMessage,
+      },
+      currentFilter
+    );
+  }
+
+  async function fetchJson(url) {
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`${response.status} ${response.statusText}`);
+    }
+    return response.json();
+  }
+
+  function renderFeed(indexData, viewState, currentFilter) {
+    const items = Array.isArray(viewState.items) ? viewState.items : [];
+    const currentPage = normalizePositiveNumber(viewState.currentPage, 1);
+    const totalPages = normalizePositiveNumber(viewState.totalPages || indexData.total_pages, 1);
+
+    pageChipEl.textContent = `${currentPage} / ${totalPages}`;
+
+    if (!items.length) {
+      emptyStateEl.hidden = false;
+      emptyStateEl.textContent = viewState.emptyMessage || defaultEmptyStateMessage;
+      feedEl.innerHTML = "";
+    } else {
+      emptyStateEl.hidden = true;
+      emptyStateEl.textContent = defaultEmptyStateMessage;
+      feedEl.innerHTML = items.map(renderItem).join("");
+    }
+
+    renderPagination(currentPage, totalPages, currentFilter);
+    renderNotice(indexData);
+  }
+
+  function renderItem(item) {
+    const itemType = getItemType(item);
+    const pillClass = itemType === FILTER_VOICES
+      ? "source-pill source-voices"
+      : itemType === FILTER_BUILDERS
+        ? "source-pill source-builders"
+        : itemType === FILTER_ART
+          ? "source-pill source-art"
+          : itemType === FILTER_PAPER
+            ? "source-pill source-paper"
+            : "";
+    const pillLabel = itemType === FILTER_VOICES
+      ? "Voices"
+      : itemType === FILTER_BUILDERS
+        ? "Builders"
+        : itemType === FILTER_ART
+          ? "Art"
+          : itemType === FILTER_PAPER
+            ? "Paper"
+            : "";
+    const metaParts = [
+      item && item.platform,
+      item && item.author,
+    ].filter(Boolean);
+    const href = item && (item.link || item.canonical_link) ? item.link || item.canonical_link : "#";
+
+    return `
+      <li class="feed-item">
+        <a class="feed-card" href="${escapeAttribute(href)}" target="_blank" rel="noopener noreferrer">
+          <div class="feed-topline">
+            ${pillLabel ? `<span class="${pillClass}">${escapeHtml(pillLabel)}</span>` : ""}
+            ${item && item.published_at ? `<span class="feed-time">${escapeHtml(formatTime(item.published_at))} HKT</span>` : ""}
+          </div>
+          <h2 class="feed-title">
+            ${escapeHtml(item && item.title ? item.title : "Untitled")}
+          </h2>
+          ${metaParts.length ? `<div class="feed-meta">${metaParts.map(escapeHtml).join(" · ")}</div>` : ""}
+          ${item && item.blurb ? `<p class="feed-blurb">${escapeHtml(item.blurb)}</p>` : ""}
+          <span class="feed-link">Open link →</span>
+        </a>
+      </li>
+    `;
+  }
+
+  function renderPagination(currentPage, totalPages, currentFilter) {
+    if (totalPages <= 1) {
+      paginationEl.hidden = true;
+      return;
+    }
+
+    paginationEl.hidden = false;
+    prevSlotEl.innerHTML = currentPage > 1
+      ? `<a href="${pageHref(currentPage - 1, currentFilter)}">← Newer</a>`
+      : `<span class="disabled">← Newer</span>`;
+    nextSlotEl.innerHTML = currentPage < totalPages
+      ? `<a href="${pageHref(currentPage + 1, currentFilter)}">Older →</a>`
+      : `<span class="disabled">Older →</span>`;
+  }
+
+  function renderNotice(indexData) {
+    const sources = Array.isArray(indexData.sources) ? indexData.sources : [];
+    const hasSuccessfulSource = sources.some((source) => Boolean(source && source.updated_at));
+
+    if (!hasSuccessfulSource) {
+      showNotice("The page is ready, but the feed has not been populated yet. Add `XAI_API_KEY` to GitHub Actions secrets, then run the workflow once.");
+      return;
+    }
+
+    noticeEl.hidden = true;
+  }
+
+  function showNotice(message) {
+    noticeEl.hidden = false;
+    noticeEl.textContent = message;
+  }
+
+  function setActiveFilter(currentFilter) {
+    const links = filtersEl.querySelectorAll("[data-filter]");
+    links.forEach((link) => {
+      const filter = normalizeText(link.getAttribute("data-filter"));
+      const isActive = filter === currentFilter;
+      link.classList.toggle("is-active", isActive);
+      if (isActive) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  function getRequestedPage() {
+    const params = new URLSearchParams(window.location.search);
+    return normalizePositiveNumber(params.get("page"), 1);
+  }
+
+  function getRequestedFilter() {
+    const params = new URLSearchParams(window.location.search);
+    const filter = normalizeText(params.get("filter"));
+    return VALID_FILTERS.has(filter) ? filter : FILTER_NEWS;
+  }
+
+  function pageHref(pageNumber, filter = FILTER_NEWS) {
+    const params = new URLSearchParams();
+    if (filter && filter !== FILTER_NEWS) {
+      params.set("filter", filter);
+    }
+    if (filter !== FILTER_ESSAYS && pageNumber > 1) {
+      params.set("page", String(pageNumber));
+    }
+    const query = params.toString();
+    return query ? `?${query}` : "/";
+  }
+
+  function replacePageQuery(pageNumber, filter = FILTER_NEWS) {
+    const nextUrl = pageHref(pageNumber, filter);
+    window.history.replaceState({}, "", nextUrl);
+  }
+
+  function matchesFilter(item, filter) {
+    if (filter === FILTER_NEWS) {
+      return true;
+    }
+    return getItemType(item) === filter;
+  }
+
+  function getItemType(item) {
+    if (normalizeText(item && item.source_type) === SOURCE_TYPE_AI_VOICES) {
+      return FILTER_VOICES;
+    }
+    if (normalizeText(item && item.source_type) === SOURCE_TYPE_AI_INDIE) {
+      return FILTER_BUILDERS;
+    }
+    if (normalizeText(item && item.source_type) === SOURCE_TYPE_ARTIST) {
+      return FILTER_ART;
+    }
+    if (isPaperItem(item)) {
+      return FILTER_PAPER;
+    }
+    return "";
+  }
+
+  function isPaperItem(item) {
+    if (normalizeText(item && item.platform) === "hugging face papers") {
+      return true;
+    }
+
+    return [item && item.link, item && item.canonical_link, item && item.source_page].some(isPaperUrl);
+  }
+
+  function isPaperUrl(value) {
+    if (typeof value !== "string" || !value.trim()) {
+      return false;
+    }
+
+    try {
+      const url = new URL(value.trim());
+      const host = url.hostname.replace(/^www\./i, "").toLowerCase();
+      const path = url.pathname.toLowerCase();
+      return host.endsWith("arxiv.org") || (host.endsWith("huggingface.co") && path.startsWith("/papers/"));
+    } catch {
+      return false;
+    }
+  }
+
+  function normalizePositiveNumber(value, fallback) {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed) || parsed < 1) {
+      return fallback;
+    }
+    return Math.floor(parsed);
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function formatTime(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return "Unknown";
+    }
+
+    return new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Hong_Kong",
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(date);
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function escapeAttribute(value) {
+    return escapeHtml(value);
+  }
+
+  function normalizeText(value) {
+    return String(value ?? "").trim().toLowerCase();
+  }
+</script>
 
 <script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
 </body>
