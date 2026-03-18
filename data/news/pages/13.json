@@ -1,10 +1,91 @@
 {
-  "updated_at": "2026-03-18T12:36:56.199+08:00",
+  "updated_at": "2026-03-18T13:47:49.035+08:00",
   "current_page": 13,
   "total_pages": 13,
   "page_size": 60,
-  "total_items": 725,
+  "total_items": 728,
   "items": [
+    {
+      "id": "60f34e302a06ac9b",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Cursor",
+      "title": "How we compare model quality in Cursor",
+      "blurb": "Cursor发布CursorBench基准，结合在线离线评估真实编码代理性能。关键工具开发信号。",
+      "link": "https://cursor.com/blog/cursorbench",
+      "canonical_link": "https://cursor.com/blog/cursorbench",
+      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "benchmark"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-13",
+      "source_signal": "Featured in TLDR AI engineering section, introduces CursorBench as a new benchmark for AI coding agents grounded in real developer workflows.",
+      "recommendation": "Cursor发布CursorBench基准，结合在线离线评估真实编码代理性能。关键工具开发信号。",
+      "summary": "CursorBench是基于真实Cursor会话的内部评估套件，衡量代理的正确性、代码质量、效率和交互行为。结合在线流量分析捕捉回归。该混合方法确保模型质量与生产开发对齐，支持快速迭代。",
+      "takeaways": [
+        "混合评估捕捉真实代理性能",
+        "CursorBench聚焦开发者工作流"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "33fed319432d1dd1",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "Z.ai",
+      "title": "IndexCache: Accelerating Sparse Attention via Cross-Layer Index Reuse",
+      "blurb": "IndexCache 通过跨层索引复用加速稀疏注意力，优化 Transformer 推理效率。",
+      "link": "https://arxiv.org/abs/2603.12201",
+      "canonical_link": "https://arxiv.org/abs/2603.12201",
+      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "infra"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-13",
+      "source_signal": "High trending on HF papers (33 trends), key infra optimization for transformers.",
+      "recommendation": "IndexCache 通过跨层索引复用加速稀疏注意力，优化 Transformer 推理效率。",
+      "summary": "IndexCache 引入跨层索引复用机制，减少稀疏注意力计算冗余，提升长序列模型速度。基准测试显示显著加速而无精度损失。",
+      "takeaways": [
+        "跨层复用降低计算开销",
+        "适用于长上下文 Transformer"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "fd7244b2e67423d7",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "New York Times",
+      "title": "Meta Delays Rollout of New AI Model After Performance Concerns",
+      "blurb": "Meta推迟Avocado模型发布，因性能未达领先水平，凸显AI竞赛激烈。",
+      "link": "https://nytimes.com/2026/03/12/technology/meta-avocado-ai-model-delayed.html",
+      "canonical_link": "https://nytimes.com/2026/03/12/technology/meta-avocado-ai-model-delayed.html",
+      "published_at": "2026-03-13T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-13",
+      "source_signal": "Featured headline; indicates competitive pressures in frontier models, Avocado lags leaders.",
+      "recommendation": "Meta推迟Avocado模型发布，因性能未达领先水平，凸显AI竞赛激烈。",
+      "summary": "Meta的Avocado模型优于前代和Gemini 2.5，但落后于OpenAI和Anthropic。发布延至5月后。公司仍有追赶时间。",
+      "takeaways": [
+        "Avocado性能接近但未超领先模型",
+        "延期反映安全与竞争力优先"
+      ],
+      "topic": "model-release"
+    },
     {
       "id": "9e2051dbbddf3778",
       "source_id": "daily_ai_briefs",

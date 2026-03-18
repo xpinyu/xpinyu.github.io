@@ -15,35 +15,35 @@ const API_URL = "https://api.x.ai/v1/responses";
 const MODEL = "grok-4-1-fast-reasoning";
 const PAGE_SIZE = 60;
 const MAX_ARCHIVE_ITEMS = 1000;
-const GENERAL_LOOKBACK_HOURS = 14;
+const GENERAL_LOOKBACK_HOURS = 16;
 const GENERAL_MAX_ITEMS = 10;
 const GENERAL_REFRESH_HOURS = 12;
-const DAILY_DIGEST_REFRESH_HOURS = 12;
+const DAILY_DIGEST_REFRESH_HOURS = 24;
 const DAILY_DIGEST_MAX_ITEMS = 20;
 const DAILY_DIGEST_PAGE_CHAR_LIMIT = 12_000;
 const DAILY_DIGEST_FALLBACK_HOUR_UTC = 12;
-const ARTIST_LOOKBACK_HOURS = 8;
-const ARTIST_REFRESH_HOURS = 6;
+const ARTIST_LOOKBACK_HOURS = 16;
+const ARTIST_REFRESH_HOURS = 12;
 const ARTIST_BATCH_SIZE = 8;
 const ARTIST_BATCH_LIMIT = 8;
 const ARTIST_MAX_CONCURRENCY = 3;
 const ARTIST_MAX_ITEMS = 40;
 const HANDLE_BATCH_MAX_RETRIES = 1;
 const HANDLE_BATCH_RETRY_DELAY_MS = 1500;
-const X_AI_SIGNALS_LOOKBACK_HOURS = 14;
+const X_AI_SIGNALS_LOOKBACK_HOURS = 16;
 const X_AI_SIGNALS_REFRESH_HOURS = 12;
 const X_AI_SIGNALS_BATCH_SIZE = 8;
 const X_AI_SIGNALS_BATCH_LIMIT = 8;
 const X_AI_SIGNALS_MAX_CONCURRENCY = 6;
 const X_AI_SIGNALS_MAX_ITEMS = 40;
-const X_AI_VOICES_LOOKBACK_HOURS = 14;
-const X_AI_VOICES_REFRESH_HOURS = 12;
+const X_AI_VOICES_LOOKBACK_HOURS = 28;
+const X_AI_VOICES_REFRESH_HOURS = 24;
 const X_AI_VOICES_BATCH_SIZE = 8;
 const X_AI_VOICES_BATCH_LIMIT = 8;
 const X_AI_VOICES_MAX_CONCURRENCY = 3;
 const X_AI_VOICES_MAX_ITEMS = 30;
-const AIINDIE_LOOKBACK_HOURS = 14;
-const AIINDIE_REFRESH_HOURS = 12;
+const AIINDIE_LOOKBACK_HOURS = 28;
+const AIINDIE_REFRESH_HOURS = 24;
 const AIINDIE_BATCH_SIZE = 8;
 const AIINDIE_BATCH_LIMIT = 8;
 const AIINDIE_MAX_CONCURRENCY = 4;
@@ -827,7 +827,7 @@ Task:
    - X posts, preferred
    - Reddit posts
    - Official blogs from Claude, OpenAI, Gemini, or Grok only
-2. Keep only items published today and within the last ${lookbackHours} hours in Hong Kong Time.
+2. Keep only items published within the explicit window above, which covers the last ${lookbackHours} hours in Hong Kong Time.
 3. Prefer original sources. Exclude reposts, roundups, news sites, YouTube, podcasts, and third-party blogs.
 4. If the publish time is unclear or outside the window, exclude the item.
 5. Return fewer than ${maxItems} items if the signal is weak. Do not pad.
@@ -2136,8 +2136,7 @@ function getDailyDigestTimeWindow(now) {
 
 function getGeneralTimeWindow(now, lookbackHours) {
   const end = new Date(now);
-  const dayStart = getHktDayStartUtc(end);
-  const start = new Date(Math.max(end.getTime() - lookbackHours * 60 * 60 * 1000, dayStart.getTime()));
+  const start = new Date(end.getTime() - lookbackHours * 60 * 60 * 1000);
   return { start, end, timezone: TIMEZONE_NAME };
 }
 
@@ -2501,12 +2500,6 @@ function validateGeneralItems(items, window, maxItems) {
 
     const publishedAt = parseIsoDate(item.published_at);
     if (!publishedAt) {
-      continue;
-    }
-
-    const publishedDateKey = getHktDateKey(publishedAt);
-    const endDateKey = getHktDateKey(window.end);
-    if (publishedDateKey !== endDateKey) {
       continue;
     }
 

@@ -1,10 +1,82 @@
 {
-  "updated_at": "2026-03-18T12:36:56.199+08:00",
+  "updated_at": "2026-03-18T13:47:49.035+08:00",
   "current_page": 7,
   "total_pages": 13,
   "page_size": 60,
-  "total_items": 725,
+  "total_items": 728,
   "items": [
+    {
+      "id": "31cb9a1e3095fc91",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Stavros",
+      "title": "How I write software with LLMs",
+      "blurb": "作者分享了从规划到调试的完整 LLM 编程流程，值得开发者借鉴以提升生产力。",
+      "link": "https://stavros.io/posts/how-i-write-software-with-llms",
+      "canonical_link": "https://stavros.io/posts/how-i-write-software-with-llms",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "workflow"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News 128 points 讨论，分享实际 LLM 辅助编程工作流，揭示高效使用大模型的实用技巧。",
+      "recommendation": "作者分享了从规划到调试的完整 LLM 编程流程，值得开发者借鉴以提升生产力。",
+      "summary": "文章详细描述作者使用 LLM 生成代码、测试和重构的步骤，包括提示工程和迭代策略。强调 LLM 在复杂任务中的角色转变，从辅助到核心驱动。提供具体工具和示例。",
+      "takeaways": [
+        "采用分层提示从高层设计到细节实现",
+        "结合人类审查避免幻觉问题"
+      ],
+      "topic": "workflow"
+    },
+    {
+      "id": "da2e90711b772d90",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "NanoVDR",
+      "title": "NanoVDR: Distilling a 2B Vision-Language Retriever into a 70M Text-Only Encoder for Visual Document Retrieval",
+      "blurb": "高效文本编码器实现视觉文档检索，轻量部署首选。",
+      "link": "https://arxiv.org/abs/2603.12824",
+      "canonical_link": "https://arxiv.org/abs/2603.12824",
+      "published_at": "2026-03-16T16:04:29.967+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "model-release"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-16",
+      "source_signal": "Hugging Face 模型蒸馏论文，将 20 亿参数 VLR 压缩至 7000 万纯文本编码器，用于视觉文档检索。",
+      "recommendation": "高效文本编码器实现视觉文档检索，轻量部署首选。",
+      "summary": "NanoVDR 通过知识蒸馏保留视觉理解能力，仅用文本编码器实现高精度文档检索。在 DocVQA 等基准上接近 SOTA。开源模型可用。",
+      "takeaways": [
+        "2B 到 70M 高效蒸馏",
+        "纯文本模型支持视觉任务"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "ee9195d48ffa94e2",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@underwoodxie96",
+      "title": "2D图像转3D再Grok视频生成工作流",
+      "blurb": "演示Niji 6 sref生成2D图像后，用AI Effects工具3D转换提示变立体，再Grok转为视频的完整流程。引用分镜板提示示例，突出工具内预置高质量提示的一键应用。网站提供sref和提示详情。 跨工具链工作流加速静态到动态内容创作，适合视觉叙事需求强的AIGC从业者。",
+      "link": "https://x.com/underwoodxie96/status/2033449260516274222",
+      "canonical_link": "https://x.com/underwoodxie96/status/2033449260516274222",
+      "published_at": "2026-03-16T15:44:18.000+08:00",
+      "score": 8,
+      "tags": [
+        "workflow",
+        "tooling"
+      ]
+    },
     {
       "id": "b24c054e72d9e40c",
       "source_id": "artist",
@@ -1043,60 +1115,6 @@
       "score": 8,
       "tags": [
         "model-comparison"
-      ]
-    },
-    {
-      "id": "44f9437c619af499",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@livid",
-      "title": "AI让SwiftUI开发问题解决从耗时探索变为分钟搞定",
-      "blurb": "SwiftUI存在诸多局限性，如List顶部项置顶等，以前需耗时探索解决方案。现在直接询问AI，即可在几分钟内获得答案。AI显著加速了开发调试过程。 实战价值高，展示AI作为工具链在独立开发中的效率提升；前瞻性强，预示AI将重塑开发工作流，减少试错成本。",
-      "link": "https://x.com/livid/status/2033288386145132837",
-      "canonical_link": "https://x.com/livid/status/2033288386145132837",
-      "published_at": "2026-03-16T05:05:02.000+08:00",
-      "score": 7,
-      "tags": [
-        "独立开发",
-        "工具链",
-        "AI"
-      ]
-    },
-    {
-      "id": "76fbd178cb59b189",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@penny777",
-      "title": "AI Agent任务分配：Anthropic vs GStack",
-      "blurb": "Anthropic建议连贯性任务用单一Agent避免切换不连贯；GStack适用于任务清晰划分，可在同一session切不同skills，或多session并行。提供Agent协作实战视角。 揭示Agent工作流痛点与优化策略，有助于提升AI产品开发效率，避免连贯性风险。",
-      "link": "https://x.com/penny777/status/2033285832325607879",
-      "canonical_link": "https://x.com/penny777/status/2033285832325607879",
-      "published_at": "2026-03-16T04:54:53.000+08:00",
-      "score": 7,
-      "tags": [
-        "AI",
-        "工具链"
-      ]
-    },
-    {
-      "id": "31a8ba47a9265ab2",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@Artedeingenio",
-      "title": "Kling 3.0: Knight vs Demon Animation",
-      "blurb": "使用Kling 3.0生成的骑士对战恶魔动画，展示了高动态战斗场景和流畅运动。视频捕捉紧张氛围，创作者提问骑士胜算引发互动。突出Kling 3.0在幻想动画生成中的强大能力。 创作者可借鉴Kling 3.0处理复杂动作和叙事张力的技巧，提升视频生成质量。",
-      "link": "https://x.com/Artedeingenio/status/2033285342078337526",
-      "canonical_link": "https://x.com/Artedeingenio/status/2033285342078337526",
-      "published_at": "2026-03-16T04:52:56.000+08:00",
-      "score": 8,
-      "tags": [
-        "showcase"
       ]
     }
   ]

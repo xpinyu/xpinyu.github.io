@@ -1,10 +1,66 @@
 {
-  "updated_at": "2026-03-18T12:36:56.199+08:00",
+  "updated_at": "2026-03-18T13:47:49.035+08:00",
   "current_page": 12,
   "total_pages": 13,
   "page_size": 60,
-  "total_items": 725,
+  "total_items": 728,
   "items": [
+    {
+      "id": "323d52aa765cd872",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@jasonlk",
+      "title": "首次 rollout AI SDR 前30天需每天审阅所有输出并持续训练",
+      "blurb": "部署首个 AI SDR 时，前30天必须审阅其发出的每条消息。它会犯很多错误，需要每天训练。强调初始阶段的密集监督是关键。 提供 AI 销售工具实战部署细节，避免常见坑点；对 SaaS 增长玩家有直接执行价值，揭示 AI 代理早期不成熟的风险。",
+      "link": "https://x.com/jasonlk/status/2032769456934629516",
+      "canonical_link": "https://x.com/jasonlk/status/2032769456934629516",
+      "published_at": "2026-03-14T18:43:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI",
+        "SaaS",
+        "增长"
+      ]
+    },
+    {
+      "id": "3f2931506329bee1",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@MakadiaHarsh",
+      "title": "Loom 是我的秘密武器，用视频取代文字沟通",
+      "blurb": "用 90 秒 Loom 视频解释功能澄清客户困惑；2 分钟视频修复 bug；3 分钟周报取代 30 分钟会议。客户反馈：从未见过沟通如此高效。只需对着镜头说话，避免长篇打字。 实战提升客户满意度和沟通效率，节省时间，是 indie hacker 标配工具，防范沟通误解风险。",
+      "link": "https://x.com/MakadiaHarsh/status/2032760663412715805",
+      "canonical_link": "https://x.com/MakadiaHarsh/status/2032760663412715805",
+      "published_at": "2026-03-14T18:08:03.000+08:00",
+      "score": 8,
+      "tags": [
+        "独立开发",
+        "工具链",
+        "增长"
+      ]
+    },
+    {
+      "id": "460d5a915eacc8aa",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@chuhaiqu",
+      "title": "Google Nano Banana 2实用技巧：低成本高还原生成",
+      "blurb": "Nano Banana 2媲美Pro 95%，支持网搜真实照片打底、极端长宽比、512px批量抽卡放大。关‘思考’模式省时，词图翻译效果佳。 AI生成工具产品进展，成本优化技巧提升执行效率。",
+      "link": "https://x.com/chuhaiqu/status/2032759657916411991",
+      "canonical_link": "https://x.com/chuhaiqu/status/2032759657916411991",
+      "published_at": "2026-03-14T18:04:03.000+08:00",
+      "score": 7,
+      "tags": [
+        "AI",
+        "工具链"
+      ]
+    },
     {
       "id": "4f530473d391987d",
       "source_id": "x_ai_signals",
@@ -1085,87 +1141,6 @@
         "提升Claude多模态实用性"
       ],
       "topic": "product"
-    },
-    {
-      "id": "60f34e302a06ac9b",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Cursor",
-      "title": "How we compare model quality in Cursor",
-      "blurb": "Cursor发布CursorBench基准，结合在线离线评估真实编码代理性能。关键工具开发信号。",
-      "link": "https://cursor.com/blog/cursorbench",
-      "canonical_link": "https://cursor.com/blog/cursorbench",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "benchmark"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "Featured in TLDR AI engineering section, introduces CursorBench as a new benchmark for AI coding agents grounded in real developer workflows.",
-      "recommendation": "Cursor发布CursorBench基准，结合在线离线评估真实编码代理性能。关键工具开发信号。",
-      "summary": "CursorBench是基于真实Cursor会话的内部评估套件，衡量代理的正确性、代码质量、效率和交互行为。结合在线流量分析捕捉回归。该混合方法确保模型质量与生产开发对齐，支持快速迭代。",
-      "takeaways": [
-        "混合评估捕捉真实代理性能",
-        "CursorBench聚焦开发者工作流"
-      ],
-      "topic": "benchmark"
-    },
-    {
-      "id": "33fed319432d1dd1",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Z.ai",
-      "title": "IndexCache: Accelerating Sparse Attention via Cross-Layer Index Reuse",
-      "blurb": "IndexCache 通过跨层索引复用加速稀疏注意力，优化 Transformer 推理效率。",
-      "link": "https://arxiv.org/abs/2603.12201",
-      "canonical_link": "https://arxiv.org/abs/2603.12201",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hugging Face Papers",
-        "infra"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-13",
-      "source_signal": "High trending on HF papers (33 trends), key infra optimization for transformers.",
-      "recommendation": "IndexCache 通过跨层索引复用加速稀疏注意力，优化 Transformer 推理效率。",
-      "summary": "IndexCache 引入跨层索引复用机制，减少稀疏注意力计算冗余，提升长序列模型速度。基准测试显示显著加速而无精度损失。",
-      "takeaways": [
-        "跨层复用降低计算开销",
-        "适用于长上下文 Transformer"
-      ],
-      "topic": "infra"
-    },
-    {
-      "id": "fd7244b2e67423d7",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "New York Times",
-      "title": "Meta Delays Rollout of New AI Model After Performance Concerns",
-      "blurb": "Meta推迟Avocado模型发布，因性能未达领先水平，凸显AI竞赛激烈。",
-      "link": "https://nytimes.com/2026/03/12/technology/meta-avocado-ai-model-delayed.html",
-      "canonical_link": "https://nytimes.com/2026/03/12/technology/meta-avocado-ai-model-delayed.html",
-      "published_at": "2026-03-13T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "model-release"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-13",
-      "source_signal": "Featured headline; indicates competitive pressures in frontier models, Avocado lags leaders.",
-      "recommendation": "Meta推迟Avocado模型发布，因性能未达领先水平，凸显AI竞赛激烈。",
-      "summary": "Meta的Avocado模型优于前代和Gemini 2.5，但落后于OpenAI和Anthropic。发布延至5月后。公司仍有追赶时间。",
-      "takeaways": [
-        "Avocado性能接近但未超领先模型",
-        "延期反映安全与竞争力优先"
-      ],
-      "topic": "model-release"
     }
   ]
 }
