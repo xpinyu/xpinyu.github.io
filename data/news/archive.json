@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-03-19T01:56:23.973+08:00",
+  "updated_at": "2026-03-19T06:27:14.912+08:00",
   "page_size": 60,
-  "total_items": 786,
+  "total_items": 801,
   "sources": [
     {
       "id": "general",
@@ -57,14 +57,89 @@
       "id": "aiindie",
       "name": "AI Indie Hacker Signals",
       "type": "aiindie",
-      "refresh_hours": 12,
-      "updated_at": "2026-03-18T06:26:47.178+08:00",
-      "item_count": 12,
-      "window_start": "2026-03-17T08:26:47.178Z",
-      "window_end": "2026-03-17T22:26:47.178Z"
+      "refresh_hours": 24,
+      "updated_at": "2026-03-19T06:27:14.912+08:00",
+      "item_count": 15,
+      "window_start": "2026-03-17T18:27:14.912Z",
+      "window_end": "2026-03-18T22:27:14.912Z"
     }
   ],
   "items": [
+    {
+      "id": "7f6669976a83ebae",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@arvidkahl",
+      "title": "Use OpenAI flex tier for half price on AI inference.",
+      "blurb": "Arvid分享通过OpenAI API进行AI推理时，使用flex tier可节省一半成本。他的请求优先尝试flex tier，在429/500错误时回退到标准tier，95%的请求成功使用flex。建议异步工作负载先试两次flex再fallback，大幅降低成本。 AI独立黑客的核心开销是推理token，此战术直接优化成本，证明可重复性高，提供真实生产fallback逻辑，提升运营杠杆。",
+      "link": "https://x.com/arvidkahl/status/2034392700665893084",
+      "canonical_link": "https://x.com/arvidkahl/status/2034392700665893084",
+      "published_at": "2026-03-19T06:13:11.000+08:00",
+      "score": 10,
+      "tags": [
+        "workflow",
+        "tooling",
+        "monetization"
+      ]
+    },
+    {
+      "id": "ad7e2e08f97d81dd",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@levelsio",
+      "title": "Neo笔记本仅作哑终端，SSH访问VPS Claude Code",
+      "blurb": "作者用Lemon Neo笔记本仅安装Termius SSH和Claude Code VPS，无本地开发环境。称其开启新时代，并为女友买粉色版。展示图片证明纯远程AI开发的可行性。 证明轻薄设备+云端AI的极简工作流，解放硬件限制，帮助独立黑客专注构建而非运维。",
+      "link": "https://x.com/levelsio/status/2034372562923241963",
+      "canonical_link": "https://x.com/levelsio/status/2034372562923241963",
+      "published_at": "2026-03-19T04:53:10.000+08:00",
+      "score": 8,
+      "tags": [
+        "workflow",
+        "tooling"
+      ]
+    },
+    {
+      "id": "7772ab96eca7a06b",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@levelsio",
+      "title": "在VPS上运行Claude Code，避免笔记本高电池消耗",
+      "blurb": "作者分享Claude Code在笔记本上运行导致电池从100%到0%仅3小时的极端耗电问题。通过Termius SSH连接VPS上的Claude Code，笔记本功耗降低20倍，仅作为哑终端使用。强调这是高效AI编码工作流的实际证明。 为AI独立开发者提供低功耗远程开发方案，提升生产力并解决本地环境痛点，具有高重复性和杠杆效应。",
+      "link": "https://x.com/levelsio/status/2034353674613400047",
+      "canonical_link": "https://x.com/levelsio/status/2034353674613400047",
+      "published_at": "2026-03-19T03:38:07.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow",
+        "automation",
+        "tooling"
+      ]
+    },
+    {
+      "id": "4607af6909089790",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@marckohlbrugge",
+      "title": "用 Claude code 维护多个产品",
+      "blurb": "回应'如何独自维护众多产品'时，Marc 简答：Claude code。这揭示了 AI 在 solo 多产品策略中的核心杠杆。 证明一人用 AI 可 scaling 多个 SaaS，无需团队；对 AI indie hacker 是产能爆炸的实操证明。",
+      "link": "https://x.com/marckohlbrugge/status/2034353441720471675",
+      "canonical_link": "https://x.com/marckohlbrugge/status/2034353441720471675",
+      "published_at": "2026-03-19T03:37:11.000+08:00",
+      "score": 8,
+      "tags": [
+        "workflow",
+        "tooling",
+        "agent"
+      ]
+    },
     {
       "id": "505a9274fa84aee5",
       "source_id": "x_ai_signals",
@@ -211,6 +286,25 @@
       "tags": [
         "SEO",
         "监管"
+      ]
+    },
+    {
+      "id": "85b50d4b99c221f5",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@RevenueCat",
+      "title": "UA挑战与增强型应用广告活动的兴起",
+      "blurb": "标准应用广告因隐私变化、reach限制等失效，顶级订阅应用转向增强型应用广告，提供web级精准投放、App Store安装保留ASO、独立归因和重定向优势。相比web-to-app避免额外费用、税务复杂和ASO损失。分享Appstack实际结果，并链接文章探讨重建获取栈。 为构建订阅制AI应用的独立黑客提供隐私时代增长战术，提升用户获取效率和货币化杠杆，基于真实团队实践。",
+      "link": "https://x.com/RevenueCat/status/2034310494765371762",
+      "canonical_link": "https://x.com/RevenueCat/status/2034310494765371762",
+      "published_at": "2026-03-19T00:46:32.000+08:00",
+      "score": 8,
+      "tags": [
+        "growth",
+        "distribution",
+        "monetization"
       ]
     },
     {
@@ -380,6 +474,25 @@
       ]
     },
     {
+      "id": "2cbe77642578d4db",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@marckohlbrugge",
+      "title": "让 Claude 自动添加代码弃用记录以保持代码库整洁",
+      "blurb": "Marc 在代码库中创建了 docs/deprecations.md 文件，并指示 Claude 在添加向后兼容变更时自动记录，并建议移除日期。这是一种简单有效的长期代码维护方法。通过 AI 自动化，避免手动追踪技术债积累。 对 AI 独立黑客来说，这展示了如何用 Claude 等 AI 工具系统化管理代码演进，提高 solo 开发者的生产力和代码质量，支撑复杂项目扩展。",
+      "link": "https://x.com/marckohlbrugge/status/2034298928590467103",
+      "canonical_link": "https://x.com/marckohlbrugge/status/2034298928590467103",
+      "published_at": "2026-03-19T00:00:34.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow",
+        "automation",
+        "tooling"
+      ]
+    },
+    {
       "id": "9351139825526d6e",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -395,6 +508,24 @@
       "tags": [
         "AI",
         "工具链"
+      ]
+    },
+    {
+      "id": "07c179281c22c571",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@marckohlbrugge",
+      "title": "杀死你的免费计划",
+      "blurb": "Marc 重申：停止免费计划，提高价格，做营销，发邮件。配图展示相关指标，强调付费转化优先。这是对 indie SaaS 常见痛点的直接打击。 免费计划常稀释付费用户价值，导致低 ARPU；此建议帮助 AI indie hacker 快速优化 monetization，聚焦高价值客户。",
+      "link": "https://x.com/marckohlbrugge/status/2034292939262705804",
+      "canonical_link": "https://x.com/marckohlbrugge/status/2034292939262705804",
+      "published_at": "2026-03-18T23:36:46.000+08:00",
+      "score": 8,
+      "tags": [
+        "pricing",
+        "monetization"
       ]
     },
     {
@@ -492,6 +623,27 @@
       ]
     },
     {
+      "id": "c583cf705beba0ed",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@AlchainHust",
+      "title": "OpenClaw橙皮书出圈，企业培训需求多但拒绝低杠杆",
+      "blurb": "OpenClaw橙皮书视频和文档走红后，收到企业培训和定制龙虾/skill需求，但作者拒绝因无杠杆只出卖时间。2023年初粉丝少时，通过B站和YouTube分享ChatGPT内容，已接企业咨询培训甚至微软合作，报价几千到万余。强调释放利他信号是吸引机会关键。 展示内容如何快速转化为咨询变现机会，早期小众也能赚钱；强调杠杆思维，避免低效时间交易，对AI indie hacker构建个人品牌和 monetization 路径有借鉴。",
+      "link": "https://x.com/AlchainHust/status/2034279190607052831",
+      "canonical_link": "https://x.com/AlchainHust/status/2034279190607052831",
+      "published_at": "2026-03-18T22:42:08.000+08:00",
+      "score": 9,
+      "tags": [
+        "monetization",
+        "content",
+        "distribution",
+        "business",
+        "strategy"
+      ]
+    },
+    {
       "id": "ede5ef9705ea77a8",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -563,6 +715,26 @@
         "AI",
         "工具链",
         "SaaS"
+      ]
+    },
+    {
+      "id": "f59ae090ebb7222f",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@tibo_maker",
+      "title": "AI分析129个Starter Story访谈，提炼19成功模式",
+      "blurb": "作者用AI处理129个创始人访谈，提取共同同意的19个成功模式。推出tmaker.io/advisor工具，提供创始建议。邀请反馈完善。 AI驱动的内容洞察和策略工具，展示数据处理工作流和市场验证方法。",
+      "link": "https://x.com/tibo_maker/status/2034270907192025318",
+      "canonical_link": "https://x.com/tibo_maker/status/2034270907192025318",
+      "published_at": "2026-03-18T22:09:13.000+08:00",
+      "score": 6,
+      "tags": [
+        "strategy",
+        "content",
+        "analytics",
+        "automation"
       ]
     },
     {
@@ -675,6 +847,44 @@
         "出海",
         "SaaS",
         "增长"
+      ]
+    },
+    {
+      "id": "8be4c72521037db8",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@SimonHoiberg",
+      "title": "Vendor lock-in is the new technical debt.",
+      "blurb": "Simon警告创始人不要过度依赖供应商服务，如托管向量数据库、认证计费和AI调用代理，这会导致基础设施成本飙升和迁移困难。他建议三个核心原则：默认支持BYO密钥、自托管核心和可替换构建块，使用Postgres+pgvector、n8n和标准S3兼容存储。强调产品和用户体验才是护城河。 对AI独立开发者至关重要，因为AI产品容易陷入供应商锁定，影响成本控制和灵活性，此帖提供避免技术债的架构决策框架，帮助长期可持续构建。",
+      "link": "https://x.com/SimonHoiberg/status/2034259398650904753",
+      "canonical_link": "https://x.com/SimonHoiberg/status/2034259398650904753",
+      "published_at": "2026-03-18T21:23:30.000+08:00",
+      "score": 9,
+      "tags": [
+        "build",
+        "workflow",
+        "strategy"
+      ]
+    },
+    {
+      "id": "c0edb5a8f26eb7cc",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@d__raptis",
+      "title": "Added Custom Outfits on aiselfie.studio: Virtual fitting room meets AI headshots.",
+      "blurb": "Jim在aiselfie.studio新增自定义服装功能：用户自拍并上传服装照片（整套或单件），AI生成穿着该服装的专业头像照片。结合虚拟试衣间和AI头像技术，提供个性化专业图像生成。 展示AI产品快速迭代和功能叠加的执行细节，帮助独立开发者学习如何扩展核心AI用例到垂直需求，提升产品粘性。",
+      "link": "https://x.com/d__raptis/status/2034257372903006468",
+      "canonical_link": "https://x.com/d__raptis/status/2034257372903006468",
+      "published_at": "2026-03-18T21:15:27.000+08:00",
+      "score": 8,
+      "tags": [
+        "build",
+        "launch",
+        "workflow"
       ]
     },
     {
@@ -937,6 +1147,25 @@
       ]
     },
     {
+      "id": "546e7f3c1f52001d",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@pbteja1998",
+      "title": "Mission Control HQ新仪表盘上线",
+      "blurb": "作者发布Mission Control HQ AI代理工具的新仪表盘，展示酷炫界面截图。该工具用于代理协调，来自SiteGPT创始人。 代理工具UI迭代细节，展示产品决策和用户体验优化，帮助AI构建者提升工具粘性。",
+      "link": "https://x.com/pbteja1998/status/2034220906810413098",
+      "canonical_link": "https://x.com/pbteja1998/status/2034220906810413098",
+      "published_at": "2026-03-18T18:50:32.000+08:00",
+      "score": 7,
+      "tags": [
+        "agent",
+        "build",
+        "tooling"
+      ]
+    },
+    {
       "id": "32684afb67f39e4a",
       "source_id": "artist",
       "source_name": "AI Artist Signals",
@@ -951,6 +1180,24 @@
       "score": 9,
       "tags": [
         "prompting"
+      ]
+    },
+    {
+      "id": "3e3f86ae438d8ec5",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@tdinh_me",
+      "title": "TypingMind现支持GPT 5.4 Mini和Nano模型",
+      "blurb": "TypingMind立即集成GPT 5.4 Mini和Nano模型，用户可直接使用。附产品截图展示新模型选项。该产品月收137K美元，展示快速迭代能力。 AI工具开发者快速跟进新模型的执行细节，提供竞争定位参考和用户留存策略。",
+      "link": "https://x.com/tdinh_me/status/2034213955980439868",
+      "canonical_link": "https://x.com/tdinh_me/status/2034213955980439868",
+      "published_at": "2026-03-18T18:22:55.000+08:00",
+      "score": 7,
+      "tags": [
+        "tooling",
+        "build"
       ]
     },
     {
@@ -1004,6 +1251,25 @@
       "tags": [
         "model-comparison",
         "experiments"
+      ]
+    },
+    {
+      "id": "8314863d225581a2",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@yihui_indie",
+      "title": "重新录制AI编程课程Cursor + 基础概念部分的2026版本",
+      "blurb": "作者这两天重新录制了老课程中Cursor和基础概念部分的2026版本，删除了过时、冗余内容，并新增了用户关心的问题解答，如为什么2026年仍用Cursor入门AI编程。课程持续迭代更新，移除已过时技术，并欢迎新手加入学习。后续帖子列出具体移除内容示例，并推广课程链接https://happyaicoding.com。 对AI独立黑客而言，这展示了产品迭代策略在AI领域的重要性，帮助保持内容与技术前沿同步，提供可复用AI编程入门工作流和…",
+      "link": "https://x.com/yihui_indie/status/2034186803134316816",
+      "canonical_link": "https://x.com/yihui_indie/status/2034186803134316816",
+      "published_at": "2026-03-18T16:35:01.000+08:00",
+      "score": 9,
+      "tags": [
+        "tooling",
+        "workflow",
+        "build"
       ]
     },
     {
@@ -1332,6 +1598,25 @@
         "AI",
         "工具链",
         "基础设施"
+      ]
+    },
+    {
+      "id": "8ea20e1698121851",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@robwalling",
+      "title": "AI 建竞品易，零牵引难：分发才是关键",
+      "blurb": "讽刺离职员工用 AI 快速复制 SaaS 却零成功案例，强调品牌、分发和付费客户获取远超产品构建难度。 提醒 AI indie hacker：AI 解决供给侧，但需求侧（distribution）决定生死；避免只专注 MVP 的陷阱。",
+      "link": "https://x.com/robwalling/status/2034093711714288110",
+      "canonical_link": "https://x.com/robwalling/status/2034093711714288110",
+      "published_at": "2026-03-18T10:25:07.000+08:00",
+      "score": 7,
+      "tags": [
+        "distribution",
+        "strategy",
+        "postmortem"
       ]
     },
     {
