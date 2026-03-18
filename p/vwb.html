@@ -804,7 +804,7 @@
     <div class="figure-note"><strong>怎么读这张图：</strong>先抓两条信息流。上面负责语义理解，底部那条 <code>visual bypass</code> 负责把视觉细节直接送进生成支路。重点看这两条流怎样汇合；接得对，语义、身份和纹理才能一起稳住。</div>
 
     <p>
-      乍看之下，这像一种很自然的模块拼接。可论文认真比较了几种接法，最后得到一个很有指导意义的结论：<strong><code>MMDiT</code> 这一类更对称的交互方式，比传统的 cross-attention 更适合拿来接统一视频系统。</strong>
+      乍看之下，这像一种很自然的模块拼接。但论文没有停在直觉上，而是把三种接法放在一起比了一遍：普通的 <code>cross-attention DiT</code>、带 <code>learnable query</code> 的 <code>cross-attention DiT</code>，以及 <code>UniVideo</code> 用的 <code>MMDiT</code>。结果很清楚：<strong><code>UniVideo</code> 这条 <code>MMDiT</code> 路线，也就是让文本和视频在 <code>self-attention</code> 里一起交互的做法，对齐 <code>MLLM</code> 更稳。它只训练一个 <code>MLP connector</code> 就能跑通，前两种 <code>cross-attention</code> 方案往往还得把生成器一起解冻。</strong>
     </p>
     <p>
       这个结论的分量很大。统一视频模型远不是接一个语言模型当理解器这么简单。难点在于理解流和生成流之间怎样交换信息。接口一旦接得生硬，模型就会落入一种熟悉状态：好像看懂了，但生成不出来；或者语义对了，细节却全散了。

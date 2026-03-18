@@ -40,7 +40,7 @@
 
 一条是 `MLLM`，负责理解文字、图片、视频这些混合输入。另一条是 `MMDiT`，负责把这些理解变成图像或视频结果。两条流之间用一个连接器对齐。
 
-表面上看，这像是一种很自然的拼接方式。真正重要的是，论文认真比较了几种接法，然后得出了一个对后续工作很有指导意义的结论：`MMDiT` 这一类更对称的交互方式，比传统的 cross-attention 接法更适合拿来接统一视频系统。
+表面上看，这像是一种很自然的拼接方式。但论文没有停在直觉上，而是把三种接法放在一起比了一遍：普通的 `cross-attention DiT`、带 `learnable query` 的 `cross-attention DiT`，以及 `UniVideo` 用的 `MMDiT`。结果很清楚：`UniVideo` 这条 `MMDiT` 路线，也就是让文本和视频在 `self-attention` 里一起交互的做法，对齐 `MLLM` 更稳。它只训练一个 `MLP connector` 就能跑通，前两种 `cross-attention` 方案往往还得把生成器一起解冻。
 
 这个结论的含义很大。
 
