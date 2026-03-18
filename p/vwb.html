@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="从 UniVideo、Kling-Omni 与 Kling-MotionControl 三篇论文里，可以看到同一条收敛路线：视频模型正在从 generator 走向 workbench。">
+<title>From Generator to Video Workbench</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --vermillion: #E8432A;
+    --ochre: #E8B830;
+    --blue: #5A7A90;
+    --blue-soft: #EAF0F5;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 680px;
+    --wide-w: 780px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body.lightbox-open {
+    overflow: hidden;
+  }
+
+  #progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 999;
+    transition: width 80ms linear;
+    pointer-events: none;
+  }
+
+  .container {
+    max-width: var(--content-w);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+
+  header .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    max-width: 620px;
+  }
+
+  header .subtitle {
+    font-size: 1rem;
+    color: var(--text-2);
+    line-height: 1.9;
+    max-width: 620px;
+  }
+
+  header .meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 24px;
+    font-size: 0.75rem;
+    color: var(--text-3);
+    flex-wrap: wrap;
+  }
+
+  .thesis,
+  .takeaway {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+  }
+
+  .thesis {
+    margin-bottom: 72px;
+  }
+
+  .takeaway {
+    margin: 72px 0 48px;
+  }
+
+  .thesis .thesis-label,
+  .takeaway .thesis-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 14px;
+  }
+
+  .thesis p,
+  .takeaway p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+  }
+
+  .thesis strong { color: var(--ochre); font-weight: 600; }
+  .takeaway strong { color: #8EC5A0; font-weight: 600; }
+
+  .thesis .evidence {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem;
+    line-height: 1.72;
+    color: rgba(245,240,235,0.78);
+  }
+
+  section { margin-bottom: 72px; }
+
+  .section-num {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  section > .section-hook {
+    font-size: 0.85rem;
+    color: var(--text-3);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  h3 {
+    font-size: 1.08rem;
+    font-weight: 600;
+    margin: 40px 0 12px;
+    letter-spacing: -0.01em;
+  }
+
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  a:hover { text-decoration: underline; }
+
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+  code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    background: #EDE8DF;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .thesis code,
+  .takeaway code {
+    color: #F8F2E8;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .thesis .evidence code {
+    color: #F3D77D;
+    background: rgba(232,184,48,0.14);
+    border-color: rgba(232,184,48,0.24);
+    font-weight: 600;
+  }
+
+  .sep {
+    height: 1px;
+    background: var(--border);
+    margin: 72px 0;
+    border: none;
+  }
+
+  .note {
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin: 24px 0;
+    font-size: 0.88rem;
+    line-height: 1.8;
+    border-left: 3px solid;
+  }
+
+  .note-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .note-insight { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-problem { background: var(--red-bg); border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+  .note-ok { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-neutral { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+
+  .diagram-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin: 24px 0 12px;
+    overflow-x: auto;
+  }
+
+  .diagram-card svg {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .diagram-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 10px;
+  }
+
+  .zoomable-image {
+    cursor: zoom-in;
+  }
+
+  .zoomable-image:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+
+  .paper-figure {
+    max-width: 620px;
+    margin: 32px auto 12px;
+    padding: 18px;
+  }
+
+  .paper-figure img {
+    max-width: 540px;
+  }
+
+  .figure-caption {
+    margin: 0 auto 4px;
+    max-width: 92%;
+    font-size: 0.77rem;
+    line-height: 1.6;
+    color: var(--text-3);
+    text-align: center;
+  }
+
+  .figure-note {
+    margin: 10px auto 28px;
+    max-width: 92%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #F4EFE7;
+    color: var(--text-2);
+    font-size: 0.74rem;
+    line-height: 1.65;
+  }
+
+  .figure-note strong {
+    color: var(--text-1);
+    font-weight: 600;
+  }
+
+  .paper-figure + .figure-caption,
+  .paper-figure + .figure-caption + .figure-note {
+    max-width: 540px;
+  }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    background: rgba(14, 17, 25, 0.82);
+    backdrop-filter: blur(6px);
+    overflow-y: auto;
+  }
+
+  .lightbox[hidden] {
+    display: none !important;
+  }
+
+  .lightbox-stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    max-width: min(1120px, calc(100vw - 40px));
+    margin: auto;
+  }
+
+  .lightbox-stage img {
+    display: block;
+    max-width: 100%;
+    max-height: min(72vh, calc(100vh - 220px));
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+    background: #fff;
+  }
+
+  .lightbox-meta {
+    width: min(760px, 100%);
+    margin: 14px auto 0;
+    padding: 14px 16px;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+    backdrop-filter: blur(8px);
+  }
+
+  .lightbox-caption {
+    color: rgba(245,240,235,0.94);
+    font-size: 0.82rem;
+    line-height: 1.75;
+    text-align: left;
+  }
+
+  .lightbox-note {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    color: rgba(245,240,235,0.82);
+    font-size: 0.76rem;
+    line-height: 1.72;
+    text-align: left;
+  }
+
+  .lightbox-note strong {
+    color: #F5F0EB;
+    font-weight: 600;
+  }
+
+  .lightbox-note code {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #F5F0EB;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
+    color: #F5F0EB;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .lightbox-close:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .lightbox-close:focus-visible {
+    outline: 2px solid #F5F0EB;
+    outline-offset: 3px;
+  }
+
+  .iso-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 0.82rem;
+  }
+
+  .iso-table thead th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .iso-table tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .iso-table tbody tr:last-child td { border-bottom: none; }
+  .iso-table tbody td:first-child {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .paper-links {
+    margin: 24px 0 40px;
+    padding: 18px 20px;
+    background: rgba(255,255,255,0.65);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  .paper-links-label {
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 12px;
+  }
+
+  .paper-links-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+  }
+
+  .paper-links-list a {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(27,63,139,0.14);
+    background: rgba(27,63,139,0.04);
+    color: var(--accent);
+    font-size: 0.78rem;
+    line-height: 1.4;
+    text-decoration: none;
+  }
+
+  .paper-links-list a:hover {
+    background: rgba(27,63,139,0.08);
+    text-decoration: none;
+  }
+
+  .topbar {
+    position: fixed;
+    top: 2px;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250,246,238,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229,221,208,0.6);
+  }
+
+  .topbar a {
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  nav.toc {
+    position: fixed;
+    top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    z-index: 50;
+  }
+
+  nav.toc a {
+    display: block;
+    padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  nav.toc a:hover,
+  nav.toc a.active {
+    color: var(--text-1);
+    border-color: var(--text-1);
+  }
+
+  footer {
+    text-align: center;
+    padding: 48px 0 64px;
+    font-size: 0.72rem;
+    color: var(--text-3);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 1100px) {
+    nav.toc { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.72rem; }
+    .thesis,
+    .takeaway { padding: 28px 24px; }
+    .iso-table { font-size: 0.75rem; }
+    .iso-table thead th,
+    .iso-table tbody td { padding: 8px 10px; }
+    .diagram-card { padding: 16px 12px; }
+    .paper-figure {
+      max-width: none;
+      margin: 24px 0 10px;
+      padding: 12px;
+    }
+    .paper-figure img { max-width: none; }
+    .paper-figure + .figure-caption,
+    .paper-figure + .figure-caption + .figure-note {
+      max-width: 92%;
+    }
+    .lightbox {
+      padding: 24px 12px;
+    }
+    .lightbox-stage {
+      max-width: calc(100vw - 24px);
+    }
+    .lightbox-stage img {
+      max-height: min(64vh, calc(100vh - 210px));
+    }
+    .lightbox-meta {
+      padding: 12px 12px;
+    }
+    .lightbox-caption {
+      margin-top: 12px;
+      font-size: 0.76rem;
+    }
+    .lightbox-note {
+      font-size: 0.72rem;
+    }
+    .lightbox-close {
+      top: 10px;
+      right: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/?filter=essays">← pinyu.ai</a>
+  <a href="#takeaway-section">Takeaway</a>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<nav class="toc" id="toc">
+  <a href="#moving-line">分界线在移动</a>
+  <a href="#univideo">骨架先搭对</a>
+  <a href="#omni">意图翻译器</a>
+  <a href="#motion">统一中的分工</a>
+  <a href="#route">收敛路线</a>
+  <a href="#blindspot">不是世界模型</a>
+</nav>
+
+<div class="container">
+  <header>
+    <div class="eyebrow">Video Models × System Design</div>
+    <h1>From Generator to Video Workbench</h1>
+    <div class="subtitle">
+      读完 UniVideo、Kling-Omni 和 Kling-MotionControl 之后，我越来越确信：视频模型的竞争，正在从“生成一段好视频”转向“在复杂约束下稳定执行创作意图”。
+    </div>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.03</span>
+      <span>
+        <a href="https://arxiv.org/html/2510.08377v3" target="_blank" rel="noopener noreferrer">UniVideo ↗</a>
+        ·
+        <a href="https://arxiv.org/html/2512.16776v1" target="_blank" rel="noopener noreferrer">Kling-Omni ↗</a>
+        ·
+        <a href="https://arxiv.org/html/2603.03160v1" target="_blank" rel="noopener noreferrer">Kling-MotionControl ↗</a>
+      </span>
+    </div>
+  </header>
+
+  <div class="thesis">
+    <div class="thesis-label">Thesis</div>
+    <p>
+      把这三篇论文放在一起看，指向的是同一件事：<strong>视频模型正在从 generator 走向 workbench。</strong> 画质、时长和美学依然重要，但已经不足以决定高下。下一阶段真正拉开差距的，是系统能不能在多模态、多约束、带着歧义的人类输入下，稳定地把意图组织出来、执行下去，还不把不该动的部分一起带坏。
+    </p>
+    <div class="evidence">
+      三篇论文刚好对应这条路线上的三个层级：<code>UniVideo</code> 解决统一视频系统的骨架，<code>Kling-Omni</code> 解决复杂输入如何进入工作流，<code>Kling-MotionControl</code> 解决统一系统内部在高难任务下如何继续分工。
+    </div>
+  </div>
+
+  <section id="moving-line">
+    <div class="section-num">00</div>
+    <h2>分界线在移动</h2>
+    <p class="section-hook">视频当然多了一条时间轴，但更麻烦的是，人类意图本来就比 prompt 宽得多。</p>
+
+    <p>
+      过去两年，大家谈视频模型，默认是在比生成质量。谁更高清，谁更稳定，谁更像，谁能撑更长时长。这些当然仍然重要，但它们已经越来越不像下一阶段最关键的分界线了。
+    </p>
+    <p>
+      新的分界线落在一个更具体的问题上：给模型几张参考图、一段参考视频、一句并不那么规整的指令，再加一点局部编辑要求，它到底能不能把这些条件稳稳接住？能不能既保住人物身份，又做对动作或编辑，还不把没让它动的地方一起搞坏？
+    </p>
+
+    <div class="diagram-card">
+      <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Shift from generator era to workbench era" style="width:100%;max-width:640px;">
+        <rect x="16" y="18" width="262" height="164" rx="14" fill="#FFFBF3" stroke="#E8DECE" stroke-width="1"/>
+        <rect x="32" y="34" width="98" height="22" rx="11" fill="#F0E6D2"/>
+        <text x="81" y="49" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#B8864A" letter-spacing="0.1em">GENERATOR</text>
+        <text x="32" y="82" font-family="'EB Garamond','Songti SC',serif" font-size="20" fill="#1A1714">What it looks like</text>
+        <circle cx="40" cy="110" r="2.5" fill="#B8864A" opacity="0.5"/>
+        <text x="52" y="114" font-family="Inter,system-ui,sans-serif" font-size="12" fill="#776E62">Sharpness &amp; aesthetics</text>
+        <circle cx="40" cy="132" r="2.5" fill="#B8864A" opacity="0.5"/>
+        <text x="52" y="136" font-family="Inter,system-ui,sans-serif" font-size="12" fill="#776E62">Motion smoothness</text>
+        <circle cx="40" cy="154" r="2.5" fill="#B8864A" opacity="0.5"/>
+        <text x="52" y="158" font-family="Inter,system-ui,sans-serif" font-size="12" fill="#776E62">Longer clips</text>
+
+        <line x1="292" y1="100" x2="346" y2="100" stroke="#1B3F8B" stroke-width="1.8" marker-end="url(#a1)"/>
+        <text x="319" y="88" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="8.5" font-weight="700" fill="#1B3F8B" letter-spacing="0.08em">SHIFT</text>
+
+        <rect x="360" y="10" width="264" height="180" rx="14" fill="#EDF2F8" stroke="#B4C8DA" stroke-width="1.2"/>
+        <rect x="376" y="28" width="102" height="22" rx="11" fill="#D4E0EC"/>
+        <text x="427" y="43" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#3D6A82" letter-spacing="0.1em">WORKBENCH</text>
+        <text x="376" y="76" font-family="'EB Garamond','Songti SC',serif" font-size="20" fill="#1A1714">What it can obey</text>
+        <circle cx="384" cy="104" r="2.5" fill="#5A7A90"/>
+        <text x="396" y="108" font-family="Inter,system-ui,sans-serif" font-size="12" fill="#5C5349">Identity consistency</text>
+        <circle cx="384" cy="126" r="2.5" fill="#5A7A90"/>
+        <text x="396" y="130" font-family="Inter,system-ui,sans-serif" font-size="12" fill="#5C5349">Local editing fidelity</text>
+        <circle cx="384" cy="148" r="2.5" fill="#5A7A90"/>
+        <text x="396" y="152" font-family="Inter,system-ui,sans-serif" font-size="12" fill="#5C5349">Mixed inputs &amp; references</text>
+        <circle cx="384" cy="170" r="2.5" fill="#5A7A90"/>
+        <text x="396" y="174" font-family="Inter,system-ui,sans-serif" font-size="12" fill="#5C5349">Task orchestration</text>
+
+        <defs>
+          <marker id="a1" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <polygon points="0 0.5, 7 3.5, 0 6.5" fill="#1B3F8B"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    <div class="figure-caption">同样是“更强的视频模型”，判断标准已经从“能不能生成”转向“能不能在复杂条件下稳定执行”。</div>
+
+    <p>
+      这也是为什么我越来越不把视频问题理解成“图像问题多了一个时间维度”。时间当然让事情更难，但真正麻烦的是约束会沿时间相互放大。图像里一个局部错误，最多只是别扭；视频里一个局部错误，会在后续帧里连锁扩散。脸漂一帧，身份就开始松；动作乱一帧，时序就开始破；背景改错一块，整段视频的世界观都可能被带崩。
+    </p>
+    <p>
+      更棘手的是，用户真正想表达的内容，本来就很少能被一句 prompt 说清。很多任务天然带着混合条件：你想让某个人保持这个样子，做那段动作，沿用这张图的光线，再把场景改成黄昏。这里面同时有身份信息、动作信息、风格信息、局部编辑目标和镜头语言。把这些全部压成一句文本，本身就是信息损失。
+    </p>
+    <p>
+      所以这三篇论文碰到的核心，其实是<strong>意图带宽</strong>问题。生成质量当然重要，但它更像表层结果。真正决定系统上限的，是它能不能接住足够丰富、足够具体、又足够混杂的人类输入。
+    </p>
+
+    <div class="note note-insight">
+      <div class="note-label">核心判断</div>
+      <p>
+        沿着“意图带宽”这个角度再看，三篇论文的分工就很清楚了：<code>UniVideo</code> 回答统一系统的骨架怎么搭，<code>Kling-Omni</code> 回答这套骨架怎样变成可工作的创作系统，<code>Kling-MotionControl</code> 则提醒我们，到了角色动画这种深水区，统一系统内部反而更需要精细分工。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="univideo">
+    <div class="section-num">01</div>
+    <h2><code>UniVideo</code>：骨架先搭对</h2>
+    <p class="section-hook">三篇里，最适合拿来做主线的是 <code>UniVideo</code>。它最像在定义统一视频系统的第一性结构。</p>
+
+    <p>
+      三篇里，最适合拿来做主线的是 <code>UniVideo</code>。它最像一篇真正的研究论文：结构判断最清楚，消融也最有价值。
+    </p>
+    <p>
+      它的基本设计很清楚：把“理解”和“生成”拆成两条流。一条是 <code>MLLM</code>，负责理解文字、图片、视频这些混合输入；另一条是 <code>MMDiT</code>，负责把这些理解变成图像或视频结果；两条流之间再用一个 connector 去对齐。
+    </p>
+
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="UniVideo two-stream architecture" style="width:100%;max-width:680px;">
+        <rect x="16" y="36" width="104" height="50" rx="12" fill="#FFFBF3" stroke="#E8DECE" stroke-width="1"/>
+        <text x="68" y="58" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="600" fill="#B8864A">Text</text>
+        <text x="68" y="74" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9.5" fill="#776E62">instructions</text>
+
+        <rect x="16" y="136" width="104" height="50" rx="12" fill="#F0F6F2" stroke="#C4DCC8" stroke-width="1"/>
+        <text x="68" y="158" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="600" fill="#4A8060">Visual</text>
+        <text x="68" y="174" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9.5" fill="#776E62">images / video</text>
+
+        <rect x="168" y="22" width="172" height="80" rx="14" fill="#EDF2F8" stroke="#B4C8DA" stroke-width="1.2"/>
+        <rect x="184" y="36" width="56" height="20" rx="10" fill="#D4E0EC"/>
+        <text x="212" y="50" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#3D6A82" letter-spacing="0.06em">MLLM</text>
+        <text x="254" y="74" text-anchor="middle" font-family="'EB Garamond','Songti SC',serif" font-size="17" fill="#1A1714">Understanding</text>
+        <text x="254" y="92" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" fill="#776E62">text + visual comprehension</text>
+
+        <rect x="390" y="46" width="82" height="38" rx="12" fill="#F4F0F8" stroke="#C4B8D4" stroke-width="1"/>
+        <text x="431" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="600" fill="#7B6892">Connector</text>
+
+        <rect x="522" y="14" width="142" height="164" rx="14" fill="#FFFFFF" stroke="#1B3F8B" stroke-width="1.4"/>
+        <rect x="538" y="30" width="60" height="20" rx="10" fill="#E4EAF4"/>
+        <text x="568" y="44" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="700" fill="#1B3F8B" letter-spacing="0.06em">MMDiT</text>
+        <text x="593" y="74" text-anchor="middle" font-family="'EB Garamond','Songti SC',serif" font-size="17" fill="#1A1714">Generation</text>
+        <text x="593" y="94" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" fill="#776E62">semantic align</text>
+        <text x="593" y="110" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" fill="#776E62">+ visual detail</text>
+        <rect x="548" y="128" width="90" height="32" rx="8" fill="#FDF5F3" stroke="#D8B0A8" stroke-width="1"/>
+        <text x="593" y="149" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" font-weight="600" fill="#C0503A">Identity lock</text>
+
+        <path d="M 120 61 L 168 61" stroke="#B8864A" stroke-width="1.4" fill="none" marker-end="url(#a2a)"/>
+        <path d="M 340 65 L 390 65" stroke="#776E62" stroke-width="1.4" fill="none" marker-end="url(#a2b)"/>
+        <path d="M 472 65 L 522 78" stroke="#776E62" stroke-width="1.4" fill="none" marker-end="url(#a2b)"/>
+
+        <path d="M 120 161 C 300 161, 420 161, 522 144" stroke="#4A8060" stroke-width="2" stroke-dasharray="6,4" fill="none" marker-end="url(#a2c)"/>
+        <rect x="218" y="192" width="244" height="26" rx="13" fill="#E8F2EC"/>
+        <text x="340" y="209" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" font-weight="600" fill="#4A8060">visual bypass → generation branch</text>
+
+        <defs>
+          <marker id="a2a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <polygon points="0 0.5, 7 3.5, 0 6.5" fill="#B8864A"/>
+          </marker>
+          <marker id="a2b" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <polygon points="0 0.5, 7 3.5, 0 6.5" fill="#776E62"/>
+          </marker>
+          <marker id="a2c" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <polygon points="0 0.5, 7 3.5, 0 6.5" fill="#4A8060"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    <div class="figure-caption">`UniVideo` 最值得看的，是统一系统里的信息该怎么走：理解流和生成流如何配合，哪些视觉细节又必须留在生成链条里。</div>
+    <div class="figure-note"><strong>怎么读这张图：</strong>先抓两条信息流。上面负责语义理解，底部那条 <code>visual bypass</code> 负责把视觉细节直接送进生成支路。重点看这两条流怎样汇合；接得对，语义、身份和纹理才能一起稳住。</div>
+
+    <p>
+      乍看之下，这像一种很自然的模块拼接。可论文认真比较了几种接法，最后得到一个很有指导意义的结论：<strong><code>MMDiT</code> 这一类更对称的交互方式，比传统的 cross-attention 更适合拿来接统一视频系统。</strong>
+    </p>
+    <p>
+      这个结论的分量很大。统一视频模型远不是接一个语言模型当理解器这么简单。难点在于理解流和生成流之间怎样交换信息。接口一旦接得生硬，模型就会落入一种熟悉状态：好像看懂了，但生成不出来；或者语义对了，细节却全散了。
+    </p>
+    <p>
+      <code>UniVideo</code> 还有一个特别关键的发现：视觉信息不能只给理解支路，生成支路也必须直接看到。很多人直觉上会觉得，既然 <code>MLLM</code> 已经读过图片和视频了，生成器接收压缩后的语义表示就够了。实验结果不是这样。论文消融显示，一旦把视觉输入从 <code>MMDiT</code> 支路拿掉，身份一致性会掉得非常明显。
+    </p>
+    <p>
+      这其实很好理解。语言模型擅长抽象，擅长抓语义主干；但身份保持、细节对齐、视觉纹理这些事情，很多时候不能只靠抽象后的语义来传。你得把视觉细节直接留在生成链条里。
+    </p>
+    <p>
+      这也是为什么 <code>UniVideo</code> 在 <code>in-context</code> 生成和编辑上显得特别重要。它最擅长的，是围绕已有参考去生成和编辑；单纯从零开始生成一段视频，反而不是它最突出的部分。给它几张角色图、几个对象、一段视频，再加一条指令，它要把这些条件组织起来，还得保证结果看起来像同一个世界里的东西。
+    </p>
+    <p>
+      更进一步，<code>UniVideo</code> 还给出一个很实在的信号：多任务联合训练确实有回报。它把 <code>T2V</code>、<code>I2V</code>、图像编辑、视频编辑、带参考生成这些任务一起训练。结果并没有停在“都能做”这一步，很多 <code>in-context</code> 任务都明显更稳，尤其编辑收益很明显。这说明视频模型的很多能力，并不一定要靠等价规模的视频数据才能学出来。图像编辑里学到的指令执行能力，是可以迁到视频里的。
+    </p>
+
+    <div class="note note-neutral">
+      <div class="note-label">边界</div>
+      <p>
+        最容易让人兴奋的，是它展示了自由形式视频编辑的泛化能力：模型没有专门在这类视频编辑数据上训练，却能把图像编辑里学到的模式迁到视频里。但现阶段更准确的判断仍然是“路走通了”，还不能说“已经足够稳了”。论文自己也承认，视频编辑的成功率和可靠性还没有达到图像编辑的水平。
+      </p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="omni">
+    <div class="section-num">02</div>
+    <h2><code>Kling-Omni</code>：先翻译意图，再执行意图</h2>
+    <p class="section-hook">它更像一份系统说明书。重点已经从“架构是否成立”转向“用户把复杂输入丢进来以后，系统能不能顺畅工作”。</p>
+
+    <p>
+      到了 <code>Kling-Omni</code>，味道就变了。这篇当然也讲模型结构，读起来却更像一份产品系统说明书。关注点也往前推了一步：架构成立只是起点，更关键的是，用户把复杂输入扔进来之后，系统能不能顺着把事做完。
+    </p>
+    <p>
+      这篇里我最在意的组件叫 <code>Prompt Enhancer</code>。它其实就是一个<strong>意图翻译器</strong>。
+    </p>
+    <p>
+      这是我读 <code>Kling-Omni</code> 时最想留下来的洞察之一。很多人默认 prompt 就等于意图本身。可一进真实创作流程，这个等号很快就失效了。用户输入通常非常嘈杂，而且高度分布外。有人写得很抽象，有人把参考图和文本提示混在一起，有人把镜头、风格、动作、局部修改要求揉成一句自然语言。模型直接吃这些输入，效果当然会飘。
+    </p>
+
+    <div class="diagram-card paper-figure">
+      <img src="/p/img/vwb/kling-omni-figure-25.png" alt="Kling-Omni task composition examples from the paper">
+    </div>
+    <div class="figure-caption">原图来自 `Kling-Omni` Figure 25。它把 workbench 感落成了很具体的任务：镜头变化、参考物添加、背景替换和风格化，可以在一次生成里一起完成。</div>
+    <div class="figure-note"><strong>怎么读这张图：</strong>先看输入，它已经从单一 prompt 变成了一组混合约束。再看输出时，不是看审美高低，而是看这些约束还能不能同时成立。这正是“先翻译意图，再执行意图”的产品形态。</div>
+
+    <p>
+      <code>Prompt Enhancer</code> 做的事情，就是先把这份高噪声输入整理一遍，翻译成模型更熟悉、也更容易执行的表达。论文里它通过 <code>SFT + RL</code> 去训练，希望输出更准确、更丰富，也更靠近高质量训练数据的分布。
+    </p>
+    <p>
+      别把这件事只当成前处理。它把一个经常被低估的问题单独拎了出来：输入有没有先被整理成可执行的形式。视频系统的很多能力，输赢往往先发生在这里。换句话说，未来的视频系统很可能越来越像一套分层架构。最上层接住人类输入，中间层负责意图编译，底层生成器再去执行。用户看到的是一个统一接口，系统内部其实在做多层转换。
+    </p>
+    <p>
+      <code>Kling-Omni</code> 的另一个关键信号，是它很认真地在做身份一致性。论文反复提到 <code>subject library</code>。意思很直接：不要再指望一张参考图解决身份问题。给系统多张同一主体的图，让它看到不同角度、不同表情、不同姿态、不同光线下的样子，这样建立起来的身份表征才更稳。
+    </p>
+    <p>
+      这几乎已经是基础设施问题了。视频系统一旦进入长时序、多镜头、复杂动作的场景，单张参考图几乎注定会不够。多参考输入不是锦上添花的功能，它正在变成身份保持的基础设施。
+    </p>
+    <p>
+      这篇还做了很多很工程、但也很硬的事情。比如单独做多模态超分模块补高频细节，比如把采样步数从 <code>150 NFE</code> 压到 <code>10 NFE</code>，大幅降低推理成本，再比如围绕并行、缓存、量化、数据管线做优化。这些内容不如“智能生成”听起来性感，但它们更接近现实。视频模型要从 demo 走向产品，靠的从来不只是模型精度，还靠一整套系统工程。
+    </p>
+
+    <div class="note note-problem">
+      <div class="note-label">容易被过度解读的地方</div>
+      <p>
+        论文展示了 reasoning-enhanced generation，比如根据视觉标注生成、根据坐标理解场景、做逻辑排序之类的例子。这组例子很容易让人往“模型已经学会推理”上想。但正文写得很清楚：这里接入了更强的视觉语言推理引擎，而且线上版本还没有支持。所以更准确的说法是，这套系统开始具备把外部推理模块接进视频生成链条的能力；这还不能当成“视频模型已经原生学会推理”的证明。
+      </p>
+    </div>
+
+    <p>
+      <code>Kling-Omni</code> 更像统一视频系统第一次成熟的产品化尝试。它的价值，在于让人看到一个创作工作台正在成形，也把能力边界说得更清楚了。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="motion">
+    <div class="section-num">03</div>
+    <h2><code>Kling-MotionControl</code>：统一系统内部，反而更需要分工</h2>
+    <p class="section-hook">它看起来最垂直，却承担了一个重要的纠偏作用：统一体验，不等于内部结构什么都一样。</p>
+
+    <p>
+      <code>Kling-MotionControl</code> 看起来最垂直，它专门讲角色动画。可我读完之后，反而觉得它在三篇里承担了一个很重要的纠偏作用。它让“统一”这两个字变得更真实了。
+    </p>
+    <p>
+      大家一说统一模型，很容易脑补出一种理想化图景：一个大模型，一套表征，从输入到输出一路贯通，什么都交给端到端学习去解决。角色动画这个问题，恰好很适合打破这种想象。
+    </p>
+    <p>
+      因为身体、脸和手，本来就不是同一种运动问题。身体动作要的是大尺度结构稳定；面部表情要的是细微变化和局部真实感；手部动作更难，关节细、自由度高，稍微一错就非常扎眼。把它们全压到一种统一表征里，理论上很优雅，实际上很容易互相拖累。
+    </p>
+
+    <div class="diagram-card paper-figure">
+      <img src="/p/img/vwb/kling-motioncontrol-figure-4.png" alt="Kling-MotionControl qualitative comparison figure from the paper">
+    </div>
+    <div class="figure-caption">原图来自 `Kling-MotionControl` Figure 4。它最有价值的地方，在于把不同运动粒度的 failure mode 摆在一起：脸、手和大幅身体动作，面对的本来就不是同一种控制难题。</div>
+    <div class="figure-note"><strong>怎么读这张图：</strong>先看上半部分的脸和手，再看下半部分的大幅动作。这里要看的不是谁更好看，而是不同难点落在不同粒度上，所以统一系统内部反而需要异构表示。没必要把所有运动都硬塞进同一种表征里。</div>
+
+    <p>
+      这篇论文把一个关键点讲得很清楚：<strong>系统可以统一，运动表征不必统一。</strong> 它提出用异构的运动表示去分别处理身体、脸和手，再把这些不同粒度的控制编排到同一个系统里。这看起来像工程拆分，其实是在给统一系统划边界：对用户保持统一体验，对内部保留针对不同难题的分工。
+    </p>
+    <p>
+      论文里还有两个值得单独记住的点。一个是 identity-agnostic motion learning，也就是身份无关的动作学习。简单说，它想让模型先学会“动作本身”，别把动作死死绑在驱动者的身体比例和外观上。这样它才有机会把一个成年人的动作迁移到小孩、动漫角色，甚至动物身上。
+    </p>
+    <p>
+      另一个是 semantic motion modeling，也就是动作的语义层。很多动作控制工作看起来都在对齐关键点、骨架和几何结构，但复杂动作往往还带着动作意图。拍手、捂脸、指向某个方向，这些动作如果只学几何，很容易做到形似，做不到神似。
+    </p>
+
+    <div class="note note-neutral">
+      <div class="note-label">证据强度要保守看</div>
+      <p>
+        这篇的证据强度比前两篇弱不少。方法细节公开得不够，评测也高度依赖主观偏好，很多强结论暂时还很难审计。所以我更愿意把它当成一个方向上很对的问题定义。离“答案已经讲透”还有一段距离。
+      </p>
+    </div>
+
+    <p>
+      但即便如此，它仍然很重要。因为它提醒我们：随着统一视频系统越来越强，真正困难的问题不会消失，只会往系统内部移动。角色动画就是一个非常典型的例子。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="route">
+    <div class="section-num">04</div>
+    <h2>把三篇拼起来，收敛路线就很清楚了</h2>
+    <p class="section-hook">这不再像“一个模型做一种任务”的工具箱，而更像一个统一的创作系统正在成形。</p>
+
+    <p>
+      单看每篇论文，它们各讲各的。放在一起，路线就出来了。
+    </p>
+    <p>
+      第一步，是把理解和生成接起来，<code>UniVideo</code> 在做这件事。第二步，是把复杂输入真正组织进一套工作流，<code>Kling-Omni</code> 在做这件事。第三步，是在高难任务上把内部结构继续做深，<code>Kling-MotionControl</code> 在做这件事。
+    </p>
+
+    <table class="iso-table">
+      <thead>
+        <tr>
+          <th>论文</th>
+          <th>主要解决什么</th>
+          <th>最关键的动作</th>
+          <th>它真正说明了什么</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>UniVideo</td>
+          <td>统一视频系统的骨架</td>
+          <td>理解流 / 生成流分离，并保留视觉直达生成支路</td>
+          <td>系统能否稳定执行，首先取决于接口如何组织信息</td>
+        </tr>
+        <tr>
+          <td>Kling-Omni</td>
+          <td>复杂输入如何进入产品工作流</td>
+          <td><code>Prompt Enhancer</code> + <code>subject library</code> + 工程降本</td>
+          <td>很多“能力”其实长在意图编译和系统工程，不只长在生成器里</td>
+        </tr>
+        <tr>
+          <td>Kling-MotionControl</td>
+          <td>深水区任务如何继续做稳</td>
+          <td>身体 / 脸 / 手使用异构运动表示</td>
+          <td>统一体验不等于内部同构，真正难的问题会向系统内部迁移</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      三步拼起来，刚好构成下一代视频系统的雏形。它不再是“一个模型做一种任务”的工具箱，而更像一个统一的创作系统。用户给的是混合信号，系统自己完成理解、对齐、任务组合和执行；与此同时，内部又保留足够细的结构分工，避免在高难问题上一锅炖。
+    </p>
+
+    <p>
+      这条路线已经带来了几个很明确的变化。第一个，是视频模型的重心正在往 <code>in-context</code> 任务移动。真正有价值的能力，越来越落在后者：围绕给定主体、给定场景、给定上下文去稳定地续、改、组合、迁移。这比单纯凭空生成一段视频更接近真实创作流程。
+    </p>
+    <p>
+      第二个变化，是很多原来外挂在 pipeline 外面的能力，开始往系统内部回收。参考图、视频编辑、局部修改、风格组合、镜头变化，这些曾经属于不同工具的能力，现在正在被压进同一个接口。
+    </p>
+    <p>
+      第三个变化，是工作流本身开始变简单。以前用户得自己决定先换脸、再抠图、再改背景、再做风格化。以后系统会越来越多地替用户做任务编排。对于创作来说，这种变化的重要性不亚于模型质量本身。
+    </p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="blindspot">
+    <div class="section-num">05</div>
+    <h2>这条路很有前景，但还不是“世界模型已经来了”</h2>
+    <p class="section-hook">三篇论文让我对方向更有信心，但也让我对夸张叙事更谨慎。</p>
+
+    <p>
+      看完这三篇，我对这个方向的信心是上升的，但对很多夸张叙事反而更克制了。今天最能站住的结论，是视频系统正在变得更统一、更可控，也更接近一个真正的工作台。
+    </p>
+    <p>
+      还不能轻易下的结论也很清楚：系统能接入推理模块，不等于模型已经形成了原生推理能力；出现过几个漂亮的泛化案例，不等于自由形式视频编辑已经足够可靠；多任务统一接口很强，也不代表它在每一个单项任务上都已经赢过最强专家模型。
+    </p>
+    <p>
+      还有一个常被忽略的边界：用户看到的是统一体验，但背后到底有多少能力来自模型本体，多少来自数据工程、前处理和系统拼装，这些边界仍然需要更清楚地拆开。
+    </p>
+
+    <div class="note note-ok">
+      <div class="note-label">决定上限的四件事</div>
+      <p>
+        我反而觉得，这些边界不会削弱三篇论文的价值，它们只是把战场说得更清楚了。接下来决定上限的，会落在四件更硬的事上：<strong>意图翻译是否稳定、身份保持是否可靠、开放编辑是否可复现、推理成本是否降得下来。</strong> 画质和美学当然仍然重要，只是它们已经不再构成全部。
+      </p>
+    </div>
+
+    <p>
+      谁能同时把这四件事做好，谁才更接近下一代视频基础系统。也正因为如此，我读完之后，对“更大的模型”兴趣反而下降了一点，对“更好的系统结构”兴趣上升了很多。接下来的胜负手，可能不在谁做出了最惊艳的一段 demo，而在谁先把视频模型做成一个真正可工作的创作工作台。
+    </p>
+  </section>
+
+  <div class="takeaway" id="takeaway-section">
+    <div class="thesis-label">Takeaway</div>
+    <p>
+      <strong>视频模型正在从“会生成内容”走向“会执行创作意图”，而统一视频系统真正的门槛，已经从生成质量转向系统组织能力。</strong>
+    </p>
+    <p style="margin-top:16px;">
+      更短一点说：<strong>下一代视频模型，会越来越像 workbench。generator 只是它的起点。</strong>
+    </p>
+  </div>
+
+  <div class="paper-links" aria-label="论文外链">
+    <div class="paper-links-label">Papers</div>
+    <div class="paper-links-list">
+      <a href="https://arxiv.org/html/2512.16776v1" target="_blank" rel="noopener noreferrer">Kling-Omni</a>
+      <a href="https://arxiv.org/html/2603.03160v1" target="_blank" rel="noopener noreferrer">Kling-MotionControl</a>
+      <a href="https://arxiv.org/html/2510.08377v3" target="_blank" rel="noopener noreferrer">UniVideo</a>
+    </div>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+</div>
+
+<div class="lightbox" id="lightbox" hidden aria-hidden="true">
+  <div class="lightbox-stage" id="lightbox-stage" role="dialog" aria-modal="true" aria-label="配图放大预览">
+    <button class="lightbox-close" id="lightbox-close" type="button" aria-label="关闭放大图">×</button>
+    <img id="lightbox-image" alt="">
+    <div class="lightbox-meta" id="lightbox-meta" hidden>
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+      <div class="lightbox-note" id="lightbox-note"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+window.addEventListener('scroll', function() {
+  var h = document.documentElement;
+  var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+var toc = document.getElementById('toc');
+if (toc) {
+  var links = Array.from(toc.querySelectorAll('a'));
+  var targets = links.map(function(a) {
+    return document.querySelector(a.getAttribute('href'));
+  }).filter(Boolean);
+
+  var update = function() {
+    var current = '';
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].getBoundingClientRect().top <= 140) {
+        current = targets[i].id;
+      }
+    }
+    links.forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
+var lightbox = document.getElementById('lightbox');
+var lightboxStage = document.getElementById('lightbox-stage');
+var lightboxImage = document.getElementById('lightbox-image');
+var lightboxMeta = document.getElementById('lightbox-meta');
+var lightboxCaption = document.getElementById('lightbox-caption');
+var lightboxNote = document.getElementById('lightbox-note');
+var lightboxClose = document.getElementById('lightbox-close');
+var activeImage = null;
+
+var getFigureDetails = function(img) {
+  var card = img.closest('.diagram-card');
+  if (!card) return { caption: '', note: '' };
+
+  var captionNode = card.nextElementSibling;
+  var noteNode = captionNode && captionNode.nextElementSibling;
+
+  var caption = '';
+  var note = '';
+
+  if (captionNode && captionNode.classList && captionNode.classList.contains('figure-caption')) {
+    caption = captionNode.textContent.trim();
+  }
+
+  if (noteNode && noteNode.classList && noteNode.classList.contains('figure-note')) {
+    note = noteNode.innerHTML.trim();
+  }
+
+  return { caption: caption, note: note };
+};
+
+var openLightbox = function(img) {
+  var details = getFigureDetails(img);
+  activeImage = img;
+  lightboxImage.src = img.src;
+  lightboxImage.alt = img.alt || '';
+  lightboxCaption.textContent = details.caption;
+  lightboxNote.innerHTML = details.note;
+  lightboxMeta.hidden = !details.caption && !details.note;
+  lightbox.removeAttribute('hidden');
+  lightbox.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('lightbox-open');
+  lightboxClose.focus();
+};
+
+var closeLightbox = function() {
+  if (lightbox.hasAttribute('hidden')) return;
+  lightbox.setAttribute('hidden', '');
+  lightbox.setAttribute('aria-hidden', 'true');
+  lightboxImage.removeAttribute('src');
+  lightboxImage.alt = '';
+  lightboxCaption.textContent = '';
+  lightboxNote.innerHTML = '';
+  lightboxMeta.hidden = true;
+  document.body.classList.remove('lightbox-open');
+  if (activeImage) activeImage.focus();
+  activeImage = null;
+};
+
+Array.from(document.querySelectorAll('.paper-figure img')).forEach(function(img) {
+  img.classList.add('zoomable-image');
+  img.tabIndex = 0;
+  img.setAttribute('role', 'button');
+  img.setAttribute('aria-label', (img.alt || '配图') + '，点击放大查看');
+  img.addEventListener('click', function() { openLightbox(img); });
+  img.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openLightbox(img);
+    }
+  });
+});
+
+lightbox.addEventListener('click', closeLightbox);
+lightboxImage.addEventListener('click', function(event) {
+  event.stopPropagation();
+});
+lightboxMeta.addEventListener('click', function(event) {
+  event.stopPropagation();
+});
+lightboxClose.addEventListener('click', function(event) {
+  event.stopPropagation();
+  closeLightbox();
+});
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') closeLightbox();
+});
+</script>
+</body>
+</html>
