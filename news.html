@@ -225,6 +225,12 @@
     color: var(--vermillion);
   }
 
+  .source-pill.source-ai-voices {
+    border-color: rgba(110, 79, 211, 0.18);
+    background: rgba(110, 79, 211, 0.08);
+    color: #6E4FD3;
+  }
+
   .source-pill.source-paper {
     border-color: rgba(27, 63, 139, 0.18);
     background: rgba(27, 63, 139, 0.06);
@@ -404,12 +410,14 @@
   const ARCHIVE_URL = "data/news/archive.json";
   const PAGE_PREFIX = "data/news/pages/";
   const FILTER_ALL = "all";
+  const FILTER_AI_VOICES = "voices";
   const FILTER_AI_INDIE = "aiindie";
   const FILTER_ART = "art";
+  const SOURCE_TYPE_AI_VOICES = "x_ai_voices";
   const SOURCE_TYPE_AI_INDIE = "aiindie";
   const SOURCE_TYPE_ARTIST = "artist";
   const FILTER_PAPER = "paper";
-  const VALID_FILTERS = new Set([FILTER_ALL, FILTER_AI_INDIE, FILTER_ART, FILTER_PAPER]);
+  const VALID_FILTERS = new Set([FILTER_ALL, FILTER_AI_VOICES, FILTER_AI_INDIE, FILTER_ART, FILTER_PAPER]);
 
   const noticeEl = document.getElementById("notice");
   const filtersEl = document.getElementById("filters");
@@ -469,8 +477,10 @@
 
     const start = (currentPage - 1) * pageSize;
     const items = filteredItems.slice(start, start + pageSize);
-    const emptyMessage = currentFilter === FILTER_AI_INDIE
-      ? "No AI Indie items yet."
+    const emptyMessage = currentFilter === FILTER_AI_VOICES
+      ? "No Voices items yet."
+      : currentFilter === FILTER_AI_INDIE
+      ? "No Builders items yet."
       : currentFilter === FILTER_ART
         ? "No art items yet."
         : "No paper items yet.";
@@ -518,15 +528,19 @@
 
   function renderItem(item) {
     const itemType = getItemType(item);
-    const pillClass = itemType === FILTER_AI_INDIE
+    const pillClass = itemType === FILTER_AI_VOICES
+      ? "source-pill source-ai-voices"
+      : itemType === FILTER_AI_INDIE
       ? "source-pill source-aiindie"
       : itemType === FILTER_ART
       ? "source-pill source-art"
       : itemType === FILTER_PAPER
         ? "source-pill source-paper"
         : "";
-    const pillLabel = itemType === FILTER_AI_INDIE
-      ? "AI Indie"
+    const pillLabel = itemType === FILTER_AI_VOICES
+      ? "Voices"
+      : itemType === FILTER_AI_INDIE
+      ? "Builders"
       : itemType === FILTER_ART
       ? "Art"
       : itemType === FILTER_PAPER
@@ -558,7 +572,8 @@
   function renderFilters(currentFilter) {
     const filters = [
       { id: FILTER_ALL, label: "All" },
-      { id: FILTER_AI_INDIE, label: "AI Indie" },
+      { id: FILTER_AI_VOICES, label: "Voices" },
+      { id: FILTER_AI_INDIE, label: "Builders" },
       { id: FILTER_ART, label: "Art" },
       { id: FILTER_PAPER, label: "Paper" },
     ];
@@ -641,6 +656,9 @@
   }
 
   function getItemType(item) {
+    if (normalizeText(item && item.source_type) === SOURCE_TYPE_AI_VOICES) {
+      return FILTER_AI_VOICES;
+    }
     if (normalizeText(item && item.source_type) === SOURCE_TYPE_AI_INDIE) {
       return FILTER_AI_INDIE;
     }

@@ -36,6 +36,12 @@ const X_AI_SIGNALS_BATCH_SIZE = 8;
 const X_AI_SIGNALS_BATCH_LIMIT = 8;
 const X_AI_SIGNALS_MAX_CONCURRENCY = 6;
 const X_AI_SIGNALS_MAX_ITEMS = 40;
+const X_AI_VOICES_LOOKBACK_HOURS = 14;
+const X_AI_VOICES_REFRESH_HOURS = 12;
+const X_AI_VOICES_BATCH_SIZE = 8;
+const X_AI_VOICES_BATCH_LIMIT = 8;
+const X_AI_VOICES_MAX_CONCURRENCY = 3;
+const X_AI_VOICES_MAX_ITEMS = 30;
 const AIINDIE_LOOKBACK_HOURS = 14;
 const AIINDIE_REFRESH_HOURS = 12;
 const AIINDIE_BATCH_SIZE = 8;
@@ -247,11 +253,6 @@ const X_AI_SIGNALS_HANDLES = [
   "ID_AA_Carmack",
   "demishassabis",
   "fchollet",
-  "rowancheung",
-  "OfficialLoganK",
-  "mattshumer_",
-  "alliekmiller",
-  "GaryMarcus",
   "waitin4agi_",
   "jeremyphoward",
   "KirkDBorne",
@@ -275,11 +276,9 @@ const X_AI_SIGNALS_HANDLES = [
   "MakadiaHarsh",
   "naval",
   "paulg",
-  "gregisenberg",
   "vasuman",
   "0xROAS",
   "MengTo",
-  "emollick",
   "kloss_xyz",
   "dotey",
   "charliebilello",
@@ -287,8 +286,6 @@ const X_AI_SIGNALS_HANDLES = [
   "TurnerNovak",
   "AswathDamodaran",
   "MacroAlf",
-  "simonw",
-  "swyx",
   "hwchase17",
   "jxnlco",
   "ggerganov",
@@ -299,8 +296,30 @@ const X_AI_SIGNALS_HANDLES = [
   "steventey",
   "RestOfWorld",
   "edzitron",
+  "OfficialLoganK",
+  "mattshumer_",
+];
+
+const X_AI_VOICES_HANDLES = [
+  "simonw",
+  "swyx",
+  "emollick",
+  "rowancheung",
+  "OfficialLoganK",
+  "mattshumer_",
+  "alliekmiller",
+  "GaryMarcus",
+  "gregisenberg",
   "benthompson",
   "lennysan",
+  "dwarkesh_sp",
+  "Kantrowitz",
+  "bentossell",
+  "danshipper",
+  "GergelyOrosz",
+  "HarryStebbings",
+  "lessin",
+  "Om",
 ];
 
 const AIINDIE_HANDLES = [
@@ -396,6 +415,13 @@ const SOURCES = [
     type: "x_ai_signals",
     refreshHours: X_AI_SIGNALS_REFRESH_HOURS,
     fetch: fetchXAiSignalsSource,
+  },
+  {
+    id: "x_ai_voices",
+    name: "X AI Voices",
+    type: "x_ai_voices",
+    refreshHours: X_AI_VOICES_REFRESH_HOURS,
+    fetch: fetchXAiVoicesSource,
   },
   {
     id: "aiindie",
@@ -735,6 +761,33 @@ async function fetchXAiSignalsSource({ apiKey, now }) {
   };
 }
 
+async function fetchXAiVoicesSource({ apiKey, now }) {
+  const window = getHandleSourceTimeWindow(now, X_AI_VOICES_LOOKBACK_HOURS);
+  const handles = uniqueHandles(X_AI_VOICES_HANDLES);
+  const batches = batchHandles(handles, X_AI_VOICES_BATCH_SIZE);
+  const { batchResults, failedBatches } = await runHandleBatchesWithConcurrency({
+    batches,
+    window,
+    apiKey,
+    systemPrompt: X_AI_VOICES_SYSTEM_PROMPT,
+    buildBatchPrompt: buildXAiVoicesBatchPrompt,
+    maxConcurrency: X_AI_VOICES_MAX_CONCURRENCY,
+    logLabel: "X AI Voices",
+  });
+  if (!batchResults.length && failedBatches.length) {
+    throw new Error(`All X AI Voices batches failed. ${failedBatches.join(" | ")}`);
+  }
+  const posts = buildXAiVoicesPosts(batchResults, window);
+  const items = posts.map((post) => mapXAiVoicesPostToFeed(post)).filter(Boolean);
+
+  return {
+    updatedAt: formatHktIso(window.end),
+    windowStart: formatIsoUtc(window.start),
+    windowEnd: formatIsoUtc(window.end),
+    items,
+  };
+}
+
 async function fetchAiIndieSource({ apiKey, now }) {
   const window = getHandleSourceTimeWindow(now, AIINDIE_LOOKBACK_HOURS);
   const handles = uniqueHandles(AIINDIE_HANDLES);
@@ -822,6 +875,9 @@ const DAILY_DIGEST_SYSTEM_PROMPT =
   "You are a rigorous curator of high-value daily AI digests. Work only from the provided source excerpts, prefer original links when available, and return strict JSON only.";
 
 const X_AI_SIGNALS_SYSTEM_PROMPT = `你是中文 X（Twitter）高价值 AI 信号挖掘专家，服务对象是 AI 创业者、独立开发者、SaaS 玩家、AI 出海与产品增长从业者。你的目标不是找热闹，而是找真正值得跟进的实战信号：产品进展、增长方法、工具链、工作流、商业机会、行业判断、执行细节与风险提示。同时关注影响 AI 创业决策的基础设施变化：算力经济学、模型部署成本、开发框架迭代、搜索与分发平台规则变动、金融市场与 AI 投资信号、监管与政策动向。判断标准是信息密度、原创性、可执行性与前瞻性，不唯热度。`;
+
+const X_AI_VOICES_SYSTEM_PROMPT =
+  "You are a rigorous curator of high-signal AI voices on X. Serve founders, builders, and tech operators who want signal from newsletter writers, podcasters, bloggers, and independent commentators. Prefer original commentary, product analysis, research interpretation, strategic framing, workflow insight, and market observations. Ignore reposts, generic hype, engagement bait, and low-context promotion. Use x_search only. Return strict JSON only.";
 
 const AIINDIE_SYSTEM_PROMPT =
   "You are a rigorous curator of AI indie hacker signals on X. Serve a builder who wants to become a top AI indie hacker. Prefer concrete execution details, distribution insight, monetization learning, workflow leverage, and original operator judgment. Ignore low-information hype, memes, reposts, and vague motivation. Use x_search only. Return strict JSON only.";
@@ -992,6 +1048,61 @@ JSON schema:
   ],
   "insights": ["本批次 3-5 条最重要趋势/机会/风险"],
   "low_value": ["忽略的账号或帖子原因（可选）"]
+}`;
+}
+
+function buildXAiVoicesBatchPrompt(batch, window) {
+  const since = formatSearchUtc(window.start);
+  const until = formatSearchUtc(window.end);
+  const handles = batch.map((handle) => `@${handle}`).join(", ");
+
+  return `You are curating a compact AI voices feed from X.
+
+Time window:
+- window_start: ${formatIsoUtc(window.start)}
+- window_end: ${formatIsoUtc(window.end)}
+- since: ${since}
+- until: ${until}
+
+Accounts for this batch only:
+${handles}
+
+Execution rules:
+1. Use x_search only.
+2. Query only these accounts with from:user, since:, until:, mode:Latest, and limit:${X_AI_VOICES_BATCH_LIMIT}.
+3. Process only posts that are within the time window. Exclude posts with unclear timing.
+4. Prioritize original commentary, research interpretation, product or market analysis, workflow lessons, strategic framing, non-obvious interview takeaways, and high-context threads.
+5. Prefer posts where the author adds synthesis or judgment, not just a bare link or announcement.
+6. Downrank reposts, generic promo, low-context episode drops, memes, engagement bait, and empty hype.
+7. Keep only posts that help a founder, builder, or operator think better about AI, technology, startups, media, or markets.
+8. If there is no strong signal, return an empty high_value_posts array.
+
+Output rules:
+- Return strict JSON only. No markdown. No explanation.
+- Keep title in the original language when helpful.
+- Write value_summary, why_valuable, and actionable_advice in Simplified Chinese.
+- published_at must be ISO 8601 with timezone whenever available from the source.
+- signal_score must be a number from 0 to 10.
+- signal_score should weight originality, interpretation, density, and decision value over virality.
+- domain should be one or more of: ai, startup, strategy, workflow, product, business, research, media, infra, market, commentary, podcast, newsletter
+
+JSON schema:
+{
+  "high_value_posts": [
+    {
+      "handle": "@voice",
+      "post_link": "https://x.com/...",
+      "published_at": "ISO 8601 with timezone",
+      "title": "One-line title",
+      "value_summary": "3-5 sentence Simplified Chinese summary",
+      "why_valuable": "Why this matters for a founder, builder, or operator",
+      "domain": "ai/strategy/workflow",
+      "actionable_advice": "What to read, watch, test, or follow next",
+      "signal_score": 0
+    }
+  ],
+  "insights": ["Optional insight"],
+  "low_value": ["Optional reason"]
 }`;
 }
 
@@ -1189,6 +1300,14 @@ function buildXAiSignalsPosts(batchResults, window) {
   });
 }
 
+function buildXAiVoicesPosts(batchResults, window) {
+  return buildScoredHandlePosts(batchResults, window, {
+    maxItems: X_AI_VOICES_MAX_ITEMS,
+    normalizePost: normalizeXAiVoicesPost,
+    scorePost: scoreXAiVoicesPost,
+  });
+}
+
 function buildAiIndiePosts(batchResults, window) {
   return buildScoredHandlePosts(batchResults, window, {
     maxItems: AIINDIE_MAX_ITEMS,
@@ -1232,6 +1351,10 @@ function normalizeArtistPost(item, window) {
 }
 
 function normalizeXAiSignalsPost(item, window) {
+  return normalizeScoredHandlePost(item, window);
+}
+
+function normalizeXAiVoicesPost(item, window) {
   return normalizeScoredHandlePost(item, window);
 }
 
@@ -1285,6 +1408,10 @@ function scoreXAiSignalsPost(post) {
   return scoreScoredHandlePost(post);
 }
 
+function scoreXAiVoicesPost(post) {
+  return scoreScoredHandlePost(post);
+}
+
 function scoreAiIndiePost(post) {
   return scoreScoredHandlePost(post);
 }
@@ -1314,6 +1441,14 @@ function mapXAiSignalsPostToFeed(post) {
     sourceId: "x_ai_signals",
     sourceName: "X AI Signals",
     sourceType: "x_ai_signals",
+  });
+}
+
+function mapXAiVoicesPostToFeed(post) {
+  return mapHandlePostToFeed(post, {
+    sourceId: "x_ai_voices",
+    sourceName: "X AI Voices",
+    sourceType: "x_ai_voices",
   });
 }
 
@@ -1497,6 +1632,9 @@ function shouldReplaceFeedItem(candidate, existing) {
 function sourceMergePriority(item) {
   const sourceType = normalizeText(item?.source_type).toLowerCase();
   if (sourceType === "aiindie") {
+    return 2;
+  }
+  if (sourceType === "x_ai_voices") {
     return 1;
   }
   return 0;
