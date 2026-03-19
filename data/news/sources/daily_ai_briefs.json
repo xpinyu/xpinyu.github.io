@@ -3,226 +3,334 @@
     "id": "daily_ai_briefs",
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
-    "refresh_hours": 12,
-    "updated_at": "2026-03-18T07:26:21.769+08:00",
-    "item_count": 8,
-    "window_start": "2026-03-17T00:00:00.000Z",
-    "window_end": "2026-03-17T23:26:21.769Z"
+    "refresh_hours": 24,
+    "updated_at": "2026-03-19T09:45:12.311+08:00",
+    "item_count": 12,
+    "window_start": "2026-03-18T00:00:00.000Z",
+    "window_end": "2026-03-19T01:45:12.311Z"
   },
   "items": [
     {
-      "id": "396fcc7d981afd0b",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "taesiri et al.",
-      "title": "EvoClaw: Evaluating AI Agents on Continuous Software Evolution",
-      "blurb": "EvoClaw基准揭示AI代理在连续软件演化中的痛点，是评估长期代理能力的必备工具。",
-      "link": "https://evo-claw.com/",
-      "canonical_link": "https://evo-claw.com/",
-      "published_at": "2026-03-13T07:20:40.000+08:00",
-      "score": 9,
-      "tags": [
-        "Hugging Face Papers",
-        "benchmark"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-17",
-      "source_signal": "Featured on HF daily papers; new benchmark exposing agent weaknesses in long-term software maintenance.",
-      "recommendation": "EvoClaw基准揭示AI代理在连续软件演化中的痛点，是评估长期代理能力的必备工具。",
-      "summary": "EvoClaw引入DeepCommit管道，从提交日志重建里程碑DAG，用于连续软件演化基准测试。12个前沿模型在连续任务中性能从80%降至38%，暴露维护和错误传播问题。适用于动态环境中的代理部署。",
-      "takeaways": [
-        "连续任务性能急剧下降",
-        "强调长期维护挑战"
-      ],
-      "topic": "benchmark"
-    },
-    {
-      "id": "13b1f908226f010f",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "gsd-build",
-      "title": "Get Shit Done: A Meta-Prompting, Context Engineering and Spec-Driven Dev System",
-      "blurb": "这是一个基于元提示和规范驱动的AI开发系统，能大幅提升编码效率，推荐给AI代理爱好者。",
-      "link": "https://github.com/gsd-build/get-shit-done",
-      "canonical_link": "https://github.com/gsd-build/get-shit-done",
-      "published_at": "2026-03-17T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "Hacker News",
-        "agent"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Top HN item with 136 points and 78 comments; innovative AI agent for dev workflows using meta-prompting.",
-      "recommendation": "这是一个基于元提示和规范驱动的AI开发系统，能大幅提升编码效率，推荐给AI代理爱好者。",
-      "summary": "Get Shit Done 通过元提示工程、上下文管理和规范驱动，帮助AI代理高效完成开发任务。GitHub仓库开源，包含完整系统。HN讨论热烈，突出其在实际DevOps中的潜力。",
-      "takeaways": [
-        "元提示优化代理性能",
-        "支持复杂上下文工程"
-      ],
-      "topic": "agent"
-    },
-    {
-      "id": "54895d4961d64e13",
+      "id": "e9b0087f83ab2d1f",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Mistral AI",
-      "title": "Introducing Mistral Small 4",
-      "blurb": "Mistral Small 4整合多模态和推理能力，开源高效，适合部署在边缘设备。",
-      "link": "https://mistral.ai/news/mistral-small-4",
-      "canonical_link": "https://mistral.ai/news/mistral-small-4",
-      "published_at": "2026-03-17T20:00:00.000+08:00",
-      "score": 9,
+      "author": "OpenAI",
+      "title": "GPT‑5.4 Mini and Nano",
+      "blurb": "OpenAI推出更小、更快的GPT-5.4 mini和nano模型，适用于高吞吐任务，值得开发者关注以优化成本。",
+      "link": "https://openai.com/index/introducing-gpt-5-4-mini-and-nano",
+      "canonical_link": "https://openai.com/index/introducing-gpt-5-4-mini-and-nano",
+      "published_at": "2026-03-18T20:00:00.000+08:00",
+      "score": 10,
       "tags": [
         "TLDR AI",
         "model-release"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-17",
-      "source_signal": "Featured in TLDR AI engineering section; new MoE model release with multimodal capabilities.",
-      "recommendation": "Mistral Small 4整合多模态和推理能力，开源高效，适合部署在边缘设备。",
-      "summary": "Mistral Small 4采用119B参数MoE架构，支持文本图像输入，可配置推理努力。融合Magistral、Pixtral和Devstral能力，在短输出中实现高性能。开源，支持vLLM、llama.cpp等平台。",
+      "source_page": "https://tldr.tech/ai/2026-03-18",
+      "source_signal": "Featured in TLDR AI headlines as major OpenAI model release for high-volume workloads, highlighting speed and cost improvements.",
+      "recommendation": "OpenAI推出更小、更快的GPT-5.4 mini和nano模型，适用于高吞吐任务，值得开发者关注以优化成本。",
+      "summary": "GPT-5.4 mini在多项基准上接近更大模型GPT-5.4，同时速度更快成本更低；nano针对分类、提取等轻量任务。新模型显著提升小型模型性能，推动边缘部署和大规模应用。",
       "takeaways": [
-        "多模态统一模型",
-        "高效推理缩放"
+        "mini模型在基准上大幅超越前代GPT-5 mini",
+        "nano适用于资源受限场景，提升生产力工具效率"
       ],
       "topic": "model-release"
     },
     {
-      "id": "b641883842038fa6",
+      "id": "0cd42e0fe5c85bcf",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "NVIDIA",
-      "title": "OpenShell",
-      "blurb": "OpenShell提供安全的AI代理运行时，YAML策略治理，保护数据和基础设施。",
-      "link": "https://github.com/NVIDIA/OpenShell",
-      "canonical_link": "https://github.com/NVIDIA/OpenShell",
-      "published_at": "2026-03-17T20:00:00.000+08:00",
+      "author": "Harmonic",
+      "title": "Aristotle Agent",
+      "blurb": "Aristotle Agent是自主数学代理，可独立证明难题长达24小时，现免费开放Web/CLI/API。",
+      "link": "https://threadreaderapp.com/thread/2034028065513451594.html",
+      "canonical_link": "https://threadreaderapp.com/thread/2034028065513451594.html",
+      "published_at": "2026-03-18T20:00:00.000+08:00",
       "score": 9,
       "tags": [
         "TLDR AI",
-        "infra"
+        "agent"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-17",
-      "source_signal": "NVIDIA GTC launch in TLDR; safe runtime for autonomous AI agents with sandboxing.",
-      "recommendation": "OpenShell提供安全的AI代理运行时，YAML策略治理，保护数据和基础设施。",
-      "summary": "OpenShell是NVIDIA的私有代理运行时，支持沙箱执行，防止未授权访问和数据外泄。包含集群调试等技能，支持多租户企业部署。GTC发布，强调安全自主代理。",
+      "source_page": "https://tldr.tech/ai/2026-03-18",
+      "source_signal": "TLDR AI headlines; autonomous mathematician agent solving complex research problems with repo-quality code.",
+      "recommendation": "Aristotle Agent是自主数学代理，可独立证明难题长达24小时，现免费开放Web/CLI/API。",
+      "summary": "代理完全自主，处理世界最难数学问题并生成高质量代码。现已上线，支持无干预长时运行。",
       "takeaways": [
-        "声明式YAML策略",
-        "沙箱保护代理执行"
+        "可自主证明/形式化数学问题",
+        "输出repo级代码，支持多平台访问"
       ],
-      "topic": "infra"
+      "topic": "agent"
     },
     {
-      "id": "c468a324b4220415",
+      "id": "816a0ce3c6798cfd",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "NVIDIA",
-      "title": "The First Healthcare Robotics Dataset and Foundational Physical AI Models for Healthcare Robotics",
-      "blurb": "Open-H-Embodiment数据集推动医疗机器人AI自主性，是物理AI基础模型的关键资源。",
-      "link": "https://huggingface.co/blog/nvidia/physical-ai-for-healthcare-robotics",
-      "canonical_link": "https://huggingface.co/blog/nvidia/physical-ai-for-healthcare-robotics",
-      "published_at": "2026-03-17T20:00:00.000+08:00",
-      "score": 8,
+      "author": "Mistral",
+      "title": "Mistral Unveiled Forge",
+      "blurb": "Mistral Forge为企业提供从零训练自定义模型的平台，减少对第三方依赖，适合隐私敏感场景。",
+      "link": "https://mistral.ai/news/forge",
+      "canonical_link": "https://mistral.ai/news/forge",
+      "published_at": "2026-03-18T20:00:00.000+08:00",
+      "score": 9,
       "tags": [
         "TLDR AI",
-        "data"
+        "product"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-17",
-      "source_signal": "Quick link in TLDR; new dataset for healthcare robotics AI training.",
-      "recommendation": "Open-H-Embodiment数据集推动医疗机器人AI自主性，是物理AI基础模型的关键资源。",
-      "summary": "Open-H-Embodiment是社区驱动的医疗机器人数据集，用于训练和评估医疗应用的AI自主性和世界基础模型。支持药物发现和模拟等场景。NVIDIA GTC相关发布。",
+      "source_page": "https://tldr.tech/ai/2026-03-18",
+      "source_signal": "TLDR AI launch headline; enterprise platform for custom AI training from scratch, positioned against fine-tuning/RAG.",
+      "recommendation": "Mistral Forge为企业提供从零训练自定义模型的平台，减少对第三方依赖，适合隐私敏感场景。",
+      "summary": "Forge支持领域特定训练、强化学习，帮助政府和企业构建专属模型。强调控制力和独立性，避免fine-tuning局限。",
       "takeaways": [
-        "首个医疗机器人数据集",
-        "支持物理AI基础模型"
+        "支持从头训练自定义模型",
+        "集成RL和领域适应，提升企业AI自主性"
       ],
-      "topic": "data"
+      "topic": "product"
     },
     {
-      "id": "3f54f9f058175ab1",
+      "id": "2002210c41a6330b",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "Unsloth",
-      "title": "Unsloth Studio",
-      "blurb": "Unsloth Studio 提供高效的模型微调和部署工具，值得开发者尝试以加速AI工作流。",
-      "link": "https://unsloth.ai/docs/new/studio",
-      "canonical_link": "https://unsloth.ai/docs/new/studio",
-      "published_at": "2026-03-17T20:00:00.000+08:00",
+      "author": "IsolatedOctopi",
+      "title": "Nvidia greenboost: transparently extend GPU VRAM using system RAM/NVMe",
+      "blurb": "透明扩展GPU VRAM至系统RAM/NVMe，降低大模型训练硬件门槛。",
+      "link": "https://gitlab.com/IsolatedOctopi/nvidia_greenboost",
+      "canonical_link": "https://gitlab.com/IsolatedOctopi/nvidia_greenboost",
+      "published_at": "2026-03-19T05:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "infra"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN with 137 points; infra tool to extend GPU memory for AI training/inference.",
+      "recommendation": "透明扩展GPU VRAM至系统RAM/NVMe，降低大模型训练硬件门槛。",
+      "summary": "Greenboost无缝使用系统内存扩展GPU VRAM，支持AI工作负载。",
+      "takeaways": [
+        "无需改代码扩展内存",
+        "适用于NVIDIA GPU大模型运行"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "0950788267abd30f",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "alainnothere",
+      "title": "Show HN: Duplicate 3 layers in a 24B LLM, logical deduction .22→.76. No training",
+      "blurb": "无训练复制LLM电路，提升逻辑推理性能，从0.22到0.76，展示模型内部机制挖掘潜力。",
+      "link": "https://github.com/alainnothere/llm-circuit-finder",
+      "canonical_link": "https://github.com/alainnothere/llm-circuit-finder",
+      "published_at": "2026-03-19T08:00:00.000+08:00",
       "score": 8,
       "tags": [
         "Hacker News",
         "tooling"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Surfaced on HN frontpage with 104 points and 27 comments; high-value AI tooling for efficient model training/fine-tuning.",
-      "recommendation": "Unsloth Studio 提供高效的模型微调和部署工具，值得开发者尝试以加速AI工作流。",
-      "summary": "Unsloth Studio 是 Unsloth 推出的新工具，支持快速模型训练和推理优化。适用于各种LLM微调场景，显著降低计算成本。HN社区反馈积极，显示其实用性。",
+      "source_signal": "HN Show HN with 53 points; tool for discovering and duplicating LLM circuits to boost deduction without training.",
+      "recommendation": "无训练复制LLM电路，提升逻辑推理性能，从0.22到0.76，展示模型内部机制挖掘潜力。",
+      "summary": "在24B LLM中复制3层电路，实现逻辑推理大幅提升。无需额外训练，直接操作模型内部。",
       "takeaways": [
-        "支持GPU加速微调，速度提升显著",
-        "集成Studio界面，便于可视化操作"
+        "电路复制提升推理准确率3倍",
+        "适用于大模型机制研究和优化"
       ],
       "topic": "tooling"
     },
     {
-      "id": "bd56a3917a833e4d",
+      "id": "52897a4a400d570a",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Junyao Hu et al.",
-      "title": "Garments2Look: A Multi-Reference Dataset for High-Fidelity Outfit-Level Virtual Try-On with Clothing and Accessories",
-      "blurb": "Garments2Look数据集填补服装虚拟试穿的多件套装空白，推动时尚AI应用发展。",
-      "link": "https://artmesciencelab.github.io/Garments2Look",
-      "canonical_link": "https://artmesciencelab.github.io/Garments2Look",
-      "published_at": "2026-03-15T07:30:32.000+08:00",
+      "platform": "Hacker News",
+      "author": "NVIDIA",
+      "title": "Nvidia NemoClaw",
+      "blurb": "NVIDIA开源NemoClaw，可能为NeMo框架扩展，支持爪式抓取或高级代理任务。",
+      "link": "https://github.com/NVIDIA/NemoClaw",
+      "canonical_link": "https://github.com/NVIDIA/NemoClaw",
+      "published_at": "2026-03-19T00:00:00.000+08:00",
       "score": 8,
       "tags": [
-        "Hugging Face Papers",
-        "data"
+        "Hacker News",
+        "tooling"
       ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-17",
-      "source_signal": "Daily HF paper with project page and GitHub; first large-scale dataset for outfit-level VTON.",
-      "recommendation": "Garments2Look数据集填补服装虚拟试穿的多件套装空白，推动时尚AI应用发展。",
-      "summary": "Garments2Look包含80K多件服装到完整造型对，支持40大类300+子类。每个对包括3-12件参考图像、模特图和文本标注。通过合成管道确保真实性和多样性。基准测试显示现有VTON方法在分层和风格上挣扎。",
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN top with 235 points, 188 comments; Nvidia's new repo likely for advanced AI tooling/agents.",
+      "recommendation": "NVIDIA开源NemoClaw，可能为NeMo框架扩展，支持爪式抓取或高级代理任务。",
+      "summary": "NemoClaw是NVIDIA新工具，获高讨论热度，聚焦AI应用如机器人或多模态交互。",
       "takeaways": [
-        "80K多模态对，平均4.48件/套",
-        "暴露当前方法局限"
+        "NVIDIA官方repo，高社区热度",
+        "扩展NeMo生态，可能涉代理/机器人"
       ],
-      "topic": "data"
+      "topic": "tooling"
     },
     {
-      "id": "d68ff90808904c08",
+      "id": "541934660dcb0452",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Mistral AI",
-      "title": "Leanstral",
-      "blurb": "Leanstral针对形式化验证的编码代理，开源权重，适用于数学证明任务。",
-      "link": "https://mistral.ai/news/leanstral",
-      "canonical_link": "https://mistral.ai/news/leanstral",
-      "published_at": "2026-03-17T20:00:00.000+08:00",
+      "author": "Cursor",
+      "title": "Cursor Trains Models to Self‑Summarize Context",
+      "blurb": "Cursor Composer自总结上下文，扩展长编码会话内存。",
+      "link": "https://cursor.com/blog/self-summarization",
+      "canonical_link": "https://cursor.com/blog/self-summarization",
+      "published_at": "2026-03-18T20:00:00.000+08:00",
       "score": 8,
       "tags": [
         "TLDR AI",
+        "tooling"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-18",
+      "source_signal": "TLDR engineering highlight; Cursor's Composer learns context summarization for long sessions.",
+      "recommendation": "Cursor Composer自总结上下文，扩展长编码会话内存。",
+      "summary": "训练模型压缩历史步骤，提升多步编程性能。",
+      "takeaways": [
+        "自总结减少token消耗",
+        "改善长上下文任务"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "5e3adf44afab9973",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "MiroMind AI",
+      "title": "MiroThinker-1.7 & H1: Towards Heavy-Duty Research Agents via Verification",
+      "blurb": "MiroThinker推进重型研究代理，通过验证提升可靠性。",
+      "link": "https://arxiv.org/abs/2603.15726",
+      "canonical_link": "https://arxiv.org/abs/2603.15726",
+      "published_at": "2026-03-18T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
         "agent"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-17",
-      "source_signal": "TLDR AI highlight; open-source coding agent for Lean 4 proof assistant.",
-      "recommendation": "Leanstral针对形式化验证的编码代理，开源权重，适用于数学证明任务。",
-      "summary": "Leanstral是为Lean 4设计的开源编码代理，训练于真实形式仓库，高效率操作。Apache 2.0许可，支持Mistral vibe代理模式和免费API。提升形式数学对象的处理能力。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-18",
+      "source_signal": "Top HF daily paper; advances heavy-duty research agents with verification.",
+      "recommendation": "MiroThinker推进重型研究代理，通过验证提升可靠性。",
+      "summary": "引入验证机制构建robust研究代理，支持复杂任务。",
       "takeaways": [
-        "Lean 4专用代理",
-        "高效形式仓库操作"
+        "验证驱动代理训练",
+        "适用于高负载研究"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "a702a8df17a1ff15",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "Beihang University",
+      "title": "InCoder-32B: Code Foundation Model for Industrial Scenarios",
+      "blurb": "InCoder-32B针对工业场景的代码基础模型，提升编程生产力。",
+      "link": "https://arxiv.org/abs/2603.16790",
+      "canonical_link": "https://arxiv.org/abs/2603.16790",
+      "published_at": "2026-03-18T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "Hugging Face Papers",
+        "model-release"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-18",
+      "source_signal": "High-discussed HF paper; 32B code model for industrial use.",
+      "recommendation": "InCoder-32B针对工业场景的代码基础模型，提升编程生产力。",
+      "summary": "32B参数代码模型，优化工业开发任务。",
+      "takeaways": [
+        "工业级代码生成",
+        "高性能基础模型"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "56095aa1e4783843",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "mlbenchmarks.org",
+      "title": "Book: The Emerging Science of Machine Learning Benchmarks",
+      "blurb": "机器学习基准新兴科学书籍，系统剖析评估方法演进。",
+      "link": "https://mlbenchmarks.org/00-preface.html",
+      "canonical_link": "https://mlbenchmarks.org/00-preface.html",
+      "published_at": "2026-03-19T02:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "benchmark"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN post with 86 points; comprehensive book on ML benchmark science.",
+      "recommendation": "机器学习基准新兴科学书籍，系统剖析评估方法演进。",
+      "summary": "探讨ML基准的科学基础，推动更可靠模型评估。",
+      "takeaways": [
+        "基准设计原理",
+        "提升评估标准化"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "76de2fd8636dea22",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "BAIDU",
+      "title": "Qianfan-OCR: A Unified End-to-End Model for Document Intelligence",
+      "blurb": "百度千帆OCR统一端到端文档智能模型，简化企业文档处理。",
+      "link": "https://arxiv.org/abs/2603.13398",
+      "canonical_link": "https://arxiv.org/abs/2603.13398",
+      "published_at": "2026-03-18T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "Hugging Face Papers",
+        "model-release"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-18",
+      "source_signal": "Popular HF paper from Baidu; unified OCR for docs.",
+      "recommendation": "百度千帆OCR统一端到端文档智能模型，简化企业文档处理。",
+      "summary": "端到端OCR模型，支持复杂文档理解。",
+      "takeaways": [
+        "统一文档AI管道",
+        "高准确率OCR"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "b8b2505e84df81c0",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "iliazintchenko",
+      "title": "Autoresearch for SAT Solvers",
+      "blurb": "代理式自动研究SAT求解器，推动自动化定理证明和优化。",
+      "link": "https://github.com/iliazintchenko/agent-sat",
+      "canonical_link": "https://github.com/iliazintchenko/agent-sat",
+      "published_at": "2026-03-19T09:00:00.000+08:00",
+      "score": 6,
+      "tags": [
+        "Hacker News",
+        "agent"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Recent HN post; agentic autoresearch tool for SAT solving.",
+      "recommendation": "代理式自动研究SAT求解器，推动自动化定理证明和优化。",
+      "summary": "使用代理进行SAT求解器的自动研究，提升求解效率。",
+      "takeaways": [
+        "代理驱动SAT研究",
+        "开源工具，便于扩展"
       ],
       "topic": "agent"
     }
