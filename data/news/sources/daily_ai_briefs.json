@@ -4,335 +4,335 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-03-19T09:45:12.311+08:00",
+    "updated_at": "2026-03-20T12:08:32.505+08:00",
     "item_count": 12,
-    "window_start": "2026-03-18T00:00:00.000Z",
-    "window_end": "2026-03-19T01:45:12.311Z"
+    "window_start": "2026-03-19T00:00:00.000Z",
+    "window_end": "2026-03-20T04:08:32.505Z"
   },
   "items": [
     {
-      "id": "e9b0087f83ab2d1f",
+      "id": "8cac82b1749f6819",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "OpenAI",
-      "title": "GPT‑5.4 Mini and Nano",
-      "blurb": "OpenAI推出更小、更快的GPT-5.4 mini和nano模型，适用于高吞吐任务，值得开发者关注以优化成本。",
-      "link": "https://openai.com/index/introducing-gpt-5-4-mini-and-nano",
-      "canonical_link": "https://openai.com/index/introducing-gpt-5-4-mini-and-nano",
-      "published_at": "2026-03-18T20:00:00.000+08:00",
+      "platform": "Hacker News",
+      "author": "astral.sh",
+      "title": "Astral to Join OpenAI",
+      "blurb": "Astral 加入 OpenAI 是 AI 基础设施与工具链深度融合的重大信号，值得开发者关注其对 Rust 生态的影响。",
+      "link": "https://astral.sh/blog/openai",
+      "canonical_link": "https://astral.sh/blog/openai",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
       "score": 10,
       "tags": [
+        "Hacker News",
+        "business"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Top story on HN with 1271 points and 778 comments, signaling major AI business consolidation as Astral's Rust tooling integrates with OpenAI.",
+      "recommendation": "Astral 加入 OpenAI 是 AI 基础设施与工具链深度融合的重大信号，值得开发者关注其对 Rust 生态的影响。",
+      "summary": "Astral 团队宣布加入 OpenAI，将其高性能 Rust 工具如 Ruff 带入 OpenAI 生态。这次收购强化了 OpenAI 在编程工具和 AI 开发效率方面的布局。社区热议其对开源工具未来的影响。",
+      "takeaways": [
+        "Astral 的 Rust 工具将增强 OpenAI 的开发体验",
+        "标志着 OpenAI 在基础设施领域的扩张"
+      ],
+      "topic": "business"
+    },
+    {
+      "id": "3cf835c8041f1df3",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "VentureBeat",
+      "title": "Xiaomi stuns with new MiMo-V2-Pro LLM nearing GPT-5.2, Opus 4.6 performance at a fraction of the cost",
+      "blurb": "小米 MiMo-V2-Pro 以低成本接近顶级性能，加速中国 LLM 全球竞争。",
+      "link": "https://venturebeat.com/technology/xiaomi-stuns-with-new-mimo-v2-pro-llm-nearing-gpt-5-2-opus-4-6-performance",
+      "canonical_link": "https://venturebeat.com/technology/xiaomi-stuns-with-new-mimo-v2-pro-llm-nearing-gpt-5-2-opus-4-6-performance",
+      "published_at": "2026-03-19T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
         "TLDR AI",
         "model-release"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-18",
-      "source_signal": "Featured in TLDR AI headlines as major OpenAI model release for high-volume workloads, highlighting speed and cost improvements.",
-      "recommendation": "OpenAI推出更小、更快的GPT-5.4 mini和nano模型，适用于高吞吐任务，值得开发者关注以优化成本。",
-      "summary": "GPT-5.4 mini在多项基准上接近更大模型GPT-5.4，同时速度更快成本更低；nano针对分类、提取等轻量任务。新模型显著提升小型模型性能，推动边缘部署和大规模应用。",
+      "source_page": "https://tldr.tech/ai/2026-03-19",
+      "source_signal": "Featured in TLDR AI headlines as major Chinese model release challenging Western leaders cost-effectively.",
+      "recommendation": "小米 MiMo-V2-Pro 以低成本接近顶级性能，加速中国 LLM 全球竞争。",
+      "summary": "小米发布 1 万亿参数 MiMo-V2-Pro，使用稀疏架构仅激活 420 亿参数，支持多令牌预测降低延迟。性能逼近 GPT-5.2 和 Opus 4.6，目前 API 可用，计划开源。",
       "takeaways": [
-        "mini模型在基准上大幅超越前代GPT-5 mini",
-        "nano适用于资源受限场景，提升生产力工具效率"
+        "稀疏激活 + 多令牌预测创新",
+        "成本优势挑战西方模型"
       ],
       "topic": "model-release"
     },
     {
-      "id": "0cd42e0fe5c85bcf",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Harmonic",
-      "title": "Aristotle Agent",
-      "blurb": "Aristotle Agent是自主数学代理，可独立证明难题长达24小时，现免费开放Web/CLI/API。",
-      "link": "https://threadreaderapp.com/thread/2034028065513451594.html",
-      "canonical_link": "https://threadreaderapp.com/thread/2034028065513451594.html",
-      "published_at": "2026-03-18T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "TLDR AI",
-        "agent"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-18",
-      "source_signal": "TLDR AI headlines; autonomous mathematician agent solving complex research problems with repo-quality code.",
-      "recommendation": "Aristotle Agent是自主数学代理，可独立证明难题长达24小时，现免费开放Web/CLI/API。",
-      "summary": "代理完全自主，处理世界最难数学问题并生成高质量代码。现已上线，支持无干预长时运行。",
-      "takeaways": [
-        "可自主证明/形式化数学问题",
-        "输出repo级代码，支持多平台访问"
-      ],
-      "topic": "agent"
-    },
-    {
-      "id": "816a0ce3c6798cfd",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Mistral",
-      "title": "Mistral Unveiled Forge",
-      "blurb": "Mistral Forge为企业提供从零训练自定义模型的平台，减少对第三方依赖，适合隐私敏感场景。",
-      "link": "https://mistral.ai/news/forge",
-      "canonical_link": "https://mistral.ai/news/forge",
-      "published_at": "2026-03-18T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "TLDR AI",
-        "product"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-18",
-      "source_signal": "TLDR AI launch headline; enterprise platform for custom AI training from scratch, positioned against fine-tuning/RAG.",
-      "recommendation": "Mistral Forge为企业提供从零训练自定义模型的平台，减少对第三方依赖，适合隐私敏感场景。",
-      "summary": "Forge支持领域特定训练、强化学习，帮助政府和企业构建专属模型。强调控制力和独立性，避免fine-tuning局限。",
-      "takeaways": [
-        "支持从头训练自定义模型",
-        "集成RL和领域适应，提升企业AI自主性"
-      ],
-      "topic": "product"
-    },
-    {
-      "id": "2002210c41a6330b",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "IsolatedOctopi",
-      "title": "Nvidia greenboost: transparently extend GPU VRAM using system RAM/NVMe",
-      "blurb": "透明扩展GPU VRAM至系统RAM/NVMe，降低大模型训练硬件门槛。",
-      "link": "https://gitlab.com/IsolatedOctopi/nvidia_greenboost",
-      "canonical_link": "https://gitlab.com/IsolatedOctopi/nvidia_greenboost",
-      "published_at": "2026-03-19T05:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hacker News",
-        "infra"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "HN with 137 points; infra tool to extend GPU memory for AI training/inference.",
-      "recommendation": "透明扩展GPU VRAM至系统RAM/NVMe，降低大模型训练硬件门槛。",
-      "summary": "Greenboost无缝使用系统内存扩展GPU VRAM，支持AI工作负载。",
-      "takeaways": [
-        "无需改代码扩展内存",
-        "适用于NVIDIA GPU大模型运行"
-      ],
-      "topic": "infra"
-    },
-    {
-      "id": "0950788267abd30f",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "alainnothere",
-      "title": "Show HN: Duplicate 3 layers in a 24B LLM, logical deduction .22→.76. No training",
-      "blurb": "无训练复制LLM电路，提升逻辑推理性能，从0.22到0.76，展示模型内部机制挖掘潜力。",
-      "link": "https://github.com/alainnothere/llm-circuit-finder",
-      "canonical_link": "https://github.com/alainnothere/llm-circuit-finder",
-      "published_at": "2026-03-19T08:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hacker News",
-        "tooling"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "HN Show HN with 53 points; tool for discovering and duplicating LLM circuits to boost deduction without training.",
-      "recommendation": "无训练复制LLM电路，提升逻辑推理性能，从0.22到0.76，展示模型内部机制挖掘潜力。",
-      "summary": "在24B LLM中复制3层电路，实现逻辑推理大幅提升。无需额外训练，直接操作模型内部。",
-      "takeaways": [
-        "电路复制提升推理准确率3倍",
-        "适用于大模型机制研究和优化"
-      ],
-      "topic": "tooling"
-    },
-    {
-      "id": "52897a4a400d570a",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "NVIDIA",
-      "title": "Nvidia NemoClaw",
-      "blurb": "NVIDIA开源NemoClaw，可能为NeMo框架扩展，支持爪式抓取或高级代理任务。",
-      "link": "https://github.com/NVIDIA/NemoClaw",
-      "canonical_link": "https://github.com/NVIDIA/NemoClaw",
-      "published_at": "2026-03-19T00:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hacker News",
-        "tooling"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "HN top with 235 points, 188 comments; Nvidia's new repo likely for advanced AI tooling/agents.",
-      "recommendation": "NVIDIA开源NemoClaw，可能为NeMo框架扩展，支持爪式抓取或高级代理任务。",
-      "summary": "NemoClaw是NVIDIA新工具，获高讨论热度，聚焦AI应用如机器人或多模态交互。",
-      "takeaways": [
-        "NVIDIA官方repo，高社区热度",
-        "扩展NeMo生态，可能涉代理/机器人"
-      ],
-      "topic": "tooling"
-    },
-    {
-      "id": "541934660dcb0452",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Cursor",
-      "title": "Cursor Trains Models to Self‑Summarize Context",
-      "blurb": "Cursor Composer自总结上下文，扩展长编码会话内存。",
-      "link": "https://cursor.com/blog/self-summarization",
-      "canonical_link": "https://cursor.com/blog/self-summarization",
-      "published_at": "2026-03-18T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "tooling"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-18",
-      "source_signal": "TLDR engineering highlight; Cursor's Composer learns context summarization for long sessions.",
-      "recommendation": "Cursor Composer自总结上下文，扩展长编码会话内存。",
-      "summary": "训练模型压缩历史步骤，提升多步编程性能。",
-      "takeaways": [
-        "自总结减少token消耗",
-        "改善长上下文任务"
-      ],
-      "topic": "tooling"
-    },
-    {
-      "id": "5e3adf44afab9973",
+      "id": "b60c91abf665fa6b",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hugging Face Papers",
-      "author": "MiroMind AI",
-      "title": "MiroThinker-1.7 & H1: Towards Heavy-Duty Research Agents via Verification",
-      "blurb": "MiroThinker推进重型研究代理，通过验证提升可靠性。",
-      "link": "https://arxiv.org/abs/2603.15726",
-      "canonical_link": "https://arxiv.org/abs/2603.15726",
-      "published_at": "2026-03-18T20:00:00.000+08:00",
-      "score": 8,
+      "author": "University College London",
+      "title": "Memento-Skills: Let Agents Design Agents",
+      "blurb": "Memento-Skills 让代理设计代理，推动 AI 自主演化研究。",
+      "link": "https://arxiv.org/abs/2603.18743",
+      "canonical_link": "https://arxiv.org/abs/2603.18743",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 9,
       "tags": [
         "Hugging Face Papers",
         "agent"
       ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-18",
-      "source_signal": "Top HF daily paper; advances heavy-duty research agents with verification.",
-      "recommendation": "MiroThinker推进重型研究代理，通过验证提升可靠性。",
-      "summary": "引入验证机制构建robust研究代理，支持复杂任务。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-20",
+      "source_signal": "Trending HF daily paper on agent self-design, high relevance to autonomous AI systems.",
+      "recommendation": "Memento-Skills 让代理设计代理，推动 AI 自主演化研究。",
+      "summary": "提出 Memento-Skills 框架，代理通过技能记忆设计新代理。提升代理在复杂任务中的适应性。UCL 研究，适用于多代理系统。",
       "takeaways": [
-        "验证驱动代理训练",
-        "适用于高负载研究"
+        "代理自我设计机制",
+        "技能记忆提升泛化"
       ],
       "topic": "agent"
     },
     {
-      "id": "a702a8df17a1ff15",
+      "id": "3f588cc9e6f9fb97",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Beihang University",
-      "title": "InCoder-32B: Code Foundation Model for Industrial Scenarios",
-      "blurb": "InCoder-32B针对工业场景的代码基础模型，提升编程生产力。",
-      "link": "https://arxiv.org/abs/2603.16790",
-      "canonical_link": "https://arxiv.org/abs/2603.16790",
-      "published_at": "2026-03-18T20:00:00.000+08:00",
-      "score": 7,
+      "platform": "Hacker News",
+      "author": "KittenML",
+      "title": "Show HN: Three new Kitten TTS models – smallest less than 25MB",
+      "blurb": "Kitten TTS 系列模型超小体积高性能，适合移动和边缘设备部署，推动 TTS 民主化。",
+      "link": "https://github.com/KittenML/KittenTTS",
+      "canonical_link": "https://github.com/KittenML/KittenTTS",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 9,
       "tags": [
-        "Hugging Face Papers",
+        "Hacker News",
         "model-release"
       ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-18",
-      "source_signal": "High-discussed HF paper; 32B code model for industrial use.",
-      "recommendation": "InCoder-32B针对工业场景的代码基础模型，提升编程生产力。",
-      "summary": "32B参数代码模型，优化工业开发任务。",
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Popular Show HN (355 points, 130 comments) releasing compact TTS models, key for edge AI applications.",
+      "recommendation": "Kitten TTS 系列模型超小体积高性能，适合移动和边缘设备部署，推动 TTS 民主化。",
+      "summary": "发布三个新 Kitten TTS 模型，最小仅 25MB，支持高效语音合成。适用于资源受限环境，提供高质量多语言支持。GitHub 开源，便于集成。",
       "takeaways": [
-        "工业级代码生成",
-        "高性能基础模型"
+        "最小模型 <25MB，边缘友好",
+        "开源，支持快速部署"
       ],
       "topic": "model-release"
     },
     {
-      "id": "56095aa1e4783843",
+      "id": "ac70959aa77a4f8c",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "mlbenchmarks.org",
-      "title": "Book: The Emerging Science of Machine Learning Benchmarks",
-      "blurb": "机器学习基准新兴科学书籍，系统剖析评估方法演进。",
-      "link": "https://mlbenchmarks.org/00-preface.html",
-      "canonical_link": "https://mlbenchmarks.org/00-preface.html",
-      "published_at": "2026-03-19T02:00:00.000+08:00",
-      "score": 7,
+      "author": "esolang-bench.vercel.app",
+      "title": "EsoLang-Bench: Evaluating Genuine Reasoning in LLMs via Esoteric Languages",
+      "blurb": "EsoLang-Bench 通过奇异语言测试 LLM 真实推理能力，是评估模型智能的新基准。",
+      "link": "https://esolang-bench.vercel.app/",
+      "canonical_link": "https://esolang-bench.vercel.app/",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 8,
       "tags": [
         "Hacker News",
         "benchmark"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "HN post with 86 points; comprehensive book on ML benchmark science.",
-      "recommendation": "机器学习基准新兴科学书籍，系统剖析评估方法演进。",
-      "summary": "探讨ML基准的科学基础，推动更可靠模型评估。",
+      "source_signal": "HN discussion (74 points, 36 comments) on novel LLM benchmark using esoteric languages to test true reasoning.",
+      "recommendation": "EsoLang-Bench 通过奇异语言测试 LLM 真实推理能力，是评估模型智能的新基准。",
+      "summary": "EsoLang-Bench 使用 Brainfuck 等奇异语言评估 LLM 的真正推理，而非模式匹配。揭示主流模型在复杂逻辑上的局限。开源基准，便于研究者复现。",
       "takeaways": [
-        "基准设计原理",
-        "提升评估标准化"
+        "暴露 LLM 幻觉与模式依赖",
+        "推动更鲁棒的推理评估"
       ],
       "topic": "benchmark"
     },
     {
-      "id": "76de2fd8636dea22",
+      "id": "b39e266241b0c61a",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "BAIDU",
-      "title": "Qianfan-OCR: A Unified End-to-End Model for Document Intelligence",
-      "blurb": "百度千帆OCR统一端到端文档智能模型，简化企业文档处理。",
-      "link": "https://arxiv.org/abs/2603.13398",
-      "canonical_link": "https://arxiv.org/abs/2603.13398",
-      "published_at": "2026-03-18T20:00:00.000+08:00",
-      "score": 7,
+      "platform": "TLDR AI",
+      "author": "Microsoft",
+      "title": "Agent Package Manager",
+      "blurb": "微软 APM 简化 AI 代理依赖管理，支持一键配置多工具链。",
+      "link": "https://github.com/microsoft/apm",
+      "canonical_link": "https://github.com/microsoft/apm",
+      "published_at": "2026-03-19T20:00:00.000+08:00",
+      "score": 8,
       "tags": [
-        "Hugging Face Papers",
-        "model-release"
+        "TLDR AI",
+        "tooling"
       ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-18",
-      "source_signal": "Popular HF paper from Baidu; unified OCR for docs.",
-      "recommendation": "百度千帆OCR统一端到端文档智能模型，简化企业文档处理。",
-      "summary": "端到端OCR模型，支持复杂文档理解。",
+      "source_page": "https://tldr.tech/ai/2026-03-19",
+      "source_signal": "TLDR AI engineering section repo for AI agent dependency management, open-source tooling.",
+      "recommendation": "微软 APM 简化 AI 代理依赖管理，支持一键配置多工具链。",
+      "summary": "Agent Package Manager 是开源代理依赖管理器，通过 YML 声明依赖，支持 GitHub Copilot、Claude 等。开发者克隆仓库即获完整代理环境。",
       "takeaways": [
-        "统一文档AI管道",
-        "高准确率OCR"
+        "YML 声明 + 秒级配置",
+        "兼容主流 AI 编码工具"
       ],
-      "topic": "model-release"
+      "topic": "tooling"
     },
     {
-      "id": "b8b2505e84df81c0",
+      "id": "d4a9d6b0b4bab294",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "iliazintchenko",
-      "title": "Autoresearch for SAT Solvers",
-      "blurb": "代理式自动研究SAT求解器，推动自动化定理证明和优化。",
-      "link": "https://github.com/iliazintchenko/agent-sat",
-      "canonical_link": "https://github.com/iliazintchenko/agent-sat",
-      "published_at": "2026-03-19T09:00:00.000+08:00",
-      "score": 6,
+      "author": "claude.com",
+      "title": "Push events into a running session with channels",
+      "blurb": "Claude 的 Channels 功能革新了 AI 会话交互，支持实时事件推送，适用于构建复杂代理系统。",
+      "link": "https://code.claude.com/docs/en/channels",
+      "canonical_link": "https://code.claude.com/docs/en/channels",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 8,
       "tags": [
         "Hacker News",
         "agent"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Recent HN post; agentic autoresearch tool for SAT solving.",
-      "recommendation": "代理式自动研究SAT求解器，推动自动化定理证明和优化。",
-      "summary": "使用代理进行SAT求解器的自动研究，提升求解效率。",
+      "source_signal": "High-ranking HN post (221 points, 121 comments) on Anthropic's Claude feature for real-time session interaction, advancing agentic workflows.",
+      "recommendation": "Claude 的 Channels 功能革新了 AI 会话交互，支持实时事件推送，适用于构建复杂代理系统。",
+      "summary": "Claude 引入 Channels 机制，允许将事件推入运行中的会话，实现更动态的交互。开发者可用于构建持久状态的 AI 代理。该功能提升了 Claude 在多轮任务中的实用性。",
       "takeaways": [
-        "代理驱动SAT研究",
-        "开源工具，便于扩展"
+        "支持实时事件注入，提升代理持久性",
+        "优化开发工作流中的 AI 交互"
       ],
       "topic": "agent"
+    },
+    {
+      "id": "7a87a8303506b6a7",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "testingcatalog.com",
+      "title": "MiniMax launches M2.7 model on MiniMax Agent and APIs",
+      "blurb": "MiniMax M2.7 专注代理工作流，支持自主调试和研究任务。",
+      "link": "https://testingcatalog.com/minimax-launches-m2-7-model-on-minimax-agent-and-apis",
+      "canonical_link": "https://testingcatalog.com/minimax-launches-m2-7-model-on-minimax-agent-and-apis",
+      "published_at": "2026-03-19T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-19",
+      "source_signal": "TLDR AI launch highlight for MiniMax's agentic model supporting complex workflows.",
+      "recommendation": "MiniMax M2.7 专注代理工作流，支持自主调试和研究任务。",
+      "summary": "MiniMax M2.7 模型公开发布，支持软件工程、办公和研究复杂流程。具备自主调试和代理框架能力。通过 Agent 和 API 访问，推动模型自我演化。",
+      "takeaways": [
+        "适用于多领域代理任务",
+        "强调模型自主进化"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "2dcd7e1dd3312320",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "16 authors",
+      "title": "LVOmniBench: Pioneering Long Audio-Video Understanding Evaluation for Omnimodal LLMs",
+      "blurb": "LVOmniBench 开创长音频视频理解基准，评估全模态 LLM。",
+      "link": "https://arxiv.org/abs/2603.19217",
+      "canonical_link": "https://arxiv.org/abs/2603.19217",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "benchmark"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-20",
+      "source_signal": "HF daily paper introducing benchmark for long audio-video in multimodal LLMs.",
+      "recommendation": "LVOmniBench 开创长音频视频理解基准，评估全模态 LLM。",
+      "summary": "LVOmniBench 针对全模态 LLM 的长音频视频理解评估。覆盖长序列多模态挑战，推动多模态模型进步。",
+      "takeaways": [
+        "长序列 A/V 基准",
+        "全模态 LLM 评估标准"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "41ce74ebeee4ec97",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "NVIDIA",
+      "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+      "blurb": "NVIDIA Nemotron-Cascade 2 提升后训练效率，多域蒸馏实用。",
+      "link": "https://arxiv.org/abs/2603.19220",
+      "canonical_link": "https://arxiv.org/abs/2603.19220",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "research"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-20",
+      "source_signal": "NVIDIA paper on advanced post-training for LLMs using RL and distillation.",
+      "recommendation": "NVIDIA Nemotron-Cascade 2 提升后训练效率，多域蒸馏实用。",
+      "summary": "Nemotron-Cascade 2 使用级联 RL 和多域在策略蒸馏优化 LLM 后训练。提升性能并降低计算成本。NVIDIA 贡献。",
+      "takeaways": [
+        "级联 RL + 蒸馏",
+        "多域后训练优化"
+      ],
+      "topic": "research"
+    },
+    {
+      "id": "1921a1587b0606f3",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Baidu",
+      "title": "Enterprise Vision-Language Models",
+      "blurb": "百度 Qianfan-VL 针对企业视觉任务优化，如文档解析和 OCR。",
+      "link": "https://github.com/baidubce/Qianfan-VL",
+      "canonical_link": "https://github.com/baidubce/Qianfan-VL",
+      "published_at": "2026-03-19T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-19",
+      "source_signal": "TLDR AI repo for Baidu's enterprise VLMs optimized for industrial use.",
+      "recommendation": "百度 Qianfan-VL 针对企业视觉任务优化，如文档解析和 OCR。",
+      "summary": "Qianfan-VL 系列企业视觉语言模型，专注文档解析、OCR 和复杂视觉推理，同时保留通用多模态能力。GitHub 开源，适用于工业场景。",
+      "takeaways": [
+        "企业级视觉 + 推理优化",
+        "开源支持工业集成"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "d35fb4db918b58f8",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "getclockwise.com",
+      "title": "Clockwise acquired by Salesforce and shutting down next week",
+      "blurb": "Salesforce 收购 Clockwise 凸显 AI 生产力工具的市场整合趋势。",
+      "link": "https://getclockwise.com/",
+      "canonical_link": "https://getclockwise.com/",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "business"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN story (93 points) on AI scheduling tool acquisition, concrete business signal in productivity AI space.",
+      "recommendation": "Salesforce 收购 Clockwise 凸显 AI 生产力工具的市场整合趋势。",
+      "summary": "AI 日程管理工具 Clockwise 被 Salesforce 收购，将于下周关闭独立服务。反映大厂对 AI 工作流工具的战略布局。用户需迁移数据。",
+      "takeaways": [
+        "AI 生产力工具被大厂并购",
+        "提示独立初创生存挑战"
+      ],
+      "topic": "business"
     }
   ]
 }

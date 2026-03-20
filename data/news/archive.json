@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-03-20T07:24:17.744+08:00",
+  "updated_at": "2026-03-20T12:08:32.505+08:00",
   "page_size": 60,
-  "total_items": 959,
+  "total_items": 984,
   "sources": [
     {
       "id": "general",
@@ -18,20 +18,20 @@
       "name": "AI Artist Signals",
       "type": "artist",
       "refresh_hours": 12,
-      "updated_at": "2026-03-19T22:05:00.872+08:00",
-      "item_count": 16,
-      "window_start": "2026-03-18T22:05:00.872Z",
-      "window_end": "2026-03-19T14:05:00.872Z"
+      "updated_at": "2026-03-20T12:08:32.505+08:00",
+      "item_count": 13,
+      "window_start": "2026-03-19T12:08:32.505Z",
+      "window_end": "2026-03-20T04:08:32.505Z"
     },
     {
       "id": "daily_ai_briefs",
       "name": "Daily AI Briefs",
       "type": "daily_ai_briefs",
       "refresh_hours": 24,
-      "updated_at": "2026-03-19T09:45:12.311+08:00",
+      "updated_at": "2026-03-20T12:08:32.505+08:00",
       "item_count": 12,
-      "window_start": "2026-03-18T00:00:00.000Z",
-      "window_end": "2026-03-19T01:45:12.311Z"
+      "window_start": "2026-03-19T00:00:00.000Z",
+      "window_end": "2026-03-20T04:08:32.505Z"
     },
     {
       "id": "x_ai_signals",
@@ -66,6 +66,291 @@
   ],
   "items": [
     {
+      "id": "8cac82b1749f6819",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "astral.sh",
+      "title": "Astral to Join OpenAI",
+      "blurb": "Astral 加入 OpenAI 是 AI 基础设施与工具链深度融合的重大信号，值得开发者关注其对 Rust 生态的影响。",
+      "link": "https://astral.sh/blog/openai",
+      "canonical_link": "https://astral.sh/blog/openai",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 10,
+      "tags": [
+        "Hacker News",
+        "business"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Top story on HN with 1271 points and 778 comments, signaling major AI business consolidation as Astral's Rust tooling integrates with OpenAI.",
+      "recommendation": "Astral 加入 OpenAI 是 AI 基础设施与工具链深度融合的重大信号，值得开发者关注其对 Rust 生态的影响。",
+      "summary": "Astral 团队宣布加入 OpenAI，将其高性能 Rust 工具如 Ruff 带入 OpenAI 生态。这次收购强化了 OpenAI 在编程工具和 AI 开发效率方面的布局。社区热议其对开源工具未来的影响。",
+      "takeaways": [
+        "Astral 的 Rust 工具将增强 OpenAI 的开发体验",
+        "标志着 OpenAI 在基础设施领域的扩张"
+      ],
+      "topic": "business"
+    },
+    {
+      "id": "b60c91abf665fa6b",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "University College London",
+      "title": "Memento-Skills: Let Agents Design Agents",
+      "blurb": "Memento-Skills 让代理设计代理，推动 AI 自主演化研究。",
+      "link": "https://arxiv.org/abs/2603.18743",
+      "canonical_link": "https://arxiv.org/abs/2603.18743",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 9,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-20",
+      "source_signal": "Trending HF daily paper on agent self-design, high relevance to autonomous AI systems.",
+      "recommendation": "Memento-Skills 让代理设计代理，推动 AI 自主演化研究。",
+      "summary": "提出 Memento-Skills 框架，代理通过技能记忆设计新代理。提升代理在复杂任务中的适应性。UCL 研究，适用于多代理系统。",
+      "takeaways": [
+        "代理自我设计机制",
+        "技能记忆提升泛化"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "3f588cc9e6f9fb97",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "KittenML",
+      "title": "Show HN: Three new Kitten TTS models – smallest less than 25MB",
+      "blurb": "Kitten TTS 系列模型超小体积高性能，适合移动和边缘设备部署，推动 TTS 民主化。",
+      "link": "https://github.com/KittenML/KittenTTS",
+      "canonical_link": "https://github.com/KittenML/KittenTTS",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 9,
+      "tags": [
+        "Hacker News",
+        "model-release"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Popular Show HN (355 points, 130 comments) releasing compact TTS models, key for edge AI applications.",
+      "recommendation": "Kitten TTS 系列模型超小体积高性能，适合移动和边缘设备部署，推动 TTS 民主化。",
+      "summary": "发布三个新 Kitten TTS 模型，最小仅 25MB，支持高效语音合成。适用于资源受限环境，提供高质量多语言支持。GitHub 开源，便于集成。",
+      "takeaways": [
+        "最小模型 <25MB，边缘友好",
+        "开源，支持快速部署"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "ac70959aa77a4f8c",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "esolang-bench.vercel.app",
+      "title": "EsoLang-Bench: Evaluating Genuine Reasoning in LLMs via Esoteric Languages",
+      "blurb": "EsoLang-Bench 通过奇异语言测试 LLM 真实推理能力，是评估模型智能的新基准。",
+      "link": "https://esolang-bench.vercel.app/",
+      "canonical_link": "https://esolang-bench.vercel.app/",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "benchmark"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN discussion (74 points, 36 comments) on novel LLM benchmark using esoteric languages to test true reasoning.",
+      "recommendation": "EsoLang-Bench 通过奇异语言测试 LLM 真实推理能力，是评估模型智能的新基准。",
+      "summary": "EsoLang-Bench 使用 Brainfuck 等奇异语言评估 LLM 的真正推理，而非模式匹配。揭示主流模型在复杂逻辑上的局限。开源基准，便于研究者复现。",
+      "takeaways": [
+        "暴露 LLM 幻觉与模式依赖",
+        "推动更鲁棒的推理评估"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "2dcd7e1dd3312320",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "16 authors",
+      "title": "LVOmniBench: Pioneering Long Audio-Video Understanding Evaluation for Omnimodal LLMs",
+      "blurb": "LVOmniBench 开创长音频视频理解基准，评估全模态 LLM。",
+      "link": "https://arxiv.org/abs/2603.19217",
+      "canonical_link": "https://arxiv.org/abs/2603.19217",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "benchmark"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-20",
+      "source_signal": "HF daily paper introducing benchmark for long audio-video in multimodal LLMs.",
+      "recommendation": "LVOmniBench 开创长音频视频理解基准，评估全模态 LLM。",
+      "summary": "LVOmniBench 针对全模态 LLM 的长音频视频理解评估。覆盖长序列多模态挑战，推动多模态模型进步。",
+      "takeaways": [
+        "长序列 A/V 基准",
+        "全模态 LLM 评估标准"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "41ce74ebeee4ec97",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "NVIDIA",
+      "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+      "blurb": "NVIDIA Nemotron-Cascade 2 提升后训练效率，多域蒸馏实用。",
+      "link": "https://arxiv.org/abs/2603.19220",
+      "canonical_link": "https://arxiv.org/abs/2603.19220",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "research"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-20",
+      "source_signal": "NVIDIA paper on advanced post-training for LLMs using RL and distillation.",
+      "recommendation": "NVIDIA Nemotron-Cascade 2 提升后训练效率，多域蒸馏实用。",
+      "summary": "Nemotron-Cascade 2 使用级联 RL 和多域在策略蒸馏优化 LLM 后训练。提升性能并降低计算成本。NVIDIA 贡献。",
+      "takeaways": [
+        "级联 RL + 蒸馏",
+        "多域后训练优化"
+      ],
+      "topic": "research"
+    },
+    {
+      "id": "d4a9d6b0b4bab294",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "claude.com",
+      "title": "Push events into a running session with channels",
+      "blurb": "Claude 的 Channels 功能革新了 AI 会话交互，支持实时事件推送，适用于构建复杂代理系统。",
+      "link": "https://code.claude.com/docs/en/channels",
+      "canonical_link": "https://code.claude.com/docs/en/channels",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "agent"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "High-ranking HN post (221 points, 121 comments) on Anthropic's Claude feature for real-time session interaction, advancing agentic workflows.",
+      "recommendation": "Claude 的 Channels 功能革新了 AI 会话交互，支持实时事件推送，适用于构建复杂代理系统。",
+      "summary": "Claude 引入 Channels 机制，允许将事件推入运行中的会话，实现更动态的交互。开发者可用于构建持久状态的 AI 代理。该功能提升了 Claude 在多轮任务中的实用性。",
+      "takeaways": [
+        "支持实时事件注入，提升代理持久性",
+        "优化开发工作流中的 AI 交互"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "d35fb4db918b58f8",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "getclockwise.com",
+      "title": "Clockwise acquired by Salesforce and shutting down next week",
+      "blurb": "Salesforce 收购 Clockwise 凸显 AI 生产力工具的市场整合趋势。",
+      "link": "https://getclockwise.com/",
+      "canonical_link": "https://getclockwise.com/",
+      "published_at": "2026-03-20T12:08:32.505+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "business"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN story (93 points) on AI scheduling tool acquisition, concrete business signal in productivity AI space.",
+      "recommendation": "Salesforce 收购 Clockwise 凸显 AI 生产力工具的市场整合趋势。",
+      "summary": "AI 日程管理工具 Clockwise 被 Salesforce 收购，将于下周关闭独立服务。反映大厂对 AI 工作流工具的战略布局。用户需迁移数据。",
+      "takeaways": [
+        "AI 生产力工具被大厂并购",
+        "提示独立初创生存挑战"
+      ],
+      "topic": "business"
+    },
+    {
+      "id": "2b9cfdb5e89f5cbc",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@MANISH1027512",
+      "title": "Grok Imagine捕捉提示缝隙的创意爆发",
+      "blurb": "以咖啡师隐喻赞美Grok Imagine，能在提示微妙缝隙中无限扩展风味空间。配精致咖啡图，强调其审美和技术潜力。突出AI生图工具的叙事与美学深度。 展示Grok Imagine在提示工程上的独特优势，启发创作者探索隐喻式生成。",
+      "link": "https://x.com/MANISH1027512/status/2034818715481674047",
+      "canonical_link": "https://x.com/MANISH1027512/status/2034818715481674047",
+      "published_at": "2026-03-20T10:26:01.000+08:00",
+      "score": 7,
+      "tags": [
+        "showcase",
+        "tooling"
+      ]
+    },
+    {
+      "id": "5a0d7f96061d7818",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@MANISH1027512",
+      "title": "MJ V8手部动作生成能力大幅提升",
+      "blurb": "用户惊叹Midjourney V8在复杂手部描绘上的进步，能实现精细动作。引用详细的动作注入提示词，包括镜头构图、肢体透视和深度遮挡等控制方法。附图展示害羞少女比耶手势的动态效果，保留身份和服装不变。 为创作者提供V8模型的手部技术信号，帮助优化角色动态生图。",
+      "link": "https://x.com/MANISH1027512/status/2034789172184326208",
+      "canonical_link": "https://x.com/MANISH1027512/status/2034789172184326208",
+      "published_at": "2026-03-20T08:28:37.000+08:00",
+      "score": 8,
+      "tags": [
+        "model-comparison"
+      ]
+    },
+    {
+      "id": "93cc58baf0e7aa19",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@ClaireSilver",
+      "title": "AI physical art exhibition at Art Basel HK: LLM tuning + CNC fabrication",
+      "blurb": "Claire Silver揭晓Art Basel Hong Kong Zero 10展览，历经数月LLM调优、CNC激光切割、木工制作、设备改装和插件脚本开发。mary’s room为完整装置1/1独品，echoes系列10件作品各10限量版。3月25日亮相，视频预览了沉浸式体验。 展示了AI艺术从数字生成到实体制造的全链路工作流，结合NFT商业模式，对跨界创作者提供技术与市场信号。",
+      "link": "https://x.com/ClaireSilver/status/2034765980367216728",
+      "canonical_link": "https://x.com/ClaireSilver/status/2034765980367216728",
+      "published_at": "2026-03-20T06:56:28.000+08:00",
+      "score": 9.5,
+      "tags": [
+        "workflow"
+      ]
+    },
+    {
+      "id": "0ee779368d27eef7",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@javilopen",
+      "title": "AI内容创作者付费合作邀约火爆",
+      "blurb": "Magnific AI创始人透露从未接AI付费合作，却每天收5个DM邀约。现推荐妻子@anacoding接单，她更善于沟通且上镜。揭示AIGC市场对创作者的强劲商业需求。 提供AI创作者市场信号，展示付费合作机会的规模和潜力。",
+      "link": "https://x.com/javilopen/status/2034753843397816581",
+      "canonical_link": "https://x.com/javilopen/status/2034753843397816581",
+      "published_at": "2026-03-20T06:08:14.000+08:00",
+      "score": 8,
+      "tags": [
+        "business"
+      ]
+    },
+    {
       "id": "c9d536b436a4c410",
       "source_id": "aiindie",
       "source_name": "AI Indie Hacker Signals",
@@ -82,6 +367,25 @@
         "workflow",
         "strategy",
         "business"
+      ]
+    },
+    {
+      "id": "7335210387e5d459",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@bananababydoll",
+      "title": "JSON-structured prompt for Nano Banana 2 rooftop photoreal portrait",
+      "blurb": "提供了Nano Banana 2的完整JSON提示，定义元数据、人物锁定（巴西-意大利混血、身材细节）、场景（私人屋顶停机坪）、姿势、服装、照明和摄影规则。强调真实iPhone闪光效果和城市天际线背景。结果为超写实夜间肖像。 Advanced JSON control method ensures precise character consistency and photorealism in Nano Banana.",
+      "link": "https://x.com/bananababydoll/status/2034728617243025720",
+      "canonical_link": "https://x.com/bananababydoll/status/2034728617243025720",
+      "published_at": "2026-03-20T04:28:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "prompting",
+        "control-method",
+        "tooling"
       ]
     },
     {
@@ -158,6 +462,23 @@
         "AI",
         "AGI",
         "工具链"
+      ]
+    },
+    {
+      "id": "aeb7a3b5af4153d9",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@midjourney",
+      "title": "V8摄影提示参数优化建议",
+      "blurb": "Midjourney回应用户V8模型在简单摄影提示下的表现问题，如家庭海滩照中手脚和脸部畸形。指出复杂场景中小细节易出错，建议关闭--chaos和--exp参数，使用--hd改善输出，但仍需多次生成尝试。该帖附图展示了优化后的效果示例。 揭示V8在细节密集摄影提示的痛点及官方调试技巧，帮助创作者快速提升生成质量。",
+      "link": "https://x.com/midjourney/status/2034709304566247573",
+      "canonical_link": "https://x.com/midjourney/status/2034709304566247573",
+      "published_at": "2026-03-20T03:11:15.000+08:00",
+      "score": 8,
+      "tags": [
+        "prompting"
       ]
     },
     {
@@ -309,6 +630,23 @@
       ]
     },
     {
+      "id": "8450040518d00fbc",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@ClaireSilver",
+      "title": "Mary’s Mind: AI art trained on Helen Keller, Emerson, Plath & Salinger",
+      "blurb": "Claire Silver介绍了名为‘Mary’s mind’的AI艺术作品，其AI模型受Helen Keller、Emerson、Plath和Salinger等文学影响训练而成。作品探讨语言 emergent、孤独中的超越与美学，强调影响如何塑造世界观，与人类相似。该作品将于Art Basel Hong Kong Zero 10展出，视频展示了其视觉表现。 创作者可学习通过文学文本微调LLM注入叙事深度，提升AI艺术的情感与哲学层面…",
+      "link": "https://x.com/ClaireSilver/status/2034685929080676683",
+      "canonical_link": "https://x.com/ClaireSilver/status/2034685929080676683",
+      "published_at": "2026-03-20T01:38:22.000+08:00",
+      "score": 8,
+      "tags": [
+        "workflow"
+      ]
+    },
+    {
       "id": "61b9bfa70c53b9bf",
       "source_id": "aiindie",
       "source_name": "AI Indie Hacker Signals",
@@ -384,6 +722,24 @@
       ]
     },
     {
+      "id": "91814cc5fa89355d",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@CharaspowerAI",
+      "title": "PromptShare: Isometric cross-section of iconic monuments",
+      "blurb": "发布了等轴测横截面提示词：isometric cross-section of [iconic monument with surrounding landscape elements of the country]，强调透视、细节和3D渲染效果。配以多国地标示例图像，如埃菲尔铁塔和金字塔。该提示适用于创建高细节的微缩景观。 Reusable prompt template for generating hyper-realistic…",
+      "link": "https://x.com/CharaspowerAI/status/2034683852480745799",
+      "canonical_link": "https://x.com/CharaspowerAI/status/2034683852480745799",
+      "published_at": "2026-03-20T01:30:07.000+08:00",
+      "score": 8,
+      "tags": [
+        "prompting",
+        "style"
+      ]
+    },
+    {
       "id": "d2784b69dae3b8ad",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -403,6 +759,25 @@
       ]
     },
     {
+      "id": "70f7753585cfb3be",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@lexx_aura",
+      "title": "Seedance 2.0 on Vadoo.ai: Giant cat kaiju bridge destruction prompt",
+      "blurb": "介绍了Vadoo.ai上的Seedance 2.0工具，分享巨型猫怪从海中浮现摧毁悬桥的详细提示，包括IMAX镜头、低角度跟踪、水花位移、爆炸和原子能量蓄力。强调体积雾、真实物理和镜头眩光。结果为史诗级怪物电影片段。 Full cinematic prompt unlocks blockbuster VFX in new Seedance 2.0, rivaling traditional CGI.",
+      "link": "https://x.com/lexx_aura/status/2034680655888490964",
+      "canonical_link": "https://x.com/lexx_aura/status/2034680655888490964",
+      "published_at": "2026-03-20T01:17:25.000+08:00",
+      "score": 9,
+      "tags": [
+        "showcase",
+        "prompting",
+        "tooling"
+      ]
+    },
+    {
       "id": "59fec5d213d20222",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -418,6 +793,23 @@
       "tags": [
         "AI",
         "工具链"
+      ]
+    },
+    {
+      "id": "0d36cec23ef19a2a",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@midjourney",
+      "title": "V8 moodboard功能即将大修",
+      "blurb": "Midjourney确认收到moodboard输出差的反馈，将尽快进行全面重构。用户提供了多个profile示例，显示当前V8中moodboard效果不佳。该回复体现了团队对社区痛点的快速响应。 预告关键个性化工具的重大更新，创作者可据此调整工作流。",
+      "link": "https://x.com/midjourney/status/2034678515610910747",
+      "canonical_link": "https://x.com/midjourney/status/2034678515610910747",
+      "published_at": "2026-03-20T01:08:55.000+08:00",
+      "score": 7,
+      "tags": [
+        "tooling"
       ]
     },
     {
@@ -514,6 +906,25 @@
       ]
     },
     {
+      "id": "3ffeead8de137672",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@CharaspowerAI",
+      "title": "Multi-shot prompt for Kling 3.0 temple collapse escape",
+      "blurb": "分享了Kling 3.0的多镜头提示词，分为SHOT1宽镜头探险家冲出崩塌石庙、SHOT2跟踪跑镜头巨石坠落身后、SHOT3史诗宽镜头寺庙完全崩塌并跳入河流。提示详细描述动作、环境和镜头运动，实现无缝视频叙事。该技术展示了AI视频生成的动态潜力。 Provides actionable multi-shot workflow for creating cinematic action sequences in Kling AI, br…",
+      "link": "https://x.com/CharaspowerAI/status/2034654567296549318",
+      "canonical_link": "https://x.com/CharaspowerAI/status/2034654567296549318",
+      "published_at": "2026-03-19T23:33:45.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow",
+        "prompting",
+        "tooling"
+      ]
+    },
+    {
       "id": "e1f99853d3f8e373",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -607,6 +1018,24 @@
       ]
     },
     {
+      "id": "19b4ad4ccde293b1",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@egeberkina",
+      "title": "Minimalist food packaging illusion prompt",
+      "blurb": "提供了纯白背景极简工作室镜头的提示：真实食物从纸包装中浮现，包装上印刷的黑线插图完美对齐食物形状，无缝过渡。强调现代品牌、顶视构图和柔和阴影。生成多种食物变体示例。 Clever prompt for hybrid real-illustration ads, perfect for branding experiments.",
+      "link": "https://x.com/egeberkina/status/2034640645877321998",
+      "canonical_link": "https://x.com/egeberkina/status/2034640645877321998",
+      "published_at": "2026-03-19T22:38:26.000+08:00",
+      "score": 8,
+      "tags": [
+        "prompting",
+        "style"
+      ]
+    },
+    {
       "id": "0928866e555eeb24",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -623,6 +1052,24 @@
         "AI",
         "创业",
         "增长"
+      ]
+    },
+    {
+      "id": "ea19f68cf009a8c8",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@bananababydoll",
+      "title": "JSON prompt for Nano Banana 2 ocean shoreline bikini portrait",
+      "blurb": "分享Nano Banana 2的JSON提示，模拟iPhone 17 Pro广角镜头，场景为浅海热带海岸，人物为金发比基尼侧身扭头姿势。详细指定湿发、服装贴合、水滴和HDR效果，确保自然真实纹理。该结构便于重复使用身份锁定。 Highlights JSON for environmental portraits with physics-realistic details like wet fabric and water.",
+      "link": "https://x.com/bananababydoll/status/2034637768132038969",
+      "canonical_link": "https://x.com/bananababydoll/status/2034637768132038969",
+      "published_at": "2026-03-19T22:27:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "prompting",
+        "control-method"
       ]
     },
     {
@@ -1064,6 +1511,114 @@
         "tooling",
         "strategy"
       ]
+    },
+    {
+      "id": "3cf835c8041f1df3",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "VentureBeat",
+      "title": "Xiaomi stuns with new MiMo-V2-Pro LLM nearing GPT-5.2, Opus 4.6 performance at a fraction of the cost",
+      "blurb": "小米 MiMo-V2-Pro 以低成本接近顶级性能，加速中国 LLM 全球竞争。",
+      "link": "https://venturebeat.com/technology/xiaomi-stuns-with-new-mimo-v2-pro-llm-nearing-gpt-5-2-opus-4-6-performance",
+      "canonical_link": "https://venturebeat.com/technology/xiaomi-stuns-with-new-mimo-v2-pro-llm-nearing-gpt-5-2-opus-4-6-performance",
+      "published_at": "2026-03-19T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-19",
+      "source_signal": "Featured in TLDR AI headlines as major Chinese model release challenging Western leaders cost-effectively.",
+      "recommendation": "小米 MiMo-V2-Pro 以低成本接近顶级性能，加速中国 LLM 全球竞争。",
+      "summary": "小米发布 1 万亿参数 MiMo-V2-Pro，使用稀疏架构仅激活 420 亿参数，支持多令牌预测降低延迟。性能逼近 GPT-5.2 和 Opus 4.6，目前 API 可用，计划开源。",
+      "takeaways": [
+        "稀疏激活 + 多令牌预测创新",
+        "成本优势挑战西方模型"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "b39e266241b0c61a",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Microsoft",
+      "title": "Agent Package Manager",
+      "blurb": "微软 APM 简化 AI 代理依赖管理，支持一键配置多工具链。",
+      "link": "https://github.com/microsoft/apm",
+      "canonical_link": "https://github.com/microsoft/apm",
+      "published_at": "2026-03-19T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "tooling"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-19",
+      "source_signal": "TLDR AI engineering section repo for AI agent dependency management, open-source tooling.",
+      "recommendation": "微软 APM 简化 AI 代理依赖管理，支持一键配置多工具链。",
+      "summary": "Agent Package Manager 是开源代理依赖管理器，通过 YML 声明依赖，支持 GitHub Copilot、Claude 等。开发者克隆仓库即获完整代理环境。",
+      "takeaways": [
+        "YML 声明 + 秒级配置",
+        "兼容主流 AI 编码工具"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "7a87a8303506b6a7",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "testingcatalog.com",
+      "title": "MiniMax launches M2.7 model on MiniMax Agent and APIs",
+      "blurb": "MiniMax M2.7 专注代理工作流，支持自主调试和研究任务。",
+      "link": "https://testingcatalog.com/minimax-launches-m2-7-model-on-minimax-agent-and-apis",
+      "canonical_link": "https://testingcatalog.com/minimax-launches-m2-7-model-on-minimax-agent-and-apis",
+      "published_at": "2026-03-19T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-19",
+      "source_signal": "TLDR AI launch highlight for MiniMax's agentic model supporting complex workflows.",
+      "recommendation": "MiniMax M2.7 专注代理工作流，支持自主调试和研究任务。",
+      "summary": "MiniMax M2.7 模型公开发布，支持软件工程、办公和研究复杂流程。具备自主调试和代理框架能力。通过 Agent 和 API 访问，推动模型自我演化。",
+      "takeaways": [
+        "适用于多领域代理任务",
+        "强调模型自主进化"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "1921a1587b0606f3",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Baidu",
+      "title": "Enterprise Vision-Language Models",
+      "blurb": "百度 Qianfan-VL 针对企业视觉任务优化，如文档解析和 OCR。",
+      "link": "https://github.com/baidubce/Qianfan-VL",
+      "canonical_link": "https://github.com/baidubce/Qianfan-VL",
+      "published_at": "2026-03-19T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-19",
+      "source_signal": "TLDR AI repo for Baidu's enterprise VLMs optimized for industrial use.",
+      "recommendation": "百度 Qianfan-VL 针对企业视觉任务优化，如文档解析和 OCR。",
+      "summary": "Qianfan-VL 系列企业视觉语言模型，专注文档解析、OCR 和复杂视觉推理，同时保留通用多模态能力。GitHub 开源，适用于工业场景。",
+      "takeaways": [
+        "企业级视觉 + 推理优化",
+        "开源支持工业集成"
+      ],
+      "topic": "model-release"
     },
     {
       "id": "5db0b4cafe79bf50",
