@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-22T09:43:58.782+08:00",
+  "updated_at": "2026-03-22T13:49:12.543+08:00",
   "page_size": 60,
   "total_items": 1000,
   "sources": [
@@ -18,20 +18,20 @@
       "name": "AI Artist Signals",
       "type": "artist",
       "refresh_hours": 12,
-      "updated_at": "2026-03-22T01:20:30.438+08:00",
-      "item_count": 19,
-      "window_start": "2026-03-21T01:20:30.438Z",
-      "window_end": "2026-03-21T17:20:30.438Z"
+      "updated_at": "2026-03-22T13:49:12.543+08:00",
+      "item_count": 13,
+      "window_start": "2026-03-21T13:49:12.543Z",
+      "window_end": "2026-03-22T05:49:12.543Z"
     },
     {
       "id": "daily_ai_briefs",
       "name": "Daily AI Briefs",
       "type": "daily_ai_briefs",
       "refresh_hours": 24,
-      "updated_at": "2026-03-21T13:09:26.403+08:00",
-      "item_count": 10,
+      "updated_at": "2026-03-22T13:49:12.543+08:00",
+      "item_count": 9,
       "window_start": "2026-03-20T00:00:00.000Z",
-      "window_end": "2026-03-21T05:09:26.403Z"
+      "window_end": "2026-03-22T05:49:12.543Z"
     },
     {
       "id": "x_ai_signals",
@@ -66,6 +66,113 @@
   ],
   "items": [
     {
+      "id": "09470b6b285e54b7",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "tinygrad.org",
+      "title": "Tinybox – Offline AI device 120B parameters",
+      "blurb": "Tinybox 是一款支持 120B 参数模型的离线 AI 设备，极大降低了对云端的依赖。",
+      "link": "https://tinygrad.org/",
+      "canonical_link": "https://tinygrad.org/",
+      "published_at": "2026-03-22T13:49:12.543+08:00",
+      "score": 9,
+      "tags": [
+        "Hacker News",
+        "infra"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News 首页高分热议（411 points），展示离线 AI 硬件基础设施进展。",
+      "recommendation": "Tinybox 是一款支持 120B 参数模型的离线 AI 设备，极大降低了对云端的依赖。",
+      "summary": "Tinybox 由 tinygrad 推出，支持运行大型 AI 模型的消费级硬件。设备优化了本地推理性能，适用于高参数量模型。社区反馈热烈，讨论聚焦硬件可及性和开源潜力。",
+      "takeaways": [
+        "支持 120B 参数离线运行，推动边缘 AI 普及",
+        "tinygrad 开源框架助力高效部署"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "9f71e815d51b6e38",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "sashiko.dev",
+      "title": "Sashiko: An agentic Linux kernel code review system",
+      "blurb": "Sashiko 使用 AI 代理自动审查 Linux 内核代码，提升开发效率和质量。",
+      "link": "https://sashiko.dev/",
+      "canonical_link": "https://sashiko.dev/",
+      "published_at": "2026-03-22T13:49:12.543+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "agent"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News 新帖，介绍代理式内核代码审查工具，体现 AI 在系统开发中的应用。",
+      "recommendation": "Sashiko 使用 AI 代理自动审查 Linux 内核代码，提升开发效率和质量。",
+      "summary": "Sashiko 是一个开源的代理驱动 Linux 内核代码审查系统。利用 LLM 代理分析补丁、识别问题并建议修复。适用于内核开发者，减少手动审查负担。",
+      "takeaways": [
+        "代理自动化内核审查流程",
+        "开源工具提升 Linux 开发安全性"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "8943c61749d176eb",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@bananababydoll",
+      "title": "Nano Banana 2：屋顶硬光眼神对视超真实提示",
+      "blurb": "分享Nano Banana 2模型的详细JSON提示，模拟iPhone 17 Ultra在屋顶露台拍摄自信女性肖像。结构包括元数据、场景、主体姿势与表情、照明和摄影参数，确保超写实效果与自然缺陷如微抖动。强调身份锁定与高对比硬光，适用于生成专业级摄影图像。 提供模块化JSON提示框架，便于创作者精确控制相机模拟、姿势和真实感，提升AIGC摄影质量。",
+      "link": "https://x.com/bananababydoll/status/2035590546375221616",
+      "canonical_link": "https://x.com/bananababydoll/status/2035590546375221616",
+      "published_at": "2026-03-22T13:33:00.000+08:00",
+      "score": 9.5,
+      "tags": [
+        "prompting"
+      ]
+    },
+    {
+      "id": "365853a9e6057ec1",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@MANISH1027512",
+      "title": "GStack办公室小时审视AIGC社区商业潜力",
+      "blurb": "作者使用GStack的office hours技能模拟YC伙伴审视自己的AIGC创作社区项目。通过对话，直面长期回避的商业问题，从社群活跃的自嗨中清醒。强调活跃度和含金量不等于商业成立，提供了深度反思。 AIGC运营商可借鉴AI工具验证idea，避免盲目扩张，对社区构建者和创业者有警示作用。",
+      "link": "https://x.com/MANISH1027512/status/2035571721496150499",
+      "canonical_link": "https://x.com/MANISH1027512/status/2035571721496150499",
+      "published_at": "2026-03-22T12:18:12.000+08:00",
+      "score": 7,
+      "tags": [
+        "business",
+        "postmortem"
+      ]
+    },
+    {
+      "id": "c6f84d2331eed31c",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@op7418",
+      "title": "微信快速上线OpenClaw Clawbot插件教程",
+      "blurb": "微信灰度推出OpenClaw官方插件Clawbot，支持私聊AI交互。教程详解在设置中启用插件，并通过OpenClaw扫描二维码绑定。附图展示界面，提及未来可能集成Codex和Claude Code。 捕捉即时市场信号，微信追赶AI聊天热点，为AIGC从业者提供新分发渠道和工具集成机会。",
+      "link": "https://x.com/op7418/status/2035564154636087770",
+      "canonical_link": "https://x.com/op7418/status/2035564154636087770",
+      "published_at": "2026-03-22T11:48:08.000+08:00",
+      "score": 7,
+      "tags": [
+        "tooling",
+        "business"
+      ]
+    },
+    {
       "id": "68d9cdcf659759b0",
       "source_id": "aiindie",
       "source_name": "AI Indie Hacker Signals",
@@ -82,6 +189,23 @@
         "build",
         "launch",
         "workflow"
+      ]
+    },
+    {
+      "id": "4d5b1cf4adf84bcb",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@lexx_aura",
+      "title": "Seedance 2.0：Vegito vs Gogeta融合对决动画",
+      "blurb": "Seedance 2.0生成龙珠战士史诗战斗视频，日渐逼真效果。附完整动画演示，讨论动画师前景。突出工具快速进步。 最新动画AI工具实战信号，展示战斗动态生成能力，预示行业变革。",
+      "link": "https://x.com/lexx_aura/status/2035532439250952595",
+      "canonical_link": "https://x.com/lexx_aura/status/2035532439250952595",
+      "published_at": "2026-03-22T09:42:06.000+08:00",
+      "score": 8.5,
+      "tags": [
+        "tooling"
       ]
     },
     {
@@ -122,6 +246,59 @@
       ]
     },
     {
+      "id": "1ae36d1a5ccecfe6",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@egeberkina",
+      "title": "图像转3D Q版手办工作流与提示",
+      "blurb": "演示上传任意角色图像，使用特定提示转化为3D Q版手办。从游戏人物到名人皆适用。展示多例转化效果，强调简单高效的工作流。 Image-to-3D风格转换技巧，扩展创作者角色设计与可爱化表达可能性。",
+      "link": "https://x.com/egeberkina/status/2035467087250923771",
+      "canonical_link": "https://x.com/egeberkina/status/2035467087250923771",
+      "published_at": "2026-03-22T05:22:25.000+08:00",
+      "score": 8,
+      "tags": [
+        "workflow"
+      ]
+    },
+    {
+      "id": "0a29d83224e98974",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@Artedeingenio",
+      "title": "Midjourney卡通风格与Grok Imagine结合的创意展示",
+      "blurb": "展示Midjourney卡通风格图像导入Grok Imagine后的惊人效果，视频演示多种疯狂变体。突出工具间风格迁移的潜力，无需详细提示即可生成高质量动画。强调混合工作流在AI艺术中的创新应用。 揭示模型间风格兼容性，为创作者打开跨工具实验新路径，加速迭代创意。",
+      "link": "https://x.com/Artedeingenio/status/2035465751964926136",
+      "canonical_link": "https://x.com/Artedeingenio/status/2035465751964926136",
+      "published_at": "2026-03-22T05:17:07.000+08:00",
+      "score": 8,
+      "tags": [
+        "showcase",
+        "model-comparison",
+        "tooling"
+      ]
+    },
+    {
+      "id": "b936d3a77cb3adea",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@javilopen",
+      "title": "AI生成的沉浸式视频游戏，让人连续玩10小时",
+      "blurb": "Javi Lopez分享了一个AI生成的视频游戏演示视频，展示了高度逼真的游戏画面和流畅互动。他表示这个游戏让他能够直玩10小时，突出AI视频工具在动态内容生成上的突破性进展。视频包含丰富的环境细节和动作捕捉，代表视觉生成技术的最新水准。 创作者可从中观察AI视频游戏生成的潜力，预示未来工具向互动娱乐领域的扩展，对视觉工具观察者极具参考价值。",
+      "link": "https://x.com/javilopen/status/2035464429861548149",
+      "canonical_link": "https://x.com/javilopen/status/2035464429861548149",
+      "published_at": "2026-03-22T05:11:51.000+08:00",
+      "score": 8,
+      "tags": [
+        "showcase"
+      ]
+    },
+    {
       "id": "e831056477ec7087",
       "source_id": "aiindie",
       "source_name": "AI Indie Hacker Signals",
@@ -138,6 +315,23 @@
         "workflow",
         "tooling",
         "automation"
+      ]
+    },
+    {
+      "id": "1576b08008f2299b",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@bananababydoll",
+      "title": "Nano Banana 2：地下车库深夜闪光镜像提示",
+      "blurb": "使用Nano Banana 2 JSON提示生成地下停车库深夜场景，模拟iPhone 17 Pro Max闪光自拍反射。详细定义姿势拱背、表情、服装张力及混合照明，实现私密张力氛围。包含手持真实感和皮肤色调控制，高度还原真实摄影。 展示如何通过JSON实现复杂环境与闪光效果的融合，帮助创作者构建叙事性写实图像。",
+      "link": "https://x.com/bananababydoll/status/2035454651030749192",
+      "canonical_link": "https://x.com/bananababydoll/status/2035454651030749192",
+      "published_at": "2026-03-22T04:33:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "prompting"
       ]
     },
     {
@@ -231,6 +425,24 @@
       ]
     },
     {
+      "id": "f0124808e0970ece",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@javilopen",
+      "title": "Magnific AI视频upscale实用技巧",
+      "blurb": "针对Magnific AI的precision upscale视频测试，Javi建议使用Z+鼠标滚轮缩放查看细节。推荐Strength 60%设置，以保留原始视频纹理，避免过度HDR效果。在社交平台难以辨别差异时，此法尤为实用。 作为Magnific创始人分享的工具优化insights，帮助创作者提升视频质量，适用于AIGC工作流。",
+      "link": "https://x.com/javilopen/status/2035418593878233329",
+      "canonical_link": "https://x.com/javilopen/status/2035418593878233329",
+      "published_at": "2026-03-22T02:09:43.000+08:00",
+      "score": 7,
+      "tags": [
+        "tooling",
+        "workflow"
+      ]
+    },
+    {
       "id": "af3c21a72d9c66e9",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -265,6 +477,23 @@
         "AI",
         "工具链",
         "开发框架"
+      ]
+    },
+    {
+      "id": "79fd18494a5782a4",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@CharaspowerAI",
+      "title": "动物摄影发光眼睛烟雾特效提示分享",
+      "blurb": "公开动物摄影提示模板：动物带发光眼睛、烟雾光效，全身正面微距，高解析毛皮纹理与专业调色。附多动物示例图像。适用于生成梦幻写实动物肖像。 简单高效的提示结构，便于替换动物类型，快速产出高质量特效摄影作品。",
+      "link": "https://x.com/CharaspowerAI/status/2035408612965716261",
+      "canonical_link": "https://x.com/CharaspowerAI/status/2035408612965716261",
+      "published_at": "2026-03-22T01:30:04.000+08:00",
+      "score": 8,
+      "tags": [
+        "prompting"
       ]
     },
     {
@@ -366,14 +595,15 @@
       "source_type": "artist",
       "platform": "X",
       "author": "@umesh_ai",
-      "title": "Letterforms - 5：Nano Banana Pro 字母形式展示",
-      "blurb": "使用 Nano Banana Pro 在 LeonardoAi 生成的字母形式艺术系列，五张图像展示创意排版和抽象美学。突出工具组合在视觉实验中的应用，无额外提示细节。 演示 Nano Banana Pro 在排版艺术中的潜力，启发创作者探索模型在非人物领域的表现。",
+      "title": "Letterforms - 5：Nano Banana Pro x LeonardoAi",
+      "blurb": "Umesh分享Letterforms系列第5组作品，四张图像展示独特字母形式设计，使用Nano Banana Pro模型在LeonardoAi生成。作品美学强烈，融合抽象艺术与AI技术。该帖子获123赞，凸显新兴工具潜力。 创作者关注Nano Banana Pro在LeonardoAi的表现，提供独特风格生成。该系列实验展示持续迭代价值，具市场信号。",
       "link": "https://x.com/umesh_ai/status/2035398348828729378",
       "canonical_link": "https://x.com/umesh_ai/status/2035398348828729378",
       "published_at": "2026-03-22T00:49:16.000+08:00",
-      "score": 7,
+      "score": 8,
       "tags": [
-        "showcase"
+        "showcase",
+        "tooling"
       ]
     },
     {
@@ -955,15 +1185,14 @@
       "source_type": "artist",
       "platform": "X",
       "author": "@bananababydoll",
-      "title": "Nano Banana 2电梯场景真实iPhone摄影JSON提示",
-      "blurb": "详细JSON配置模拟iPhone 17 Pro夜间闪光摄影，描绘亚洲女性在豪华酒店走廊的挑逗姿势。包括相机元数据、场景细节、主体服装和真实主义瑕疵如毛孔、微抖动。强调硬光高光和深影对比，营造亲密写实氛围。 提供高端手机摄影模拟参数，助力时尚和叙事图像生成，桥接AI与真实摄影。",
+      "title": "Nano Banana 2：酒店电梯闪光挑逗提示",
+      "blurb": "Nano Banana 2 JSON提示再现豪华酒店走廊电梯外深夜闪光场景，模拟iPhone 17 Pro 48mm镜头。精确描述亚洲女性体型、紧身服装张力、挑逗表情及硬阴影效果。融入皮肤毛孔、闪光溢出等真实瑕疵，提升专业摄影感。 精细的真实感参数和姿势控制方法，为创作者提供生成高品质夜景人物图像的模板。",
       "link": "https://x.com/bananababydoll/status/2035363802485584267",
       "canonical_link": "https://x.com/bananababydoll/status/2035363802485584267",
       "published_at": "2026-03-21T22:32:00.000+08:00",
-      "score": 8,
+      "score": 9,
       "tags": [
-        "prompting",
-        "style"
+        "prompting"
       ]
     },
     {
@@ -3825,7 +4054,7 @@
       "platform": "TLDR AI",
       "author": "Cursor",
       "title": "Cursor Composer 2",
-      "blurb": "Cursor Composer 2 提供前沿编码性能，低价令牌吸引开发者。",
+      "blurb": "Cursor Composer 2 提供前沿编码性能，显著降低 token 成本。",
       "link": "https://cursor.com/blog/composer-2",
       "canonical_link": "https://cursor.com/blog/composer-2",
       "published_at": "2026-03-20T20:00:00.000+08:00",
@@ -3835,12 +4064,12 @@
         "model-release"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-20",
-      "source_signal": "TLDR AI 头条，Cursor 发布前沿编码模型，降低 token 成本。",
-      "recommendation": "Cursor Composer 2 提供前沿编码性能，低价令牌吸引开发者。",
-      "summary": "Cursor Composer 2 是高性能编码模型，显著降低令牌定价。支持复杂代码生成。标志编码 AI 进步。",
+      "source_signal": "TLDR AI 头条，Cursor 发布前沿编码模型。",
+      "recommendation": "Cursor Composer 2 提供前沿编码性能，显著降低 token 成本。",
+      "summary": "Cursor 推出 Composer 2 编码模型，性能达前沿水平，定价大幅降低。优化开发者生产力，支持复杂代码生成。",
       "takeaways": [
-        "前沿性能低成本",
-        "优化开发者生产力"
+        "token 定价大幅降低",
+        "前沿编码能力提升"
       ],
       "topic": "model-release"
     },
@@ -3852,7 +4081,7 @@
       "platform": "TLDR AI",
       "author": "OpenAI",
       "title": "OpenAI to Acquire Astral",
-      "blurb": "OpenAI 收购 Astral 强化 AI 辅助软件开发生态。",
+      "blurb": "OpenAI 收购 Astral，强化 Codex 的 AI 辅助软件开发。",
       "link": "https://openai.com/index/openai-to-acquire-astral",
       "canonical_link": "https://openai.com/index/openai-to-acquire-astral",
       "published_at": "2026-03-20T20:00:00.000+08:00",
@@ -3862,12 +4091,12 @@
         "business"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-20",
-      "source_signal": "TLDR AI 头条收购新闻，OpenAI 整合 Python 工具扩展 Codex。",
-      "recommendation": "OpenAI 收购 Astral 强化 AI 辅助软件开发生态。",
-      "summary": "OpenAI 将收购 Astral，融入流行 Python 工具至 Codex。扩展 AI 软件开发能力。战略布局开发者工具。",
+      "source_signal": "TLDR AI 重大商业新闻，OpenAI 收购 Python 工具公司。",
+      "recommendation": "OpenAI 收购 Astral，强化 Codex 的 AI 辅助软件开发。",
+      "summary": "OpenAI 宣布收购 Astral，将流行 Python 工具集成到 Codex。扩展 AI 软件开发能力，推动生态融合。",
       "takeaways": [
         "增强 Codex Python 支持",
-        "加速 AI 编码工具整合"
+        "加速 AI 开发工具链"
       ],
       "topic": "business"
     },
@@ -3960,24 +4189,24 @@
       "platform": "TLDR AI",
       "author": "Perplexity",
       "title": "Perplexity launches Perplexity Health agent in US",
-      "blurb": "Perplexity Health 代理提供个性化健康洞察，美国上线。",
+      "blurb": "Perplexity Health 推出美国版健康代理，提供个性化营养睡眠助手。",
       "link": "https://testingcatalog.com/perplexity-launches-perplexity-health-agent-in-us",
       "canonical_link": "https://testingcatalog.com/perplexity-launches-perplexity-health-agent-in-us",
       "published_at": "2026-03-20T20:00:00.000+08:00",
       "score": 8,
       "tags": [
         "TLDR AI",
-        "agent"
+        "product"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-20",
-      "source_signal": "TLDR AI 产品发布，Perplexity Health 代理进入健康 AI 市场。",
-      "recommendation": "Perplexity Health 代理提供个性化健康洞察，美国上线。",
-      "summary": "Perplexity Health 在美国推出，专注营养睡眠等代理。整合用户数据个性化服务。扩展金融后健康领域。",
+      "source_signal": "TLDR AI 产品发布，Perplexity 进军健康 AI。",
+      "recommendation": "Perplexity Health 推出美国版健康代理，提供个性化营养睡眠助手。",
+      "summary": "Perplexity 在美推出 Health 代理，集成用户数据和专业 AI。类似金融模块，强调自定义中心和代理服务。",
       "takeaways": [
-        "定制健康 AI 代理",
-        "用户数据驱动个性化"
+        "个性化健康洞察",
+        "竞争消费者健康 AI 市场"
       ],
-      "topic": "agent"
+      "topic": "product"
     },
     {
       "id": "9a26ffb299e769e0",
@@ -18805,226 +19034,6 @@
         "AI",
         "Agents",
         "记忆系统"
-      ]
-    },
-    {
-      "id": "47d3d4a8ebe779cd",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@SimonHoiberg",
-      "title": "OpenClaw最佳模型推荐",
-      "blurb": "推荐Opus 4.6、GPT 5.2/5.4以获最佳体验，低端模型易bug。强调模型选择决定工具效果。 实用工具优化技巧，避免常见坑。",
-      "link": "https://x.com/SimonHoiberg/status/2033196407817949644",
-      "canonical_link": "https://x.com/SimonHoiberg/status/2033196407817949644",
-      "published_at": "2026-03-15T22:59:33.000+08:00",
-      "score": 7,
-      "tags": [
-        "AI",
-        "工具链"
-      ]
-    },
-    {
-      "id": "45d1b21fc92f7c15",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@GoSailGlobal",
-      "title": "VibeLab云端直播编码平台设计思路值得学习",
-      "blurb": "郭宇上线VibeLab，云沙箱支持Claude Code/Codex等agent直播编码，观众共享终端/网页互动。快照保存登录状态/GitHub集成，避免传统直播单向观看。 创新AI vibe coding模式，提升社区参与；独立开发者可复制构建互动工具，抓住直播+Agent商业机会。",
-      "link": "https://x.com/GoSailGlobal/status/2033195913330753551",
-      "canonical_link": "https://x.com/GoSailGlobal/status/2033195913330753551",
-      "published_at": "2026-03-15T22:57:35.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "独立开发",
-        "工具链"
-      ]
-    },
-    {
-      "id": "000dbaa5244afe48",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@SimonHoiberg",
-      "title": "新AI模型让OpenClaw体验上瘾，成本痛点明显",
-      "blurb": "新模型如GPT-5.4太强，回不去旧版；token计费高企。持续升级多层模型系统。 AI工具链前沿使用心得，前瞻模型迭代风险与收益。",
-      "link": "https://x.com/SimonHoiberg/status/2033193471205355679",
-      "canonical_link": "https://x.com/SimonHoiberg/status/2033193471205355679",
-      "published_at": "2026-03-15T22:47:53.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链"
-      ]
-    },
-    {
-      "id": "b1e492c2b47499bc",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@vista8",
-      "title": "AI Agent专用网站发布工具 here.now",
-      "blurb": "通过npx安装官方Skill，支持免费创建500站、10G空间、大文件上传、自定义域名。匿名发布网址一天有效。 实战工具链，提升Agent工作流效率，低成本部署原型。",
-      "link": "https://x.com/vista8/status/2033192759054733536",
-      "canonical_link": "https://x.com/vista8/status/2033192759054733536",
-      "published_at": "2026-03-15T22:45:03.000+08:00",
-      "score": 8,
-      "tags": [
-        "工具链",
-        "AI Agent"
-      ]
-    },
-    {
-      "id": "740b463cb5d255a9",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@emollick",
-      "title": "人类将退守私人空间，公共网络成机器人荒原",
-      "blurb": "随着AI生成内容泛滥，人类将退到私人Discord和聊天室，警惕机器人入侵。公共网络将沦为机器人间无休止对话的荒原，充满对评论‘重载部分’的无谓分析。验证人类账户也无法阻止机器人代写。 前瞻性判断AI内容洪水对社交网络的影响，为SaaS和增长从业者提供机会：开发私人社区工具或反机器人检测系统。",
-      "link": "https://x.com/emollick/status/2033190768291033538",
-      "canonical_link": "https://x.com/emollick/status/2033190768291033538",
-      "published_at": "2026-03-15T22:37:08.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "增长",
-        "行业判断"
-      ]
-    },
-    {
-      "id": "8292bde362ab914a",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@Svwang1",
-      "title": "“不做什么”行为清单优先于“做什么”",
-      "blurb": "饮食清单：戒烟酒、不喝可乐果汁、不吃甜食糕点、少外卖、晚饭后3小时空腹；不确定时默认少吃。强调基础执行后谈营养，避免胰岛素抵抗导致脑雾疲劳。 高可执行个人管理框架，对AI创业者防烧尽风险；信息密度高，原创经验复盘。",
-      "link": "https://x.com/Svwang1/status/2033190185480147363",
-      "canonical_link": "https://x.com/Svwang1/status/2033190185480147363",
-      "published_at": "2026-03-15T22:34:49.000+08:00",
-      "score": 8,
-      "tags": [
-        "创业",
-        "增长"
-      ]
-    },
-    {
-      "id": "97968b5fddf1d3b6",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@lxfater",
-      "title": "Skill应承载隐秘领域知识而非变APP",
-      "blurb": "Skill理想是封装不愿外传的门道知识，但现实中吃掉CLI内容，变成新APP。强调CLI优先设计。 工具链执行细节判断，风险提示Skill泛化滥用。",
-      "link": "https://x.com/lxfater/status/2033189666770526210",
-      "canonical_link": "https://x.com/lxfater/status/2033189666770526210",
-      "published_at": "2026-03-15T22:32:46.000+08:00",
-      "score": 6,
-      "tags": [
-        "AI",
-        "工具链",
-        "Skill"
-      ]
-    },
-    {
-      "id": "dd62738053a3458f",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@abskoop",
-      "title": "U-Claw虾盘：OpenClaw做成U盘版",
-      "blurb": "教你将开源AI助手框架OpenClaw打包成U盘，插上任意电脑双击安装，专为中国用户打造。提供TG教程链接，便携部署本地AI工具。解决硬件依赖和访问限制问题。 实战工具链优化，提供高可执行的本地AI部署方案，中国用户痛点解决，抓住开源框架生态机会。",
-      "link": "https://x.com/abskoop/status/2033187662841209211",
-      "canonical_link": "https://x.com/abskoop/status/2033187662841209211",
-      "published_at": "2026-03-15T22:24:48.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链",
-        "独立开发"
-      ]
-    },
-    {
-      "id": "e422cb2fbbe97ad3",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@vista8",
-      "title": "Cmux：免费原生macOS终端，支持Agent通知",
-      "blurb": "基于Ghostty构建，支持垂直标签、分屏、Agent任务提醒、内置浏览器，开箱即用。 开发者生产力工具，海外流行，优化终端工作流。",
-      "link": "https://x.com/vista8/status/2033187394326045170",
-      "canonical_link": "https://x.com/vista8/status/2033187394326045170",
-      "published_at": "2026-03-15T22:23:44.000+08:00",
-      "score": 7,
-      "tags": [
-        "工具链",
-        "独立开发"
-      ]
-    },
-    {
-      "id": "5b82bf297de956f3",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@stark_nico99",
-      "title": "YouMind线下活动，用户出圈",
-      "blurb": "Bonjour线下展板记录YouMind成长，多用户上手体验Aha moment，嗓子讲哑仍络绎不绝，遇真实用户增强信服力。 产品增长实战复盘，线下验证用户价值，显示出圈势头，为AI出海增长提供借鉴。",
-      "link": "https://x.com/stark_nico99/status/2033186713615630791",
-      "canonical_link": "https://x.com/stark_nico99/status/2033186713615630791",
-      "published_at": "2026-03-15T22:21:01.000+08:00",
-      "score": 7,
-      "tags": [
-        "AI",
-        "增长",
-        "出海"
-      ]
-    },
-    {
-      "id": "18c22ccd99906e9c",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@OfficialLoganK",
-      "title": "Gemini API tier降级问题因startup credits变更，已启动回滚",
-      "blurb": "周五变更影响startup credits用户，导致tier从3降到1，引发429错误。回滚已于昨晚启动，预计16小时内完成tier恢复。将发布post mortem报告。开发者反馈众多。 揭示Google AI API产品稳定性问题及快速响应机制，startup开发者需警惕credits相关变更风险。",
-      "link": "https://x.com/OfficialLoganK/status/2033185457756848160",
-      "canonical_link": "https://x.com/OfficialLoganK/status/2033185457756848160",
-      "published_at": "2026-03-15T22:16:02.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI工具链"
-      ]
-    },
-    {
-      "id": "94be07d61840f69f",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@bananababydoll",
-      "title": "Nano Banana Pro 夜店后巷 iPhone 闪光摄影 JSON 提示",
-      "blurb": "分享了 Nano Banana Pro 的详细 JSON 提示，生成 iPhone 17 Pro 风格的夜生活摄影作品。提示精确定义相机镜头、人物体型与表情、场景光线、构图瑕疵和服装细节，强调闪光高光与动态模糊。图像展现出强烈的真实感和危险魅力。 创作者可借鉴 JSON 结构精细控制 photorealistic 人物与环境互动，提升夜间摄影风格的真实度与叙事张力。",
-      "link": "https://x.com/bananababydoll/status/2033184442068697589",
-      "canonical_link": "https://x.com/bananababydoll/status/2033184442068697589",
-      "published_at": "2026-03-15T22:12:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "prompting",
-        "tooling"
       ]
     }
   ]
