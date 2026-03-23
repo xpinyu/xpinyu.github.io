@@ -30,7 +30,7 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { font-size: 16px; }
+  html { font-size: 16.5px; }
 
   body {
     font-family: var(--sans);
@@ -62,7 +62,7 @@
 
   .identity h1 {
     font-family: var(--serif);
-    font-size: 2.8rem;
+    font-size: 2.72rem;
     font-weight: 400;
     letter-spacing: 0.01em;
     margin-bottom: 10px;
@@ -75,7 +75,7 @@
   .identity p {
     font-family: var(--serif);
     font-style: italic;
-    font-size: 0.85rem;
+    font-size: 0.86rem;
     color: var(--text-3);
     font-weight: 400;
     letter-spacing: 0.03em;
@@ -99,7 +99,7 @@
     justify-content: center;
     padding: 2px 0;
     color: var(--text-3);
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     font-weight: 500;
     text-decoration: none;
     letter-spacing: 0.02em;
@@ -108,6 +108,18 @@
 
   .filter-chip:hover {
     color: var(--text-2);
+  }
+
+  .filter-chip-external {
+    gap: 3px;
+  }
+
+  .filter-chip-external .external-mark {
+    font-size: 0.72em;
+    line-height: 1;
+    color: currentColor;
+    opacity: 0.52;
+    transform: translateY(-0.08em);
   }
 
   .filter-chip.is-active {
@@ -131,7 +143,8 @@
     background: rgba(27, 63, 139, 0.05);
     border: 1px solid rgba(27, 63, 139, 0.15);
     color: var(--text-2);
-    font-size: 0.73rem;
+    font-size: 0.74rem;
+    line-height: 1.58;
   }
 
   .news-view {
@@ -199,7 +212,18 @@
     justify-content: flex-start;
     align-items: center;
     gap: 8px;
-    margin-bottom: 7px;
+    margin-bottom: 8px;
+  }
+
+  .feed-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 8px 16px;
+  }
+
+  .feed-heading .feed-title {
+    min-width: 0;
   }
 
   .source-pill {
@@ -245,16 +269,19 @@
     color: var(--text-3);
     white-space: nowrap;
     flex-shrink: 0;
-    margin-left: auto;
+    margin-left: 0;
+    line-height: 1.3;
+    padding-top: 0.22em;
+    text-align: right;
   }
 
   .feed-meta {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    font-size: 0.66rem;
+    font-size: 0.67rem;
     color: var(--text-3);
-    margin-top: 5px;
+    margin-top: 4px;
     margin-bottom: 0;
   }
 
@@ -262,7 +289,7 @@
     font-family: var(--serif);
     font-size: 1rem;
     font-weight: 500;
-    line-height: 1.32;
+    line-height: 1.34;
     letter-spacing: 0.005em;
   }
 
@@ -273,9 +300,9 @@
   .feed-blurb {
     margin-top: 6px;
     width: 100%;
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     color: var(--text-2);
-    line-height: 1.62;
+    line-height: 1.64;
     display: -webkit-box;
     line-clamp: 3;
     -webkit-line-clamp: 3;
@@ -286,7 +313,7 @@
   .feed-link {
     display: inline-block;
     margin-top: 7px;
-    font-size: 0.66rem;
+    font-size: 0.67rem;
     color: var(--accent);
     letter-spacing: 0.02em;
   }
@@ -294,7 +321,8 @@
   .empty-state {
     padding: 36px 0;
     color: var(--text-2);
-    font-size: 0.77rem;
+    font-size: 0.8rem;
+    line-height: 1.62;
   }
 
   .pagination {
@@ -395,7 +423,7 @@
 
   .article-title {
     font-family: var(--serif);
-    font-size: 1.05rem;
+    font-size: 1.06rem;
     font-weight: 500;
     line-height: 1.4;
     letter-spacing: 0.005em;
@@ -409,16 +437,16 @@
   }
 
   .article-desc {
-    font-size: 0.78rem;
+    font-size: 0.79rem;
     color: var(--text-3);
     line-height: 1.6;
     margin-top: 5px;
   }
 
   .article-detail {
-    font-size: 0.75rem;
+    font-size: 0.76rem;
     color: var(--text-2);
-    line-height: 1.6;
+    line-height: 1.63;
     display: grid;
     grid-template-rows: 0fr;
     opacity: 0;
@@ -481,7 +509,7 @@
     }
 
     .identity h1 {
-      font-size: 2.45rem;
+      font-size: 2.4rem;
     }
 
     .filter-nav {
@@ -491,6 +519,17 @@
     .feed-card {
       margin: 0 -8px;
       padding: 14px 8px 16px;
+    }
+
+    .feed-heading {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+
+    .feed-time {
+      justify-self: start;
+      text-align: left;
+      padding-top: 0;
     }
 
     .article-header {
@@ -508,13 +547,17 @@
     <p>Signal over consensus.</p>
   </div>
 
-  <nav class="filter-nav" id="filters" aria-label="Browse content">
+  <nav class="filter-nav" id="filters" aria-label="Browse content and channels">
     <a href="/" class="filter-chip" data-filter="news">News</a>
     <a href="?filter=voices" class="filter-chip" data-filter="voices">Voices</a>
     <a href="?filter=builders" class="filter-chip" data-filter="builders">Builders</a>
     <a href="?filter=art" class="filter-chip" data-filter="art">Art</a>
     <a href="?filter=paper" class="filter-chip" data-filter="paper">Paper</a>
     <a href="?filter=essays" class="filter-chip" data-filter="essays">Essays</a>
+    <a href="https://tube.pinyu.ai/" class="filter-chip filter-chip-external" target="_blank" rel="noopener noreferrer" aria-label="Tube (opens in a new tab)">
+      <span>Tube</span>
+      <span class="external-mark" aria-hidden="true">↗</span>
+    </a>
   </nav>
 
   <section class="news-view" id="news-view" aria-live="polite">
@@ -820,7 +863,7 @@
 
 <noscript>
   <div style="max-width:640px;margin:0 auto;padding:0 24px 48px;color:#5C5349;font-size:0.75rem;">
-    External channels need JavaScript to load. Essays remain available without it.
+    Dynamic channels need JavaScript to load. Essays and Tube remain available without it.
   </div>
 </noscript>
 
@@ -990,13 +1033,13 @@
     return `
       <li class="feed-item">
         <a class="feed-card" href="${escapeAttribute(href)}" target="_blank" rel="noopener noreferrer">
-          <div class="feed-topline">
-            ${pillLabel ? `<span class="${pillClass}">${escapeHtml(pillLabel)}</span>` : ""}
+          ${pillLabel ? `<div class="feed-topline"><span class="${pillClass}">${escapeHtml(pillLabel)}</span></div>` : ""}
+          <div class="feed-heading">
+            <h2 class="feed-title">
+              ${escapeHtml(item && item.title ? item.title : "Untitled")}
+            </h2>
             ${item && item.published_at ? `<span class="feed-time">${escapeHtml(formatTime(item.published_at))} HKT</span>` : ""}
           </div>
-          <h2 class="feed-title">
-            ${escapeHtml(item && item.title ? item.title : "Untitled")}
-          </h2>
           ${metaParts.length ? `<div class="feed-meta">${metaParts.map(escapeHtml).join(" · ")}</div>` : ""}
           ${item && item.blurb ? `<p class="feed-blurb">${escapeHtml(item.blurb)}</p>` : ""}
           <span class="feed-link">Open link →</span>
