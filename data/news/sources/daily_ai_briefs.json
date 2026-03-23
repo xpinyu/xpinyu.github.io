@@ -4,254 +4,200 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-03-22T13:49:12.543+08:00",
-    "item_count": 9,
+    "updated_at": "2026-03-23T14:06:50.250+08:00",
+    "item_count": 7,
     "window_start": "2026-03-20T00:00:00.000Z",
-    "window_end": "2026-03-22T05:49:12.543Z"
+    "window_end": "2026-03-23T06:06:50.250Z"
   },
   "items": [
     {
-      "id": "09470b6b285e54b7",
+      "id": "8e2a809abb610578",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "tinygrad.org",
-      "title": "Tinybox – Offline AI device 120B parameters",
-      "blurb": "Tinybox 是一款支持 120B 参数模型的离线 AI 设备，极大降低了对云端的依赖。",
-      "link": "https://tinygrad.org/",
-      "canonical_link": "https://tinygrad.org/",
-      "published_at": "2026-03-22T13:49:12.543+08:00",
+      "author": "danveloper",
+      "title": "Flash-MoE: Running a 397B Parameter Model on a Laptop",
+      "blurb": "Flash-MoE 实现了在笔记本上运行 397B 参数模型的重大突破，极大降低了大型模型部署门槛。值得开发者关注其高效推理技术。",
+      "link": "https://github.com/danveloper/flash-moe",
+      "canonical_link": "https://github.com/danveloper/flash-moe",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
       "score": 9,
       "tags": [
         "Hacker News",
         "infra"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Hacker News 首页高分热议（411 points），展示离线 AI 硬件基础设施进展。",
-      "recommendation": "Tinybox 是一款支持 120B 参数模型的离线 AI 设备，极大降低了对云端的依赖。",
-      "summary": "Tinybox 由 tinygrad 推出，支持运行大型 AI 模型的消费级硬件。设备优化了本地推理性能，适用于高参数量模型。社区反馈热烈，讨论聚焦硬件可及性和开源潜力。",
+      "source_signal": "Top HN story with 332 points and 112 comments, highlighting breakthrough in efficient inference for massive MoE models on consumer hardware.",
+      "recommendation": "Flash-MoE 实现了在笔记本上运行 397B 参数模型的重大突破，极大降低了大型模型部署门槛。值得开发者关注其高效推理技术。",
+      "summary": "该项目通过 Flash-MoE 技术，在笔记本电脑上运行 397B 参数的混合专家模型（MoE）。它优化了内存和计算资源，实现高性能本地推理。适用于资源受限环境下的 AI 应用开发。",
       "takeaways": [
-        "支持 120B 参数离线运行，推动边缘 AI 普及",
-        "tinygrad 开源框架助力高效部署"
+        "支持超大规模 MoE 模型的笔记本级推理",
+        "显著提升本地部署可行性，降低云依赖"
       ],
       "topic": "infra"
     },
     {
-      "id": "ad614708785665fe",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "OpenAI",
-      "title": "OpenAI to Acquire Astral",
-      "blurb": "OpenAI 收购 Astral，强化 Codex 的 AI 辅助软件开发。",
-      "link": "https://openai.com/index/openai-to-acquire-astral",
-      "canonical_link": "https://openai.com/index/openai-to-acquire-astral",
-      "published_at": "2026-03-20T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "TLDR AI",
-        "business"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-20",
-      "source_signal": "TLDR AI 重大商业新闻，OpenAI 收购 Python 工具公司。",
-      "recommendation": "OpenAI 收购 Astral，强化 Codex 的 AI 辅助软件开发。",
-      "summary": "OpenAI 宣布收购 Astral，将流行 Python 工具集成到 Codex。扩展 AI 软件开发能力，推动生态融合。",
-      "takeaways": [
-        "增强 Codex Python 支持",
-        "加速 AI 开发工具链"
-      ],
-      "topic": "business"
-    },
-    {
-      "id": "04eec5dff6f27d75",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Cursor",
-      "title": "Cursor Composer 2",
-      "blurb": "Cursor Composer 2 提供前沿编码性能，显著降低 token 成本。",
-      "link": "https://cursor.com/blog/composer-2",
-      "canonical_link": "https://cursor.com/blog/composer-2",
-      "published_at": "2026-03-20T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "TLDR AI",
-        "model-release"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-20",
-      "source_signal": "TLDR AI 头条，Cursor 发布前沿编码模型。",
-      "recommendation": "Cursor Composer 2 提供前沿编码性能，显著降低 token 成本。",
-      "summary": "Cursor 推出 Composer 2 编码模型，性能达前沿水平，定价大幅降低。优化开发者生产力，支持复杂代码生成。",
-      "takeaways": [
-        "token 定价大幅降低",
-        "前沿编码能力提升"
-      ],
-      "topic": "model-release"
-    },
-    {
-      "id": "41ce74ebeee4ec97",
+      "id": "3222e5e4f390cd42",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hugging Face Papers",
-      "author": "NVIDIA",
-      "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
-      "blurb": "Nemotron-Cascade 2 通过级联 RL 和多域蒸馏提升 LLM 后训练性能。",
-      "link": "https://arxiv.org/abs/2603.19220",
-      "canonical_link": "https://arxiv.org/abs/2603.19220",
-      "published_at": "2026-03-20T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hugging Face Papers",
-        "research"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-20",
-      "source_signal": "Hugging Face 日报高浏览论文，NVIDIA 发布后训练 LLM 新方法。",
-      "recommendation": "Nemotron-Cascade 2 通过级联 RL 和多域蒸馏提升 LLM 后训练性能。",
-      "summary": "论文提出 Cascade RL 和多域在策略蒸馏，用于后训练大型语言模型。方法在多任务上表现出色，提高泛化能力。NVIDIA 贡献显著，适用于生产级部署。",
-      "takeaways": [
-        "级联 RL 提升训练效率",
-        "多域蒸馏增强模型鲁棒性"
-      ],
-      "topic": "research"
-    },
-    {
-      "id": "b60c91abf665fa6b",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "University College London",
-      "title": "Memento-Skills: Let Agents Design Agents",
-      "blurb": "Memento-Skills 让 AI 代理自主设计其他代理，推动元代理研究。",
-      "link": "https://arxiv.org/abs/2603.18743",
-      "canonical_link": "https://arxiv.org/abs/2603.18743",
-      "published_at": "2026-03-20T20:00:00.000+08:00",
+      "author": "DeepMind",
+      "title": "A Subgoal-driven Framework for Improving Long-Horizon LLM Agents",
+      "blurb": "子目标驱动框架显著提升长时程 LLM 代理性能。推荐用于代理优化和实际部署。",
+      "link": "https://arxiv.org/abs/2603.19685",
+      "canonical_link": "https://arxiv.org/abs/2603.19685",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
       "score": 8,
       "tags": [
         "Hugging Face Papers",
         "agent"
       ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-20",
-      "source_signal": "Hugging Face 热门论文，探讨代理设计代理的新范式。",
-      "recommendation": "Memento-Skills 让 AI 代理自主设计其他代理，推动元代理研究。",
-      "summary": "研究引入 Memento-Skills 框架，让代理通过技能记忆设计新代理。实验显示代理可迭代优化自身架构。适用于复杂任务自动化。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "HF daily paper on LLM agent improvements, addressing key challenge in long-horizon planning.",
+      "recommendation": "子目标驱动框架显著提升长时程 LLM 代理性能。推荐用于代理优化和实际部署。",
+      "summary": "框架通过子目标分解改善 LLM 代理的长时程规划能力。引入动态子目标生成和验证机制，减少幻觉和偏差。在基准测试中表现优异。",
       "takeaways": [
-        "代理自设计提升自主性",
-        "技能记忆机制关键创新"
+        "子目标分解解决长时程规划难题",
+        "提升代理可靠性和效率"
       ],
       "topic": "agent"
     },
     {
-      "id": "cbcf5f6ebd9e1d0a",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Perplexity",
-      "title": "Perplexity launches Perplexity Health agent in US",
-      "blurb": "Perplexity Health 推出美国版健康代理，提供个性化营养睡眠助手。",
-      "link": "https://testingcatalog.com/perplexity-launches-perplexity-health-agent-in-us",
-      "canonical_link": "https://testingcatalog.com/perplexity-launches-perplexity-health-agent-in-us",
-      "published_at": "2026-03-20T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "product"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-20",
-      "source_signal": "TLDR AI 产品发布，Perplexity 进军健康 AI。",
-      "recommendation": "Perplexity Health 推出美国版健康代理，提供个性化营养睡眠助手。",
-      "summary": "Perplexity 在美推出 Health 代理，集成用户数据和专业 AI。类似金融模块，强调自定义中心和代理服务。",
-      "takeaways": [
-        "个性化健康洞察",
-        "竞争消费者健康 AI 市场"
-      ],
-      "topic": "product"
-    },
-    {
-      "id": "2dcd7e1dd3312320",
+      "id": "71076db6d77ed86f",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hugging Face Papers",
-      "author": "16 authors",
-      "title": "LVOmniBench: Pioneering Long Audio-Video Understanding Evaluation for Omnimodal LLMs",
-      "blurb": "LVOmniBench 是首个长音频视频理解基准，推动多模态 LLM 进步。",
-      "link": "https://arxiv.org/abs/2603.19217",
-      "canonical_link": "https://arxiv.org/abs/2603.19217",
-      "published_at": "2026-03-20T20:00:00.000+08:00",
+      "author": "3 authors",
+      "title": "WorldAgents: Can Foundation Image Models be Agents for 3D World Models?",
+      "blurb": "WorldAgents 将基础图像模型转化为 3D 世界代理，创新视觉代理范式。值得关注世界模型进展。",
+      "link": "https://arxiv.org/abs/2603.19708",
+      "canonical_link": "https://arxiv.org/abs/2603.19708",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "HF paper exploring image models as 3D agents, bridging vision and world modeling.",
+      "recommendation": "WorldAgents 将基础图像模型转化为 3D 世界代理，创新视觉代理范式。值得关注世界模型进展。",
+      "summary": "研究基础图像模型是否能作为 3D 世界模型的代理。提出 WorldAgents 方法，实现图像驱动的 3D 交互和规划。该框架在模拟环境中验证有效性。",
+      "takeaways": [
+        "图像模型向 3D 代理转型",
+        "推进视觉基础的世界模型"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "85e242c43ac608da",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "15 authors",
+      "title": "AgentDS Technical Report: Benchmarking the Future of Human-AI Collaboration in Domain-Specific Data Science",
+      "blurb": "AgentDS 基准评估人类-AI 在领域数据科学协作潜力。新基准推动代理基准标准化。",
+      "link": "https://arxiv.org/abs/2603.19005",
+      "canonical_link": "https://arxiv.org/abs/2603.19005",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
       "score": 7,
       "tags": [
         "Hugging Face Papers",
         "benchmark"
       ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-20",
-      "source_signal": "Hugging Face 基准论文，针对全模态 LLM 的长音频视频评估。",
-      "recommendation": "LVOmniBench 是首个长音频视频理解基准，推动多模态 LLM 进步。",
-      "summary": "LVOmniBench 评估全模态 LLM 在长序列音视频上的理解能力。包含多样任务，揭示模型局限。助力未来多模态研究。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "HF technical report introducing AgentDS benchmark for human-AI data science collaboration.",
+      "recommendation": "AgentDS 基准评估人类-AI 在领域数据科学协作潜力。新基准推动代理基准标准化。",
+      "summary": "技术报告发布 AgentDS 基准，针对领域特定数据科学的 人-AI 协作。包括多种任务和评估指标，帮助量化代理在专业场景的表现。",
       "takeaways": [
-        "填补长序列多模态评估空白",
-        "暴露 LLM 时序推理弱点"
+        "全新人类-AI 协作基准",
+        "聚焦数据科学领域应用"
       ],
       "topic": "benchmark"
     },
     {
-      "id": "9f71e815d51b6e38",
+      "id": "69802221c3e75c2e",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "sashiko.dev",
-      "title": "Sashiko: An agentic Linux kernel code review system",
-      "blurb": "Sashiko 使用 AI 代理自动审查 Linux 内核代码，提升开发效率和质量。",
-      "link": "https://sashiko.dev/",
-      "canonical_link": "https://sashiko.dev/",
-      "published_at": "2026-03-22T13:49:12.543+08:00",
+      "platform": "Hugging Face Papers",
+      "author": "8 authors",
+      "title": "Hyperagents",
+      "blurb": "Hyperagents 探讨超代理架构，推动多层代理系统发展。适用于复杂任务的 AI 代理研究。",
+      "link": "https://arxiv.org/abs/2603.19461",
+      "canonical_link": "https://arxiv.org/abs/2603.19461",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
       "score": 7,
       "tags": [
-        "Hacker News",
+        "Hugging Face Papers",
         "agent"
       ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Hacker News 新帖，介绍代理式内核代码审查工具，体现 AI 在系统开发中的应用。",
-      "recommendation": "Sashiko 使用 AI 代理自动审查 Linux 内核代码，提升开发效率和质量。",
-      "summary": "Sashiko 是一个开源的代理驱动 Linux 内核代码审查系统。利用 LLM 代理分析补丁、识别问题并建议修复。适用于内核开发者，减少手动审查负担。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "Daily HF paper highlighting hierarchical agent systems, key for advancing multi-level AI autonomy.",
+      "recommendation": "Hyperagents 探讨超代理架构，推动多层代理系统发展。适用于复杂任务的 AI 代理研究。",
+      "summary": "论文提出 Hyperagents 框架，用于构建分层代理系统。探讨代理间协作和控制机制，提升长时程任务性能。该方法在多代理环境中展现潜力。",
       "takeaways": [
-        "代理自动化内核审查流程",
-        "开源工具提升 Linux 开发安全性"
+        "分层代理提升复杂任务处理",
+        "强化代理协作与鲁棒性"
       ],
       "topic": "agent"
     },
     {
-      "id": "bac1f3c52f5fb2da",
+      "id": "4da3b597454a5945",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Allen AI",
-      "title": "MolmoPoint from AI2",
-      "blurb": "MolmoPoint 是开源 grounding 模型，附 36K GUI 数据集。",
-      "link": "https://allenai.org/blog/molmopoint",
-      "canonical_link": "https://allenai.org/blog/molmopoint",
-      "published_at": "2026-03-20T20:00:00.000+08:00",
+      "platform": "Hugging Face Papers",
+      "author": "Perception and LANguage Lab",
+      "title": "EgoForge: Goal-Directed Egocentric World Simulator",
+      "blurb": "EgoForge 构建目标导向的自中心世界模拟器，提升具身代理能力。适用于机器人和模拟研究。",
+      "link": "https://arxiv.org/abs/2603.20169",
+      "canonical_link": "https://arxiv.org/abs/2603.20169",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
       "score": 7,
       "tags": [
-        "TLDR AI",
-        "model-release"
+        "Hugging Face Papers",
+        "agent"
       ],
-      "source_page": "https://tldr.tech/ai/2026-03-20",
-      "source_signal": "TLDR AI 工程研究，AI2 开源 grounding 架构和数据集。",
-      "recommendation": "MolmoPoint 是开源 grounding 模型，附 36K GUI 数据集。",
-      "summary": "AI2 发布 MolmoPoint，三款模型支持 grounding、视频追踪和界面任务。开源 36K 图像 GUI 数据集，推动多模态研究。",
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "HF paper on egocentric world simulation, advancing embodied AI agents.",
+      "recommendation": "EgoForge 构建目标导向的自中心世界模拟器，提升具身代理能力。适用于机器人和模拟研究。",
+      "summary": "EgoForge 是目标导向的自中心世界模拟器，支持第一人称视角的动态环境模拟。整合多模态数据，实现精确预测和规划。",
       "takeaways": [
-        "新 grounding 架构",
-        "丰富 GUI 数据集"
+        "自中心视角世界模拟",
+        "增强具身代理目标达成"
       ],
-      "topic": "model-release"
+      "topic": "agent"
+    },
+    {
+      "id": "9d4a826b76c65d53",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Connor J. Davis",
+      "title": "Intuitions for Transformer Circuits",
+      "blurb": "文章直观解析 Transformer 电路机制，帮助理解模型内部工作原理。适合研究者和工程师深入学习可解释性 AI。",
+      "link": "https://connorjdavis.com/p/intuitions-for-transformer-circuits",
+      "canonical_link": "https://connorjdavis.com/p/intuitions-for-transformer-circuits",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "research"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN discussion with 40 points, providing intuitive explanations for transformer internals amid growing interest in mechanistic interpretability.",
+      "recommendation": "文章直观解析 Transformer 电路机制，帮助理解模型内部工作原理。适合研究者和工程师深入学习可解释性 AI。",
+      "summary": "作者分享对 Transformer 电路的直观理解，包括注意力机制和残差连接的作用。通过可视化和类比解释复杂行为。该文有助于提升对黑箱模型的洞察。",
+      "takeaways": [
+        "Transformer 电路的直观类比解释",
+        "提升模型可解释性和调试能力"
+      ],
+      "topic": "research"
     }
   ]
 }

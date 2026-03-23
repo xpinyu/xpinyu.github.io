@@ -1,10 +1,199 @@
 {
-  "updated_at": "2026-03-23T09:45:32.855+08:00",
+  "updated_at": "2026-03-23T14:06:50.250+08:00",
   "current_page": 1,
   "total_pages": 17,
   "page_size": 60,
   "total_items": 1000,
   "items": [
+    {
+      "id": "8e2a809abb610578",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "danveloper",
+      "title": "Flash-MoE: Running a 397B Parameter Model on a Laptop",
+      "blurb": "Flash-MoE 实现了在笔记本上运行 397B 参数模型的重大突破，极大降低了大型模型部署门槛。值得开发者关注其高效推理技术。",
+      "link": "https://github.com/danveloper/flash-moe",
+      "canonical_link": "https://github.com/danveloper/flash-moe",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 9,
+      "tags": [
+        "Hacker News",
+        "infra"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Top HN story with 332 points and 112 comments, highlighting breakthrough in efficient inference for massive MoE models on consumer hardware.",
+      "recommendation": "Flash-MoE 实现了在笔记本上运行 397B 参数模型的重大突破，极大降低了大型模型部署门槛。值得开发者关注其高效推理技术。",
+      "summary": "该项目通过 Flash-MoE 技术，在笔记本电脑上运行 397B 参数的混合专家模型（MoE）。它优化了内存和计算资源，实现高性能本地推理。适用于资源受限环境下的 AI 应用开发。",
+      "takeaways": [
+        "支持超大规模 MoE 模型的笔记本级推理",
+        "显著提升本地部署可行性，降低云依赖"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "3222e5e4f390cd42",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "DeepMind",
+      "title": "A Subgoal-driven Framework for Improving Long-Horizon LLM Agents",
+      "blurb": "子目标驱动框架显著提升长时程 LLM 代理性能。推荐用于代理优化和实际部署。",
+      "link": "https://arxiv.org/abs/2603.19685",
+      "canonical_link": "https://arxiv.org/abs/2603.19685",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "HF daily paper on LLM agent improvements, addressing key challenge in long-horizon planning.",
+      "recommendation": "子目标驱动框架显著提升长时程 LLM 代理性能。推荐用于代理优化和实际部署。",
+      "summary": "框架通过子目标分解改善 LLM 代理的长时程规划能力。引入动态子目标生成和验证机制，减少幻觉和偏差。在基准测试中表现优异。",
+      "takeaways": [
+        "子目标分解解决长时程规划难题",
+        "提升代理可靠性和效率"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "71076db6d77ed86f",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "3 authors",
+      "title": "WorldAgents: Can Foundation Image Models be Agents for 3D World Models?",
+      "blurb": "WorldAgents 将基础图像模型转化为 3D 世界代理，创新视觉代理范式。值得关注世界模型进展。",
+      "link": "https://arxiv.org/abs/2603.19708",
+      "canonical_link": "https://arxiv.org/abs/2603.19708",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "HF paper exploring image models as 3D agents, bridging vision and world modeling.",
+      "recommendation": "WorldAgents 将基础图像模型转化为 3D 世界代理，创新视觉代理范式。值得关注世界模型进展。",
+      "summary": "研究基础图像模型是否能作为 3D 世界模型的代理。提出 WorldAgents 方法，实现图像驱动的 3D 交互和规划。该框架在模拟环境中验证有效性。",
+      "takeaways": [
+        "图像模型向 3D 代理转型",
+        "推进视觉基础的世界模型"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "85e242c43ac608da",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "15 authors",
+      "title": "AgentDS Technical Report: Benchmarking the Future of Human-AI Collaboration in Domain-Specific Data Science",
+      "blurb": "AgentDS 基准评估人类-AI 在领域数据科学协作潜力。新基准推动代理基准标准化。",
+      "link": "https://arxiv.org/abs/2603.19005",
+      "canonical_link": "https://arxiv.org/abs/2603.19005",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 7,
+      "tags": [
+        "Hugging Face Papers",
+        "benchmark"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "HF technical report introducing AgentDS benchmark for human-AI data science collaboration.",
+      "recommendation": "AgentDS 基准评估人类-AI 在领域数据科学协作潜力。新基准推动代理基准标准化。",
+      "summary": "技术报告发布 AgentDS 基准，针对领域特定数据科学的 人-AI 协作。包括多种任务和评估指标，帮助量化代理在专业场景的表现。",
+      "takeaways": [
+        "全新人类-AI 协作基准",
+        "聚焦数据科学领域应用"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "4da3b597454a5945",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "Perception and LANguage Lab",
+      "title": "EgoForge: Goal-Directed Egocentric World Simulator",
+      "blurb": "EgoForge 构建目标导向的自中心世界模拟器，提升具身代理能力。适用于机器人和模拟研究。",
+      "link": "https://arxiv.org/abs/2603.20169",
+      "canonical_link": "https://arxiv.org/abs/2603.20169",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 7,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "HF paper on egocentric world simulation, advancing embodied AI agents.",
+      "recommendation": "EgoForge 构建目标导向的自中心世界模拟器，提升具身代理能力。适用于机器人和模拟研究。",
+      "summary": "EgoForge 是目标导向的自中心世界模拟器，支持第一人称视角的动态环境模拟。整合多模态数据，实现精确预测和规划。",
+      "takeaways": [
+        "自中心视角世界模拟",
+        "增强具身代理目标达成"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "69802221c3e75c2e",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "8 authors",
+      "title": "Hyperagents",
+      "blurb": "Hyperagents 探讨超代理架构，推动多层代理系统发展。适用于复杂任务的 AI 代理研究。",
+      "link": "https://arxiv.org/abs/2603.19461",
+      "canonical_link": "https://arxiv.org/abs/2603.19461",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 7,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "Daily HF paper highlighting hierarchical agent systems, key for advancing multi-level AI autonomy.",
+      "recommendation": "Hyperagents 探讨超代理架构，推动多层代理系统发展。适用于复杂任务的 AI 代理研究。",
+      "summary": "论文提出 Hyperagents 框架，用于构建分层代理系统。探讨代理间协作和控制机制，提升长时程任务性能。该方法在多代理环境中展现潜力。",
+      "takeaways": [
+        "分层代理提升复杂任务处理",
+        "强化代理协作与鲁棒性"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "9d4a826b76c65d53",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Connor J. Davis",
+      "title": "Intuitions for Transformer Circuits",
+      "blurb": "文章直观解析 Transformer 电路机制，帮助理解模型内部工作原理。适合研究者和工程师深入学习可解释性 AI。",
+      "link": "https://connorjdavis.com/p/intuitions-for-transformer-circuits",
+      "canonical_link": "https://connorjdavis.com/p/intuitions-for-transformer-circuits",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "research"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN discussion with 40 points, providing intuitive explanations for transformer internals amid growing interest in mechanistic interpretability.",
+      "recommendation": "文章直观解析 Transformer 电路机制，帮助理解模型内部工作原理。适合研究者和工程师深入学习可解释性 AI。",
+      "summary": "作者分享对 Transformer 电路的直观理解，包括注意力机制和残差连接的作用。通过可视化和类比解释复杂行为。该文有助于提升对黑箱模型的洞察。",
+      "takeaways": [
+        "Transformer 电路的直观类比解释",
+        "提升模型可解释性和调试能力"
+      ],
+      "topic": "research"
+    },
     {
       "id": "823f30f89b6d96ff",
       "source_id": "aiindie",
@@ -984,139 +1173,6 @@
         "AI",
         "工具链",
         "SaaS"
-      ]
-    },
-    {
-      "id": "a81fdb5058c67def",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@idoubicc",
-      "title": "微信 ClawBot 可调度多 Agent 如 Manus、Claude Code",
-      "blurb": "基于 ClawBot 接入原理，可扩展调度其他 Agent 前提是支持 ACP 协议或开放接口。Claude Code、Codex 等终端 Agent 已实现 ACP，通过桥接服务 WeClaw 即可在微信直接调用。微信开放是 Agent 互联第一步，期待厂商跟进。 预见 Agent 生态互联机会，强调 ACP 协议标准；实战价值高，可快速构建微信多 Agent 工作流。",
-      "link": "https://x.com/idoubicc/status/2035718678290088373",
-      "canonical_link": "https://x.com/idoubicc/status/2035718678290088373",
-      "published_at": "2026-03-22T22:02:09.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI",
-        "工具链",
-        "Agent",
-        "行业判断"
-      ]
-    },
-    {
-      "id": "4296a22a8910e6c0",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@SimplyAnnisa",
-      "title": "Seedance 2.0 企鹅雪地动画完整提示",
-      "blurb": "分享Seedance 2.0的12-15秒CGI企鹅在雪中挣扎动画提示。指定3D风格、情感叙事、低角度跟踪镜头、Pixar品质细节。视频捕捉忧郁可爱韧性氛围。 详细参数指导情感短视频生成，适用于Yapper平台创作者。",
-      "link": "https://x.com/SimplyAnnisa/status/2035718357278765242",
-      "canonical_link": "https://x.com/SimplyAnnisa/status/2035718357278765242",
-      "published_at": "2026-03-22T22:00:52.000+08:00",
-      "score": 8,
-      "tags": [
-        "prompting"
-      ]
-    },
-    {
-      "id": "7b1aff95bad6a285",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@jackfriks",
-      "title": "AI所谓杀死75/100业务仍维持或增长营收",
-      "blurb": "AI被夸大为杀死或使业务过时的多数案例，企业营收未降反升。变化缓慢而非突发。 行业判断，提醒勿恐慌传统业务；机会在于渐进转型而非颠覆",
-      "link": "https://x.com/jackfriks/status/2035718236549869627",
-      "canonical_link": "https://x.com/jackfriks/status/2035718236549869627",
-      "published_at": "2026-03-22T22:00:24.000+08:00",
-      "score": 6,
-      "tags": [
-        "AI",
-        "创业",
-        "行业判断"
-      ]
-    },
-    {
-      "id": "aa7910012078d2e5",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@danmartell",
-      "title": "优秀AI提示需具体上下文而非泛泛要求",
-      "blurb": "坏提示：给我营销想法。好提示：健身教练SaaS年收200万目标半年翻倍leads，给10个类似公司策略。上下文决定输出质量。 可执行技巧，提升AI工具链效率；适用于增长、产品开发日常",
-      "link": "https://x.com/danmartell/status/2035718198142660758",
-      "canonical_link": "https://x.com/danmartell/status/2035718198142660758",
-      "published_at": "2026-03-22T22:00:14.000+08:00",
-      "score": 7,
-      "tags": [
-        "AI",
-        "增长",
-        "工具链"
-      ]
-    },
-    {
-      "id": "f3a34b0de5050246",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@shao__meng",
-      "title": "Anthropic/OpenAI Top10办公Agent Skills推荐",
-      "blurb": "精选10个Skills覆盖Office套件、会议转录、协作写作等，附用途和链接。 系统化办公Agent工具清单，提高全员AI提效。",
-      "link": "https://x.com/shao__meng/status/2035718125417591128",
-      "canonical_link": "https://x.com/shao__meng/status/2035718125417591128",
-      "published_at": "2026-03-22T21:59:57.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链",
-        "增长"
-      ]
-    },
-    {
-      "id": "24c99490b9753402",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@XiaohuiAI666",
-      "title": "X起号3个月获9.5K粉丝4.2M浏览复盘",
-      "blurb": "分享账号从0起步3个月数据：9.5K粉丝、4.2M总浏览，继续冲刺5M浏览开通创作者收益。附图展示增长曲线。 实战增长数据复盘，信息密度高；为AI创业者提供X平台变现路径参考，揭示算法青睐规律。",
-      "link": "https://x.com/XiaohuiAI666/status/2035717664950423634",
-      "canonical_link": "https://x.com/XiaohuiAI666/status/2035717664950423634",
-      "published_at": "2026-03-22T21:58:07.000+08:00",
-      "score": 7,
-      "tags": [
-        "AI",
-        "增长",
-        "SaaS"
-      ]
-    },
-    {
-      "id": "ec26326ad3e8858f",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@kasong2048",
-      "title": "AI编程范式进入Harness Engineering，国内软件裁员潮将至",
-      "blurb": "AI Coding经历三范式变迁：辅助编程、Vibe Coding、Harness Engineering，后者强调程序员设计约束环境让Agent自主编码，不写一行代码。国内主流仍处范式2，预计1-2年后范式3普及，导致业务开发岗位大规模失业。缺粮效应将放大裁员冲击。 精准前瞻行业风险与机会，信息密度高，帮助开发者提前转型AI工程角色，避免失业潮。",
-      "link": "https://x.com/kasong2048/status/2035717036811432437",
-      "canonical_link": "https://x.com/kasong2048/status/2035717036811432437",
-      "published_at": "2026-03-22T21:55:38.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI",
-        "创业",
-        "独立开发",
-        "增长"
       ]
     }
   ]
