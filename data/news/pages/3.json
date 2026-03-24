@@ -1,10 +1,362 @@
 {
-  "updated_at": "2026-03-24T14:58:45.250+08:00",
+  "updated_at": "2026-03-24T16:46:40.704+08:00",
   "current_page": 3,
   "total_pages": 17,
   "page_size": 60,
   "total_items": 1000,
   "items": [
+    {
+      "id": "a54d6ac549bedc84",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@jeremyphoward",
+      "title": "Opus & Sonnet 4.6模型代理行为过度主动，不宜人类主导场景",
+      "blurb": "Opus和Sonnet 4.6模型未获好评，因其如技术报告警告般过于agentic接管任务，而非跟随人类。适用于多数工作和客户场景。寻求耐心跟随型优秀模型建议。 揭示顶级模型在协作工具中的实战痛点，前瞻模型选择趋势，避免过度代理风险，提升AI工作流效率。",
+      "link": "https://x.com/jeremyphoward/status/2035966832197427509",
+      "canonical_link": "https://x.com/jeremyphoward/status/2035966832197427509",
+      "published_at": "2026-03-23T14:28:13.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI",
+        "工具链"
+      ]
+    },
+    {
+      "id": "b83ad4592096408c",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@fankaishuoai",
+      "title": "微信 ClawBot：亿级入口背后的巨大摩擦成本陷阱",
+      "blurb": "微信 Agent 协议层打通看似机会巨大，但消费级市场摩擦成本极高。实际操作中到处是坑，最终难见成果。 风险提示国内 AI 创业常见误区，避免盲目追逐大平台流量幻觉。",
+      "link": "https://x.com/fankaishuoai/status/2035961875645816876",
+      "canonical_link": "https://x.com/fankaishuoai/status/2035961875645816876",
+      "published_at": "2026-03-23T14:08:32.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI创业",
+        "出海"
+      ]
+    },
+    {
+      "id": "8e2a809abb610578",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "danveloper",
+      "title": "Flash-MoE: Running a 397B Parameter Model on a Laptop",
+      "blurb": "Flash-MoE 实现了在笔记本上运行 397B 参数模型的重大突破，极大降低了大型模型部署门槛。值得开发者关注其高效推理技术。",
+      "link": "https://github.com/danveloper/flash-moe",
+      "canonical_link": "https://github.com/danveloper/flash-moe",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 9,
+      "tags": [
+        "Hacker News",
+        "infra"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Top HN story with 332 points and 112 comments, highlighting breakthrough in efficient inference for massive MoE models on consumer hardware.",
+      "recommendation": "Flash-MoE 实现了在笔记本上运行 397B 参数模型的重大突破，极大降低了大型模型部署门槛。值得开发者关注其高效推理技术。",
+      "summary": "该项目通过 Flash-MoE 技术，在笔记本电脑上运行 397B 参数的混合专家模型（MoE）。它优化了内存和计算资源，实现高性能本地推理。适用于资源受限环境下的 AI 应用开发。",
+      "takeaways": [
+        "支持超大规模 MoE 模型的笔记本级推理",
+        "显著提升本地部署可行性，降低云依赖"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "3222e5e4f390cd42",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "DeepMind",
+      "title": "A Subgoal-driven Framework for Improving Long-Horizon LLM Agents",
+      "blurb": "子目标驱动框架显著提升长时程 LLM 代理性能。推荐用于代理优化和实际部署。",
+      "link": "https://arxiv.org/abs/2603.19685",
+      "canonical_link": "https://arxiv.org/abs/2603.19685",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "HF daily paper on LLM agent improvements, addressing key challenge in long-horizon planning.",
+      "recommendation": "子目标驱动框架显著提升长时程 LLM 代理性能。推荐用于代理优化和实际部署。",
+      "summary": "框架通过子目标分解改善 LLM 代理的长时程规划能力。引入动态子目标生成和验证机制，减少幻觉和偏差。在基准测试中表现优异。",
+      "takeaways": [
+        "子目标分解解决长时程规划难题",
+        "提升代理可靠性和效率"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "71076db6d77ed86f",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "3 authors",
+      "title": "WorldAgents: Can Foundation Image Models be Agents for 3D World Models?",
+      "blurb": "WorldAgents 将基础图像模型转化为 3D 世界代理，创新视觉代理范式。值得关注世界模型进展。",
+      "link": "https://arxiv.org/abs/2603.19708",
+      "canonical_link": "https://arxiv.org/abs/2603.19708",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "HF paper exploring image models as 3D agents, bridging vision and world modeling.",
+      "recommendation": "WorldAgents 将基础图像模型转化为 3D 世界代理，创新视觉代理范式。值得关注世界模型进展。",
+      "summary": "研究基础图像模型是否能作为 3D 世界模型的代理。提出 WorldAgents 方法，实现图像驱动的 3D 交互和规划。该框架在模拟环境中验证有效性。",
+      "takeaways": [
+        "图像模型向 3D 代理转型",
+        "推进视觉基础的世界模型"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "85e242c43ac608da",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "15 authors",
+      "title": "AgentDS Technical Report: Benchmarking the Future of Human-AI Collaboration in Domain-Specific Data Science",
+      "blurb": "AgentDS 基准评估人类-AI 在领域数据科学协作潜力。新基准推动代理基准标准化。",
+      "link": "https://arxiv.org/abs/2603.19005",
+      "canonical_link": "https://arxiv.org/abs/2603.19005",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 7,
+      "tags": [
+        "Hugging Face Papers",
+        "benchmark"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "HF technical report introducing AgentDS benchmark for human-AI data science collaboration.",
+      "recommendation": "AgentDS 基准评估人类-AI 在领域数据科学协作潜力。新基准推动代理基准标准化。",
+      "summary": "技术报告发布 AgentDS 基准，针对领域特定数据科学的 人-AI 协作。包括多种任务和评估指标，帮助量化代理在专业场景的表现。",
+      "takeaways": [
+        "全新人类-AI 协作基准",
+        "聚焦数据科学领域应用"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "4da3b597454a5945",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "Perception and LANguage Lab",
+      "title": "EgoForge: Goal-Directed Egocentric World Simulator",
+      "blurb": "EgoForge 构建目标导向的自中心世界模拟器，提升具身代理能力。适用于机器人和模拟研究。",
+      "link": "https://arxiv.org/abs/2603.20169",
+      "canonical_link": "https://arxiv.org/abs/2603.20169",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 7,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "HF paper on egocentric world simulation, advancing embodied AI agents.",
+      "recommendation": "EgoForge 构建目标导向的自中心世界模拟器，提升具身代理能力。适用于机器人和模拟研究。",
+      "summary": "EgoForge 是目标导向的自中心世界模拟器，支持第一人称视角的动态环境模拟。整合多模态数据，实现精确预测和规划。",
+      "takeaways": [
+        "自中心视角世界模拟",
+        "增强具身代理目标达成"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "69802221c3e75c2e",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "8 authors",
+      "title": "Hyperagents",
+      "blurb": "Hyperagents 探讨超代理架构，推动多层代理系统发展。适用于复杂任务的 AI 代理研究。",
+      "link": "https://arxiv.org/abs/2603.19461",
+      "canonical_link": "https://arxiv.org/abs/2603.19461",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 7,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-23",
+      "source_signal": "Daily HF paper highlighting hierarchical agent systems, key for advancing multi-level AI autonomy.",
+      "recommendation": "Hyperagents 探讨超代理架构，推动多层代理系统发展。适用于复杂任务的 AI 代理研究。",
+      "summary": "论文提出 Hyperagents 框架，用于构建分层代理系统。探讨代理间协作和控制机制，提升长时程任务性能。该方法在多代理环境中展现潜力。",
+      "takeaways": [
+        "分层代理提升复杂任务处理",
+        "强化代理协作与鲁棒性"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "9d4a826b76c65d53",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Connor J. Davis",
+      "title": "Intuitions for Transformer Circuits",
+      "blurb": "文章直观解析 Transformer 电路机制，帮助理解模型内部工作原理。适合研究者和工程师深入学习可解释性 AI。",
+      "link": "https://connorjdavis.com/p/intuitions-for-transformer-circuits",
+      "canonical_link": "https://connorjdavis.com/p/intuitions-for-transformer-circuits",
+      "published_at": "2026-03-23T14:06:50.250+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "research"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN discussion with 40 points, providing intuitive explanations for transformer internals amid growing interest in mechanistic interpretability.",
+      "recommendation": "文章直观解析 Transformer 电路机制，帮助理解模型内部工作原理。适合研究者和工程师深入学习可解释性 AI。",
+      "summary": "作者分享对 Transformer 电路的直观理解，包括注意力机制和残差连接的作用。通过可视化和类比解释复杂行为。该文有助于提升对黑箱模型的洞察。",
+      "takeaways": [
+        "Transformer 电路的直观类比解释",
+        "提升模型可解释性和调试能力"
+      ],
+      "topic": "research"
+    },
+    {
+      "id": "990fda9b336e487f",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@lexx_aura",
+      "title": "Seedance 2.0 赛亚人融合动画展示",
+      "blurb": "使用 Seedance 2.0 生成终极赛亚人融合视频，Jiren 无力抵抗的高能量动画。预测 2-3 年内动画师将面临挑战，并致谢 BiliBili 稽意MF。 突出新兴动画工具的破坏力，预示 AIGC 对传统动画行业的冲击。",
+      "link": "https://x.com/lexx_aura/status/2035959068708204722",
+      "canonical_link": "https://x.com/lexx_aura/status/2035959068708204722",
+      "published_at": "2026-03-23T13:57:22.000+08:00",
+      "score": 7,
+      "tags": [
+        "showcase",
+        "tooling"
+      ]
+    },
+    {
+      "id": "6ab14ff14b8fb059",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@itangtalk",
+      "title": "T-Mobile短代码查话费神器",
+      "blurb": "无需登录网页/客服/打电话，用短代码拨号查话费、套餐、号码；小白友好，演示详解。 出海运营商实用技巧，解决日常痛点，执行细节高。",
+      "link": "https://x.com/itangtalk/status/2035958031339626563",
+      "canonical_link": "https://x.com/itangtalk/status/2035958031339626563",
+      "published_at": "2026-03-23T13:53:15.000+08:00",
+      "score": 7,
+      "tags": [
+        "出海"
+      ]
+    },
+    {
+      "id": "72d3d572a3408567",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@bananababydoll",
+      "title": "Nano Banana 2 地下车库夜闪真实提示",
+      "blurb": "分享详细 JSON 提示生成 iPhone 闪光夜间地下车库场景，包含相机、灯光、姿势和后处理参数。强调真实皮肤纹理、闪光高光和手持不完美。 提供结构化 JSON 提示模板，便于复现超真实摄影风格。",
+      "link": "https://x.com/bananababydoll/status/2035953437792473333",
+      "canonical_link": "https://x.com/bananababydoll/status/2035953437792473333",
+      "published_at": "2026-03-23T13:35:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "prompting"
+      ]
+    },
+    {
+      "id": "169f6c03f76bdc95",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@shao__meng",
+      "title": "Claude Code开发者Thariq实践分享总结",
+      "blurb": "Skills设计、Action Space迭代、Prompt Caching、文件系统+Bash、Playgrounds等5大实践。强调环境设计而非提示工程，Skills分类9类高ROI。 Anthropic内部经验，指导构建可靠Agent系统，前瞻工程范式转变。",
+      "link": "https://x.com/shao__meng/status/2035949853084418161",
+      "canonical_link": "https://x.com/shao__meng/status/2035949853084418161",
+      "published_at": "2026-03-23T13:20:45.000+08:00",
+      "score": 10,
+      "tags": [
+        "AI",
+        "工具链",
+        "Agent"
+      ]
+    },
+    {
+      "id": "755b88ce4a88bcfb",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@livid",
+      "title": "Anthropic市值超Ethereum+Solana",
+      "blurb": "Anthropic市值已超过Ethereum和Solana总和。反映AI公司估值高速增长，资本向AI倾斜。 AI投资信号强劲，crypto被挤压；创业者需警惕资本流动风险。",
+      "link": "https://x.com/Livid/status/2035949528826990766",
+      "canonical_link": "https://x.com/Livid/status/2035949528826990766",
+      "published_at": "2026-03-23T13:19:28.000+08:00",
+      "score": 8,
+      "tags": [
+        "AI",
+        "投资"
+      ]
+    },
+    {
+      "id": "0463923e3b593cce",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@luoleiorg",
+      "title": "MacBook内网桌面投屏：咸鱼二手采集卡物理解决",
+      "blurb": "MacBook内网投流问题，用咸鱼二手采集卡解决。强调能省则省的硬件方案。 低成本工具链优化技巧，适用于远程办公/开发工作流。",
+      "link": "https://x.com/luoleiorg/status/2035947419331068229",
+      "canonical_link": "https://x.com/luoleiorg/status/2035947419331068229",
+      "published_at": "2026-03-23T13:11:05.000+08:00",
+      "score": 6,
+      "tags": [
+        "工具链",
+        "独立开发"
+      ]
+    },
+    {
+      "id": "c8c65f36be0d9796",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@swyx",
+      "title": "Enterprise needs for safely deploying agents: compliance and IT friendly.",
+      "blurb": "swyx 强调 Devin 等代理工具在企业部署中的细节，如避免危险权限跳过，确保合规和 IT 安全，支持数万工程师规模。这超越了 Twitter 式快速原型。 builder 需要理解企业级 AI 代理的真实痛点，避免 hobby 项目落空。",
+      "link": "https://x.com/swyx/status/2035945261265199141",
+      "canonical_link": "https://x.com/swyx/status/2035945261265199141",
+      "published_at": "2026-03-23T13:02:30.000+08:00",
+      "score": 7,
+      "tags": [
+        "ai",
+        "product",
+        "infra",
+        "business"
+      ]
+    },
     {
       "id": "1f0ace73e2a4e25b",
       "source_id": "x_ai_signals",
@@ -829,302 +1181,6 @@
       "tags": [
         "X",
         "post"
-      ]
-    },
-    {
-      "id": "c5161d333b96317f",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@marckohlbrugge",
-      "title": "See which TLDs are most popular amongst early-stage startups",
-      "blurb": "马克·科尔布鲁格分享了BetaList上早期创业公司顶级域名（TLD）使用趋势数据。.com占比从82%大幅降至46%，.io上升至18%，.app、.ai等新兴TLD逐渐流行。附带图表展示各域名分布，揭示创业者偏好转变。 为AI独立黑客提供数据驱动的域名选择洞察，帮助launch时选对TLD提升品牌认知和SEO。.ai等AI相关域名流行反映市场趋势，避免.com高价陷阱，提高启动效率。",
-      "link": "https://x.com/marckohlbrugge/status/2035794695930962042",
-      "canonical_link": "https://x.com/marckohlbrugge/status/2035794695930962042",
-      "published_at": "2026-03-23T03:04:13.000+08:00",
-      "score": 8,
-      "tags": [
-        "launch",
-        "strategy",
-        "business"
-      ]
-    },
-    {
-      "id": "abf1fc3b43037e85",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@jiqizhixin",
-      "title": "ARO：梯度旋转加速 LLM 训练 1.3x",
-      "blurb": "微软等团队 ARO 框架，用动态旋转坐标系加速 LLM 预训练，优于 AdamW 1.3-1.35x。支持 8B 模型，论文链接。 基础设施优化，降低算力成本，影响模型训练经济性。",
-      "link": "https://x.com/jiqizhixin/status/2035792628046864774",
-      "canonical_link": "https://x.com/jiqizhixin/status/2035792628046864774",
-      "published_at": "2026-03-23T02:56:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI基础设施",
-        "算力经济学"
-      ]
-    },
-    {
-      "id": "9fe170ed17152fc2",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@jasonlk",
-      "title": "AI代理非set and forget，需持续训练监控否则数据陈旧",
-      "blurb": "团队有近30个AI代理，停止日常检查后发现一个4个月未同步新数据，仍运行但基于陈旧信息，无报错。即便顶级开发团队，也需每日维护非核心代理。AI代理强大但不成熟。 实战风险提示，避免常见陷阱；强调运维成本，对SaaS/AI产品决策关键",
-      "link": "https://x.com/jasonlk/status/2035792251679633708",
-      "canonical_link": "https://x.com/jasonlk/status/2035792251679633708",
-      "published_at": "2026-03-23T02:54:30.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链",
-        "执行细节",
-        "风险"
-      ]
-    },
-    {
-      "id": "c33487ca1649bc4d",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@charliebilello",
-      "title": "伊朗战争推高能源肥料价格",
-      "blurb": "伊朗战争以来欧洲天然气+85%、原油+54%、肥料+23%等。能源和农业投入成本飙升。 地缘风险传导至算力经济学和AI基础设施成本，影响模型训练/部署费用和投资决策。",
-      "link": "https://x.com/charliebilello/status/2035790401039147105",
-      "canonical_link": "https://x.com/charliebilello/status/2035790401039147105",
-      "published_at": "2026-03-23T02:47:09.000+08:00",
-      "score": 8,
-      "tags": [
-        "金融市场与AI投资信号",
-        "算力经济学"
-      ]
-    },
-    {
-      "id": "01e2b18c678a1838",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@egeberkina",
-      "title": "墙上宇宙 --sref 2963209576",
-      "blurb": "四张图像展示使用 sref 2963209576 生成的墙上宇宙主题艺术。简洁分享风格参考代码。 直接提供 sref 代码，便于创作者快速复用独特风格。",
-      "link": "https://x.com/egeberkina/status/2035782093649694882",
-      "canonical_link": "https://x.com/egeberkina/status/2035782093649694882",
-      "published_at": "2026-03-23T02:14:08.000+08:00",
-      "score": 6,
-      "tags": [
-        "prompting",
-        "showcase"
-      ]
-    },
-    {
-      "id": "c746ee0d983c90e6",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@YaseenK7212",
-      "title": "Seedance 2.0生成鬼灭之刃级动漫动画",
-      "blurb": "使用Seedance 2.0和Hailuo AI创作的鬼灭之刃概念动画，视觉效果次世代水平，流畅动作与细节令人惊艳。作者称其风格若成正典，工作室将面临挑战。展示视频生成工具在动漫领域的强大潜力。 突出Seedance 2.0在高品质动漫视频生成上的突破，为AIGC创作者提供视觉工具市场信号。",
-      "link": "https://x.com/YaseenK7212/status/2035780649827623137",
-      "canonical_link": "https://x.com/YaseenK7212/status/2035780649827623137",
-      "published_at": "2026-03-23T02:08:24.000+08:00",
-      "score": 8,
-      "tags": [
-        "showcase",
-        "tooling"
-      ]
-    },
-    {
-      "id": "3ea79910b91250f4",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@edzitron",
-      "title": "AI泡沫中 hyperscalers存活，中小云厂商最惨，Meta重伤",
-      "blurb": "预测AI二三阶赢家：人人输，但CoreWeave/Nebius等新云债务致命；hyperscalers幸存，Meta因混乱受致命伤需十年恢复。 精准风险提示，影响投资与基础设施选择决策。",
-      "link": "https://x.com/edzitron/status/2035779412323450931",
-      "canonical_link": "https://x.com/edzitron/status/2035779412323450931",
-      "published_at": "2026-03-23T02:03:29.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "算力经济学",
-        "投资信号"
-      ]
-    },
-    {
-      "id": "07277cd319c1b2a4",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@edzitron",
-      "title": "AI热潮与dot-com泡沫比较，质疑FCF图表遗漏关键失败案例",
-      "blurb": "回应AI与dot-com比较帖子，指出需纳入Global Crossing、JDS Uniphase、Enron、Lucent等破产案，而非仅看NVDA/MSFT等。强调历史教训未被充分讨论。 揭示AI基础设施泡沫风险，中小云厂商债务致命，提醒创业者避开高负债路径。",
-      "link": "https://x.com/edzitron/status/2035775694727155900",
-      "canonical_link": "https://x.com/edzitron/status/2035775694727155900",
-      "published_at": "2026-03-23T01:48:43.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "创业",
-        "算力经济学"
-      ]
-    },
-    {
-      "id": "9d0c4f91a28eeebe",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@bri_guy_ai",
-      "title": "心情板显著提升提示效果",
-      "blurb": "对比简单提示与心情板辅助生成，展示了使用 --ar 3:4 --raw --profile 和 --stylize 1000 参数的女性燕尾服粉彩图像。强调心情板对探索和一致性的作用。 揭示提示工程中视觉参考的重要性，帮助创作者从随机输出转向精准控制。",
-      "link": "https://x.com/bri_guy_ai/status/2035774679202304012",
-      "canonical_link": "https://x.com/bri_guy_ai/status/2035774679202304012",
-      "published_at": "2026-03-23T01:44:41.000+08:00",
-      "score": 8,
-      "tags": [
-        "prompting",
-        "workflow"
-      ]
-    },
-    {
-      "id": "5a7d4d82e7c49fec",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@turingou",
-      "title": "Sanbank Cloud新增logbox、mailsbox、wechatbox支持",
-      "blurb": "Sanbank Cloud集成logbox、mails cli控制mails.dev邮箱；即将支持wechatbox自动微信clawbot，提升Agent自动化。 Agent基础设施工具链迭代，解决日志/邮件/微信痛点，提高开发效率。",
-      "link": "https://x.com/turingou/status/2035772577524883456",
-      "canonical_link": "https://x.com/turingou/status/2035772577524883456",
-      "published_at": "2026-03-23T01:36:19.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链",
-        "Agent"
-      ]
-    },
-    {
-      "id": "8cc37a29930fe4eb",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@ai_for_success",
-      "title": "谷歌101个生成AI用例技术蓝图",
-      "blurb": "谷歌博客详述101个真实世界生成AI应用场景，每例附技术蓝图和实现指南。覆盖多领域用例，帮助开发者快速构建AI解决方案。资源被誉为金矿。 提供现成技术蓝图，加速AIGC工作流落地，对工具运营商和创作者扩展应用有直接价值。",
-      "link": "https://x.com/ai_for_success/status/2035772062544105513",
-      "canonical_link": "https://x.com/ai_for_success/status/2035772062544105513",
-      "published_at": "2026-03-23T01:34:17.000+08:00",
-      "score": 7,
-      "tags": [
-        "tooling",
-        "business"
-      ]
-    },
-    {
-      "id": "46b4dc036614e6e0",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@CharaspowerAI",
-      "title": "Firefly Boards 全流程工作演示",
-      "blurb": "展示了 Adobe Firefly Boards 的强大功能，从想法到视觉、视频、上采样的一体化画布工作流。视频演示了如何在单一界面中思考、创建、测试和转换内容，一切互联无缝。强调一旦掌握其潜力，就不会回头。 创作者可借此构建高效 AI 工作流，节省工具切换时间，提升生产力。",
-      "link": "https://x.com/CharaspowerAI/status/2035771169719398585",
-      "canonical_link": "https://x.com/CharaspowerAI/status/2035771169719398585",
-      "published_at": "2026-03-23T01:30:44.000+08:00",
-      "score": 9,
-      "tags": [
-        "workflow",
-        "tooling"
-      ]
-    },
-    {
-      "id": "5cc43521a090b405",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@Lordofacca",
-      "title": "AI视频工具比较：Seedance vs Kling vs Runway vs Veo",
-      "blurb": "作者表示喜欢Seedance，但Kling在角色一致性、语音控制等方面控制力更强。同时推荐Runway和Veo3，并对即将发布的Veo4充满期待。该帖提供了AI视频生成工具的实际使用心得和优缺点对比。 为AI视频创作者揭示了不同工具在控制性和一致性上的差异，帮助选择适合项目的最佳平台。",
-      "link": "https://x.com/Lordofacca/status/2035763259656044741",
-      "canonical_link": "https://x.com/Lordofacca/status/2035763259656044741",
-      "published_at": "2026-03-23T00:59:18.000+08:00",
-      "score": 8,
-      "tags": [
-        "model-comparison",
-        "tooling"
-      ]
-    },
-    {
-      "id": "c430cfb5d3ecc012",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@levie",
-      "title": "AI代理时代极早期，云计算类比预示万倍市场增长",
-      "blurb": "多数公司尚未大规模使用编码代理，更遑论知识工作代理，仍处聊天机器人时代。技术扩散需时间，包括工作流重构、治理流程、数据组织和技术素养。云计算从2010年硅谷认知未来到2025年市场2250亿美元，增长近1000倍，代理将类似从编码扩展到更大负载。 前瞻性行业判断，帮助AI创业者评估代理赛道时机，避免过早退出或盲目追逐；揭示基础设施变化与扩散规律",
-      "link": "https://x.com/levie/status/2035762343502836020",
-      "canonical_link": "https://x.com/levie/status/2035762343502836020",
-      "published_at": "2026-03-23T00:55:39.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI",
-        "工具链",
-        "行业判断"
-      ]
-    },
-    {
-      "id": "3dbefad74e85e7bf",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@Khazix0918",
-      "title": "微信 ClawBot 野心：通道价值大于模型，入口为王",
-      "blurb": "深度分析微信 ClawBot 作为 OpenClaw 管道，不限模型，只控入口。历史对比公众号等，未来渠道决定生态。协议保留拦截权。 行业判断精准，揭示微信 AI 策略转向通道垄断，前瞻性强。",
-      "link": "https://x.com/Khazix0918/status/2035760405797347735",
-      "canonical_link": "https://x.com/Khazix0918/status/2035760405797347735",
-      "published_at": "2026-03-23T00:47:57.000+08:00",
-      "score": 9,
-      "tags": [
-        "行业判断",
-        "AI基础设施"
-      ]
-    },
-    {
-      "id": "77ddaa72d16db766",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@dotey",
-      "title": "baoyu-skills 2个月破10K stars",
-      "blurb": "baoyu-skills从发布到2个月获10K+ stars，总安装193.7K。最受欢迎skill排名170。展示AI prompt skills生态的快速增长和社区认可。 反映AI工具链社区活跃度高，独立开发者可借鉴开源技能库构建产品，抓住技能市场机会。",
-      "link": "https://x.com/dotey/status/2035754880275501405",
-      "canonical_link": "https://x.com/dotey/status/2035754880275501405",
-      "published_at": "2026-03-23T00:26:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链",
-        "独立开发"
       ]
     }
   ]
