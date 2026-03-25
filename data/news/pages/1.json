@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-25T15:00:08.483+08:00",
+  "updated_at": "2026-03-25T16:53:57.982+08:00",
   "current_page": 1,
   "total_pages": 17,
   "page_size": 60,
@@ -920,6 +920,63 @@
       ]
     },
     {
+      "id": "e25c6221ca9e6c52",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@simonw",
+      "title": "Package managers should delay auto-updates to mitigate zero-day risks",
+      "blurb": "Simon Willison针对今日零日漏洞，撰文呼吁包管理器冷却自动更新机制。讨论了Debian/Ubuntu等OS仓库的稳定承诺，与快速PyPI更新的对比。强调在安全修复外，稳定软件不应变更，以防供应链攻击如litellm事件。 AI构建者依赖开源包，此文提供供应链安全战略框架，帮助防范类似litellm妥协，提升部署可靠性。",
+      "link": "https://x.com/simonw/status/2036573932376170545",
+      "canonical_link": "https://x.com/simonw/status/2036573932376170545",
+      "published_at": "2026-03-25T06:40:37.000+08:00",
+      "score": 8,
+      "tags": [
+        "infra",
+        "workflow",
+        "ai"
+      ]
+    },
+    {
+      "id": "cb93eb11ff262efb",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@emollick",
+      "title": "Different AI labs pursue distinct strategies in exploring LLM opportunities",
+      "blurb": "各大AI实验室在探索LLM机会空间时策略迥异：Anthropic高度专注，OpenAI倾向测试并放弃概念如GPT Store和Sora，Google则全面并行。不清楚哪种策略最终胜出，但这反映了AI发展路径的不确定性。 运营商可从中洞察实验室决策模式，避免跟风失败项目；帮助评估投资与合作风险，制定更稳健的AI技术路线图。",
+      "link": "https://x.com/emollick/status/2036573117431095665",
+      "canonical_link": "https://x.com/emollick/status/2036573117431095665",
+      "published_at": "2026-03-25T06:37:23.000+08:00",
+      "score": 8,
+      "tags": [
+        "ai",
+        "market",
+        "strategy"
+      ]
+    },
+    {
+      "id": "822c83d76c0b9eb9",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@lennysan",
+      "title": "PM openings are at the highest levels since 2022",
+      "blurb": "全球科技公司 PM 职位空缺超 7300 个，较 2023 年初低点上涨 75%，今年已增近 20%。这是 3 年多来最高水平，产品市场回暖明显。结合线程分析，AI 未明显取代 PM 需求。 产品经理可把握招聘窗口优化求职；创始人借机招募顶尖 PM，推动产品战略执行。",
+      "link": "https://x.com/lennysan/status/2036571021298549184",
+      "canonical_link": "https://x.com/lennysan/status/2036571021298549184",
+      "published_at": "2026-03-25T06:29:03.000+08:00",
+      "score": 8,
+      "tags": [
+        "product",
+        "market",
+        "startup"
+      ]
+    },
+    {
       "id": "cd5698df74da40f0",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -1028,6 +1085,46 @@
       ]
     },
     {
+      "id": "04dc76d0769e3da0",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@gregisenberg",
+      "title": "how to use firecrawl to give your AI eyes and actually build startups that outperform 99% of apps",
+      "blurb": "Greg 详细讲解 Firecrawl 如何为 AI 提供网页浏览能力，通过简单 API 调用刮取单页、爬取站点、生成结构化数据，支持代理端点和浏览器沙箱。强调这是网页数据的 'AWS 时刻'，建议用它垂直化重建大型平台，生成初创idea。结合 @ideabrowser 等工具，实现 AI 原生创业框架。 为创始人与构建者提供 AI 工作流实战指南，帮助突破数据瓶颈，快速验证垂直市场机会，实现产品差异化。",
+      "link": "https://x.com/gregisenberg/status/2036542601617350709",
+      "canonical_link": "https://x.com/gregisenberg/status/2036542601617350709",
+      "published_at": "2026-03-25T04:36:08.000+08:00",
+      "score": 9,
+      "tags": [
+        "ai",
+        "workflow",
+        "product",
+        "startup"
+      ]
+    },
+    {
+      "id": "eb9bf8e4f1952b8c",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@GergelyOrosz",
+      "title": "Congrats on having fun and building a vibe coded WYSIWYG editor",
+      "blurb": "Gergely 对团队用 AI 快速构建内部 WYSIWYG 编辑器表示恭喜，但提醒忽略生产级需求如权限、备份、搜索、导出、表格、移动端及 Slack/Linear 集成。重建 SaaS 虽有趣，但维护成本高，机会成本大于节省的 5000 美元/年。不如专注核心业务增值产品。 警示工程师避免 AI 原型陷阱，转向企业级构建；帮助创始人评估重建 vs 创新优先级。",
+      "link": "https://x.com/GergelyOrosz/status/2036530511061877205",
+      "canonical_link": "https://x.com/GergelyOrosz/status/2036530511061877205",
+      "published_at": "2026-03-25T03:48:05.000+08:00",
+      "score": 8,
+      "tags": [
+        "ai",
+        "startup",
+        "workflow",
+        "engineering"
+      ]
+    },
+    {
       "id": "335c54311a1adf68",
       "source_id": "artist",
       "source_name": "AI Artist Signals",
@@ -1077,94 +1174,6 @@
       "score": 9,
       "tags": [
         "prompting"
-      ]
-    },
-    {
-      "id": "6348784a1ae8dc05",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@jordandchesney",
-      "title": "Dreamina Seedance 2.0 Nerfed on Real People Images",
-      "blurb": "引用Dreamina官方说明，无法上传真实人物图像用于视频生成，并称其为‘NERFED’。反映工具加强安全限制，影响人物参考使用。获11赞，引发AI电影人讨论。 揭示热门AI视频工具的市场动态与限制，提醒AIGC从业者注意政策变化对工作流的影响。",
-      "link": "https://x.com/jordandchesney/status/2036522283884323226",
-      "canonical_link": "https://x.com/jordandchesney/status/2036522283884323226",
-      "published_at": "2026-03-25T03:15:23.000+08:00",
-      "score": 6,
-      "tags": [
-        "tooling"
-      ]
-    },
-    {
-      "id": "91b6fe37fd3573d3",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@nathanbarry",
-      "title": "Kit has MCP, CLI releasing soon (re: Claude integration)",
-      "blurb": "Nathan Barry 回应用户关于 Kit 连接 Claude AI 的询问，表示已有 MCP（可能指 Claude 相关集成），CLI 工具即将发布，并提供开发者文档链接。这暗示 Kit 即将增强 AI 工作流支持。 展示创作者工具如何集成领先 AI 模型（如 Claude），为 AI 独立黑客提供工具链扩展思路和开发者 CLI 发布信号。",
-      "link": "https://x.com/nathanbarry/status/2036518869884694888",
-      "canonical_link": "https://x.com/nathanbarry/status/2036518869884694888",
-      "published_at": "2026-03-25T03:01:49.000+08:00",
-      "score": 6,
-      "tags": [
-        "workflow",
-        "tooling",
-        "agent"
-      ]
-    },
-    {
-      "id": "f5cbafd998dda781",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@nhoeskape",
-      "title": "Sorceress Mystic Figure Showcase",
-      "blurb": "AI艺术作品描绘了一位神秘女法师，紫色长袍、头饰华丽，表情冷峻，手势施法，背景烟雾缭绕。细节包括布料褶皱和宝石光芒，幻想氛围浓厚，获253赞。展示AI对神秘角色审美的精准捕捉。 突出AI在服装纹理与氛围渲染的优势，帮助创作者提升魔法主题作品的叙事深度。",
-      "link": "https://x.com/nhoeskape/status/2036516754156036417",
-      "canonical_link": "https://x.com/nhoeskape/status/2036516754156036417",
-      "published_at": "2026-03-25T02:53:25.000+08:00",
-      "score": 7,
-      "tags": [
-        "showcase"
-      ]
-    },
-    {
-      "id": "202df77cf3d28c96",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@midjourney",
-      "title": "V8参数优化建议：移除--exp",
-      "blurb": "针对用户V8生成异常反馈，Midjourney建议移除提示中的--exp参数，此参数可能引发问题。结合Venus雕像测试案例，强调参数兼容性。 提供具体故障排除insights，加速V8工作流调试",
-      "link": "https://x.com/midjourney/status/2036514741741560236",
-      "canonical_link": "https://x.com/midjourney/status/2036514741741560236",
-      "published_at": "2026-03-25T02:45:25.000+08:00",
-      "score": 7,
-      "tags": [
-        "prompting",
-        "tooling"
-      ]
-    },
-    {
-      "id": "a65faa3f275a266d",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@YaseenK7212",
-      "title": "Goku and Vegeta Entrance vs Akatsuki using Seedance 2.0",
-      "blurb": "龙珠Z中的Goku和Vegeta出现在Pain和晓组织面前的入口场景，使用Seedance 2.0生成。视频捕捉了跨界动漫战斗的动态瞬间，展现高品质动画流畅性和角色细节。突出AI在融合多部作品叙事方面的潜力。 Showcases high-fidelity AI-generated anime crossover animations, highlighting Seedance 2.0's strength in action se…",
-      "link": "https://x.com/YaseenK7212/status/2036508828905144401",
-      "canonical_link": "https://x.com/YaseenK7212/status/2036508828905144401",
-      "published_at": "2026-03-25T02:21:55.000+08:00",
-      "score": 8,
-      "tags": [
-        "showcase"
       ]
     }
   ]

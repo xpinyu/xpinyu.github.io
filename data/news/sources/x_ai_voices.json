@@ -4,181 +4,145 @@
     "name": "X AI Voices",
     "type": "x_ai_voices",
     "refresh_hours": 24,
-    "updated_at": "2026-03-24T16:46:40.704+08:00",
-    "item_count": 9,
-    "window_start": "2026-03-23T04:46:40.704Z",
-    "window_end": "2026-03-24T08:46:40.704Z"
+    "updated_at": "2026-03-25T16:53:57.982+08:00",
+    "item_count": 7,
+    "window_start": "2026-03-24T04:53:57.982Z",
+    "window_end": "2026-03-25T08:53:57.982Z"
   },
   "items": [
     {
-      "id": "0c2130dbd6bf7900",
-      "source_id": "x_ai_voices",
-      "source_name": "X AI Voices",
-      "source_type": "x_ai_voices",
-      "platform": "X",
-      "author": "@swyx",
-      "title": "Modular open sourcing all GPU kernels is cracked confidence",
-      "blurb": "swyx 赞扬 Modular 及其 Mojo 语言的开源策略，不仅开源所有模型，还开源 GPU 内核，支持多厂商消费级硬件。认为这是基础设施公司前所未有的自信举措，即时可用且难以追赶。即使被超越，也能受益于生态。强调这种开放策略对 AI 基础设施领域的颠覆性。 对创始人与构建者而言，这展示了 AI 基础设施领域的战略自信与开放路径，帮助评估 infra 投资与技术栈选择，推动多厂商硬件创新。",
-      "link": "https://x.com/swyx/status/2036352119222182127",
-      "canonical_link": "https://x.com/swyx/status/2036352119222182127",
-      "published_at": "2026-03-24T15:59:13.000+08:00",
-      "score": 9,
-      "tags": [
-        "ai",
-        "infra",
-        "strategy"
-      ]
-    },
-    {
-      "id": "aa2d9a3d37fb3ef3",
+      "id": "e25c6221ca9e6c52",
       "source_id": "x_ai_voices",
       "source_name": "X AI Voices",
       "source_type": "x_ai_voices",
       "platform": "X",
       "author": "@simonw",
-      "title": "Qwen3.5-397B-A17B running on iPhone via streaming MoE weights",
-      "blurb": "Simon Willison 观察到 Dan Woods 引发了对在 iPhone 上运行大模型的技术热潮，该技术不断进步。现在 Qwen3.5-397B 模型使用流式 MoE 权重技巧在 iPhone 上运行。指出这项技术正变得越来越雄心勃勃。 为移动 AI 开发者提供边缘计算趋势洞察，帮助构建者在设备端部署大模型，探索隐私与低延迟应用。",
-      "link": "https://x.com/simonw/status/2036296019835756929",
-      "canonical_link": "https://x.com/simonw/status/2036296019835756929",
-      "published_at": "2026-03-24T12:16:18.000+08:00",
+      "title": "Package managers should delay auto-updates to mitigate zero-day risks",
+      "blurb": "Simon Willison针对今日零日漏洞，撰文呼吁包管理器冷却自动更新机制。讨论了Debian/Ubuntu等OS仓库的稳定承诺，与快速PyPI更新的对比。强调在安全修复外，稳定软件不应变更，以防供应链攻击如litellm事件。 AI构建者依赖开源包，此文提供供应链安全战略框架，帮助防范类似litellm妥协，提升部署可靠性。",
+      "link": "https://x.com/simonw/status/2036573932376170545",
+      "canonical_link": "https://x.com/simonw/status/2036573932376170545",
+      "published_at": "2026-03-25T06:40:37.000+08:00",
+      "score": 8,
+      "tags": [
+        "infra",
+        "workflow",
+        "ai"
+      ]
+    },
+    {
+      "id": "cb93eb11ff262efb",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@emollick",
+      "title": "Different AI labs pursue distinct strategies in exploring LLM opportunities",
+      "blurb": "各大AI实验室在探索LLM机会空间时策略迥异：Anthropic高度专注，OpenAI倾向测试并放弃概念如GPT Store和Sora，Google则全面并行。不清楚哪种策略最终胜出，但这反映了AI发展路径的不确定性。 运营商可从中洞察实验室决策模式，避免跟风失败项目；帮助评估投资与合作风险，制定更稳健的AI技术路线图。",
+      "link": "https://x.com/emollick/status/2036573117431095665",
+      "canonical_link": "https://x.com/emollick/status/2036573117431095665",
+      "published_at": "2026-03-25T06:37:23.000+08:00",
       "score": 8,
       "tags": [
         "ai",
-        "infra",
-        "product"
-      ]
-    },
-    {
-      "id": "e73be00674511509",
-      "source_id": "x_ai_voices",
-      "source_name": "X AI Voices",
-      "source_type": "x_ai_voices",
-      "platform": "X",
-      "author": "@mattshumer_",
-      "title": "Railway + Codex hack feels like superpowers for dev agents",
-      "blurb": "Matt Shumer 对 Codex app 与 Railway 的黑客整合表示兴奋，认为这已如超能力般强大。呼吁将其正式实现，以提升开发体验。 为 AI 工程构建者展示代理式开发工具潜力，推动部署与代码生成一体化。",
-      "link": "https://x.com/mattshumer_/status/2036277593024970857",
-      "canonical_link": "https://x.com/mattshumer_/status/2036277593024970857",
-      "published_at": "2026-03-24T11:03:05.000+08:00",
-      "score": 7,
-      "tags": [
-        "ai",
-        "workflow",
-        "product"
-      ]
-    },
-    {
-      "id": "4f9eb817376f3f43",
-      "source_id": "x_ai_voices",
-      "source_name": "X AI Voices",
-      "source_type": "x_ai_voices",
-      "platform": "X",
-      "author": "@gregisenberg",
-      "title": "透过AI镜头，老生意新版本变得显而易见",
-      "blurb": "Greg评论Shopify CEO观点：2026年所有生意皆可被AI重塑。通过AI视角审视，传统业务的重构机会突然清晰。强调AI加速行业颠覆的紧迫性。 激励创始人用AI重新想象现有市场机会，识别低挂果实，推动快速迭代与创业。",
-      "link": "https://x.com/gregisenberg/status/2036254142922903680",
-      "canonical_link": "https://x.com/gregisenberg/status/2036254142922903680",
-      "published_at": "2026-03-24T09:29:54.000+08:00",
-      "score": 7,
-      "tags": [
-        "ai",
         "market",
-        "startup"
+        "strategy"
       ]
     },
     {
-      "id": "3790a13e8232a67d",
+      "id": "822c83d76c0b9eb9",
       "source_id": "x_ai_voices",
       "source_name": "X AI Voices",
       "source_type": "x_ai_voices",
       "platform": "X",
       "author": "@lennysan",
-      "title": "读者调查：AI如何改变对工作的感受——更高效但更不安全",
-      "blurb": "Lenny分享最新读者调查：多数人因AI对工作更乐观、更高效，但角色更不安全，工作量未减。受访者混合感受：孩童般惊奇伴随对变革速度的挫败及AI低质内容泛滥。数据与反馈揭示AI对职场双刃剑效应。 为产品经理与创始人提供AI对员工生产力与士气的实证洞察，帮助设计AI工具时平衡效率与安全感。",
-      "link": "https://x.com/lennysan/status/2036207073294426145",
-      "canonical_link": "https://x.com/lennysan/status/2036207073294426145",
-      "published_at": "2026-03-24T06:22:51.000+08:00",
-      "score": 8,
-      "tags": [
-        "ai",
-        "workflow",
-        "product"
-      ]
-    },
-    {
-      "id": "1dd08e97e7992d96",
-      "source_id": "x_ai_voices",
-      "source_name": "X AI Voices",
-      "source_type": "x_ai_voices",
-      "platform": "X",
-      "author": "@GergelyOrosz",
-      "title": "拒绝‘AI管理生活’产品：遗忘无关事是特性而非bug",
-      "blurb": "Gergely评论AI‘记住一切’产品趋势：他偏好零高级工具，强制保持重要事项清单简短，遗忘琐事是优势。怀疑过度依赖此类软件会削弱认知能力，如遇到的依赖助手的执行官。后续讨论便利性外部性与荷兰游乐场设计类比。 提供产品构建者反主流视角，提醒便利工具可能牺牲用户独立性与专注力，启发设计更注重认知增强。",
-      "link": "https://x.com/GergelyOrosz/status/2036166419637760142",
-      "canonical_link": "https://x.com/GergelyOrosz/status/2036166419637760142",
-      "published_at": "2026-03-24T03:41:19.000+08:00",
+      "title": "PM openings are at the highest levels since 2022",
+      "blurb": "全球科技公司 PM 职位空缺超 7300 个，较 2023 年初低点上涨 75%，今年已增近 20%。这是 3 年多来最高水平，产品市场回暖明显。结合线程分析，AI 未明显取代 PM 需求。 产品经理可把握招聘窗口优化求职；创始人借机招募顶尖 PM，推动产品战略执行。",
+      "link": "https://x.com/lennysan/status/2036571021298549184",
+      "canonical_link": "https://x.com/lennysan/status/2036571021298549184",
+      "published_at": "2026-03-25T06:29:03.000+08:00",
       "score": 8,
       "tags": [
         "product",
-        "ai",
-        "workflow",
-        "strategy"
+        "market",
+        "startup"
       ]
     },
     {
-      "id": "71d9bf1136da90f7",
-      "source_id": "x_ai_voices",
-      "source_name": "X AI Voices",
-      "source_type": "x_ai_voices",
-      "platform": "X",
-      "author": "@mattshumer_",
-      "title": "Bad AI experiences often from crappy models - try the best ones",
-      "blurb": "Matt Shumer 指出，许多用户对 AI 的负面体验源于使用低质模型。分享示例，展示顶级模型在复杂任务上的优越表现。强调使用最佳模型才能匹配 AI 真实能力。 帮助运营商避免模型选择陷阱，提升 AI 工具实际效能，优化产品开发与用户体验决策。",
-      "link": "https://x.com/mattshumer_/status/2036158565866508514",
-      "canonical_link": "https://x.com/mattshumer_/status/2036158565866508514",
-      "published_at": "2026-03-24T03:10:06.000+08:00",
-      "score": 7,
-      "tags": [
-        "ai",
-        "workflow",
-        "product"
-      ]
-    },
-    {
-      "id": "78d975bbf843dd93",
+      "id": "04dc76d0769e3da0",
       "source_id": "x_ai_voices",
       "source_name": "X AI Voices",
       "source_type": "x_ai_voices",
       "platform": "X",
       "author": "@gregisenberg",
-      "title": "无限内容时代，人们渴望有限格式与物理产品",
-      "blurb": "Greg观察：在无限内容/选择/滚动中，人们转向有限格式、物理产品、无AI/互联网事物，建立清晰边界。此趋势将催生巨型公司。 揭示数字疲劳反作用力，为构建者提供反AI/数字原生机会，战略定位新兴市场。",
-      "link": "https://x.com/gregisenberg/status/2036124044857065529",
-      "canonical_link": "https://x.com/gregisenberg/status/2036124044857065529",
-      "published_at": "2026-03-24T00:52:56.000+08:00",
-      "score": 7,
+      "title": "how to use firecrawl to give your AI eyes and actually build startups that outperform 99% of apps",
+      "blurb": "Greg 详细讲解 Firecrawl 如何为 AI 提供网页浏览能力，通过简单 API 调用刮取单页、爬取站点、生成结构化数据，支持代理端点和浏览器沙箱。强调这是网页数据的 'AWS 时刻'，建议用它垂直化重建大型平台，生成初创idea。结合 @ideabrowser 等工具，实现 AI 原生创业框架。 为创始人与构建者提供 AI 工作流实战指南，帮助突破数据瓶颈，快速验证垂直市场机会，实现产品差异化。",
+      "link": "https://x.com/gregisenberg/status/2036542601617350709",
+      "canonical_link": "https://x.com/gregisenberg/status/2036542601617350709",
+      "published_at": "2026-03-25T04:36:08.000+08:00",
+      "score": 9,
       "tags": [
-        "market",
+        "ai",
+        "workflow",
+        "product",
+        "startup"
+      ]
+    },
+    {
+      "id": "eb9bf8e4f1952b8c",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@GergelyOrosz",
+      "title": "Congrats on having fun and building a vibe coded WYSIWYG editor",
+      "blurb": "Gergely 对团队用 AI 快速构建内部 WYSIWYG 编辑器表示恭喜，但提醒忽略生产级需求如权限、备份、搜索、导出、表格、移动端及 Slack/Linear 集成。重建 SaaS 虽有趣，但维护成本高，机会成本大于节省的 5000 美元/年。不如专注核心业务增值产品。 警示工程师避免 AI 原型陷阱，转向企业级构建；帮助创始人评估重建 vs 创新优先级。",
+      "link": "https://x.com/GergelyOrosz/status/2036530511061877205",
+      "canonical_link": "https://x.com/GergelyOrosz/status/2036530511061877205",
+      "published_at": "2026-03-25T03:48:05.000+08:00",
+      "score": 8,
+      "tags": [
+        "ai",
+        "startup",
+        "workflow",
+        "engineering"
+      ]
+    },
+    {
+      "id": "78f55caa83f44b58",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@emollick",
+      "title": "Reliability in AI agents is a system property, drawing from high-reliability organizations",
+      "blurb": "埃坦·莫利克指出，高可靠性组织的经验教训对AI代理构建者至关重要：可靠性是整个系统的属性，而非单个代理的能力。目前的代理工具在代理间交接、升级和调用人类方面表现不佳，这些都是高可靠性的关键要素。构建者需关注系统级设计以提升代理可靠性。 创始人与构建者可借此避免代理系统常见陷阱，提升产品稳定性和用户信任，推动AI从实验向生产级部署转型。",
+      "link": "https://x.com/emollick/status/2036501869065896435",
+      "canonical_link": "https://x.com/emollick/status/2036501869065896435",
+      "published_at": "2026-03-25T01:54:16.000+08:00",
+      "score": 9,
+      "tags": [
+        "ai",
         "strategy",
         "product"
       ]
     },
     {
-      "id": "35037e316edd9f58",
+      "id": "2f69f015181a46ba",
       "source_id": "x_ai_voices",
       "source_name": "X AI Voices",
       "source_type": "x_ai_voices",
       "platform": "X",
-      "author": "@dwarkesh_sp",
-      "title": "AI解决50个Erdős问题但整体成功率仅1-2%，Terence Tao视其为可靠同事",
-      "blurb": "Dwarkesh分享访谈：AI过去一年解决50个Erdős问题，但更广泛问题成功率仅1-2%，实验室只公布成功案例。Terence Tao认为AI如可靠同事，能可靠应用标准数学技巧，常优于人类，但不擅长迭代部分成功，其数学对象理解无法跨会话进步。强调持续学习需求。 帮助创始人理解AI在复杂数学领域的真实能力与局限，避免高估其通用问题解决潜力，指导AI工具投资与研发方向。",
-      "link": "https://x.com/dwarkesh_sp/status/2036095632746983436",
-      "canonical_link": "https://x.com/dwarkesh_sp/status/2036095632746983436",
-      "published_at": "2026-03-23T23:00:02.000+08:00",
-      "score": 9,
+      "author": "@mattshumer_",
+      "title": "Give Codex the Railway CLI for autonomous server deployment and monitoring",
+      "blurb": "Matt Shumer分享当前即可实现Codex代理自主部署与监控服务器的技巧：安装Railway CLI并告知模型其存在。结合Railway+C Codex已如超能力，可扩展到生产级自动化运维。 初创开发者可快速构建代理驱动DevOps流程，加速从代码到生产的迭代，节省人力聚焦核心AI创新。",
+      "link": "https://x.com/mattshumer_/status/2036476706668560897",
+      "canonical_link": "https://x.com/mattshumer_/status/2036476706668560897",
+      "published_at": "2026-03-25T00:14:17.000+08:00",
+      "score": 7,
       "tags": [
         "ai",
-        "research"
+        "workflow",
+        "infra"
       ]
     }
   ]
