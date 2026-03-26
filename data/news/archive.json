@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-26T14:09:08.011+08:00",
+  "updated_at": "2026-03-26T15:58:40.496+08:00",
   "page_size": 60,
   "total_items": 1000,
   "sources": [
@@ -28,10 +28,10 @@
       "name": "Daily AI Briefs",
       "type": "daily_ai_briefs",
       "refresh_hours": 24,
-      "updated_at": "2026-03-25T15:00:08.483+08:00",
-      "item_count": 10,
-      "window_start": "2026-03-24T00:00:00.000Z",
-      "window_end": "2026-03-25T07:00:08.483Z"
+      "updated_at": "2026-03-26T15:58:40.496+08:00",
+      "item_count": 11,
+      "window_start": "2026-03-25T00:00:00.000Z",
+      "window_end": "2026-03-26T07:58:40.496Z"
     },
     {
       "id": "x_ai_signals",
@@ -65,6 +65,87 @@
     }
   ],
   "items": [
+    {
+      "id": "83e67b75f237b7e7",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "Mohamed Bin Zayed University of Artificial Intelligence",
+      "title": "CarePilot: A Multi-Agent Framework for Long-Horizon Computer Task Automation in Healthcare",
+      "blurb": "CarePilot 多代理框架自动化医疗长时程任务。行业应用潜力大。",
+      "link": "https://arxiv.org/abs/2603.24157",
+      "canonical_link": "https://arxiv.org/abs/2603.24157",
+      "published_at": "2026-03-26T15:58:40.496+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-26",
+      "source_signal": "HF paper introducing multi-agent healthcare automation.",
+      "recommendation": "CarePilot 多代理框架自动化医疗长时程任务。行业应用潜力大。",
+      "summary": "针对医疗场景的长视野计算机任务自动化。多代理协作提升效率和准确性。",
+      "takeaways": [
+        "医疗长时程自动化",
+        "多代理协作框架"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "cec8f4ba62e808fa",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "12 authors",
+      "title": "UI-Voyager: A Self-Evolving GUI Agent Learning via Failed Experience",
+      "blurb": "UI-Voyager 通过失败经验自进化 GUI 代理。自主学习机制创新。",
+      "link": "https://arxiv.org/abs/2603.24533",
+      "canonical_link": "https://arxiv.org/abs/2603.24533",
+      "published_at": "2026-03-26T15:58:40.496+08:00",
+      "score": 8,
+      "tags": [
+        "Hugging Face Papers",
+        "agent"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-26",
+      "source_signal": "Trending HF paper on self-improving GUI agents.",
+      "recommendation": "UI-Voyager 通过失败经验自进化 GUI 代理。自主学习机制创新。",
+      "summary": "代理从失败中学习，提升 GUI 操作能力。自进化框架减少人工干预。",
+      "takeaways": [
+        "失败驱动自进化",
+        "GUI 代理自主优化"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "cd09d5ee783de09d",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hugging Face Papers",
+      "author": "7 authors",
+      "title": "GameplayQA: A Benchmarking Framework for Decision-Dense POV-Synced Multi-Video Understanding of 3D Virtual Agents",
+      "blurb": "GameplayQA 基准评估 3D 虚拟代理的多视频理解。决策密集型任务，推动代理视觉感知。",
+      "link": "https://arxiv.org/abs/2603.24329",
+      "canonical_link": "https://arxiv.org/abs/2603.24329",
+      "published_at": "2026-03-26T15:58:40.496+08:00",
+      "score": 7,
+      "tags": [
+        "Hugging Face Papers",
+        "benchmark"
+      ],
+      "source_page": "https://huggingface.co/papers/date/2026-03-26",
+      "source_signal": "Daily paper on HF, new benchmark for 3D agent video understanding.",
+      "recommendation": "GameplayQA 基准评估 3D 虚拟代理的多视频理解。决策密集型任务，推动代理视觉感知。",
+      "summary": "框架针对 POV 同步多视频，测试 3D 代理决策理解。适用于游戏和模拟环境，提升多模态代理能力。",
+      "takeaways": [
+        "决策密集视频基准",
+        "POV 同步多视频评估"
+      ],
+      "topic": "benchmark"
+    },
     {
       "id": "e3405655e1cec9d2",
       "source_id": "x_ai_signals",
@@ -1009,6 +1090,60 @@
       ]
     },
     {
+      "id": "3a0c80d041067bd5",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "ARC Prize",
+      "title": "ARC-AGI-3",
+      "blurb": "ARC-AGI-3 是 AGI 基准新版本，挑战模型抽象推理能力。值得关注其对通用智能评估的影响。",
+      "link": "https://arcprize.org/arc-agi/3",
+      "canonical_link": "https://arcprize.org/arc-agi/3",
+      "published_at": "2026-03-26T02:58:40.496+08:00",
+      "score": 9,
+      "tags": [
+        "Hacker News",
+        "benchmark"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Top story on HN with 370 points and 245 comments, signaling major interest in AGI progress benchmark.",
+      "recommendation": "ARC-AGI-3 是 AGI 基准新版本，挑战模型抽象推理能力。值得关注其对通用智能评估的影响。",
+      "summary": "ARC-AGI-3 发布，提供更难的抽象推理任务以测试 AGI 水平。在 HN 上引发热议，反映社区对 AGI 基准演进的期待。该基准强调从少样本学习核心知识，可能推动模型架构创新。",
+      "takeaways": [
+        "ARC-AGI-3 提升基准难度，聚焦抽象推理",
+        "社区热度高，预示 AGI 竞赛加剧"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "f28a270baccb5c2f",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "claudescode.dev",
+      "title": "90% of Claude-linked output going to GitHub repos",
+      "blurb": "揭示 Claude 输出主要流向 GitHub，显示代码生成商业信号。关注 AI 辅助编程趋势。",
+      "link": "https://claudescode.dev/",
+      "canonical_link": "https://claudescode.dev/",
+      "published_at": "2026-03-26T02:58:40.496+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "business"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN discussion with 259 points and 153 comments on Claude's code generation usage patterns.",
+      "recommendation": "揭示 Claude 输出主要流向 GitHub，显示代码生成商业信号。关注 AI 辅助编程趋势。",
+      "summary": "数据显示 90% Claude 相关输出指向 GitHub 仓库，凸显其在代码生成中的主导地位。反映开发者依赖 AI 工具构建开源项目。该现象暗示 Anthropic 在编程领域的市场渗透。",
+      "takeaways": [
+        "Claude 主导代码输出生态",
+        "GitHub 成 AI 代码主要落脚点"
+      ],
+      "topic": "business"
+    },
+    {
       "id": "8062330e5697e9e9",
       "source_id": "general",
       "source_name": "General AI News",
@@ -1211,6 +1346,33 @@
       "tags": [
         "创业"
       ]
+    },
+    {
+      "id": "ed5fdb6daf6a8b01",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "ngrok",
+      "title": "Quantization from the Ground Up",
+      "blurb": "从基础讲解量化技术，帮助优化大模型部署。实用性强，适合工程实践。",
+      "link": "https://ngrok.com/blog/quantization",
+      "canonical_link": "https://ngrok.com/blog/quantization",
+      "published_at": "2026-03-26T00:58:40.496+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "tooling"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN post with 240 points and 46 comments, highlighting practical guide to model quantization techniques.",
+      "recommendation": "从基础讲解量化技术，帮助优化大模型部署。实用性强，适合工程实践。",
+      "summary": "文章从头解释模型量化原理，包括各种方法和权衡。讨论如何减少模型大小并加速推理，同时保持性能。ngrok 分享实际经验，适用于生产环境。",
+      "takeaways": [
+        "量化基础全面覆盖",
+        "工程优化指南价值高"
+      ],
+      "topic": "tooling"
     },
     {
       "id": "6583947cb882d01d",
@@ -1944,6 +2106,87 @@
         "独立开发",
         "工具链"
       ]
+    },
+    {
+      "id": "3e6c1dc8953a7911",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Anthropic",
+      "title": "Claude Auto Mode",
+      "blurb": "Claude 自动模式研究预览，支持自主执行任务并内置安全过滤。代理时代关键进步。",
+      "link": "https://claude.com/blog/auto-mode",
+      "canonical_link": "https://claude.com/blog/auto-mode",
+      "published_at": "2026-03-25T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "TLDR AI",
+        "agent"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-25",
+      "source_signal": "Featured headline in TLDR AI for new agentic feature with safeguards.",
+      "recommendation": "Claude 自动模式研究预览，支持自主执行任务并内置安全过滤。代理时代关键进步。",
+      "summary": "Anthropic 推出 Auto Mode，Claude 可自主执行动作，同时过滤风险行为和提示注入。内置保障提升安全性。该功能标志代理工具向生产级迈进。",
+      "takeaways": [
+        "自主执行加安全机制",
+        "防范提示注入风险"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "f4c33ff4004f88d2",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Anthropic",
+      "title": "Harness design for long-running application development",
+      "blurb": "Anthropic 多代理架构优化长时程应用开发，提升连贯性和自评。工作流创新值得学习。",
+      "link": "https://anthropic.com/engineering/harness-design-long-running-apps",
+      "canonical_link": "https://anthropic.com/engineering/harness-design-long-running-apps",
+      "published_at": "2026-03-25T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "workflow"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-25",
+      "source_signal": "Deep dive in TLDR on multi-agent workflow for complex app dev.",
+      "recommendation": "Anthropic 多代理架构优化长时程应用开发，提升连贯性和自评。工作流创新值得学习。",
+      "summary": "介绍 planner、generator 和 evaluator 代理协作，分解任务产生高质量输出。受 GAN 启发，解决上下文管理和自评挑战。该 harness 适用于前端和全栈编码。",
+      "takeaways": [
+        "多代理分解长任务",
+        "结构化手off 提升输出质量"
+      ],
+      "topic": "workflow"
+    },
+    {
+      "id": "21fffe2d1a18ab45",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Anyscale",
+      "title": "Ray Data LLM enables 2x throughput over vLLM's synchronous LLM engine at production-scale",
+      "blurb": "Ray Data LLM 针对大批量推理优化，2x 吞吐量胜 vLLM。生产级基础设施首选。",
+      "link": "https://anyscale.com/blog/ray-data-llm-2x-throughput-vs-vllm",
+      "canonical_link": "https://anyscale.com/blog/ray-data-llm-2x-throughput-vs-vllm",
+      "published_at": "2026-03-25T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "infra"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-25",
+      "source_signal": "Engineering highlight in TLDR for scalable batch inference infra.",
+      "recommendation": "Ray Data LLM 针对大批量推理优化，2x 吞吐量胜 vLLM。生产级基础设施首选。",
+      "summary": "Ray Data LLM 库支持大规模批量 LLM 推理，提供高吞吐和容错。优化架构优先吞吐而非单请求延迟。在生产规模下实现 2x vLLM 性能。",
+      "takeaways": [
+        "批量推理 2x 加速",
+        "内置容错和高扩展性"
+      ],
+      "topic": "infra"
     },
     {
       "id": "57b3ffb7ee2afb43",
@@ -4238,6 +4481,33 @@
         "出海",
         "行业判断"
       ]
+    },
+    {
+      "id": "d56c93efadd3fc80",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "OpenAI",
+      "title": "OpenAI raises additional money to bring record funding round to $120 billion",
+      "blurb": "OpenAI 融资达 1200 亿美元纪录，调整计算支出至 6000 亿。商业扩张信号强烈。",
+      "link": "https://cnbc.com/2026/03/24/openai-secures-an-extra-10-billion-in-record-funding-round-cfo-friar-says.html",
+      "canonical_link": "https://cnbc.com/2026/03/24/openai-secures-an-extra-10-billion-in-record-funding-round-cfo-friar-says.html",
+      "published_at": "2026-03-24T20:00:00.000+08:00",
+      "score": 10,
+      "tags": [
+        "TLDR AI",
+        "business"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-25",
+      "source_signal": "Major business signal in TLDR on unprecedented funding scale.",
+      "recommendation": "OpenAI 融资达 1200 亿美元纪录，调整计算支出至 6000 亿。商业扩张信号强烈。",
+      "summary": "OpenAI 新增 100 亿美元融资，总额超 1200 亿。由 a16z 等投资。计算支出目标 2030 年 6000 亿，优先盈利项目。",
+      "takeaways": [
+        "融资规模空前",
+        "计算投资重规划"
+      ],
+      "topic": "business"
     },
     {
       "id": "425308e8bf2de28d",
@@ -18839,189 +19109,6 @@
         "AI",
         "SaaS",
         "工具链"
-      ]
-    },
-    {
-      "id": "8f44d522ec4ee77b",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@AndrewYNg",
-      "title": "新课程：构建记忆感知代理（Agent Memory）",
-      "blurb": "课程与 Oracle 合作，教构建跨会话持久记忆系统，避免代理记忆重置。设计 Memory Manager 处理多种记忆类型，实现语义工具检索和写回管道。技能包括持久记忆存储、读写协调、工具作为程序记忆的检索。 提供 agent 开发实战框架，提升长期学习能力；机会点：memory-aware agents 是代理演进关键，适用于研究、生产力工具。",
-      "link": "https://x.com/AndrewYNg/status/2034314027678192114",
-      "canonical_link": "https://x.com/AndrewYNg/status/2034314027678192114",
-      "published_at": "2026-03-19T01:00:34.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI",
-        "工具链",
-        "产品进展"
-      ]
-    },
-    {
-      "id": "5a4f7a859818fdee",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@nhoeskape",
-      "title": "#wednesdayvibe AI艺术日常分享",
-      "blurb": "以#wednesdayvibe标签发布AI图像，获212赞，展现日常高质幻想艺术创作节奏。图像强调tiara、cape等元素，符合其‘危险曲线’主题风格。 展示持续输出策略对积累受众的重要性，启发日常艺术实践。",
-      "link": "https://x.com/nhoeskape/status/2034313377045201192",
-      "canonical_link": "https://x.com/nhoeskape/status/2034313377045201192",
-      "published_at": "2026-03-19T00:57:59.000+08:00",
-      "score": 7,
-      "tags": [
-        "showcase"
-      ]
-    },
-    {
-      "id": "e05e81ebf7510fe5",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@lilyraynyc",
-      "title": "Google正开发站点针对性opt-out生成式AI搜索功能",
-      "blurb": "引用Google声明：开发更新控件，让站点特定opt-out生成式AI Search功能。回应欧洲监管。 政策变化风险提示，站点可选择退出AIO，提升控制力；影响AI搜索流量分配。",
-      "link": "https://x.com/lilyraynyc/status/2034312270226804881",
-      "canonical_link": "https://x.com/lilyraynyc/status/2034312270226804881",
-      "published_at": "2026-03-19T00:53:35.000+08:00",
-      "score": 7,
-      "tags": [
-        "SEO",
-        "监管"
-      ]
-    },
-    {
-      "id": "85b50d4b99c221f5",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@RevenueCat",
-      "title": "UA挑战与增强型应用广告活动的兴起",
-      "blurb": "标准应用广告因隐私变化、reach限制等失效，顶级订阅应用转向增强型应用广告，提供web级精准投放、App Store安装保留ASO、独立归因和重定向优势。相比web-to-app避免额外费用、税务复杂和ASO损失。分享Appstack实际结果，并链接文章探讨重建获取栈。 为构建订阅制AI应用的独立黑客提供隐私时代增长战术，提升用户获取效率和货币化杠杆，基于真实团队实践。",
-      "link": "https://x.com/RevenueCat/status/2034310494765371762",
-      "canonical_link": "https://x.com/RevenueCat/status/2034310494765371762",
-      "published_at": "2026-03-19T00:46:32.000+08:00",
-      "score": 8,
-      "tags": [
-        "growth",
-        "distribution",
-        "monetization"
-      ]
-    },
-    {
-      "id": "1b17c4e05cc0e079",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@OfficialLoganK",
-      "title": "Gemini API工具重大更新支持函数调用与Gemini 3",
-      "blurb": "内置工具（搜索、地图、文件搜索）现兼容函数调用；引入上下文循环优化性能；Google Maps grounding扩展至Gemini 3。Google博客详述开发细节。 基础设施迭代直接降开发成本，提升AI产品性能；开发者立即可用，影响SaaS增长。",
-      "link": "https://x.com/OfficialLoganK/status/2034309073651347821",
-      "canonical_link": "https://x.com/OfficialLoganK/status/2034309073651347821",
-      "published_at": "2026-03-19T00:40:53.000+08:00",
-      "score": 10,
-      "tags": [
-        "AI",
-        "工具链",
-        "开发框架"
-      ]
-    },
-    {
-      "id": "de59c5d727ad3a67",
-      "source_id": "general",
-      "source_name": "General AI News",
-      "source_type": "general",
-      "platform": "X",
-      "author": "Claude (@claudeai)",
-      "title": "Our developer conference Code with Claude returns this spring, this time in San Francisco, London, and Tokyo.",
-      "blurb": "Claude开发者大会多地开办，提供工作坊与专家互动，速注册参与。",
-      "link": "https://x.com/claudeai/status/2034308517964956051",
-      "canonical_link": "https://x.com/claudeai/status/2034308517964956051",
-      "published_at": "2026-03-19T00:38:40.000+08:00",
-      "score": 9,
-      "tags": [
-        "X",
-        "post"
-      ]
-    },
-    {
-      "id": "e120760b2917c800",
-      "source_id": "general",
-      "source_name": "General AI News",
-      "source_type": "general",
-      "platform": "X",
-      "author": "@claudeai",
-      "title": "Our developer conference Code with Claude returns this spring, this time in San Francisco, London, and Tokyo.",
-      "blurb": "Claude开发者大会即将回归多城市举办，开发者可远程观看或申请现场参与，机会难得。",
-      "link": "https://x.com/claudeai/status/2034308277463310728",
-      "canonical_link": "https://x.com/claudeai/status/2034308277463310728",
-      "published_at": "2026-03-19T00:38:40.000+08:00",
-      "score": 9,
-      "tags": [
-        "X",
-        "post"
-      ]
-    },
-    {
-      "id": "bef0d062983f27ac",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@lilyraynyc",
-      "title": "Google Discover新增LinkedIn帖子显示，强化E-E-A-T和社交内容",
-      "blurb": "Google Discover现显示单个LinkedIn帖子，继X/Instagram/TikTok后扩展。效果更好于Knowledge Graph中存在且社交粉丝大的个体/实体。用户可主动请求更多创作者话题，提升Discover推送。链接分析文章。 揭示Discover分发规则演进，强调专家权威内容机会；SEO从Search向Discover倾斜，影响流量增长策略。",
-      "link": "https://x.com/lilyraynyc/status/2034306599079063721",
-      "canonical_link": "https://x.com/lilyraynyc/status/2034306599079063721",
-      "published_at": "2026-03-19T00:31:03.000+08:00",
-      "score": 8,
-      "tags": [
-        "增长",
-        "SEO"
-      ]
-    },
-    {
-      "id": "add6df28a41ffe47",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@Khazix0918",
-      "title": "小米MiMo-V2-Pro万亿参数百万上下文，全球第八API免费",
-      "blurb": "小米官宣MiMo系列，V2-Pro AA榜中国第二，Agent工具调用优秀。免费API可用作龙虾基模。 国产基础设施大跃进，出海/独立开发廉价算力机会；Agent场景实战验证。",
-      "link": "https://x.com/Khazix0918/status/2034306301841596614",
-      "canonical_link": "https://x.com/Khazix0918/status/2034306301841596614",
-      "published_at": "2026-03-19T00:29:52.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI",
-        "基础设施",
-        "模型部署"
-      ]
-    },
-    {
-      "id": "f86874c6dcc8a239",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@fankaishuoai",
-      "title": "Google Workspace性价比超Gemini Advanced",
-      "blurb": "Google Workspace Business Standard月费14美元，功能多于Gemini 19.9美元。提供全面协作工具。 算力与协作工具成本信号，AI创业者优化订阅支出。",
-      "link": "https://x.com/fankaishuoai/status/2034303788224524354",
-      "canonical_link": "https://x.com/fankaishuoai/status/2034303788224524354",
-      "published_at": "2026-03-19T00:19:53.000+08:00",
-      "score": 6,
-      "tags": [
-        "工具链",
-        "算力经济学"
       ]
     }
   ]
