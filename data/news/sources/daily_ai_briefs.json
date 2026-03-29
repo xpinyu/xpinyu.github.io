@@ -4,12 +4,66 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-03-28T17:31:10.947+08:00",
+    "updated_at": "2026-03-29T18:26:28.175+08:00",
     "item_count": 10,
     "window_start": "2026-03-27T00:00:00.000Z",
-    "window_end": "2026-03-28T09:31:10.947Z"
+    "window_end": "2026-03-29T10:26:28.175Z"
   },
   "items": [
+    {
+      "id": "04c468dc40f200e4",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Anthropic",
+      "title": "Claude AI Maker Anthropic Considers IPO as Soon as October",
+      "blurb": "Anthropic考虑10月IPO，估值超600亿美元。标志AI公司上市浪潮。",
+      "link": "https://bloomberg.com/news/articles/2026-03-27/claude-ai-maker-anthropic-said-to-weigh-ipo-as-soon-as-october",
+      "canonical_link": "https://bloomberg.com/news/articles/2026-03-27/claude-ai-maker-anthropic-said-to-weigh-ipo-as-soon-as-october",
+      "published_at": "2026-03-27T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "TLDR AI",
+        "business"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-27",
+      "source_signal": "TLDR business signal on potential $60B+ Anthropic IPO.",
+      "recommendation": "Anthropic考虑10月IPO，估值超600亿美元。标志AI公司上市浪潮。",
+      "summary": "Claude开发者与投行初步讨论10月上市，可能筹资超600亿。决策未定。",
+      "takeaways": [
+        "AI独角兽IPO加速",
+        "Anthropic估值新高"
+      ],
+      "topic": "business"
+    },
+    {
+      "id": "8b218fe7e804a6c6",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Bo Wang",
+      "title": "Further human + AI + proof assistant work on Knuth's \"Claude Cycles\" problem",
+      "blurb": "人类+AI+证明助手攻克Knuth难题，展示了AI在数学推理中的潜力。值得关注混合智能系统的发展。",
+      "link": "https://x.com/BoWang87/status/2037648937453232504",
+      "canonical_link": "https://x.com/BoWang87/status/2037648937453232504",
+      "published_at": "2026-03-29T18:26:28.175+08:00",
+      "score": 9,
+      "tags": [
+        "Hacker News",
+        "research"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN item with 211 points and 136 comments, showcasing collaborative AI in formal math proofs.",
+      "recommendation": "人类+AI+证明助手攻克Knuth难题，展示了AI在数学推理中的潜力。值得关注混合智能系统的发展。",
+      "summary": "团队使用AI和证明助手推进Knuth的Claude Cycles问题，取得新进展。该方法结合人类洞见与AI计算，推动形式化验证。",
+      "takeaways": [
+        "AI助力复杂数学证明加速进展",
+        "证明助手如Lean提升可验证性"
+      ],
+      "topic": "research"
+    },
     {
       "id": "9a7a5e95e9d6ee5e",
       "source_id": "daily_ai_briefs",
@@ -18,7 +72,7 @@
       "platform": "TLDR AI",
       "author": "Chroma",
       "title": "Chroma Context-1: Training a Self-Editing Search Agent",
-      "blurb": "Chroma Context-1 20B参数搜索代理，自编辑查询，检索性能媲美前沿模型，速度10倍。",
+      "blurb": "Chroma Context-1 20B搜索代理，自编辑查询提升检索精度。成本低速度快。",
       "link": "https://trychroma.com/research/context-1",
       "canonical_link": "https://trychroma.com/research/context-1",
       "published_at": "2026-03-27T20:00:00.000+08:00",
@@ -28,41 +82,14 @@
         "agent"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-27",
-      "source_signal": "Deep dive in TLDR; 20B agentic search model with self-editing, frontier-level retrieval at low cost.",
-      "recommendation": "Chroma Context-1 20B参数搜索代理，自编辑查询，检索性能媲美前沿模型，速度10倍。",
-      "summary": "训练于8000合成任务，支持多轮子查询迭代。丢弃无关结果，分离搜索与生成。成本低、高速。",
+      "source_signal": "TLDR research on 20B agentic search model with self-editing.",
+      "recommendation": "Chroma Context-1 20B搜索代理，自编辑查询提升检索精度。成本低速度快。",
+      "summary": "训练于8000合成任务，匹敌前沿模型，10倍推理速。分解查询多轮搜索。",
       "takeaways": [
-        "自编辑多轮搜索",
-        "10倍推理速度"
+        "自编辑代理分离搜索生成",
+        "高效检索成本低"
       ],
       "topic": "agent"
-    },
-    {
-      "id": "2cfcf2c0dc18549c",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Google",
-      "title": "Gemini 3.1 Flash Live for Real-Time Voice AI",
-      "blurb": "Gemini 3.1 Flash Live专注实时语音对话，低延迟自然交互。即刻接入Google开发者API。",
-      "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-1-flash-live",
-      "canonical_link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-1-flash-live",
-      "published_at": "2026-03-27T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "TLDR AI",
-        "model-release"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-27",
-      "source_signal": "TLDR headline launch; new low-latency voice model available in Google APIs and products.",
-      "recommendation": "Gemini 3.1 Flash Live专注实时语音对话，低延迟自然交互。即刻接入Google开发者API。",
-      "summary": "Gemini 3.1 Flash Live优化实时语音AI，支持低延迟对话。覆盖开发者API、企业工具和消费产品。提升语音代理体验。",
-      "takeaways": [
-        "低延迟实时语音",
-        "多平台即时可用"
-      ],
-      "topic": "model-release"
     },
     {
       "id": "980083234b548f31",
@@ -72,7 +99,7 @@
       "platform": "TLDR AI",
       "author": "Cursor",
       "title": "Improving Composer through real-time RL",
-      "blurb": "Cursor实时RL技术，每5小时迭代Composer模型，利用用户反馈训练。革命性快速改进方法。",
+      "blurb": "Cursor实时RL每5小时迭代Composer，提升代码生成质量。展示生产级RL应用。",
       "link": "https://cursor.com/blog/real-time-rl-for-composer",
       "canonical_link": "https://cursor.com/blog/real-time-rl-for-composer",
       "published_at": "2026-03-27T20:00:00.000+08:00",
@@ -82,122 +109,68 @@
         "tooling"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-27",
-      "source_signal": "Engineering highlight in TLDR; Cursor's real-time RL using live tokens for rapid model iteration.",
-      "recommendation": "Cursor实时RL技术，每5小时迭代Composer模型，利用用户反馈训练。革命性快速改进方法。",
-      "summary": "实时RL使用生产推理令牌作为奖励信号。观察用户响应聚合训练。实现Composer频繁更新，提升性能。",
+      "source_signal": "TLDR engineering piece on Cursor's rapid RL iteration for code composer.",
+      "recommendation": "Cursor实时RL每5小时迭代Composer，提升代码生成质量。展示生产级RL应用。",
+      "summary": "使用真实推理token训练，观察用户反馈作为奖励。每5小时部署改进版Composer。",
       "takeaways": [
-        "实时用户反馈训练",
-        "每5小时部署新版"
+        "实时用户信号驱动RL",
+        "快速迭代代码工具"
       ],
       "topic": "tooling"
     },
     {
-      "id": "22a2a9fc0157727d",
+      "id": "9a1ea7a8dd04fd83",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
       "author": "Stanford",
-      "title": "Go hard on agents, not on your filesystem",
-      "blurb": "斯坦福提出专注于AI代理而非文件系统的理念，强调代理在复杂任务中的潜力。值得开发者关注以优化AI工作流。",
-      "link": "https://jai.scs.stanford.edu/",
-      "canonical_link": "https://jai.scs.stanford.edu/",
-      "published_at": "2026-03-28T09:31:00.000+08:00",
+      "title": "AI overly affirms users asking for personal advice",
+      "blurb": "斯坦福研究揭示AI在个人建议中过度附和用户，可能导致误导性回应。建议开发者关注模型的诚实性和鲁棒性。",
+      "link": "https://news.stanford.edu/stories/2026/03/ai-advice-sycophantic-models-research",
+      "canonical_link": "https://news.stanford.edu/stories/2026/03/ai-advice-sycophantic-models-research",
+      "published_at": "2026-03-29T18:26:28.175+08:00",
       "score": 9,
       "tags": [
         "Hacker News",
-        "agent"
+        "safety"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Top HN story with 326 points and 186 comments; highlights shift towards AI agents over traditional file systems, key for agentic workflows.",
-      "recommendation": "斯坦福提出专注于AI代理而非文件系统的理念，强调代理在复杂任务中的潜力。值得开发者关注以优化AI工作流。",
-      "summary": "文章主张大力发展AI代理，而不是依赖文件系统管理。代理能更好地处理动态任务，提升效率。斯坦福项目展示了实际应用，引发热议。",
+      "source_signal": "Top HN story with 651 points and 495 comments, highlighting AI safety risks in personal advice scenarios.",
+      "recommendation": "斯坦福研究揭示AI在个人建议中过度附和用户，可能导致误导性回应。建议开发者关注模型的诚实性和鲁棒性。",
+      "summary": "研究发现AI模型在提供个人建议时倾向于过度肯定用户观点，即使建议不佳。这源于训练数据中的社会偏见和奖励机制。斯坦福团队通过实验验证了这一‘谄媚’现象，并探讨了缓解方法。",
       "takeaways": [
-        "代理优于文件系统处理复杂交互",
-        "斯坦福JAI项目提供实用示例"
+        "AI谄媚行为在关系、职业和健康建议中普遍存在",
+        "需改进训练以提升模型独立判断能力"
       ],
-      "topic": "agent"
+      "topic": "safety"
     },
     {
-      "id": "05c44b7838012395",
+      "id": "2cfcf2c0dc18549c",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Ligong Han et al.",
-      "title": "S2D2: Fast Decoding for Diffusion LLMs via Training-Free Self-Speculation",
-      "blurb": "S2D2无需额外训练，通过自推测解码加速扩散LLM，最高达4.7倍速度提升。适用于追求高效推理的开发者。",
-      "link": "https://arxiv.org/abs/2603.25702",
-      "canonical_link": "https://arxiv.org/abs/2603.25702",
-      "published_at": "2026-03-26T21:48:50.000+08:00",
-      "score": 8,
+      "platform": "TLDR AI",
+      "author": "Google",
+      "title": "Gemini 3.1 Flash Live for Real-Time Voice AI",
+      "blurb": "Gemini 3.1 Flash Live实现实时语音对话，低延迟自然交互。即刻可用开发者API和产品。",
+      "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-1-flash-live",
+      "canonical_link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-1-flash-live",
+      "published_at": "2026-03-27T20:00:00.000+08:00",
+      "score": 9,
       "tags": [
-        "Hugging Face Papers",
-        "research"
+        "TLDR AI",
+        "model-release"
       ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-27",
-      "source_signal": "Featured on HF daily papers; introduces training-free acceleration for block-diffusion LLMs, improving speed-accuracy tradeoff.",
-      "recommendation": "S2D2无需额外训练，通过自推测解码加速扩散LLM，最高达4.7倍速度提升。适用于追求高效推理的开发者。",
-      "summary": "S2D2利用同一模型作为草稿者和验证者，实现块扩散LLM的快速解码。结合自回归验证，提升准确性和速度。在多个基准上优于基线。",
+      "source_page": "https://tldr.tech/ai/2026-03-27",
+      "source_signal": "TLDR headline launch of low-latency voice model across Google products.",
+      "recommendation": "Gemini 3.1 Flash Live实现实时语音对话，低延迟自然交互。即刻可用开发者API和产品。",
+      "summary": "新模型专注低延迟自然对话，支持Google开发者API、企业工具和消费产品。提升语音AI实时性。",
       "takeaways": [
-        "训练免费自推测解码",
-        "兼容自校正，提升4.7倍速度"
+        "实时语音低延迟优化",
+        "多平台即时部署"
       ],
-      "topic": "research"
-    },
-    {
-      "id": "2845b535a85c0256",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "dailydoseofds",
-      "title": "Anatomy of the .claude/ folder",
-      "blurb": "深入剖析Claude AI的本地文件夹结构，帮助用户优化提示工程和工具调用。适合高级Claude用户参考。",
-      "link": "https://blog.dailydoseofds.com/p/anatomy-of-the-claude-folder",
-      "canonical_link": "https://blog.dailydoseofds.com/p/anatomy-of-the-claude-folder",
-      "published_at": "2026-03-27T23:31:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hacker News",
-        "tooling"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "High-engagement HN post with 481 points and 223 comments; dissects Claude AI's local folder structure for advanced usage and workflows.",
-      "recommendation": "深入剖析Claude AI的本地文件夹结构，帮助用户优化提示工程和工具调用。适合高级Claude用户参考。",
-      "summary": "文章详细解释.claude/文件夹的作用，包括缓存、工具和自定义配置。揭示如何利用这些功能提升AI交互效率。社区讨论活跃，分享实际经验。",
-      "takeaways": [
-        ".claude/文件夹管理缓存与工具",
-        "优化配置可显著提升Claude性能"
-      ],
-      "topic": "tooling"
-    },
-    {
-      "id": "32035bbd58a0c949",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "theopenreader.org",
-      "title": "CERN uses tiny AI models burned into silicon for real-time LHC data filtering",
-      "blurb": "CERN将微型AI模型烧录到硅芯片，用于LHC实时数据过滤，展示AI硬件在高能物理中的应用。值得关注边缘AI趋势。",
-      "link": "https://theopenreader.org/Journalism:CERN_Uses_Tiny_AI_Models_Burned_into_Silicon_for_Real-Time_LHC_Data_Filtering",
-      "canonical_link": "https://theopenreader.org/Journalism:CERN_Uses_Tiny_AI_Models_Burned_into_Silicon_for_Real-Time_LHC_Data_Filtering",
-      "published_at": "2026-03-28T16:31:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hacker News",
-        "infra"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Emerging HN story on AI hardware integration; demonstrates edge AI for high-stakes scientific computing at CERN's LHC.",
-      "recommendation": "CERN将微型AI模型烧录到硅芯片，用于LHC实时数据过滤，展示AI硬件在高能物理中的应用。值得关注边缘AI趋势。",
-      "summary": "CERN采用硅芯片嵌入的微型AI模型，实现LHC海量数据的实时过滤。减少数据传输，提升效率。该技术标志AI硬件化新阶段。",
-      "takeaways": [
-        "硅芯片AI实现实时过滤",
-        "适用于高吞吐科学数据"
-      ],
-      "topic": "infra"
+      "topic": "model-release"
     },
     {
       "id": "89384cf02861ca42",
@@ -207,7 +180,7 @@
       "platform": "TLDR AI",
       "author": "Mistral",
       "title": "Mistral Launches Voxtral TTS Model",
-      "blurb": "Mistral Voxtral 4B参数多语TTS，低延迟表达性语音生成，适合语音代理部署。",
+      "blurb": "Mistral Voxtral 4B多语TTS，低延迟表达力强。适合语音代理部署。",
       "link": "https://mistral.ai/news/voxtral-tts",
       "canonical_link": "https://mistral.ai/news/voxtral-tts",
       "published_at": "2026-03-27T20:00:00.000+08:00",
@@ -217,14 +190,41 @@
         "model-release"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-27",
-      "source_signal": "TLDR launch; 4B multilingual TTS for low-latency voice agents.",
-      "recommendation": "Mistral Voxtral 4B参数多语TTS，低延迟表达性语音生成，适合语音代理部署。",
-      "summary": "Voxtral优化低延迟、多语种语音合成。支持可扩展部署在语音代理中。高表现用于实时应用。",
+      "source_signal": "TLDR model release for multilingual low-latency TTS.",
+      "recommendation": "Mistral Voxtral 4B多语TTS，低延迟表达力强。适合语音代理部署。",
+      "summary": "4B参数多语种文本到语音，优化低延迟和可扩展部署。",
       "takeaways": [
-        "4B多语TTS",
-        "低延迟代理部署"
+        "多语低延迟TTS",
+        "语音代理优化"
       ],
       "topic": "model-release"
+    },
+    {
+      "id": "cc31acf65dc79379",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "1st1",
+      "title": "Lat.md: Agent Lattice: a knowledge graph for your codebase, written in Markdown",
+      "blurb": "Lat.md用Markdown构建代码库知识图谱，便于AI代理导航复杂项目。开发者可快速集成提升代码理解。",
+      "link": "https://github.com/1st1/lat.md",
+      "canonical_link": "https://github.com/1st1/lat.md",
+      "published_at": "2026-03-29T18:26:28.175+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "tooling"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Recent HN Show HN for codebase knowledge graph tooling.",
+      "recommendation": "Lat.md用Markdown构建代码库知识图谱，便于AI代理导航复杂项目。开发者可快速集成提升代码理解。",
+      "summary": "Agent Lattice是一个Markdown知识图谱工具，帮助AI代理理解代码库结构。通过简单格式化生成图谱，支持查询和导航。",
+      "takeaways": [
+        "Markdown-native知识图谱简化代码代理",
+        "提升AI在大型代码库中的效率"
+      ],
+      "topic": "tooling"
     },
     {
       "id": "c1937f199f58946e",
@@ -234,51 +234,51 @@
       "platform": "TLDR AI",
       "author": "Cohere",
       "title": "Cohere Releases Open Source Transcription Model",
-      "blurb": "Cohere Transcribe开源ASR模型，词错率最低，优化生产部署。登顶HF leaderboard。",
+      "blurb": "Cohere开源转录模型Transcribe，低词错率适合生产。登顶HF ASR排行榜。",
       "link": "https://cohere.com/blog/transcribe",
       "canonical_link": "https://cohere.com/blog/transcribe",
       "published_at": "2026-03-27T20:00:00.000+08:00",
-      "score": 8,
+      "score": 7,
       "tags": [
         "TLDR AI",
         "model-release"
       ],
       "source_page": "https://tldr.tech/ai/2026-03-27",
-      "source_signal": "TLDR engineering note; open-source ASR topping HF leaderboard for production.",
-      "recommendation": "Cohere Transcribe开源ASR模型，词错率最低，优化生产部署。登顶HF leaderboard。",
-      "summary": "Transcribe专注低词错率和生产使用。在HF Open ASR leaderboard领先。开源便于集成。",
+      "source_signal": "TLDR launch of top ASR model on HF leaderboard.",
+      "recommendation": "Cohere开源转录模型Transcribe，低词错率适合生产。登顶HF ASR排行榜。",
+      "summary": "优化低词错率和生产部署，在Hugging Face Open ASR排行领先。",
       "takeaways": [
-        "顶级ASR准确率",
-        "开源生产优化"
+        "开源ASR生产级优化",
+        "领先基准性能"
       ],
       "topic": "model-release"
     },
     {
-      "id": "4c83409c34912227",
+      "id": "31642a083cb01930",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Sicheng Zuo et al.",
-      "title": "Vega: Learning to Drive with Natural Language Instructions",
-      "blurb": "Vega统一视觉-语言-世界-动作模型，支持自然语言驾驶指令。新数据集InstructScene提升个性化驾驶能力。",
-      "link": "https://zuosc19.github.io/Vega",
-      "canonical_link": "https://zuosc19.github.io/Vega",
-      "published_at": "2026-03-26T21:59:56.000+08:00",
-      "score": 7,
+      "platform": "Hacker News",
+      "author": "adlrocha",
+      "title": "What if AI doesn't need more RAM but better math?",
+      "blurb": "文章质疑AI仅靠更多RAM扩展，转向数学优化路径。提供新视角优化模型效率。",
+      "link": "https://adlrocha.substack.com/p/adlrocha-what-if-ai-doesnt-need-more",
+      "canonical_link": "https://adlrocha.substack.com/p/adlrocha-what-if-ai-doesnt-need-more",
+      "published_at": "2026-03-29T18:26:28.175+08:00",
+      "score": 6,
       "tags": [
-        "Hugging Face Papers",
-        "agent"
+        "Hacker News",
+        "research"
       ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-27",
-      "source_signal": "HF daily paper on vision-language-action for autonomous driving; new dataset and unified model for instruction-following.",
-      "recommendation": "Vega统一视觉-语言-世界-动作模型，支持自然语言驾驶指令。新数据集InstructScene提升个性化驾驶能力。",
-      "summary": "Vega结合自回归和扩散范式处理视觉与指令，生成轨迹。InstructScene数据集含10万场景。实验显示优异规划与指令跟随性能。",
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN discussion on alternative AI scaling via math improvements over hardware.",
+      "recommendation": "文章质疑AI仅靠更多RAM扩展，转向数学优化路径。提供新视角优化模型效率。",
+      "summary": "作者探讨AI未来是否需更好数学而非更多内存。通过符号计算和稀疏方法减少计算需求。",
       "takeaways": [
-        "InstructScene数据集10万场景",
-        "联合注意力多模态交互"
+        "数学创新可替代硬件缩放",
+        "符号AI复兴潜力大"
       ],
-      "topic": "agent"
+      "topic": "research"
     }
   ]
 }
