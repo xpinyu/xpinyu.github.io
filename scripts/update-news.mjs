@@ -611,6 +611,10 @@ function sanitizeFeedItem(item, sourceUpdatedAtById, defaultUpdatedAt) {
     return null;
   }
 
+  if (isPaperLikeFeedItem(item)) {
+    return null;
+  }
+
   const sourceUpdatedAt = parseIsoDate(sourceUpdatedAtById.get(item.source_id));
   const fallbackUpdatedAt = parseIsoDate(defaultUpdatedAt) || NOW;
   const ceiling = sourceUpdatedAt || fallbackUpdatedAt;
@@ -904,8 +908,8 @@ Current UTC context:
 
 Task:
 1. Work only from the source excerpts below.
-2. Keep only high-value AI items: papers, benchmarks, model releases, product launches, agents, tooling, workflows, infra, data, safety, and concrete business signals.
-3. Prefer the original paper/article/repo/product URL when the excerpt includes it. If not, use the digest page URL.
+2. Keep only high-value AI items: benchmarks, model releases, product launches, agents, tooling, workflows, infra, data, safety, and concrete business signals.
+3. Prefer the original article/repo/product URL when the excerpt includes it. If not, use the digest page URL.
 4. Deduplicate repeated stories that appear across multiple digest sites.
 5. Downrank generic opinion, low-information roundups, vague hype, and repeated summaries with no new details.
 6. Return fewer than ${maxItems} items if the signal is weak. Do not pad.
@@ -914,7 +918,7 @@ Output rules:
 - Return strict JSON only.
 - Write descriptive fields in Simplified Chinese.
 - Keep the title in its original language when useful.
-- platform must be one of: Hacker News, Hugging Face Papers, ClawFeed, TLDR AI.
+- platform must be one of: Hacker News, ClawFeed, TLDR AI.
 - published_at must be ISO 8601 with timezone. If the original timestamp is unclear, use the fallback_published_at from the digest page that surfaced the item.
 - link must point to the original item when available.
 - source_page must be the digest page URL that surfaced the item.
@@ -925,7 +929,7 @@ JSON schema:
 {
   "items": [
     {
-      "platform": "Hacker News | Hugging Face Papers | ClawFeed | TLDR AI",
+      "platform": "Hacker News | ClawFeed | TLDR AI",
       "title": "Title",
       "author": "Author or publisher",
       "published_at": "ISO 8601 with timezone",
@@ -1846,23 +1850,6 @@ function buildDailyDigestPageConfigs(window) {
       ],
     },
     {
-      id: "huggingface_papers",
-      label: "Hugging Face Papers",
-      maxChars: 14_000,
-      candidates: [
-        {
-          url: `https://huggingface.co/papers/date/${window.utc_date}`,
-          sourcePage: `https://huggingface.co/papers/date/${window.utc_date}`,
-          sourceDateKey: window.utc_date,
-        },
-        {
-          url: `https://huggingface.co/papers/date/${window.previous_utc_date}`,
-          sourcePage: `https://huggingface.co/papers/date/${window.previous_utc_date}`,
-          sourceDateKey: window.previous_utc_date,
-        },
-      ],
-    },
-    {
       id: "clawfeed",
       label: "ClawFeed",
       maxChars: 8_000,
@@ -2433,9 +2420,6 @@ function canonicalDailyDigestPlatform(value, sourcePage) {
   if (normalized.includes("hacker news") || host.endsWith("news.ycombinator.com")) {
     return "Hacker News";
   }
-  if (normalized.includes("hugging face") || host.endsWith("huggingface.co")) {
-    return "Hugging Face Papers";
-  }
   if (normalized.includes("clawfeed") || host.endsWith("clawfeed.kevinhe.io")) {
     return "ClawFeed";
   }
@@ -2484,6 +2468,39 @@ function canonicalDailyDigestTopic(value) {
     return "data";
   }
   return "";
+}
+
+function isPaperLikeFeedItem(item) {
+  if (normalizedText(item?.platform) === "hugging face papers") {
+    return true;
+  }
+
+  return [item?.link, item?.canonical_link, item?.source_page].some(isPaperUrl);
+}
+
+function isPaperUrl(value) {
+  if (typeof value !== "string" || !value.trim()) {
+    return false;
+  }
+
+  try {
+    const url = new URL(value.trim());
+    if (extractPaperIdFromUrl(url)) {
+      return true;
+    }
+
+    const host = String(url.hostname || "").replace(/^www\./i, "").toLowerCase();
+    return (
+      host.endsWith("openreview.net") ||
+      host.endsWith("aclanthology.org") ||
+      host.endsWith("proceedings.mlr.press") ||
+      host.endsWith("openaccess.thecvf.com") ||
+      host.endsWith("papers.nips.cc") ||
+      host.endsWith("neurips.cc")
+    );
+  } catch {
+    return false;
+  }
 }
 
 function validateGeneralItems(items, window, maxItems) {
@@ -2573,6 +2590,11 @@ function validateDailyDigestItems(items, { pages, window, maxItems }) {
       continue;
     }
 
+    const topic = canonicalDailyDigestTopic(item.topic);
+    if (isPaperLikeFeedItem({ platform, link, source_page: sourcePage || link, topic })) {
+      continue;
+    }
+
     const sourcePageRecord = pageBySourcePage.get(sourcePage) || pageByPlatform.get(platform);
     const fallbackDateKey = String(sourcePageRecord?.source_date_key || window.utc_date || "").trim();
     const fallbackPublishedAt =
@@ -2599,7 +2621,7 @@ function validateDailyDigestItems(items, { pages, window, maxItems }) {
       recommendation: normalizeText(item.recommendation),
       summary: normalizeText(item.summary),
       takeaways: uniqueStrings(item.takeaways),
-      topic: canonicalDailyDigestTopic(item.topic),
+      topic,
       scores: {
         novelty: normalizeScore(scores.novelty),
         value: normalizeScore(scores.value),

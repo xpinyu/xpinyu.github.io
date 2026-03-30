@@ -3,46 +3,8 @@
   "current_page": 8,
   "total_pages": 17,
   "page_size": 60,
-  "total_items": 1000,
+  "total_items": 981,
   "items": [
-    {
-      "id": "831579255723abb0",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@Pluvio9yte",
-      "title": "从OpenClaw迁移到Creao，构建稳定邮件Agent工作流",
-      "blurb": "作者因OpenClaw不稳定及硬件问题迁移到Creao，使用简单提示词自动创建邮件总结Agent，每天晚上推送日报。Creao支持Gmail授权及邮件营销场景，优于N8N等工作流工具。展示了AI Agent在生产力自动化中的实战应用。 揭示工具链迁移风险与机会，Creao提供更高稳定性和智能性，适合AI创业者构建自主Agent，防范单点故障。",
-      "link": "https://x.com/Pluvio9yte/status/2037214871843201079",
-      "canonical_link": "https://x.com/Pluvio9yte/status/2037214871843201079",
-      "published_at": "2026-03-27T01:07:29.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链",
-        "Agent工作流"
-      ]
-    },
-    {
-      "id": "28360e2bf9d42a1a",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@drfeifei",
-      "title": "单一创作者用Marble生成1亿Gaussian splats构建cyberpunk世界",
-      "blurb": "World Labs展示个人可生成完整3D世界，1亿Gaussian splats覆盖表面与结构。强调AI生成能力+人类想象力的结合。 标志空间智能模型成熟，开启个人级世界构建时代，利好游戏/SaaS出海产品机会。",
-      "link": "https://x.com/drfeifei/status/2037213440138248242",
-      "canonical_link": "https://x.com/drfeifei/status/2037213440138248242",
-      "published_at": "2026-03-27T01:01:48.000+08:00",
-      "score": 7,
-      "tags": [
-        "AI",
-        "产品进展",
-        "独立开发"
-      ]
-    },
     {
       "id": "555b82280a29383e",
       "source_id": "artist",
@@ -768,60 +730,6 @@
       ]
     },
     {
-      "id": "4c83409c34912227",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Sicheng Zuo et al.",
-      "title": "Vega: Learning to Drive with Natural Language Instructions",
-      "blurb": "Vega统一视觉-语言-世界-动作模型，支持自然语言驾驶指令。新数据集InstructScene提升个性化驾驶能力。",
-      "link": "https://zuosc19.github.io/Vega",
-      "canonical_link": "https://zuosc19.github.io/Vega",
-      "published_at": "2026-03-26T21:59:56.000+08:00",
-      "score": 7,
-      "tags": [
-        "Hugging Face Papers",
-        "agent"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-27",
-      "source_signal": "HF daily paper on vision-language-action for autonomous driving; new dataset and unified model for instruction-following.",
-      "recommendation": "Vega统一视觉-语言-世界-动作模型，支持自然语言驾驶指令。新数据集InstructScene提升个性化驾驶能力。",
-      "summary": "Vega结合自回归和扩散范式处理视觉与指令，生成轨迹。InstructScene数据集含10万场景。实验显示优异规划与指令跟随性能。",
-      "takeaways": [
-        "InstructScene数据集10万场景",
-        "联合注意力多模态交互"
-      ],
-      "topic": "agent"
-    },
-    {
-      "id": "05c44b7838012395",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Ligong Han et al.",
-      "title": "S2D2: Fast Decoding for Diffusion LLMs via Training-Free Self-Speculation",
-      "blurb": "S2D2无需额外训练，通过自推测解码加速扩散LLM，最高达4.7倍速度提升。适用于追求高效推理的开发者。",
-      "link": "https://arxiv.org/abs/2603.25702",
-      "canonical_link": "https://arxiv.org/abs/2603.25702",
-      "published_at": "2026-03-26T21:48:50.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hugging Face Papers",
-        "research"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-27",
-      "source_signal": "Featured on HF daily papers; introduces training-free acceleration for block-diffusion LLMs, improving speed-accuracy tradeoff.",
-      "recommendation": "S2D2无需额外训练，通过自推测解码加速扩散LLM，最高达4.7倍速度提升。适用于追求高效推理的开发者。",
-      "summary": "S2D2利用同一模型作为草稿者和验证者，实现块扩散LLM的快速解码。结合自回归验证，提升准确性和速度。在多个基准上优于基线。",
-      "takeaways": [
-        "训练免费自推测解码",
-        "兼容自校正，提升4.7倍速度"
-      ],
-      "topic": "research"
-    },
-    {
       "id": "91334871372f2f1e",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -1116,58 +1024,115 @@
       ]
     },
     {
-      "id": "83e67b75f237b7e7",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Mohamed Bin Zayed University of Artificial Intelligence",
-      "title": "CarePilot: A Multi-Agent Framework for Long-Horizon Computer Task Automation in Healthcare",
-      "blurb": "CarePilot 多代理框架自动化医疗长时程任务。行业应用潜力大。",
-      "link": "https://arxiv.org/abs/2603.24157",
-      "canonical_link": "https://arxiv.org/abs/2603.24157",
-      "published_at": "2026-03-26T15:58:40.496+08:00",
-      "score": 8,
+      "id": "51ef4fb3954c7d13",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@czue",
+      "title": "Even in 2026, write some code to regain confidence directing agents",
+      "blurb": "尽管2026年许多人吹嘘不写一行代码，但作者建议偶尔写一点代码。过度依赖代理会导致对简单修改失去信心，亲手编码能恢复信心并提高指导代理的有效性。写代码还能强制阅读整个代码库，这比单独审阅差异更有价值。 这对AI独立黑客至关重要，因为它强调在代理时代平衡自动化与手动编码，保持核心技能以提升代理指令精准度和整体生产力，避免过度依赖带来的盲区。",
+      "link": "https://x.com/czue/status/2037063068933411279",
+      "canonical_link": "https://x.com/czue/status/2037063068933411279",
+      "published_at": "2026-03-26T15:04:17.000+08:00",
+      "score": 7,
       "tags": [
-        "Hugging Face Papers",
-        "agent"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-26",
-      "source_signal": "HF paper introducing multi-agent healthcare automation.",
-      "recommendation": "CarePilot 多代理框架自动化医疗长时程任务。行业应用潜力大。",
-      "summary": "针对医疗场景的长视野计算机任务自动化。多代理协作提升效率和准确性。",
-      "takeaways": [
-        "医疗长时程自动化",
-        "多代理协作框架"
-      ],
-      "topic": "agent"
+        "workflow",
+        "agent",
+        "automation"
+      ]
     },
     {
-      "id": "cec8f4ba62e808fa",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "12 authors",
-      "title": "UI-Voyager: A Self-Evolving GUI Agent Learning via Failed Experience",
-      "blurb": "UI-Voyager 通过失败经验自进化 GUI 代理。自主学习机制创新。",
-      "link": "https://arxiv.org/abs/2603.24533",
-      "canonical_link": "https://arxiv.org/abs/2603.24533",
-      "published_at": "2026-03-26T15:58:40.496+08:00",
+      "id": "ca4f532d0243aab1",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@lexx_aura",
+      "title": "Seedance 2.0赛扬多宇宙战斗动画",
+      "blurb": "以‘代际创伤’为主题的史诗赛扬对决动画视频，使用Seedance 2.0推动AI动画极限。展示流畅多宇宙战斗场面，宣称传统动画师面临挑战。视觉冲击力强，叙事融合流行文化。 突出Seedance 2.0在复杂动作动画中的突破性能，为AIGC动画创作者提供技术参考。",
+      "link": "https://x.com/lexx_aura/status/2037060647649788398",
+      "canonical_link": "https://x.com/lexx_aura/status/2037060647649788398",
+      "published_at": "2026-03-26T14:54:39.000+08:00",
+      "score": 9,
+      "tags": [
+        "showcase",
+        "tooling"
+      ]
+    },
+    {
+      "id": "888a30f3ea585ffb",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@damengchen",
+      "title": "Mailcheep 新增一键清理受众列表功能",
+      "blurb": "新增超级简单方式，几点击清理 Mailcheep 受众列表。附图展示操作界面直观高效。这是针对用户痛点的快速产品迭代。 展示 indie 产品如何通过小功能提升留存和 ops 效率，适用于 AI 工具的快速 shipping 循环。",
+      "link": "https://x.com/damengchen/status/2037053000548819450",
+      "canonical_link": "https://x.com/damengchen/status/2037053000548819450",
+      "published_at": "2026-03-26T14:24:16.000+08:00",
+      "score": 7,
+      "tags": [
+        "build",
+        "workflow"
+      ]
+    },
+    {
+      "id": "e3405655e1cec9d2",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@seclink",
+      "title": "GitHub Copilot默认用交互数据训练AI，需手动退出",
+      "blurb": "微软从4月24日起默认用Copilot交互数据训练模型，除非手动退出个人页面设置。跟帖提醒账号密码泄漏风险。 基础设施风险提示：数据隐私隐患影响开发者工具链选择，前瞻性强。",
+      "link": "https://x.com/seclink/status/2037047925080285541",
+      "canonical_link": "https://x.com/seclink/status/2037047925080285541",
+      "published_at": "2026-03-26T14:04:06.000+08:00",
+      "score": 7,
+      "tags": [
+        "AI",
+        "工具链",
+        "风险"
+      ]
+    },
+    {
+      "id": "7eb827f7dc5f9deb",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@lessin",
+      "title": "Every product category should have at least a 100x price difference from cheapest to most expensive option",
+      "blurb": "Sam Lessin 提出，每个产品类别从最便宜到最贵的选项价格差应至少100倍。这一原则有助于构建清晰的价值阶梯，满足多样用户需求，并驱动高端产品创新。附图展示了实际产品线中价格分布的示例，强调战略定价的重要性。 对产品创始人和构建者而言，这提供定价战略框架，帮助避免价格战，提升利润空间和市场定位。",
+      "link": "https://x.com/lessin/status/2037046900176933346",
+      "canonical_link": "https://x.com/lessin/status/2037046900176933346",
+      "published_at": "2026-03-26T14:00:02.000+08:00",
+      "score": 9,
+      "tags": [
+        "product",
+        "strategy"
+      ]
+    },
+    {
+      "id": "b600b587899390ce",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@iamtonyzhu",
+      "title": "Sora 关门像 Google+，需新技术溢出 PMF",
+      "blurb": "OpenAI Sora 病毒火爆后关门，因 hype 与价值不匹配，成本高留存低。类比 Google+ vs TikTok，Sora 非 AI 视频溢出，无法承载新体验。需 PMF，非仅传播。 行业判断深刻，警示 AI 产品烧钱陷阱；风险提示增长路径错位。",
+      "link": "https://x.com/iamtonyzhu/status/2037045992609243363",
+      "canonical_link": "https://x.com/iamtonyzhu/status/2037045992609243363",
+      "published_at": "2026-03-26T13:56:25.000+08:00",
       "score": 8,
       "tags": [
-        "Hugging Face Papers",
-        "agent"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-26",
-      "source_signal": "Trending HF paper on self-improving GUI agents.",
-      "recommendation": "UI-Voyager 通过失败经验自进化 GUI 代理。自主学习机制创新。",
-      "summary": "代理从失败中学习，提升 GUI 操作能力。自进化框架减少人工干预。",
-      "takeaways": [
-        "失败驱动自进化",
-        "GUI 代理自主优化"
-      ],
-      "topic": "agent"
+        "AI",
+        "创业",
+        "增长"
+      ]
     }
   ]
 }

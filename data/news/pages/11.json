@@ -3,167 +3,8 @@
   "current_page": 11,
   "total_pages": 17,
   "page_size": 60,
-  "total_items": 1000,
+  "total_items": 981,
   "items": [
-    {
-      "id": "43fc467821f9f30c",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@shao__meng",
-      "title": "AI Agent友好型CLI设计10大原则",
-      "blurb": "Cursor团队总结CLI从人类优先转向Agent优先：非交互式、延迟加载文档、示例驱动、管道友好、快速失败、幂等性等。解决Agent执行卡顿、误解析问题，推动Unix哲学强化。 CLI成人机协作新中间层，指导工具开发者优化接口，前瞻Agent原生时代范式转移。",
-      "link": "https://x.com/shao__meng/status/2036782822669549698",
-      "canonical_link": "https://x.com/shao__meng/status/2036782822669549698",
-      "published_at": "2026-03-25T20:30:41.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI",
-        "工具链",
-        "开发框架"
-      ]
-    },
-    {
-      "id": "0fbc8befc0dbd198",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@Fenng",
-      "title": "拼多多现金储备飙升至4223亿元",
-      "blurb": "截至2025年底，拼多多现金等价物及短期投资达4223亿元，同比增907亿元。 现金流充裕是大厂抗风险底牌，对SaaS/出海创业者是投资并购信号。",
-      "link": "https://x.com/Fenng/status/2036778425315422604",
-      "canonical_link": "https://x.com/Fenng/status/2036778425315422604",
-      "published_at": "2026-03-25T20:13:12.000+08:00",
-      "score": 7,
-      "tags": [
-        "SaaS",
-        "创业",
-        "出海",
-        "增长"
-      ]
-    },
-    {
-      "id": "f8972f6979396ffd",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@indie_maker_fox",
-      "title": "推荐Learn Claude Code教程：理解Agent开发思维",
-      "blurb": "教程https://learn.shareai.run模拟Claude Code agent开发历程，揭示功能迭代问题解决思路。训练程序员从猜想实现到构建内部Agent的思维。 前瞻Agent从使用到开发趋势，提供高密度思考框架；独立开发者可快速上手自定义Agent，避免试错。",
-      "link": "https://x.com/indie_maker_fox/status/2036776135774900515",
-      "canonical_link": "https://x.com/indie_maker_fox/status/2036776135774900515",
-      "published_at": "2026-03-25T20:04:06.000+08:00",
-      "score": 7,
-      "tags": [
-        "AI",
-        "独立开发",
-        "工具链"
-      ]
-    },
-    {
-      "id": "3e6c1dc8953a7911",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Anthropic",
-      "title": "Claude Auto Mode",
-      "blurb": "Claude 自动模式研究预览，支持自主执行任务并内置安全过滤。代理时代关键进步。",
-      "link": "https://claude.com/blog/auto-mode",
-      "canonical_link": "https://claude.com/blog/auto-mode",
-      "published_at": "2026-03-25T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "TLDR AI",
-        "agent"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-25",
-      "source_signal": "Featured headline in TLDR AI for new agentic feature with safeguards.",
-      "recommendation": "Claude 自动模式研究预览，支持自主执行任务并内置安全过滤。代理时代关键进步。",
-      "summary": "Anthropic 推出 Auto Mode，Claude 可自主执行动作，同时过滤风险行为和提示注入。内置保障提升安全性。该功能标志代理工具向生产级迈进。",
-      "takeaways": [
-        "自主执行加安全机制",
-        "防范提示注入风险"
-      ],
-      "topic": "agent"
-    },
-    {
-      "id": "f4c33ff4004f88d2",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Anthropic",
-      "title": "Harness design for long-running application development",
-      "blurb": "Anthropic 多代理架构优化长时程应用开发，提升连贯性和自评。工作流创新值得学习。",
-      "link": "https://anthropic.com/engineering/harness-design-long-running-apps",
-      "canonical_link": "https://anthropic.com/engineering/harness-design-long-running-apps",
-      "published_at": "2026-03-25T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "workflow"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-25",
-      "source_signal": "Deep dive in TLDR on multi-agent workflow for complex app dev.",
-      "recommendation": "Anthropic 多代理架构优化长时程应用开发，提升连贯性和自评。工作流创新值得学习。",
-      "summary": "介绍 planner、generator 和 evaluator 代理协作，分解任务产生高质量输出。受 GAN 启发，解决上下文管理和自评挑战。该 harness 适用于前端和全栈编码。",
-      "takeaways": [
-        "多代理分解长任务",
-        "结构化手off 提升输出质量"
-      ],
-      "topic": "workflow"
-    },
-    {
-      "id": "21fffe2d1a18ab45",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Anyscale",
-      "title": "Ray Data LLM enables 2x throughput over vLLM's synchronous LLM engine at production-scale",
-      "blurb": "Ray Data LLM 针对大批量推理优化，2x 吞吐量胜 vLLM。生产级基础设施首选。",
-      "link": "https://anyscale.com/blog/ray-data-llm-2x-throughput-vs-vllm",
-      "canonical_link": "https://anyscale.com/blog/ray-data-llm-2x-throughput-vs-vllm",
-      "published_at": "2026-03-25T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "infra"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-03-25",
-      "source_signal": "Engineering highlight in TLDR for scalable batch inference infra.",
-      "recommendation": "Ray Data LLM 针对大批量推理优化，2x 吞吐量胜 vLLM。生产级基础设施首选。",
-      "summary": "Ray Data LLM 库支持大规模批量 LLM 推理，提供高吞吐和容错。优化架构优先吞吐而非单请求延迟。在生产规模下实现 2x vLLM 性能。",
-      "takeaways": [
-        "批量推理 2x 加速",
-        "内置容错和高扩展性"
-      ],
-      "topic": "infra"
-    },
-    {
-      "id": "57b3ffb7ee2afb43",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@RestOfWorld",
-      "title": "11个非洲国家斥资20亿美元购中国AI监控技术，隐私担忧加剧",
-      "blurb": "非洲多国依赖中国AI监控，法律监管缺失引发隐私问题。资金超20亿，凸显新兴市场AI应用扩张。 展示AI监控商业机会与监管风险，出海SaaS需警惕政策变动和伦理审查。",
-      "link": "https://x.com/RestOfWorld/status/2036774096789209213",
-      "canonical_link": "https://x.com/RestOfWorld/status/2036774096789209213",
-      "published_at": "2026-03-25T19:56:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "AI",
-        "出海",
-        "监管",
-        "商业机会"
-      ]
-    },
     {
       "id": "05921c6640e40a14",
       "source_id": "x_ai_signals",
@@ -393,114 +234,6 @@
         "适用于实时AI应用场景"
       ],
       "topic": "research"
-    },
-    {
-      "id": "cda08cfd62602b27",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "IBM",
-      "title": "From Static Templates to Dynamic Runtime Graphs: A Survey of Workflow Optimization for LLM Agents",
-      "blurb": "LLM代理工作流优化综述，指导复杂代理设计。",
-      "link": "https://arxiv.org/abs/2603.22386",
-      "canonical_link": "https://arxiv.org/abs/2603.22386",
-      "published_at": "2026-03-25T15:00:08.483+08:00",
-      "score": 8,
-      "tags": [
-        "Hugging Face Papers",
-        "workflow"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-25",
-      "source_signal": "Hugging Face论文24热度，IBM综述LLM代理工作流优化，从静态模板到动态图。",
-      "recommendation": "LLM代理工作流优化综述，指导复杂代理设计。",
-      "summary": "综述LLM代理工作流演进，从静态模板到运行时动态图。讨论优化技术和挑战。IBM贡献推动代理系统效率提升。",
-      "takeaways": [
-        "动态图优化代理执行效率",
-        "适用于多步推理任务"
-      ],
-      "topic": "workflow"
-    },
-    {
-      "id": "8f4fc3612d64da71",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "6 authors",
-      "title": "MinerU-Diffusion: Rethinking Document OCR as Inverse Rendering via Diffusion Decoding",
-      "blurb": "创新OCR方法，利用扩散模型提升文档理解精度。",
-      "link": "https://arxiv.org/abs/2603.22458",
-      "canonical_link": "https://arxiv.org/abs/2603.22458",
-      "published_at": "2026-03-25T15:00:08.483+08:00",
-      "score": 8,
-      "tags": [
-        "Hugging Face Papers",
-        "research"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-25",
-      "source_signal": "Hugging Face当日论文榜首，高关注度40，重新定义文档OCR为逆渲染扩散解码。",
-      "recommendation": "创新OCR方法，利用扩散模型提升文档理解精度。",
-      "summary": "MinerU-Diffusion将OCR视为逆渲染问题，通过扩散解码实现高精度文本提取。适用于复杂布局文档。实验显示优于传统OCR系统。",
-      "takeaways": [
-        "扩散解码提升OCR鲁棒性",
-        "适用于多语言文档处理"
-      ],
-      "topic": "research"
-    },
-    {
-      "id": "6d58d2fb97cd9c54",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "8 authors",
-      "title": "WildWorld: A Large-Scale Dataset for Dynamic World Modeling with Actions and Explicit State toward Generative ARPG",
-      "blurb": "WildWorld数据集推动世界模型和游戏AI发展。",
-      "link": "https://arxiv.org/abs/2603.23497",
-      "canonical_link": "https://arxiv.org/abs/2603.23497",
-      "published_at": "2026-03-25T15:00:08.483+08:00",
-      "score": 8,
-      "tags": [
-        "Hugging Face Papers",
-        "data"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-25",
-      "source_signal": "Hugging Face高热度36，动态世界建模大规模数据集，支持动作和状态，用于生成ARPG。",
-      "recommendation": "WildWorld数据集推动世界模型和游戏AI发展。",
-      "summary": "WildWorld提供大规模动态世界数据集，包含动作和显式状态。针对生成式ARPG设计，促进世界模拟研究。支持多模态AI代理训练。",
-      "takeaways": [
-        "首个动作驱动世界建模数据集",
-        "加速生成式游戏AI"
-      ],
-      "topic": "data"
-    },
-    {
-      "id": "5e1204afef471a4a",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "6 authors",
-      "title": "SpecEyes: Accelerating Agentic Multimodal LLMs via Speculative Perception and Planning",
-      "blurb": "SpecEyes提升代理多模态LLM速度，关键代理技术。",
-      "link": "https://arxiv.org/abs/2603.23483",
-      "canonical_link": "https://arxiv.org/abs/2603.23483",
-      "published_at": "2026-03-25T15:00:08.483+08:00",
-      "score": 7,
-      "tags": [
-        "Hugging Face Papers",
-        "agent"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-25",
-      "source_signal": "Hugging Face论文18热度，投机感知和规划加速代理多模态LLM。",
-      "recommendation": "SpecEyes提升代理多模态LLM速度，关键代理技术。",
-      "summary": "SpecEyes通过投机感知和规划加速多模态代理LLM推理。减少延迟，支持实时交互。实验验证在视觉-语言任务上有效。",
-      "takeaways": [
-        "投机机制降低代理延迟",
-        "适用于实时多模态代理"
-      ],
-      "topic": "agent"
     },
     {
       "id": "15e4a143f0cb6347",
@@ -1203,6 +936,211 @@
       "tags": [
         "工具链",
         "AI语音"
+      ]
+    },
+    {
+      "id": "7f9ba2ad1a806129",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@Svwang1",
+      "title": "Sora 六个月收入仅 140 万美元，日亏千万",
+      "blurb": "Sora 发布半年即烂尾，累计收入 140 万美元，每日亏损超千万。建议新技术等半年观察热度再跟进。 数据复盘热点产品失败，提供跟进节奏判断，避免盲目追新，节省资源。",
+      "link": "https://x.com/Svwang1/status/2036591064258314247",
+      "canonical_link": "https://x.com/Svwang1/status/2036591064258314247",
+      "published_at": "2026-03-25T07:48:42.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI",
+        "创业",
+        "行业判断"
+      ]
+    },
+    {
+      "id": "07b61a470b21b2ee",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@elliotchen100",
+      "title": "MSA论文二创：无限记忆注意力稀释风险",
+      "blurb": "分享Tz基于Memory Sparse Attention的2045科幻证词，探讨全人类数据召回下注意力退化问题。 揭示AI长上下文架构哲学风险，前瞻基础设施变化，原创深度思考。",
+      "link": "https://x.com/elliotchen100/status/2036590566109225420",
+      "canonical_link": "https://x.com/elliotchen100/status/2036590566109225420",
+      "published_at": "2026-03-25T07:46:43.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI",
+        "基础设施"
+      ]
+    },
+    {
+      "id": "6f6117f55166f56f",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@rauchg",
+      "title": "Vercel 弹性构建机 beta 上线，智能选择构建硬件",
+      "blurb": "Vercel 新功能自动挑选合适硬件优化构建速度与成本，尤其适用于 Rust 编译器如 Turbopack，提升多核性能同时避免浪费。 基础设施优化实战落地，降低开发者构建成本；反映算力经济学变化，对 SaaS 和 AI 部署有直接影响。",
+      "link": "https://x.com/rauchg/status/2036584870995173678",
+      "canonical_link": "https://x.com/rauchg/status/2036584870995173678",
+      "published_at": "2026-03-25T07:24:05.000+08:00",
+      "score": 8,
+      "tags": [
+        "SaaS",
+        "工具链",
+        "基础设施"
+      ]
+    },
+    {
+      "id": "58066540be3ea08b",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@realNyarime",
+      "title": "Sora App关闭或预示OpenAI算力转向更大LLM模型",
+      "blurb": "引用Sora官方关闭App公告，分析视频生成吃显存导致砍项目，转向LLM优先。不搞LLM将落后。 揭示算力经济学变化，AI基础设施决策信号；创业者需调整资源分配，避免视频生成等高耗方向。",
+      "link": "https://x.com/realNyarime/status/2036579327136104604",
+      "canonical_link": "https://x.com/realNyarime/status/2036579327136104604",
+      "published_at": "2026-03-25T07:02:04.000+08:00",
+      "score": 7,
+      "tags": [
+        "AI",
+        "基础设施",
+        "算力经济学"
+      ]
+    },
+    {
+      "id": "e25c6221ca9e6c52",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@simonw",
+      "title": "Package managers should delay auto-updates to mitigate zero-day risks",
+      "blurb": "Simon Willison针对今日零日漏洞，撰文呼吁包管理器冷却自动更新机制。讨论了Debian/Ubuntu等OS仓库的稳定承诺，与快速PyPI更新的对比。强调在安全修复外，稳定软件不应变更，以防供应链攻击如litellm事件。 AI构建者依赖开源包，此文提供供应链安全战略框架，帮助防范类似litellm妥协，提升部署可靠性。",
+      "link": "https://x.com/simonw/status/2036573932376170545",
+      "canonical_link": "https://x.com/simonw/status/2036573932376170545",
+      "published_at": "2026-03-25T06:40:37.000+08:00",
+      "score": 8,
+      "tags": [
+        "infra",
+        "workflow",
+        "ai"
+      ]
+    },
+    {
+      "id": "cb93eb11ff262efb",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@emollick",
+      "title": "Different AI labs pursue distinct strategies in exploring LLM opportunities",
+      "blurb": "各大AI实验室在探索LLM机会空间时策略迥异：Anthropic高度专注，OpenAI倾向测试并放弃概念如GPT Store和Sora，Google则全面并行。不清楚哪种策略最终胜出，但这反映了AI发展路径的不确定性。 运营商可从中洞察实验室决策模式，避免跟风失败项目；帮助评估投资与合作风险，制定更稳健的AI技术路线图。",
+      "link": "https://x.com/emollick/status/2036573117431095665",
+      "canonical_link": "https://x.com/emollick/status/2036573117431095665",
+      "published_at": "2026-03-25T06:37:23.000+08:00",
+      "score": 8,
+      "tags": [
+        "ai",
+        "market",
+        "strategy"
+      ]
+    },
+    {
+      "id": "822c83d76c0b9eb9",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@lennysan",
+      "title": "PM openings are at the highest levels since 2022",
+      "blurb": "全球科技公司 PM 职位空缺超 7300 个，较 2023 年初低点上涨 75%，今年已增近 20%。这是 3 年多来最高水平，产品市场回暖明显。结合线程分析，AI 未明显取代 PM 需求。 产品经理可把握招聘窗口优化求职；创始人借机招募顶尖 PM，推动产品战略执行。",
+      "link": "https://x.com/lennysan/status/2036571021298549184",
+      "canonical_link": "https://x.com/lennysan/status/2036571021298549184",
+      "published_at": "2026-03-25T06:29:03.000+08:00",
+      "score": 8,
+      "tags": [
+        "product",
+        "market",
+        "startup"
+      ]
+    },
+    {
+      "id": "cd5698df74da40f0",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@hwchase17",
+      "title": "LangChain deepagents 0.5.0a1 发布异步子代理功能",
+      "blurb": "deepagents 新版支持异步子代理，用户可与单一代理聊天，后台管理多个长运行代理。当前使用自定义协议通信，并征求意见是否采用 a2a 或 ACP 等标准。邀请开发者试用 alpha 版并反馈。 展示 LangChain 代理框架产品进展，推动未来代理架构演进；揭示异步通信协议选择痛点，提供基础设施迭代信号。",
+      "link": "https://x.com/hwchase17/status/2036566373820932605",
+      "canonical_link": "https://x.com/hwchase17/status/2036566373820932605",
+      "published_at": "2026-03-25T06:10:35.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI",
+        "工具链"
+      ]
+    },
+    {
+      "id": "dcadb564ab465ce5",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@arvidkahl",
+      "title": "AI时代10x工程师只需审阅代码即可高产",
+      "blurb": "Arvid自认非顶尖开发者，但多年抄SO代码积累代码感。现在仅审阅AI生成代码，生产力大增。明日10x工程师形象将变。 给出AI dev转变的运营商视角，帮黑客锐化判断：从写码转向审阅，提升个人杠杆。",
+      "link": "https://x.com/arvidkahl/status/2036562815276700078",
+      "canonical_link": "https://x.com/arvidkahl/status/2036562815276700078",
+      "published_at": "2026-03-25T05:56:27.000+08:00",
+      "score": 6,
+      "tags": [
+        "workflow",
+        "strategy"
+      ]
+    },
+    {
+      "id": "b67063473b816d67",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@dotey",
+      "title": "OpenAI关停Sora，AI视频明星产品上线半年即告终结",
+      "blurb": "OpenAI宣布关停Sora App和API，存活仅半年。用户活跃下滑、IP限制、产品分散拖慢核心进展。转向桌面超级应用整合ChatGPT等，受Anthropic专注策略警醒。Sora结局警示AI炫技不等于产品成功。 揭示AI巨头产品收缩风险，强调专注核心避开'支线任务'，对AI创业者产品优先级和上市叙事有实战借鉴；迪士尼合作失败点出IP依赖隐患。",
+      "link": "https://x.com/dotey/status/2036550971682181547",
+      "canonical_link": "https://x.com/dotey/status/2036550971682181547",
+      "published_at": "2026-03-25T05:09:23.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI",
+        "创业",
+        "产品增长"
+      ]
+    },
+    {
+      "id": "04ce18397e64ce8e",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@fchollet",
+      "title": "流体智能与知识的区别及未来取代效应",
+      "blurb": "人们难区分流体智能与知识，因海量准备可模拟适应，但智能是知识乘数，同信息下更高效，少量训练达高能力。 高流体智能系统将快速取代知识依赖系统，因其知识重组应用能力无法被准备桥接。 强调真正智能而非数据堆积的核心价值。 揭示AI发展范式转变风险，数据驱动模式将被高效智能取代，创业者需警惕成本与性能差距放大",
+      "link": "https://x.com/fchollet/status/2036549098820739153",
+      "canonical_link": "https://x.com/fchollet/status/2036549098820739153",
+      "published_at": "2026-03-25T05:01:57.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI",
+        "行业判断"
       ]
     }
   ]

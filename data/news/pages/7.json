@@ -3,7 +3,7 @@
   "current_page": 7,
   "total_pages": 17,
   "page_size": 60,
-  "total_items": 1000,
+  "total_items": 981,
   "items": [
     {
       "id": "e2836aac14562b7d",
@@ -1022,33 +1022,6 @@
       ]
     },
     {
-      "id": "57e92902cfb37b20",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Yixing Lao et al. (Apple)",
-      "title": "Less Gaussians, Texture More: 4K Feed-Forward Textured Splatting",
-      "blurb": "LGTM 实现无优化 4K 新视角合成，使用更少高斯原语。",
-      "link": "https://yxlao.github.io/lgtm",
-      "canonical_link": "https://yxlao.github.io/lgtm",
-      "published_at": "2026-03-27T01:59:59.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hugging Face Papers",
-        "research"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-27",
-      "source_signal": "HF daily papers; Apple-backed 4K novel view synthesis breakthrough in 3DGS.",
-      "recommendation": "LGTM 实现无优化 4K 新视角合成，使用更少高斯原语。",
-      "summary": "LGTM 通过紧凑高斯原语加纹理解耦几何与分辨率，实现 feed-forward 4K 视图合成。远超传统方法扩展性，无需逐场景优化。",
-      "takeaways": [
-        "4K 高分辨率 feed-forward 渲染",
-        "Apple 研究开源项目页"
-      ],
-      "topic": "research"
-    },
-    {
       "id": "ac8a20538c24e79e",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -1065,33 +1038,6 @@
         "创业",
         "增长"
       ]
-    },
-    {
-      "id": "5d2b61a9cab8ce01",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hugging Face Papers",
-      "author": "Ligong Han et al.",
-      "title": "S2D2: Fast Decoding for Diffusion LLMs via Training-Free Self-Speculation",
-      "blurb": "S2D2 无训练自推测解码加速块扩散 LLM。",
-      "link": "https://github.com/phymhan/S2D2",
-      "canonical_link": "https://github.com/phymhan/S2D2",
-      "published_at": "2026-03-27T01:48:50.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hugging Face Papers",
-        "research"
-      ],
-      "source_page": "https://huggingface.co/papers/date/2026-03-27",
-      "source_signal": "HF trending paper; training-free speedup for diffusion LLMs.",
-      "recommendation": "S2D2 无训练自推测解码加速块扩散 LLM。",
-      "summary": "S2D2 利用同一模型作为草稿者和验证者，实现并行生成加自回归验证。提升准确-速度权衡，SDAR 上 4.7x 加速。",
-      "takeaways": [
-        "无额外训练即插即用",
-        "兼容主流块扩散家族"
-      ],
-      "topic": "research"
     },
     {
       "id": "d9d25e3c0020d177",
@@ -1145,6 +1091,44 @@
         "AI",
         "工具链",
         "行业判断"
+      ]
+    },
+    {
+      "id": "831579255723abb0",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@Pluvio9yte",
+      "title": "从OpenClaw迁移到Creao，构建稳定邮件Agent工作流",
+      "blurb": "作者因OpenClaw不稳定及硬件问题迁移到Creao，使用简单提示词自动创建邮件总结Agent，每天晚上推送日报。Creao支持Gmail授权及邮件营销场景，优于N8N等工作流工具。展示了AI Agent在生产力自动化中的实战应用。 揭示工具链迁移风险与机会，Creao提供更高稳定性和智能性，适合AI创业者构建自主Agent，防范单点故障。",
+      "link": "https://x.com/Pluvio9yte/status/2037214871843201079",
+      "canonical_link": "https://x.com/Pluvio9yte/status/2037214871843201079",
+      "published_at": "2026-03-27T01:07:29.000+08:00",
+      "score": 8,
+      "tags": [
+        "AI",
+        "工具链",
+        "Agent工作流"
+      ]
+    },
+    {
+      "id": "28360e2bf9d42a1a",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@drfeifei",
+      "title": "单一创作者用Marble生成1亿Gaussian splats构建cyberpunk世界",
+      "blurb": "World Labs展示个人可生成完整3D世界，1亿Gaussian splats覆盖表面与结构。强调AI生成能力+人类想象力的结合。 标志空间智能模型成熟，开启个人级世界构建时代，利好游戏/SaaS出海产品机会。",
+      "link": "https://x.com/drfeifei/status/2037213440138248242",
+      "canonical_link": "https://x.com/drfeifei/status/2037213440138248242",
+      "published_at": "2026-03-27T01:01:48.000+08:00",
+      "score": 7,
+      "tags": [
+        "AI",
+        "产品进展",
+        "独立开发"
       ]
     }
   ]

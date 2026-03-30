@@ -10,7 +10,7 @@
   (function () {
     const params = new URLSearchParams(window.location.search);
     const requested = String(params.get("filter") || "").trim().toLowerCase();
-    const validFilters = new Set(["news", "voices", "builders", "art", "paper", "essays"]);
+    const validFilters = new Set(["news", "voices", "builders", "art", "essays"]);
     document.documentElement.dataset.initialFilter = validFilters.has(requested) ? requested : "news";
   }());
 </script>
@@ -256,12 +256,6 @@
     border-color: rgba(110, 79, 211, 0.18);
     background: rgba(110, 79, 211, 0.08);
     color: #6E4FD3;
-  }
-
-  .source-pill.source-paper {
-    border-color: rgba(27, 63, 139, 0.18);
-    background: rgba(27, 63, 139, 0.06);
-    color: var(--accent);
   }
 
   .feed-time {
@@ -542,10 +536,9 @@
     <a href="?filter=voices" class="filter-chip" data-filter="voices">Voices</a>
     <a href="?filter=builders" class="filter-chip" data-filter="builders">Builders</a>
     <a href="?filter=art" class="filter-chip" data-filter="art">Art</a>
-    <a href="?filter=paper" class="filter-chip" data-filter="paper">Paper</a>
     <a href="?filter=essays" class="filter-chip" data-filter="essays">Essays</a>
-    <a href="https://tube.pinyu.ai/" class="filter-chip filter-chip-external" target="_blank" rel="noopener noreferrer" aria-label="Tube (opens in a new tab)">
-      <span>Tube</span>
+    <a href="https://zencat.uk/" class="filter-chip filter-chip-external" target="_blank" rel="noopener noreferrer" aria-label="ZenCat (opens in a new tab)">
+      <span>ZenCat</span>
       <span class="external-mark" aria-hidden="true">↗</span>
     </a>
   </nav>
@@ -853,7 +846,7 @@
 
 <noscript>
   <div style="max-width:640px;margin:0 auto;padding:0 24px 48px;color:#5C5349;font-size:0.75rem;">
-    Dynamic channels need JavaScript to load. Essays and Tube remain available without it.
+    Dynamic channels need JavaScript to load. Essays and ZenCat remain available without it.
   </div>
 </noscript>
 
@@ -865,12 +858,11 @@
   const FILTER_VOICES = "voices";
   const FILTER_BUILDERS = "builders";
   const FILTER_ART = "art";
-  const FILTER_PAPER = "paper";
   const FILTER_ESSAYS = "essays";
   const SOURCE_TYPE_AI_VOICES = "x_ai_voices";
   const SOURCE_TYPE_AI_INDIE = "aiindie";
   const SOURCE_TYPE_ARTIST = "artist";
-  const VALID_FILTERS = new Set([FILTER_NEWS, FILTER_VOICES, FILTER_BUILDERS, FILTER_ART, FILTER_PAPER, FILTER_ESSAYS]);
+  const VALID_FILTERS = new Set([FILTER_NEWS, FILTER_VOICES, FILTER_BUILDERS, FILTER_ART, FILTER_ESSAYS]);
 
   const filtersEl = document.getElementById("filters");
   const noticeEl = document.getElementById("notice");
@@ -951,7 +943,7 @@
         ? "No Builders items yet."
         : currentFilter === FILTER_ART
           ? "No Art items yet."
-          : "No Paper items yet.";
+          : "No items yet.";
 
     renderFeed(
       indexData,
@@ -1002,18 +994,14 @@
         ? "source-pill source-builders"
         : itemType === FILTER_ART
           ? "source-pill source-art"
-          : itemType === FILTER_PAPER
-            ? "source-pill source-paper"
-            : "";
+          : "";
     const pillLabel = itemType === FILTER_VOICES
       ? "Voices"
       : itemType === FILTER_BUILDERS
         ? "Builders"
         : itemType === FILTER_ART
           ? "Art"
-          : itemType === FILTER_PAPER
-            ? "Paper"
-            : "";
+          : "";
     const metaParts = [
       item && item.platform,
       item && item.author,
@@ -1129,33 +1117,7 @@
     if (normalizeText(item && item.source_type) === SOURCE_TYPE_ARTIST) {
       return FILTER_ART;
     }
-    if (isPaperItem(item)) {
-      return FILTER_PAPER;
-    }
     return "";
-  }
-
-  function isPaperItem(item) {
-    if (normalizeText(item && item.platform) === "hugging face papers") {
-      return true;
-    }
-
-    return [item && item.link, item && item.canonical_link, item && item.source_page].some(isPaperUrl);
-  }
-
-  function isPaperUrl(value) {
-    if (typeof value !== "string" || !value.trim()) {
-      return false;
-    }
-
-    try {
-      const url = new URL(value.trim());
-      const host = url.hostname.replace(/^www\./i, "").toLowerCase();
-      const path = url.pathname.toLowerCase();
-      return host.endsWith("arxiv.org") || (host.endsWith("huggingface.co") && path.startsWith("/papers/"));
-    } catch {
-      return false;
-    }
   }
 
   function normalizePositiveNumber(value, fallback) {
