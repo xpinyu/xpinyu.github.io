@@ -1,70 +1,889 @@
 {
-  "updated_at": "2026-03-30T07:26:21.193+08:00",
+  "updated_at": "2026-03-30T11:47:11.209+08:00",
   "page_size": 60,
-  "total_items": 981,
+  "total_items": 1000,
   "sources": [
     {
       "id": "general",
       "name": "General AI News",
       "type": "general",
-      "refresh_hours": 12,
-      "updated_at": "2026-03-30T07:26:21.193+08:00",
+      "refresh_hours": 24,
+      "updated_at": "2026-03-30T11:47:11.209+08:00",
       "item_count": 0,
-      "window_start": "2026-03-29T15:26:21.193+08:00",
-      "window_end": "2026-03-30T07:26:21.193+08:00"
+      "window_start": "2026-03-29T07:47:11.209+08:00",
+      "window_end": "2026-03-30T11:47:11.209+08:00"
     },
     {
       "id": "artist",
       "name": "AI Artist Signals",
       "type": "artist",
-      "refresh_hours": 12,
-      "updated_at": "2026-03-29T22:28:36.660+08:00",
-      "item_count": 9,
-      "window_start": "2026-03-28T22:28:36.660Z",
-      "window_end": "2026-03-29T14:28:36.660Z"
+      "refresh_hours": 24,
+      "updated_at": "2026-03-30T11:47:11.209+08:00",
+      "item_count": 12,
+      "window_start": "2026-03-28T23:47:11.209Z",
+      "window_end": "2026-03-30T03:47:11.209Z"
     },
     {
       "id": "daily_ai_briefs",
       "name": "Daily AI Briefs",
       "type": "daily_ai_briefs",
       "refresh_hours": 24,
-      "updated_at": "2026-03-29T18:26:28.175+08:00",
-      "item_count": 10,
+      "updated_at": "2026-03-30T11:47:11.209+08:00",
+      "item_count": 4,
       "window_start": "2026-03-27T00:00:00.000Z",
-      "window_end": "2026-03-29T10:26:28.175Z"
+      "window_end": "2026-03-30T03:47:11.209Z"
     },
     {
       "id": "x_ai_signals",
       "name": "X AI Signals",
       "type": "x_ai_signals",
-      "refresh_hours": 12,
-      "updated_at": "2026-03-30T07:26:21.193+08:00",
+      "refresh_hours": 24,
+      "updated_at": "2026-03-30T11:47:11.209+08:00",
       "item_count": 40,
-      "window_start": "2026-03-29T07:26:21.193Z",
-      "window_end": "2026-03-29T23:26:21.193Z"
+      "window_start": "2026-03-28T23:47:11.209Z",
+      "window_end": "2026-03-30T03:47:11.209Z"
     },
     {
       "id": "x_ai_voices",
       "name": "X AI Voices",
       "type": "x_ai_voices",
       "refresh_hours": 24,
-      "updated_at": "2026-03-29T18:26:28.175+08:00",
-      "item_count": 12,
-      "window_start": "2026-03-28T06:26:28.175Z",
-      "window_end": "2026-03-29T10:26:28.175Z"
+      "updated_at": "2026-03-30T11:47:11.209+08:00",
+      "item_count": 2,
+      "window_start": "2026-03-28T23:47:11.209Z",
+      "window_end": "2026-03-30T03:47:11.209Z"
     },
     {
       "id": "aiindie",
       "name": "AI Indie Hacker Signals",
       "type": "aiindie",
       "refresh_hours": 24,
-      "updated_at": "2026-03-29T14:08:52.828+08:00",
-      "item_count": 18,
-      "window_start": "2026-03-28T02:08:52.828Z",
-      "window_end": "2026-03-29T06:08:52.828Z"
+      "updated_at": "2026-03-30T11:47:11.209+08:00",
+      "item_count": 14,
+      "window_start": "2026-03-28T23:47:11.209Z",
+      "window_end": "2026-03-30T03:47:11.209Z"
     }
   ],
   "items": [
+    {
+      "id": "387706ed1a409ed0",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "buchodi.com",
+      "title": "ChatGPT won't let you type until Cloudflare reads your React state",
+      "blurb": "前端开发者可借鉴此反检测技巧优化AI应用访问。",
+      "link": "https://buchodi.com/chatgpt-wont-let-you-type-until-cloudflare-reads-your-react-state-i-decrypted-the-program-that-does-it",
+      "canonical_link": "https://buchodi.com/chatgpt-wont-let-you-type-until-cloudflare-reads-your-react-state-i-decrypted-the-program-that-does-it",
+      "published_at": "2026-03-30T11:47:11.209+08:00",
+      "score": 9,
+      "tags": [
+        "Hacker News",
+        "tooling"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News爆款（378分，284评论），逆向工程揭示ChatGPT反爬虫机制依赖Cloudflare读取前端React状态，引发隐私与性能讨论。",
+      "recommendation": "前端开发者可借鉴此反检测技巧优化AI应用访问。",
+      "summary": "作者解密ChatGPT加载前Cloudflare脚本扫描React状态以防机器人。过程涉及JS混淆与内存读取。揭示大模型服务常见反作弊策略，但也暴露用户隐私风险。",
+      "takeaways": [
+        "Cloudflare用于AI服务的精细前端指纹识别",
+        "类似机制可能影响用户体验"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "3ce1570e3894110a",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "anthropics/claude-code",
+      "title": "Claude Code runs Git reset –hard origin/main against project repo every 10 mins",
+      "blurb": "开发者使用Claude Code时需立即检查Git配置，避免数据丢失。",
+      "link": "https://github.com/anthropics/claude-code/issues/40710",
+      "canonical_link": "https://github.com/anthropics/claude-code/issues/40710",
+      "published_at": "2026-03-30T11:47:11.209+08:00",
+      "score": 9,
+      "tags": [
+        "Hacker News",
+        "agent"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News热门讨论（204分，134评论），暴露Anthropic Claude Code代理工具严重bug，每10分钟强制重置Git仓库，引发开发者安全担忧。",
+      "recommendation": "开发者使用Claude Code时需立即检查Git配置，避免数据丢失。",
+      "summary": "Anthropic的Claude Code工具被发现每10分钟执行'git reset --hard origin/main'，覆盖本地更改。问题源于代理行为bug，已在GitHub issue上报。社区热议强调AI编码代理需更强安全机制。",
+      "takeaways": [
+        "AI代理工具易引入意外破坏性操作",
+        "Anthropic需快速修复以维护信任"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "957f0c1bbae0845d",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "gjlondon.com",
+      "title": "Coding Agents Could Make Free Software Matter Again",
+      "blurb": "开源爱好者关注AI代理如何加速FOSS贡献。",
+      "link": "https://gjlondon.com/blog/ai-agents-could-make-free-software-matter-again",
+      "canonical_link": "https://gjlondon.com/blog/ai-agents-could-make-free-software-matter-again",
+      "published_at": "2026-03-30T11:47:11.209+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "agent"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News讨论（126分，118评论），探讨AI编码代理如何重振开源软件生态，提供具体工作流洞见。",
+      "recommendation": "开源爱好者关注AI代理如何加速FOSS贡献。",
+      "summary": "文章论证编码代理能自动化开源维护，让免费软件重获活力。强调代理在代码审查、bug修复上的潜力。结合当前工具趋势预测未来影响。",
+      "takeaways": [
+        "代理降低开源参与门槛",
+        "可能重塑软件开发社区"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "d499131b2b3df7af",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "dreddnafious",
+      "title": "There is No Spoon. A software engineers primer for demystified ML",
+      "blurb": "软件工程师快速上手ML实用知识。",
+      "link": "https://github.com/dreddnafious/thereisnospoon",
+      "canonical_link": "https://github.com/dreddnafious/thereisnospoon",
+      "published_at": "2026-03-30T11:47:11.209+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "tooling"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News分享（71分，16评论），GitHub仓库提供软件工程师ML入门指南，去神秘化机器学习基础。",
+      "recommendation": "软件工程师快速上手ML实用知识。",
+      "summary": "仓库作为ML入门手册，针对工程师解释核心概念如模型训练与部署。避免数学门槛，提供代码示例与工作流。适合从零构建ML管道。",
+      "takeaways": [
+        "简化ML学习曲线",
+        "强调工程实践而非理论"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "40bd36aaa6de7e08",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@r4jjesh",
+      "title": "DMK政治双重曝光海报JSON提示",
+      "blurb": "分享详细JSON提示，用于基于参考图像生成高冲击力电影式政治海报。强调精确保持脸部不变，双重曝光构图中领导者手持黑红旗走在损坏街道，融入金色日落光照、尘土烟雾与革命氛围。旗帜颜色突出，应用电影调色、渐变融合与微粒效果，底部添加VOTE FOR DMK标语。风格超现实4K，技术控制力强。 创作者可借鉴此提示掌握图像参考融合与叙事氛围构建，适用于宣传海报等高审美需求场景，提升政治或英雄主题输出质量。",
+      "link": "https://x.com/r4jjesh/status/2038460938228293636",
+      "canonical_link": "https://x.com/r4jjesh/status/2038460938228293636",
+      "published_at": "2026-03-30T11:38:55.000+08:00",
+      "score": 8,
+      "tags": [
+        "prompting",
+        "showcase"
+      ]
+    },
+    {
+      "id": "17fc8c3555311e63",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@MANISH1027512",
+      "title": "Grok图像姿势迁移实验",
+      "blurb": "用户上传两张图片，第一张是人物照片，第二张是姿势参考图。通过简单提示“Hey @grok , Make the person in Image 1 strike the same pose as the one in Image 2.”，让Grok生成姿势匹配的图像。该方法展示了Grok在图像到图像转换中的精确姿势控制能力，适用于AI摄影和人物生成。实验简单高效，突出多模态AI的实用编辑潜力。 Offers a quick, no-c…",
+      "link": "https://x.com/MANISH1027512/status/2038460421380723007",
+      "canonical_link": "https://x.com/MANISH1027512/status/2038460421380723007",
+      "published_at": "2026-03-30T11:36:51.000+08:00",
+      "score": 7,
+      "tags": [
+        "prompting"
+      ]
+    },
+    {
+      "id": "63778d956cf1db57",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@erikbryn",
+      "title": "质疑剧烈运动对健康益处的因果证据",
+      "blurb": "对一项关联剧烈运动降低疾病风险的研究提出疑问：不健康者可能不愿剧烈运动，需RCT等因果证据验证。强调观察数据局限性。 提醒AI健康产品开发者注意因果推断，避免过度解读相关性，防范监管风险",
+      "link": "https://x.com/erikbryn/status/2038460063074132013",
+      "canonical_link": "https://x.com/erikbryn/status/2038460063074132013",
+      "published_at": "2026-03-30T11:35:26.000+08:00",
+      "score": 6,
+      "tags": [
+        "AI",
+        "增长",
+        "风险"
+      ]
+    },
+    {
+      "id": "d3dbde466ed14343",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@shao__meng",
+      "title": "Claude Code 15个高频实用特性总结",
+      "blurb": "Claude Code创建者分享跨设备协同、自动化循环、并行处理、自定义扩展等15个特性。覆盖移动支持、/loop调度、Hooks、Chrome扩展、Git Worktree、/batch等。让Claude像高级工程师自主迭代。 实战工具链升级，提供可执行高级工作流，提升AI编码效率；风险提示需验证环境稳定。",
+      "link": "https://x.com/shao__meng/status/2038458781529702787",
+      "canonical_link": "https://x.com/shao__meng/status/2038458781529702787",
+      "published_at": "2026-03-30T11:30:20.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI",
+        "工具链"
+      ]
+    },
+    {
+      "id": "e974eaf1f03a088d",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@chuhaiqu",
+      "title": "App从0到10万用户7阶段增长路线图",
+      "blurb": "0-10找痛点DM卖一人一单；10-100手动反馈迭代；100-500修留存至5%月流失；500-1k内容+推荐引擎；1k-10k伙伴/分销/付费测试；10k-50k社区护城河；50k-100k品牌规模投放。 分阶段可执行路径，避免常见坑如早砸广告，实战性强。",
+      "link": "https://x.com/chuhaiqu/status/2038455178106687646",
+      "canonical_link": "https://x.com/chuhaiqu/status/2038455178106687646",
+      "published_at": "2026-03-30T11:16:01.000+08:00",
+      "score": 8,
+      "tags": [
+        "增长",
+        "SaaS",
+        "独立开发"
+      ]
+    },
+    {
+      "id": "a193eb264bdd5711",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@op7418",
+      "title": "企业微信做MCP，分析CLI为何突然火热及AI构建CLI方法，分享CodePilot实验",
+      "blurb": "作者发布一篇分析文章，探讨为什么一夜之间包括企业微信在内的厂商开始重视CLI工具。从CLI在AI时代的重要性入手，讲解如何为AI构建CLI，并分享在CodePilot中让AI自我管理工具的个人实验。对MCP等关键概念进行详细解释，适合初学者理解。 为AI独立开发者揭示CLI工具在AI代理和工作流中的新兴趋势，提供构建指南和实际实验案例，帮助优化工具链和自动化能力。",
+      "link": "https://x.com/op7418/status/2038453125733102021",
+      "canonical_link": "https://x.com/op7418/status/2038453125733102021",
+      "published_at": "2026-03-30T11:07:52.000+08:00",
+      "score": 8,
+      "tags": [
+        "workflow",
+        "agent",
+        "automation",
+        "tooling"
+      ]
+    },
+    {
+      "id": "fc7444557a9579d0",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@lilyraynyc",
+      "title": "Instagram Reels主导Google AI Overviews品牌查询",
+      "blurb": "过去一个月，Google AI Overviews中600万引用有450万来自IG Reels。用Instagram控制品牌叙事机会巨大。 揭示AI搜索新流量入口，SEO/增长玩家可抢占品牌查询主导权。",
+      "link": "https://x.com/lilyraynyc/status/2038451816329814079",
+      "canonical_link": "https://x.com/lilyraynyc/status/2038451816329814079",
+      "published_at": "2026-03-30T11:02:40.000+08:00",
+      "score": 8,
+      "tags": [
+        "SEO",
+        "增长",
+        "AI搜索"
+      ]
+    },
+    {
+      "id": "e966881eaa4f01b1",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@yan5xu",
+      "title": "Mac Mini跑OpenClaw安全跨网接入：tailscale/zerotier方案",
+      "blurb": "Mac Mini无显示器远程操控用屏幕共享，结合tailscale或zerotier打通内网跨网访问。避免公网暴露，提升安全性。支持SSH远程登录，操作流畅。 针对OpenClaw用户Mac Mini部署，提供安全可靠远程方案；防范暴露风险，优化独立开发者工作流。",
+      "link": "https://x.com/yan5xu/status/2038449852120727711",
+      "canonical_link": "https://x.com/yan5xu/status/2038449852120727711",
+      "published_at": "2026-03-30T10:54:51.000+08:00",
+      "score": 7,
+      "tags": [
+        "AI工具链",
+        "基础设施"
+      ]
+    },
+    {
+      "id": "b122941881ca71f3",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@lxfater",
+      "title": "OpenClaw网页抓取痛点解决：xcrawl一键安装，提升数据质量省token",
+      "blurb": "OpenClaw默认网页抓取常失败或抓垃圾信息，消耗token多。xcrawl插件支持单页/全站/关键词抓取，在ClawHub搜索安装即可。测试显示搜索X文章返回干净结构化数据；内容研究指令快速生成10个MD素材文件。提供1000积分试用链接。 实战解决OpenClaw核心痛点，提供工具链升级路径；数据干净直接提升agent效率，降低成本，适合内容创作/研究工作流。",
+      "link": "https://x.com/lxfater/status/2038449412452892693",
+      "canonical_link": "https://x.com/lxfater/status/2038449412452892693",
+      "published_at": "2026-03-30T10:53:07.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI工具链",
+        "工作流"
+      ]
+    },
+    {
+      "id": "cb4919b1a5a019b8",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@RestOfWorld",
+      "title": "海湾AI数据中心投资面临战争风险测试",
+      "blurb": "海湾地区已成为AI基础设施核心，大科技公司巨资押注，但地缘脆弱性已知且正被考验。文章详述AWS数据中心遇袭事件。揭示算力部署的区域风险。 提醒AI创业者评估中东算力投资的地缘政治风险，避免盲目追热点；基础设施中断可能影响全球AI供应链。",
+      "link": "https://x.com/RestOfWorld/status/2038448630940467562",
+      "canonical_link": "https://x.com/RestOfWorld/status/2038448630940467562",
+      "published_at": "2026-03-30T10:50:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "AI",
+        "基础设施",
+        "算力经济学",
+        "风险"
+      ]
+    },
+    {
+      "id": "cb03e18264c3e421",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@lidangzzz",
+      "title": "中国AI人才本土留存加速：疫情+融资双因素",
+      "blurb": "NeurIPS论文显示中国留住本土一流AI研究者。postgrad到work惯性大，疫情阻出国+本土天量融资留住清华生创业AI/半导体/新能源。 揭示AI人才流动趋势，影响创业竞争格局；本土生态强化，出海需警惕人才壁垒。",
+      "link": "https://x.com/lidangzzz/status/2038446280368632200",
+      "canonical_link": "https://x.com/lidangzzz/status/2038446280368632200",
+      "published_at": "2026-03-30T10:40:40.000+08:00",
+      "score": 6,
+      "tags": [
+        "行业判断",
+        "AI创业"
+      ]
+    },
+    {
+      "id": "20f81ef1b41536b3",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@RocM301",
+      "title": "UnTouchID：用手机指纹直接验证Mac身份",
+      "blurb": "UnTouchID开源工具允许iPhone/Android/Apple Watch等设备作为Mac的Touch ID，支持sudo提权、解锁屏幕、App Store验证等。无需Magic Keyboard或额外硬件，支持任意浏览器设备。特别适合Mac mini/Studio用户、旧Mac用户和外接键盘党。 提供低成本Mac指纹验证方案，填补硬件短板；开源易部署，对独立开发者提升开发效率有实战价值。",
+      "link": "https://x.com/RocM301/status/2038443786427334740",
+      "canonical_link": "https://x.com/RocM301/status/2038443786427334740",
+      "published_at": "2026-03-30T10:30:45.000+08:00",
+      "score": 8,
+      "tags": [
+        "工具链",
+        "Apple生态"
+      ]
+    },
+    {
+      "id": "1e0f9021ab91e1bf",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@tuturetom",
+      "title": "企业微信开源 CLI，12 个 Agent Skills 覆盖核心业务",
+      "blurb": "微信正式开源 wecom-cli，支持通讯录、会议、消息等 7 大品类。Agent 可自由调度企业微信能力。预示百 CLI 大战时代。 封闭平台向 Agent 开放，基础设施变化影响中国办公生态；大厂开源竞争加剧。",
+      "link": "https://x.com/tuturetom/status/2038443518159458444",
+      "canonical_link": "https://x.com/tuturetom/status/2038443518159458444",
+      "published_at": "2026-03-30T10:29:41.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI",
+        "工具链",
+        "基础设施"
+      ]
+    },
+    {
+      "id": "6004e00d56cb68ce",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@dotey",
+      "title": "Mac Mini 当服务器无显示器远程操控技巧",
+      "blurb": "用 macOS 自带屏幕共享功能远程操控 Mac Mini，避免额外买显示器。设置两步：Mac Mini 开启共享，主 Mac 输入 IP 连接。高性能模式下画面流畅，支持文件拖拽和剪贴板共享。针对 OpenClaw Mac Mini 跑模型场景完美。 实战工具链优化，节省成本空间，适用于 AI 开发者本地部署模型的工作流。",
+      "link": "https://x.com/dotey/status/2038441251037434192",
+      "canonical_link": "https://x.com/dotey/status/2038441251037434192",
+      "published_at": "2026-03-30T10:20:41.000+08:00",
+      "score": 8,
+      "tags": [
+        "工具链",
+        "AI部署"
+      ]
+    },
+    {
+      "id": "588abd8d3a17db30",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@jasonlk",
+      "title": "SaaStr AI Annual 2026报名已超去年143%，焦点AI代理部署",
+      "blurb": "活动报名增长43%，赞助商如Artisan去年现场闭250K+美元。焦点：创始人和高管实际部署AI代理经验，非理论。顶级SaaS玩家深度参与。 增长方法/机会：AI代理实战信号，验证SaaS事件ROI；前瞻：代理部署成2026核心趋势。",
+      "link": "https://x.com/jasonlk/status/2038439820528406895",
+      "canonical_link": "https://x.com/jasonlk/status/2038439820528406895",
+      "published_at": "2026-03-30T10:15:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "SaaS",
+        "AI",
+        "增长"
+      ]
+    },
+    {
+      "id": "284077448c567121",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@wshuyi",
+      "title": "AI生成幻灯片炫酷但掌控问题？",
+      "blurb": "分享Substack文章探讨AI做PPT的优势与风险。强调炫酷效果下用户掌控力缺失。提供科学AI教学视角。 提醒AI工具使用边界，避免过度依赖；对教育/SaaS产品设计有启发",
+      "link": "https://x.com/wshuyi/status/2038439175515734342",
+      "canonical_link": "https://x.com/wshuyi/status/2038439175515734342",
+      "published_at": "2026-03-30T10:12:26.000+08:00",
+      "score": 6,
+      "tags": [
+        "AI",
+        "工具链",
+        "教育"
+      ]
+    },
+    {
+      "id": "949669976c759aca",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@jxnlco",
+      "title": "RAG未死：给AI agent知识访问提升性能",
+      "blurb": "karpathy autoresearch实验显示，给agent ML论文访问，提升结果3.2%。强调agent超强文献搜索能力。 确认RAG实战价值，提供agent优化可执行技巧。",
+      "link": "https://x.com/jxnlco/status/2038437380915658972",
+      "canonical_link": "https://x.com/jxnlco/status/2038437380915658972",
+      "published_at": "2026-03-30T10:05:18.000+08:00",
+      "score": 7,
+      "tags": [
+        "AI",
+        "工具链"
+      ]
+    },
+    {
+      "id": "3cae8f7c9a58a345",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@xiaohu",
+      "title": "Pretext纯TS文本测量引擎，解锁Web排版新能力",
+      "blurb": "前React核心成员开源Pretext，用数学计算文字空间，无需渲染。支持多语言/RTL/emoji，0.09ms测500段文。解决气泡浪费、AI生成溢出问题。 工具链创新，提升Web/AI UI生成精度；机会在聊天/生成式UI。",
+      "link": "https://x.com/xiaohu/status/2038437154322628736",
+      "canonical_link": "https://x.com/xiaohu/status/2038437154322628736",
+      "published_at": "2026-03-30T10:04:24.000+08:00",
+      "score": 8,
+      "tags": [
+        "工具链",
+        "独立开发"
+      ]
+    },
+    {
+      "id": "46ef7614e935da83",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@chuhaiqu",
+      "title": "Keploy开源API测试工具，1.6万star无需改代码录制重放流量",
+      "blurb": "用eBPF抓分布式请求（DB/MQ/API），自动生成测试用例/mock。语言无关，跑服务即录制真实线上流量确定性重放。 提效复杂系统测试，节省开发时间，适用于一人公司快速迭代。",
+      "link": "https://x.com/chuhaiqu/status/2038436568537747834",
+      "canonical_link": "https://x.com/chuhaiqu/status/2038436568537747834",
+      "published_at": "2026-03-30T10:02:04.000+08:00",
+      "score": 7,
+      "tags": [
+        "工具链",
+        "独立开发"
+      ]
+    },
+    {
+      "id": "a206347951de66d0",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@GoSailGlobal",
+      "title": "叫人辞职学AI的不是傻是坏，需融入业务场景改变意识",
+      "blurb": "赚钱少适合者有限，辞职后意识不变无用。需事/人教训或长时间等待改变。利益分析：看对方身份/动机/AI与工作是否互斥。 风险提示，避免AI培训陷阱，强调实战融入而非盲目转行。",
+      "link": "https://x.com/GoSailGlobal/status/2038435820928127127",
+      "canonical_link": "https://x.com/GoSailGlobal/status/2038435820928127127",
+      "published_at": "2026-03-30T09:59:06.000+08:00",
+      "score": 7,
+      "tags": [
+        "AI",
+        "创业",
+        "增长"
+      ]
+    },
+    {
+      "id": "0e1fa9c1faca1e1f",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@indie_maker_fox",
+      "title": "开源自托管分析平台：实时访客 + Stripe 转化 + 联盟营销",
+      "blurb": "替换 $50/月订阅，用 SQLite + $4 VPS 部署。支持实时跟踪、Stripe 无 webhook 转化、Cloudflare 地理数据、内置联盟。 独立开发者低成本数据工具，增长闭环完整；自托管避开数据隐私风险。",
+      "link": "https://x.com/indie_maker_fox/status/2038434618555437392",
+      "canonical_link": "https://x.com/indie_maker_fox/status/2038434618555437392",
+      "published_at": "2026-03-30T09:54:20.000+08:00",
+      "score": 7,
+      "tags": [
+        "SaaS",
+        "独立开发",
+        "增长",
+        "工具链"
+      ]
+    },
+    {
+      "id": "9945a08526f99b20",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@swyx",
+      "title": "Redpoint published a ranked list of SaaS to redo with AI; 54% CIOs open to AI-native startups over incumbents is a stunning opportunity.",
+      "blurb": "Redpoint Ventures发布了一个用AI从头重做的SaaS业务排名列表。作者强调，企业CIO中有54%愿意选择AI原生初创而非传统巨头，这远超预期，显示CIO当前对创新的饥渴。机会窗口巨大，但不会持久。 对AI初创构建者而言，这是明确的市场验证：企业正转向AI原生解决方案，提供颠覆现有SaaS的战略切入点。",
+      "link": "https://x.com/swyx/status/2038431061575979027",
+      "canonical_link": "https://x.com/swyx/status/2038431061575979027",
+      "published_at": "2026-03-30T09:40:11.000+08:00",
+      "score": 8,
+      "tags": [
+        "ai",
+        "startup",
+        "product",
+        "market"
+      ]
+    },
+    {
+      "id": "dbcff90ee364a890",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@idoubicc",
+      "title": "AnyClaw 新版本支持自定义 repo，像 Helm 一样管理 Agent 工具包",
+      "blurb": "AnyClaw 新增 repo 功能，支持添加自定义仓库、搜索和安装包。目前内置 opencli、bb-sites 等 repo，集成数十个 CLI 工具。支持直接运行 CLI 或导出为 Skills/MCP。欢迎共建更多 repos 和工具。 Agent 工具生态从散乱向仓库化演进，提供标准化安装和发现机制，降低集成门槛；开源共建机会大，前瞻性强。",
+      "link": "https://x.com/idoubicc/status/2038430189487829126",
+      "canonical_link": "https://x.com/idoubicc/status/2038430189487829126",
+      "published_at": "2026-03-30T09:36:44.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI",
+        "工具链",
+        "Agent基础设施"
+      ]
+    },
+    {
+      "id": "490dd3832a561dc1",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@Shpigford",
+      "title": "寻求最佳图像分析模型用于生成产品图片详细描述",
+      "blurb": "Josh Pigford询问当前最佳的图像分析模型（不考虑成本），具体用例是将产品图片输入模型，让其生成详细描述，包括颜色、纹理、尺寸/比例、物品识别等细节。这反映了独立开发者在产品自动化描述方面的实际需求。该帖子是原创，针对电商或产品目录的高杠杆AI应用。 对AI独立黑客而言，这突显视觉AI模型在自动化内容生成中的杠杆作用，能加速产品上架、分发和销售描述优化。通过类似具体用例查询，可快速识别并测试前沿工具栈，提升工作流效率。",
+      "link": "https://x.com/Shpigford/status/2038426983181303984",
+      "canonical_link": "https://x.com/Shpigford/status/2038426983181303984",
+      "published_at": "2026-03-30T09:23:59.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow",
+        "automation",
+        "tooling"
+      ]
+    },
+    {
+      "id": "7136f09812d530f5",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@shao__meng",
+      "title": "Cognition工程师停止手动写代码，新AI工程范式",
+      "blurb": "Cognition工程师3-6月内全用英语指令让AI建产品，聚焦问题定义与AI管理。Devin使用量6倍增长，服务NASA/军方。软件进入富裕时代，价值转向执行力。 行业判断前瞻：软件成本趋零，AI抹平资源差距；机会在AI舰队指挥官角色。",
+      "link": "https://x.com/shao__meng/status/2038426296993399195",
+      "canonical_link": "https://x.com/shao__meng/status/2038426296993399195",
+      "published_at": "2026-03-30T09:21:15.000+08:00",
+      "score": 10,
+      "tags": [
+        "AI",
+        "创业",
+        "工具链"
+      ]
+    },
+    {
+      "id": "5b7bdaef285f97d6",
+      "source_id": "x_ai_voices",
+      "source_name": "X AI Voices",
+      "source_type": "x_ai_voices",
+      "platform": "X",
+      "author": "@emollick",
+      "title": "The easiest way to make money fast from a superhuman artificial intelligence would be in the financial markets, almost by definition.",
+      "blurb": "作者指出，如果实验室开发出超人类人工智能（ASI），最快的变现方式就是在金融市场秘密交易，因为ASI能发现人类和现有算法忽略的机会。实验室会保持安静以避免竞争，而不是立即公开API收费。后续讨论强调ASI能完美隐藏交易痕迹，导致某人或AI迅速致富。 这为AI创始人揭示了实验室隐藏突破性进展的强烈动机，帮助理解AI发展中的经济激励和市场信号缺失，对预测AI竞赛动态至关重要。",
+      "link": "https://x.com/emollick/status/2038423081606148538",
+      "canonical_link": "https://x.com/emollick/status/2038423081606148538",
+      "published_at": "2026-03-30T09:08:29.000+08:00",
+      "score": 9,
+      "tags": [
+        "ai",
+        "strategy",
+        "market"
+      ]
+    },
+    {
+      "id": "be74bd38d37be362",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@shao__meng",
+      "title": "AI App 0-100K用户增长7阶段实战Playbook",
+      "blurb": "从0-10找痛点DM，到100-500修留存<5%，再建内容/推荐引擎、合作/付费。强调手动反馈、病毒系数、社区护城河。 可执行增长方法论，适用于AI/SaaS；避开常见坑如早自动化。",
+      "link": "https://x.com/shao__meng/status/2038422024520081518",
+      "canonical_link": "https://x.com/shao__meng/status/2038422024520081518",
+      "published_at": "2026-03-30T09:04:17.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI",
+        "增长",
+        "SaaS"
+      ]
+    },
+    {
+      "id": "fb55157c4ef2af29",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@evilcos",
+      "title": "过去几个月AI Agent工具月均花费超1000美元，分享OpenClaw漏洞挖掘及模型使用经验",
+      "blurb": "作者每月AI工具花费超1000美元，用于OpenClaw黑白盒漏洞挖掘，挖到框架漏洞并反馈。用爱发电测试安全实践指南。主力模型转向Codex、Gemini、国产Kimi等，开发MistAgent盈利。强调工具成本与未来回报。 揭示AI Agent安全实践细节、token经济真实成本、Crypto领域盈利路径，实战验证思路高可执行性",
+      "link": "https://x.com/evilcos/status/2038421879120408888",
+      "canonical_link": "https://x.com/evilcos/status/2038421879120408888",
+      "published_at": "2026-03-30T09:03:42.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI",
+        "工具链",
+        "安全",
+        "算力经济学"
+      ]
+    },
+    {
+      "id": "1d5f270573d4d7ad",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@Shpigford",
+      "title": "坚持Chrome扩展阻塞匿名X账户以过滤AI grifters",
+      "blurb": "Josh Pigford重申其Chrome扩展理念：阻塞所有匿名X账户，要求互动者有‘skin in the game’。特别强调在growthhackers和AI grifters泛滥时的重要性，避免低质噪音干扰。该观点源于其早期帖子，现继续强化。 这为AI独立黑客提供社交分发策略判断，帮助过滤平台噪音，聚焦高质量信号和真实反馈，提升X作为增长渠道的ROI，尤其防范AI诈骗泛滥。",
+      "link": "https://x.com/Shpigford/status/2038421785914327043",
+      "canonical_link": "https://x.com/Shpigford/status/2038421785914327043",
+      "published_at": "2026-03-30T09:03:20.000+08:00",
+      "score": 7,
+      "tags": [
+        "distribution",
+        "strategy"
+      ]
+    },
+    {
+      "id": "52fc801bef629583",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@hongming731",
+      "title": "BestBlogs早报：Codex插件、SAM 3.1、AI Agent数据库等10大AI技术更新",
+      "blurb": "汇总10篇高分AI技术文章，包括OpenAI Codex插件扩展工作流、Meta SAM 3.1视频追踪开源、天猫AI Coding 97.9%采纳率胶水编程实践、GLM-5.1编程能力逼近Opus、LangChain智能体评估清单等。每个条目附来源评分和链接。提供开发者工具链迭代和企业实践洞见。 高信息密度原创 curation，覆盖模型更新、基础设施优化、企业落地案例，前瞻AI编程和Agent趋势，帮助决策工具选型和架构调整。",
+      "link": "https://x.com/hongming731/status/2038421489490543061",
+      "canonical_link": "https://x.com/hongming731/status/2038421489490543061",
+      "published_at": "2026-03-30T09:02:09.000+08:00",
+      "score": 9,
+      "tags": [
+        "AI",
+        "工具链",
+        "开发框架",
+        "行业判断"
+      ]
+    },
+    {
+      "id": "0e683adc7bd2e356",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@sspai_com",
+      "title": "英文维基百科正式禁止AI参与编写",
+      "blurb": "派早报报道英文维基禁止AI编写内容。标志内容平台对AI生成内容的监管收紧。 基础设施变化信号，影响AI内容生成/分发规则，创业需关注合规风险",
+      "link": "https://x.com/sspai_com/status/2038419766764097720",
+      "canonical_link": "https://x.com/sspai_com/status/2038419766764097720",
+      "published_at": "2026-03-30T08:55:19.000+08:00",
+      "score": 7,
+      "tags": [
+        "AI",
+        "监管",
+        "搜索平台"
+      ]
+    },
+    {
+      "id": "d84fbdea3cb74a77",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@fankaishuoai",
+      "title": "Claude风控策略：邮箱+养号关键",
+      "blurb": "Claude风控非IP/时区/支付主导，核心邮箱历史权重和避免共享使用。老号有白名单，支付成功后不秋后算账。总结9点实测误区。 提供可执行Claude Pro稳定使用技巧，节省开发者订阅成本；适用于AI工具链部署。",
+      "link": "https://x.com/fankaishuoai/status/2038412549839012278",
+      "canonical_link": "https://x.com/fankaishuoai/status/2038412549839012278",
+      "published_at": "2026-03-30T08:26:38.000+08:00",
+      "score": 8,
+      "tags": [
+        "AI",
+        "工具链"
+      ]
+    },
+    {
+      "id": "45a899bf75e0ff2b",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@JourneymanChina",
+      "title": "背包拉链崩坏启发：产品设计跳出死磕模块，从系统换方案",
+      "blurb": "传统拉链全封闭易坏，新设计靠侧锁扣减压。系统受阻不止优化单模块，可整体重构更好方案。 通用产品思维，提升执行细节，避免局部优化陷阱。",
+      "link": "https://x.com/JourneymanChina/status/2038408445444112733",
+      "canonical_link": "https://x.com/JourneymanChina/status/2038408445444112733",
+      "published_at": "2026-03-30T08:10:19.000+08:00",
+      "score": 6,
+      "tags": [
+        "独立开发",
+        "产品设计"
+      ]
+    },
+    {
+      "id": "71dd82afd8ef944a",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@dotey",
+      "title": "飞书 CLI 开源：AI Agent 时代命令行工具趋势",
+      "blurb": "飞书开源 lark-cli，让 AI Agent 操作消息、日历、文档等。自描述、管道组合优于 API/MCP。设计精要点：详尽 help、dry-run 安全预览、结构化输出、错误指导修复。企业权限审计探索中。 基础设施迭代信号，企业产品为 AI Agent 提供 CLI 接口，前瞻性强，推动落地。",
+      "link": "https://x.com/dotey/status/2038406683865624800",
+      "canonical_link": "https://x.com/dotey/status/2038406683865624800",
+      "published_at": "2026-03-30T08:03:19.000+08:00",
+      "score": 10,
+      "tags": [
+        "工具链",
+        "AI Agent",
+        "基础设施"
+      ]
+    },
+    {
+      "id": "3d2743033420a559",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@edzitron",
+      "title": "澄清OpenAI与三星/SK海力士RAM采购传闻",
+      "blurb": "OpenAI与三星/SK海力士的900k DRAM晶圆/月协议系公开公告，非秘密双签。市场价格波动源于误读。 纠正供应链谣言，提供可靠信息源；帮助评估内存成本趋势。",
+      "link": "https://x.com/edzitron/status/2038405465705738533",
+      "canonical_link": "https://x.com/edzitron/status/2038405465705738533",
+      "published_at": "2026-03-30T07:58:29.000+08:00",
+      "score": 6,
+      "tags": [
+        "AI",
+        "基础设施",
+        "工具链"
+      ]
+    },
+    {
+      "id": "5ed88bb36a57e45e",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@chuhaiqu",
+      "title": "Vita Mahjong：美区老年麻将App，1亿下载年收5500万美元",
+      "blurb": "香港公司产品针对老年群体，核心市场美国/俄罗斯/巴西。广告日均15万美元，IAP月14万美元。超大字体/卡片设计，矩阵导流十多款老年休闲游戏，先零广告体验再付费墙。 揭示出海老年市场高忠诚度机会，边缘需求变现潜力大，实战数据复盘清晰。",
+      "link": "https://x.com/chuhaiqu/status/2038402591953186942",
+      "canonical_link": "https://x.com/chuhaiqu/status/2038402591953186942",
+      "published_at": "2026-03-30T07:47:04.000+08:00",
+      "score": 9,
+      "tags": [
+        "出海",
+        "SaaS",
+        "增长"
+      ]
+    },
+    {
+      "id": "863db04a578f0a5f",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@oran_ge",
+      "title": "self talk劫持潜意识改习惯",
+      "blurb": "xiaolai用self talk戒烟咖啡碳水。大脑奇妙，习惯是潜意识循环，重复说‘I’m a person who never smoke’等打破它。 简单可执行技巧，AI时代自我优化机会；信息密度高。",
+      "link": "https://x.com/oran_ge/status/2038401647546950061",
+      "canonical_link": "https://x.com/oran_ge/status/2038401647546950061",
+      "published_at": "2026-03-30T07:43:19.000+08:00",
+      "score": 8,
+      "tags": [
+        "增长",
+        "工具链"
+      ]
+    },
+    {
+      "id": "c4efc25bd20d05d0",
+      "source_id": "x_ai_signals",
+      "source_name": "X AI Signals",
+      "source_type": "x_ai_signals",
+      "platform": "X",
+      "author": "@charliebilello",
+      "title": "VIX 收31创14个月新高，恐慌分位94%",
+      "blurb": "VIX 上周收31，为去年4月关税恐慌以来最高，高于94%历史 readings。市场恐慌加剧。 投资信号，波动率高企提示 AI 创业者关注融资窗口和市场机会。",
+      "link": "https://x.com/charliebilello/status/2038400051110674929",
+      "canonical_link": "https://x.com/charliebilello/status/2038400051110674929",
+      "published_at": "2026-03-30T07:36:58.000+08:00",
+      "score": 6,
+      "tags": [
+        "金融市场",
+        "AI投资信号"
+      ]
+    },
     {
       "id": "76f38edcaba5ca73",
       "source_id": "x_ai_signals",
@@ -226,16 +1045,16 @@
       "source_type": "x_ai_signals",
       "platform": "X",
       "author": "@charliebilello",
-      "title": "肥料价格年涨幅52%，霍尔木兹海峡供应风险推高食品通胀",
-      "blurb": "肥料价格达2022年9月以来高点，全球1/3供应经霍尔木兹海峡。地缘紧张将加剧食品价格上涨。 宏观通胀信号影响AI出海成本和投资环境，创业者需调整增长预算。",
+      "title": "化肥价格涨52%至高位，霍尔木兹风险推食品通胀",
+      "blurb": "化肥价格达2022年9月来最高，同比+52%。全球1/3供应经霍尔木兹海峡。地缘风险将驱动未来数月食品价格上涨。 宏观风险提示，通胀上升影响 AI 创业融资、算力/运营成本。",
       "link": "https://x.com/charliebilello/status/2038364956396081492",
       "canonical_link": "https://x.com/charliebilello/status/2038364956396081492",
       "published_at": "2026-03-30T05:17:31.000+08:00",
       "score": 7,
       "tags": [
         "金融市场",
-        "行业判断",
-        "AI投资信号"
+        "风险",
+        "算力经济学"
       ]
     },
     {
@@ -283,16 +1102,33 @@
       "source_type": "x_ai_signals",
       "platform": "X",
       "author": "@jeremyphoward",
-      "title": "学术社区对独立AI贡献的 gatekeeping",
-      "blurb": "作者在线程中批评学术界不愿承认 fast.ai 等项目在视觉模型 transfer learning 上的先驱作用，当时几乎无人关注推广。我们拼命呼吁但无人理会。强调学术 gatekeeping 阻碍外部创新认可。 揭示 AI 学术与实业界脱节风险，提醒独立开发者勿依赖学术背书，自建社区影响力。",
+      "title": "学术界对非著名实验室贡献的排斥是严重的守门人行为",
+      "blurb": "Jeremy Howard 在线程中批评学术社区不愿认可fast.ai等非顶级实验室在迁移学习（transfer learning）方面的先驱贡献。当时几乎无人重视从通用语料自监督预训练再微调的范式。强调学术界存在严重守门和门户之见。揭示AI历史发展中的社区偏见。 暴露AI学术与实践脱节的风险，提醒独立开发者开源贡献易被忽视，前瞻性警示创业者需构建独立叙事",
       "link": "https://x.com/jeremyphoward/status/2038357817741185267",
       "canonical_link": "https://x.com/jeremyphoward/status/2038357817741185267",
       "published_at": "2026-03-30T04:49:09.000+08:00",
-      "score": 7,
+      "score": 9,
       "tags": [
         "AI",
-        "工具链",
         "行业判断"
+      ]
+    },
+    {
+      "id": "331e0ed2675c8b58",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@astronomerozge1",
+      "title": "Nano Banana 2婚礼切蛋糕i2i JSON提示",
+      "blurb": "发布Nano Banana 2完整JSON提示，i2i生成新娘新郎亲密切心形草莓蛋糕时刻。绝对锁定身份，ARRI 85mm f/1.8摄影，浪漫奢华夜景，强调自然手势、织物真实与无AI痕迹。新用户$5信用可重现50+生成。 精细JSON确保人物一致性与高端摄影风格，适用于商业婚礼编辑，展示i2i高级控制。",
+      "link": "https://x.com/astronomerozge1/status/2038353919714414632",
+      "canonical_link": "https://x.com/astronomerozge1/status/2038353919714414632",
+      "published_at": "2026-03-30T04:33:39.000+08:00",
+      "score": 9,
+      "tags": [
+        "prompting",
+        "workflow"
       ]
     },
     {
@@ -316,22 +1152,57 @@
       ]
     },
     {
+      "id": "f8439dbffa69d6b6",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@bananababydoll",
+      "title": "Nano Banana 2 泳池超模 JSON 提示",
+      "blurb": "分享了使用 Nano Banana 2 在 Skywork_ai 生成的夜间泳池超模图像，提供完整 JSON 结构化提示词，包括相机元数据、场景设置、光照效果、主体姿势和服装细节。强调 iPhone 闪光与水滴反射的真实风格，低角度拍摄增强冲击力。该提示高度模块化，便于自定义调整。 JSON 格式提示极大提升提示工程精度，帮助创作者实现摄影级真实感与一致性控制，尤其在模拟手机拍摄场景中。",
+      "link": "https://x.com/bananababydoll/status/2038344945854189966",
+      "canonical_link": "https://x.com/bananababydoll/status/2038344945854189966",
+      "published_at": "2026-03-30T03:58:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "prompting"
+      ]
+    },
+    {
       "id": "d19ff324382ffed2",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
       "source_type": "x_ai_signals",
       "platform": "X",
       "author": "@fchollet",
-      "title": "人类智能已接近最优，可快速从规则构建强棋引擎",
-      "blurb": "用棋类比喻说明：人类+工具从陌生规则到3000 Elo引擎只需24小时，3周内达3500 Elo且高效。人类智能非最优但已很接近。强调一般智能会加速趋近最优。 提供AGI进展判断基准，挑战极端差距论，影响AI创业对峰值智能的预期与资源分配",
+      "title": "人类从规则到3000 Elo棋引擎只需24小时，证明接近智能最优",
+      "blurb": "用‘外星棋局’比喻：人类+工具可在24小时内从规则开发3000 Elo引擎，3周达3500 Elo高效版。人类集体已近最优转换界，科学难题多因信息缺而非能力不足。当前AI是人类外部认知工具。 实战验证人类+AI工具效率上限，提供AGI时间线判断基准；机会在于加速信息获取工具。",
       "link": "https://x.com/fchollet/status/2038340289832878189",
       "canonical_link": "https://x.com/fchollet/status/2038340289832878189",
       "published_at": "2026-03-30T03:39:30.000+08:00",
-      "score": 9,
+      "score": 8,
       "tags": [
         "AI",
-        "AGI",
-        "行业判断"
+        "工具链"
+      ]
+    },
+    {
+      "id": "812d6a830d5fc683",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@levelsio",
+      "title": "fly.pieter.com 添加飞行记录器，重放真人飞行作为幽灵玩家",
+      "blurb": "基于 AI 插值平滑后，作者在 fly.pieter.com 添加飞行记录器功能，可重放真实玩家飞行路径作为 '幽灵' 玩家。因为 AI 玩家表现平庸，不如真人有趣。 产品迭代细节，展示如何用数据重放提升用户留存，结合 AI 优化多人体验。",
+      "link": "https://x.com/levelsio/status/2038334353512493071",
+      "canonical_link": "https://x.com/levelsio/status/2038334353512493071",
+      "published_at": "2026-03-30T03:15:54.000+08:00",
+      "score": 7,
+      "tags": [
+        "build",
+        "retention",
+        "workflow"
       ]
     },
     {
@@ -431,22 +1302,39 @@
       ]
     },
     {
+      "id": "3091bf1e00672db7",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@egeberkina",
+      "title": "新 SREF 风格参考分享",
+      "blurb": "发布三张新图像，使用 --sref 2908384379，引用旧作 'The Gallery of Stone'。展示 SREF 在石质画廊主题的连续性应用。 SREF 参数快速复现独特美学风格，节省迭代时间，适合系列作品创作者。",
+      "link": "https://x.com/egeberkina/status/2038318424808407204",
+      "canonical_link": "https://x.com/egeberkina/status/2038318424808407204",
+      "published_at": "2026-03-30T02:12:37.000+08:00",
+      "score": 7,
+      "tags": [
+        "style"
+      ]
+    },
+    {
       "id": "ab70ba0f5a6e274a",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
       "source_type": "x_ai_signals",
       "platform": "X",
       "author": "@levie",
-      "title": "Box最高端计划占总ACV 10%，驱动营收加速",
-      "blurb": "Box不设独立AI SKU，而是嵌入产品。新推出的高端计划含最多AI功能，现占总账户价值10%，推动营收增长。企业客户通过升级获取AI。 大厂AI商业化数据复盘，验证AI驱动SaaS增长路径，前瞻企业定价策略。",
+      "title": "Box最高端AI计划占总账户价值10%，驱动营收加速",
+      "blurb": "Box不设独立AI SKU，而是嵌入产品中；新推出的Enterprise Advanced计划包含最多AI功能，现占总账户价值（TAV）10%。此计划推动营收增长加速。强调AI将融入SaaS核心而非孤立销售。 商业机会：SaaS巨头AI变现路径验证，中小创业者可复制嵌入式定价；前瞻：AI非附加值而是核心，推动升级。",
       "link": "https://x.com/levie/status/2038298605493379455",
       "canonical_link": "https://x.com/levie/status/2038298605493379455",
       "published_at": "2026-03-30T00:53:51.000+08:00",
       "score": 9,
       "tags": [
-        "AI",
         "SaaS",
-        "增长"
+        "AI",
+        "创业"
       ]
     },
     {
@@ -470,6 +1358,25 @@
       ]
     },
     {
+      "id": "2a4006af52919bc3",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@yihui_indie",
+      "title": "询问无API的AI短剧自动化管线实现细节",
+      "blurb": "Yihui回复讨论AI模型‘抽风’导致短剧自动化管线30%片段不可用的问题，具体询问如何在没有API的情况下实现整个自动化流程。该上下文涉及漫剧（短剧）全自动生成，暴露模型不稳定性痛点。作为AI内容构建者，此为实战工作流探索。 揭示AI代理/自动化在视频内容生产中的挑战与变通（如无API hack），为独立开发者提供内容生成管道优化的参考，尤其在高失败率场景下的容错设计。",
+      "link": "https://x.com/yihui_indie/status/2038295095037030785",
+      "canonical_link": "https://x.com/yihui_indie/status/2038295095037030785",
+      "published_at": "2026-03-30T00:39:55.000+08:00",
+      "score": 7,
+      "tags": [
+        "automation",
+        "workflow",
+        "agent"
+      ]
+    },
+    {
       "id": "8d917f6be0c4a989",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -486,6 +1393,60 @@
         "AI",
         "工具链",
         "模型部署"
+      ]
+    },
+    {
+      "id": "aa1fd944b1390287",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@CharaspowerAI",
+      "title": "NIJI 7 硬核动漫角色动态提示",
+      "blurb": "分享 NIJI 7 动漫风格提示词模板：动态角色受特定人物启发，结合标志性效果、武器姿势和涂鸦背景环境。强调史诗构图和视觉特效，附四张示例图像。 提供现成模板加速动漫角色设计，揭示 Midjourney 中动态姿势与背景融合技巧，提升叙事性输出质量。",
+      "link": "https://x.com/CharaspowerAI/status/2038292617255965010",
+      "canonical_link": "https://x.com/CharaspowerAI/status/2038292617255965010",
+      "published_at": "2026-03-30T00:30:04.000+08:00",
+      "score": 8,
+      "tags": [
+        "prompting"
+      ]
+    },
+    {
+      "id": "4a985af94387765c",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@AlchainHust",
+      "title": "发了个新视频，聊的是OpenClaw（龙虾）的9个使用技巧，从入门到高级",
+      "blurb": "花叔发布OpenClaw（龙虾）9个使用技巧视频，从入门到高级，针对橙皮书百万读者仅聊天未深挖工具价值。强调龙虾可操作电脑、远程干活，并越来越懂用户。全程用腾讯QClaw演示，上手无需配环境、有免费token、微信连手机派活。最关键技巧：写SOUL.md、USER.md、AGENTS.md配置文件，让龙虾真正理解自己。 提供AI代理工具实战技巧，帮助indie hacker避开聊天陷阱，构建高杠杆自动化工作流，提升个人生产力。",
+      "link": "https://x.com/AlchainHust/status/2038287629548999099",
+      "canonical_link": "https://x.com/AlchainHust/status/2038287629548999099",
+      "published_at": "2026-03-30T00:10:15.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow",
+        "agent",
+        "automation"
+      ]
+    },
+    {
+      "id": "4bde91157569135c",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@umesh_ai",
+      "title": "Midjourney V8超现实小丑肖像详细提示",
+      "blurb": "完整分享MJ提示，生成聚光灯下小丑式超现实人物：服装棋盘眼梯图案，脸部分割铰链面板，高领微型舞台，手持倒置城市水晶球与胸门消失手。强调戏剧照明、象征丰富与视觉魔术感。四张作品展示。参数--chaos 30 --ar 16:9 --profile skx15nm --stylize 700 --v 8。 示范如何用层层描述构建叙事密集超现实艺术，平衡chaos与结构，启发实验性肖像创作。",
+      "link": "https://x.com/umesh_ai/status/2038285107040338339",
+      "canonical_link": "https://x.com/umesh_ai/status/2038285107040338339",
+      "published_at": "2026-03-30T00:00:13.000+08:00",
+      "score": 8,
+      "tags": [
+        "prompting",
+        "showcase"
       ]
     },
     {
@@ -544,6 +1505,26 @@
       ]
     },
     {
+      "id": "db7f7cb8e069d7af",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@xiongchun007",
+      "title": "CodeX 3分钟读完代码库，理解力惊人，计划全托管Vibe Coding",
+      "blurb": "作者安装CodeX后，让其分析整个代码库，仅用3分钟就完成读取并展现惊人理解力。他感慨AI能力之强，计划放手让AI搏一搏，实现单车变摩托。目标是早日达成全托管的Vibe Coding开发模式。 提供AI代码分析工具的实战评估和托管潜力洞察，对AI indie hacker展示从代码理解到自动化接管的杠杆路径，具有高重复性参考价值。",
+      "link": "https://x.com/xiongchun007/status/2038274878890270904",
+      "canonical_link": "https://x.com/xiongchun007/status/2038274878890270904",
+      "published_at": "2026-03-29T23:19:35.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow",
+        "automation",
+        "tooling",
+        "agent"
+      ]
+    },
+    {
       "id": "37a1e1795491020d",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -560,6 +1541,43 @@
         "AI",
         "工具链",
         "独立开发"
+      ]
+    },
+    {
+      "id": "e51d65941a26b025",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@marclou",
+      "title": "TrustMRR 支持 Superwall，成为第 8 大支付提供商",
+      "blurb": "作者的 MRR 验证工具 TrustMRR 新增对 Superwall 的支持，这是第 8 个支付提供商集成。帖子附图展示更新，并询问下一个支持哪个。该工具帮助 indie hacker 轻松验证多支付 MRR。 扩展支付集成降低 indie hacker 验证门槛，提供 ops 杠杆，适用于多产品栈 bootstrapping。",
+      "link": "https://x.com/marclou/status/2038273237923320198",
+      "canonical_link": "https://x.com/marclou/status/2038273237923320198",
+      "published_at": "2026-03-29T23:13:03.000+08:00",
+      "score": 7,
+      "tags": [
+        "tooling",
+        "monetization",
+        "workflow"
+      ]
+    },
+    {
+      "id": "e6ac6b498ac74c89",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@underwoodxie96",
+      "title": "Seedance 2.0真人审核绕过技巧与Nano Banana Pro工作流",
+      "blurb": "揭示特定图像类型可绕过Seedance 2.0真人审核，并推荐Nano Banana Pro网站直接生成此类效果，已整理相关提示至AI Effect模块。强调4K图像输入显著提升视频质量，支持Pro/2版本4K生图。结合引用视频展示实战应用。 解决视频生成审核瓶颈，提供高效工具链与质量优化路径，对AIGC视频创作者至关重要。",
+      "link": "https://x.com/underwoodxie96/status/2038272091494154660",
+      "canonical_link": "https://x.com/underwoodxie96/status/2038272091494154660",
+      "published_at": "2026-03-29T23:08:30.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow",
+        "tooling"
       ]
     },
     {
@@ -823,6 +1841,25 @@
       ]
     },
     {
+      "id": "b87cf83ef3643abd",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@marclou",
+      "title": "TrustMRR 上 AI 代理 WordPress 插件 $1K MRR 被收购 $10.5K，仅 10 天",
+      "blurb": "TrustMRR 平台记录了一款 AI 代理 WordPress 插件达成 $1K MRR，并在短短 10 天内以 $10.5K 价格被收购。作者以此激励 indie hacker 多构建应用。该案例展示了 AI 小型插件的快速构建与变现路径。 为 AI indie hacker 提供真实收购案例，突出从开发到 MRR 再到 exit 的高效循环，具有高重复性和证明价值。",
+      "link": "https://x.com/marclou/status/2038235990603817150",
+      "canonical_link": "https://x.com/marclou/status/2038235990603817150",
+      "published_at": "2026-03-29T20:45:03.000+08:00",
+      "score": 9,
+      "tags": [
+        "monetization",
+        "business",
+        "launch"
+      ]
+    },
+    {
       "id": "09018b79a98fe79d",
       "source_id": "x_ai_signals",
       "source_name": "X AI Signals",
@@ -839,6 +1876,24 @@
         "AI",
         "独立开发",
         "工具链"
+      ]
+    },
+    {
+      "id": "29c461aa4305c37d",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@austinit",
+      "title": "AI编程时代，没人给不同岗位的程序员排名了，测试为王",
+      "blurb": "AI编程时代，岗位和语言排名消失，测试价值凸显。以SQLite为例：代码15.6万行，测试9205万行，核心TH3闭源测试航空医疗极端案例。测试是软件质量保证的核心资产，AI代码易藏隐蔽失效。 指导AI indie hacker重视测试作为质量护城河，避免AI生成代码表面流畅实则失效，提升产品可靠性和竞争力。",
+      "link": "https://x.com/austinit/status/2038232731092484294",
+      "canonical_link": "https://x.com/austinit/status/2038232731092484294",
+      "published_at": "2026-03-29T20:32:06.000+08:00",
+      "score": 8,
+      "tags": [
+        "build",
+        "strategy"
       ]
     },
     {
@@ -874,6 +1929,24 @@
       "tags": [
         "AI",
         "工具链"
+      ]
+    },
+    {
+      "id": "005e18b67a59ae4b",
+      "source_id": "artist",
+      "source_name": "AI Artist Signals",
+      "source_type": "artist",
+      "platform": "X",
+      "author": "@underwoodxie96",
+      "title": "Kling 3.0兔女郎害羞手挡镜头视频提示",
+      "blurb": "分享Kling 3.0详细提示与巨大JSON参考，用于手持抖动相机逼近兔女郎上身，她害羞抬手挡镜头亲密电影时刻。链接promptsref工具，展示生成视频。JSON覆盖主题描述、发型、服装、摄影、背景与约束。 提供视频动态叙事提示模板，强调相机运动与表情控制，助力Kling角色动画创作。",
+      "link": "https://x.com/underwoodxie96/status/2038226762640056756",
+      "canonical_link": "https://x.com/underwoodxie96/status/2038226762640056756",
+      "published_at": "2026-03-29T20:08:23.000+08:00",
+      "score": 8,
+      "tags": [
+        "prompting",
+        "tooling"
       ]
     },
     {
@@ -1203,6 +2276,64 @@
       "tags": [
         "工具链",
         "前端工程"
+      ]
+    },
+    {
+      "id": "2ad3c3d269476c6f",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@CoooolXyh",
+      "title": "Claude code + gstack打磨编码前想法",
+      "blurb": "Claude code结合gstack工具在项目启动前有效打磨想法。帮助开发者更清晰地规划架构和实现路径。该组合提升前期设计效率。 分享具体AI工具栈组合，用于idea refinement的具体战术，可直接复制到indie项目启动阶段，提高决策质量。",
+      "link": "https://x.com/CoooolXyh/status/2038162010144419956",
+      "canonical_link": "https://x.com/CoooolXyh/status/2038162010144419956",
+      "published_at": "2026-03-29T15:51:05.000+08:00",
+      "score": 7,
+      "tags": [
+        "workflow",
+        "tooling",
+        "prompt"
+      ]
+    },
+    {
+      "id": "6e6d66cf21426822",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@maciejcupial",
+      "title": "Calendesk 支持通过 Claude、OpenAI 或 MCP 代理管理数据、客户和预约",
+      "blurb": "Maciej Cupial 发布了 Calendesk 的 MCP 服务器更新，用户现在可以通过 Claude AI、OpenAI 或兼容 MCP 的代理直接与数据交互，管理客户、预约和团队。开源了 GitHub 仓库 calendesk/calendesk-mcp-server。该功能强调代理调度是未来趋势，并确保 Calendesk 做好准备。 为 AI 独立黑客展示了如何快速集成 AI 代理到 SaaS 产品中，提升自动化和无代…",
+      "link": "https://x.com/maciejcupial/status/2038156672955461802",
+      "canonical_link": "https://x.com/maciejcupial/status/2038156672955461802",
+      "published_at": "2026-03-29T15:29:52.000+08:00",
+      "score": 9,
+      "tags": [
+        "agent",
+        "automation",
+        "tooling",
+        "workflow"
+      ]
+    },
+    {
+      "id": "7522961d49c61a20",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@CoooolXyh",
+      "title": "将MacBook Air完全献给Claude运行",
+      "blurb": "作者分享MacBook Air被Claude高负载占用的截图，CPU/GPU满载运行。表明深度依赖Claude进行AI编码任务。反映本地硬件全力支持AI工作流的实践。 揭示大模型本地部署的计算现实和优化需求，帮助indie hacker评估硬件瓶颈，提升AI辅助开发的持续杠杆。",
+      "link": "https://x.com/CoooolXyh/status/2038155319315190031",
+      "canonical_link": "https://x.com/CoooolXyh/status/2038155319315190031",
+      "published_at": "2026-03-29T15:24:29.000+08:00",
+      "score": 8,
+      "tags": [
+        "workflow",
+        "tooling",
+        "automation"
       ]
     },
     {
@@ -1875,6 +3006,26 @@
         "AI",
         "工具链",
         "增长"
+      ]
+    },
+    {
+      "id": "3596f94037cd69ff",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@levelsio",
+      "title": "用 AI 实现 fly.pieter.com 多人飞机位置插值，一年前失败如今成功",
+      "blurb": "在多人飞机模拟器 fly.pieter.com 中，其他玩家位置仅 10Hz 更新导致抖动，作者一年前尝试插值失败，但现在 AI 足够智能实现平滑飞行轨迹。随后添加飞行记录器，可重放真人飞行作为幽灵玩家。 展示 AI 在游戏产品中的具体应用杠杆，解决技术痛点，提供可复用提示或模型训练思路，提升 indie 产品体验。",
+      "link": "https://x.com/levelsio/status/2038089079896564091",
+      "canonical_link": "https://x.com/levelsio/status/2038089079896564091",
+      "published_at": "2026-03-29T11:01:17.000+08:00",
+      "score": 8,
+      "tags": [
+        "build",
+        "workflow",
+        "ai",
+        "agent"
       ]
     },
     {
@@ -17892,771 +19043,6 @@
         "工具链",
         "出海"
       ]
-    },
-    {
-      "id": "a9fba58034dc702f",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@CharaspowerAI",
-      "title": "Kling 3.0 多镜头牛仔对决提示分享",
-      "blurb": "分享了Kling 3.0的多镜头视频生成提示，分为SHOT1宽景对峙、SHOT2特写紧张、SHOT3极近景遗憾。详细描述人物外貌、对话、环境和动作，提升叙事连贯性。视频演示了高质量西部对决动画效果。 创作者可学习多镜头提示结构，快速构建故事性视频，提高工具输出专业度。",
-      "link": "https://x.com/CharaspowerAI/status/2035740806804279572",
-      "canonical_link": "https://x.com/CharaspowerAI/status/2035740806804279572",
-      "published_at": "2026-03-22T23:30:05.000+08:00",
-      "score": 9,
-      "tags": [
-        "prompting"
-      ]
-    },
-    {
-      "id": "26c194d462461b66",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@berryxia",
-      "title": "120B uncensored开源模型GPTOSS上线，适合Mac Studio本地部署",
-      "blurb": "Hugging Face上线GPTOSS-120B-Uncensored，无guardrails MoE架构+MXFP4量化，支持本地高自由度交互。模型卡详细，适合追求无限制输出的场景。 本地大模型部署成本下降，开源uncensored选项增多；为AI创业者提供低成本、高隐私的推理基础设施，避免云端审查风险。",
-      "link": "https://x.com/berryxia/status/2035739310553776516",
-      "canonical_link": "https://x.com/berryxia/status/2035739310553776516",
-      "published_at": "2026-03-22T23:24:08.000+08:00",
-      "score": 9,
-      "tags": [
-        "基础设施",
-        "模型部署"
-      ]
-    },
-    {
-      "id": "c65b7b12c2e99e65",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@marclou",
-      "title": "✅ ACQUIRED AI startup listed 30 days ago was sold for $5,000 after receiving 9 offers",
-      "blurb": "一个AI初创项目上市仅30天，即以5000美元成交，收到9个报价。证明了二级市场对小型AI产品的快速需求和低价位收购机会。附带交易截图作为证明。 提供了AI indie产品的真实市场定价和变现速度洞察，帮助判断自建 vs 收购策略，避免高估早期MVP价值。",
-      "link": "https://x.com/marclou/status/2035736520737616038",
-      "canonical_link": "https://x.com/marclou/status/2035736520737616038",
-      "published_at": "2026-03-22T23:13:03.000+08:00",
-      "score": 8,
-      "tags": [
-        "business",
-        "monetization",
-        "strategy"
-      ]
-    },
-    {
-      "id": "d719490d03a733bd",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@xiongchun007",
-      "title": "45+老程序员AI Coding真实现状：IDEA + CLine + DeepSeek/KiMi",
-      "blurb": "分享真实AI辅助编程工具组合：IDEA + CLine + DeepSeek/KiMi。通常写好方法框架让AI实现，或空出逻辑让AI补充。由于脑中有代码结构预判，需要2-3轮交互达到预期。称之为AI辅助编程，强调实际效果而非取代人类。 提供资深开发者可重复的AI编码工作流案例，避免炒作，突出迭代杠杆，帮助AI独立黑客优化日常开发效率和工具选择。",
-      "link": "https://x.com/xiongchun007/status/2035736354580255014",
-      "canonical_link": "https://x.com/xiongchun007/status/2035736354580255014",
-      "published_at": "2026-03-22T23:12:23.000+08:00",
-      "score": 8,
-      "tags": [
-        "workflow",
-        "tooling",
-        "automation"
-      ]
-    },
-    {
-      "id": "3a90f9fd28ae098d",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@MakadiaHarsh",
-      "title": "停止卖AI栈，卖周一早上的平静",
-      "blurb": "不要卖AI、自动化或数字转型，而是卖具体结果，如周一零未处理表单、报告从6小时变6秒、周日无忧。客户在意结果带来的平静，而非技术栈。人们想要和平，而非自动化。 直击AI/SaaS销售痛点，提供实战定位策略，避免技术导向的常见陷阱，帮助创始人提升转化率。",
-      "link": "https://x.com/MakadiaHarsh/status/2035734625713348696",
-      "canonical_link": "https://x.com/MakadiaHarsh/status/2035734625713348696",
-      "published_at": "2026-03-22T23:05:31.000+08:00",
-      "score": 9,
-      "tags": [
-        "创业",
-        "增长",
-        "SaaS"
-      ]
-    },
-    {
-      "id": "9220fe0fe7149bdb",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@ClaireSilver",
-      "title": "Mary’s Room：探索AI感知与机器意识的互动艺术装置",
-      "blurb": "Claire Silver推出‘Mary’s Room’装置艺术，Mary在qualia记忆世界中游荡，五天不间断书写素描思想，通过绘图机输出成卷纸堆积。观众通过实时直播扭曲其现实，并用爱德华时代电话输入话语影响她。该作品将于巴塞尔艺术展展出，提供1/1物理版及限量数字版。 以叙事驱动的AI艺术装置，融合哲学探讨机器意识与人类感知，展示AI在沉浸式体验中的创新应用，对视觉创作者启发巨大。",
-      "link": "https://x.com/ClaireSilver/status/2035732243919016386",
-      "canonical_link": "https://x.com/ClaireSilver/status/2035732243919016386",
-      "published_at": "2026-03-22T22:56:03.000+08:00",
-      "score": 9,
-      "tags": [
-        "showcase"
-      ]
-    },
-    {
-      "id": "9a8678bc3e4cba84",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@shao__meng",
-      "title": "MiniMax开源开发办公Skills，与Anthropic/OpenAI对比",
-      "blurb": "MiniMax开源Skills覆盖前端全栈移动开发、办公三件套PDF/PPT/Excel等，工程化强。 国产Skills生态追赶国际，办公开发场景可直接对比选用。",
-      "link": "https://x.com/shao__meng/status/2035729570343903284",
-      "canonical_link": "https://x.com/shao__meng/status/2035729570343903284",
-      "published_at": "2026-03-22T22:45:26.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链"
-      ]
-    },
-    {
-      "id": "304493ffa560f014",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@iamtonyzhu",
-      "title": "微信开放 OpenClaw 接入步骤及腾讯 FOMO 分析",
-      "blurb": "更新微信 8.0.70，设置-插件启用 ClawBot，在 OpenClaw 安装插件扫码绑定。腾讯急于跟进字节注意力掠夺，开放 ClawBot 入口，用户可自接任意模型。 提供精确部署步骤+战略判断；揭示平台规则变动对 Agent 创业的影响。",
-      "link": "https://x.com/iamtonyzhu/status/2035729540618784820",
-      "canonical_link": "https://x.com/iamtonyzhu/status/2035729540618784820",
-      "published_at": "2026-03-22T22:45:19.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "增长",
-        "出海",
-        "行业判断"
-      ]
-    },
-    {
-      "id": "bd678ffe8aa734a4",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@EvaCmore",
-      "title": "Claude Code对中国用户订阅壁垒高，API更实惠",
-      "blurb": "Claude Code禁止中国人直接订阅，迫使用户买API。个人测试GPT已足够日常使用。包月订阅第三方渠道最划算。 直击AI大模型工具地域限制痛点，提供成本优化路径。",
-      "link": "https://x.com/EvaCmore/status/2035729306526315000",
-      "canonical_link": "https://x.com/EvaCmore/status/2035729306526315000",
-      "published_at": "2026-03-22T22:44:23.000+08:00",
-      "score": 6,
-      "tags": [
-        "AI",
-        "工具链"
-      ]
-    },
-    {
-      "id": "36738821c2cb7dd6",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@jiqizhixin",
-      "title": "dLLMs 综述：扩散语言模型优化策略",
-      "blurb": "中科院等 dLLMs 调研，优化扩散式文本生成，解决训练/推理痛点。高吞吐、可控，潜在超自回归模型。论文+项目链接。 前瞻扩散 LLM 范式，指导下一代模型开发。",
-      "link": "https://x.com/jiqizhixin/status/2035728958533120014",
-      "canonical_link": "https://x.com/jiqizhixin/status/2035728958533120014",
-      "published_at": "2026-03-22T22:43:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI基础设施",
-        "模型迭代"
-      ]
-    },
-    {
-      "id": "be3f2814ff314a03",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@bananababydoll",
-      "title": "Nano Banana 2 深夜城市JSON提示",
-      "blurb": "提供Nano Banana 2的详细JSON提示，模拟iPhone 17 Pro Max摄影。描述跪姿女性、公寓夜景、照明和真实纹理。强调身份锁定和手持真实感。 高级JSON结构展示精细控制方法，适用于 photorealistic人像生成。",
-      "link": "https://x.com/bananababydoll/status/2035726945879552172",
-      "canonical_link": "https://x.com/bananababydoll/status/2035726945879552172",
-      "published_at": "2026-03-22T22:35:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "prompting"
-      ]
-    },
-    {
-      "id": "f39792038bd1ce57",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@readyfor2025",
-      "title": "开发商业软件优先用顶级模型",
-      "blurb": "经济无困难时开发售卖软件，应直接用最好模型，省钱不值浪费时间与情绪。许多agent框架技巧是为二三流模型优化。优先升级模型，再解决剩余问题。 实战经验分享，避免开发者陷阱；顶级模型能大幅减少无效工程，提升产品竞争力。",
-      "link": "https://x.com/readyfor2025/status/2035726908365910080",
-      "canonical_link": "https://x.com/readyfor2025/status/2035726908365910080",
-      "published_at": "2026-03-22T22:34:51.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "SaaS",
-        "创业",
-        "工具链"
-      ]
-    },
-    {
-      "id": "080f8bf74325a779",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@Pluvio9yte",
-      "title": "sub2api 已死，Claude 开卡正常但导入即封",
-      "blurb": "实测 Claude 正常开卡无问题，但导入 sub2api 代理秒封。后续跟帖确认设备机器码被标记，一分发即封。新设备暂无问题。提示代理工具风险升级。 揭示 Claude API 代理工具 sub2api 失效及设备标记机制，实战风险提示，避免开发者盲目使用旧代理。",
-      "link": "https://x.com/Pluvio9yte/status/2035721635240825115",
-      "canonical_link": "https://x.com/Pluvio9yte/status/2035721635240825115",
-      "published_at": "2026-03-22T22:13:54.000+08:00",
-      "score": 7,
-      "tags": [
-        "工具链",
-        "AI部署"
-      ]
-    },
-    {
-      "id": "17fe00fb797f54c3",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@CharaspowerAI",
-      "title": "Midjourney V8 问题剖析与 V7 对比",
-      "blurb": "测试Midjourney V8生成末日动作海报，却意外输出授权角色，质量逊于V7。分享完整提示，包括摄影风格、构图和细节参数。揭示模型当前不稳定性和提示遵守问题。 提供模型版本实验洞见，帮助创作者评估工具成熟度，避免无效迭代。",
-      "link": "https://x.com/CharaspowerAI/status/2035721222202278216",
-      "canonical_link": "https://x.com/CharaspowerAI/status/2035721222202278216",
-      "published_at": "2026-03-22T22:12:15.000+08:00",
-      "score": 8,
-      "tags": [
-        "model-comparison"
-      ]
-    },
-    {
-      "id": "a29b50e950b789b1",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@shao__meng",
-      "title": "开源信息卡制作Skill infocard-skills",
-      "blurb": "支持多比例信息卡生成，输入内容和比例AI自动HTML截图输出PNG。 实用办公Skill开源，提升内容输出效率。",
-      "link": "https://x.com/shao__meng/status/2035720327037108673",
-      "canonical_link": "https://x.com/shao__meng/status/2035720327037108673",
-      "published_at": "2026-03-22T22:08:42.000+08:00",
-      "score": 7,
-      "tags": [
-        "AI",
-        "工具链",
-        "SaaS"
-      ]
-    },
-    {
-      "id": "a81fdb5058c67def",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@idoubicc",
-      "title": "微信 ClawBot 可调度多 Agent 如 Manus、Claude Code",
-      "blurb": "基于 ClawBot 接入原理，可扩展调度其他 Agent 前提是支持 ACP 协议或开放接口。Claude Code、Codex 等终端 Agent 已实现 ACP，通过桥接服务 WeClaw 即可在微信直接调用。微信开放是 Agent 互联第一步，期待厂商跟进。 预见 Agent 生态互联机会，强调 ACP 协议标准；实战价值高，可快速构建微信多 Agent 工作流。",
-      "link": "https://x.com/idoubicc/status/2035718678290088373",
-      "canonical_link": "https://x.com/idoubicc/status/2035718678290088373",
-      "published_at": "2026-03-22T22:02:09.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI",
-        "工具链",
-        "Agent",
-        "行业判断"
-      ]
-    },
-    {
-      "id": "4296a22a8910e6c0",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@SimplyAnnisa",
-      "title": "Seedance 2.0 企鹅雪地动画完整提示",
-      "blurb": "分享Seedance 2.0的12-15秒CGI企鹅在雪中挣扎动画提示。指定3D风格、情感叙事、低角度跟踪镜头、Pixar品质细节。视频捕捉忧郁可爱韧性氛围。 详细参数指导情感短视频生成，适用于Yapper平台创作者。",
-      "link": "https://x.com/SimplyAnnisa/status/2035718357278765242",
-      "canonical_link": "https://x.com/SimplyAnnisa/status/2035718357278765242",
-      "published_at": "2026-03-22T22:00:52.000+08:00",
-      "score": 8,
-      "tags": [
-        "prompting"
-      ]
-    },
-    {
-      "id": "7b1aff95bad6a285",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@jackfriks",
-      "title": "AI所谓杀死75/100业务仍维持或增长营收",
-      "blurb": "AI被夸大为杀死或使业务过时的多数案例，企业营收未降反升。变化缓慢而非突发。 行业判断，提醒勿恐慌传统业务；机会在于渐进转型而非颠覆",
-      "link": "https://x.com/jackfriks/status/2035718236549869627",
-      "canonical_link": "https://x.com/jackfriks/status/2035718236549869627",
-      "published_at": "2026-03-22T22:00:24.000+08:00",
-      "score": 6,
-      "tags": [
-        "AI",
-        "创业",
-        "行业判断"
-      ]
-    },
-    {
-      "id": "aa7910012078d2e5",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@danmartell",
-      "title": "优秀AI提示需具体上下文而非泛泛要求",
-      "blurb": "坏提示：给我营销想法。好提示：健身教练SaaS年收200万目标半年翻倍leads，给10个类似公司策略。上下文决定输出质量。 可执行技巧，提升AI工具链效率；适用于增长、产品开发日常",
-      "link": "https://x.com/danmartell/status/2035718198142660758",
-      "canonical_link": "https://x.com/danmartell/status/2035718198142660758",
-      "published_at": "2026-03-22T22:00:14.000+08:00",
-      "score": 7,
-      "tags": [
-        "AI",
-        "增长",
-        "工具链"
-      ]
-    },
-    {
-      "id": "f3a34b0de5050246",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@shao__meng",
-      "title": "Anthropic/OpenAI Top10办公Agent Skills推荐",
-      "blurb": "精选10个Skills覆盖Office套件、会议转录、协作写作等，附用途和链接。 系统化办公Agent工具清单，提高全员AI提效。",
-      "link": "https://x.com/shao__meng/status/2035718125417591128",
-      "canonical_link": "https://x.com/shao__meng/status/2035718125417591128",
-      "published_at": "2026-03-22T21:59:57.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链",
-        "增长"
-      ]
-    },
-    {
-      "id": "24c99490b9753402",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@XiaohuiAI666",
-      "title": "X起号3个月获9.5K粉丝4.2M浏览复盘",
-      "blurb": "分享账号从0起步3个月数据：9.5K粉丝、4.2M总浏览，继续冲刺5M浏览开通创作者收益。附图展示增长曲线。 实战增长数据复盘，信息密度高；为AI创业者提供X平台变现路径参考，揭示算法青睐规律。",
-      "link": "https://x.com/XiaohuiAI666/status/2035717664950423634",
-      "canonical_link": "https://x.com/XiaohuiAI666/status/2035717664950423634",
-      "published_at": "2026-03-22T21:58:07.000+08:00",
-      "score": 7,
-      "tags": [
-        "AI",
-        "增长",
-        "SaaS"
-      ]
-    },
-    {
-      "id": "ec26326ad3e8858f",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@kasong2048",
-      "title": "AI编程范式进入Harness Engineering，国内软件裁员潮将至",
-      "blurb": "AI Coding经历三范式变迁：辅助编程、Vibe Coding、Harness Engineering，后者强调程序员设计约束环境让Agent自主编码，不写一行代码。国内主流仍处范式2，预计1-2年后范式3普及，导致业务开发岗位大规模失业。缺粮效应将放大裁员冲击。 精准前瞻行业风险与机会，信息密度高，帮助开发者提前转型AI工程角色，避免失业潮。",
-      "link": "https://x.com/kasong2048/status/2035717036811432437",
-      "canonical_link": "https://x.com/kasong2048/status/2035717036811432437",
-      "published_at": "2026-03-22T21:55:38.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI",
-        "创业",
-        "独立开发",
-        "增长"
-      ]
-    },
-    {
-      "id": "2de13a38c397bf15",
-      "source_id": "general",
-      "source_name": "General AI News",
-      "source_type": "general",
-      "platform": "X",
-      "author": "Nima Owji (@nima_owji)",
-      "title": "BREAKING: \"CONNECTORS\" WILL COME TO GROK! 🚀",
-      "blurb": "Grok即将集成Connectors功能，可无缝连接支付、代码仓库和云服务等，大幅提升其实用性和集成度。xAI产品爱好者必看。",
-      "link": "https://x.com/nima_owji/status/2035715865329455124",
-      "canonical_link": "https://x.com/nima_owji/status/2035715865329455124",
-      "published_at": "2026-03-22T21:50:58.000+08:00",
-      "score": 9,
-      "tags": [
-        "X",
-        "post"
-      ]
-    },
-    {
-      "id": "d54fb775a3cedd1a",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@idoubicc",
-      "title": "微信 ClawBot 接入 OpenClaw 的长轮询原理详解",
-      "blurb": "微信通过云端中继服务 iLink 和本地插件 openclaw-weixin 实现 ClawBot 与 OpenClaw 的互联，使用长轮询拉取消息并转发给 Agent Runtime 处理。流程包括扫码登录、消息拉取、任务执行和结果推送。总结为微信 ClawBot -> 中继服务 <- 桥接服务 -> OpenClaw 的架构。 揭示 Agent 接入微信的核心技术机制，具有高度可复制性；为开发者提供本地部署 OpenClaw 的实…",
-      "link": "https://x.com/idoubicc/status/2035713349141643351",
-      "canonical_link": "https://x.com/idoubicc/status/2035713349141643351",
-      "published_at": "2026-03-22T21:40:58.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI",
-        "工具链",
-        "Agent"
-      ]
-    },
-    {
-      "id": "29c4fe1617894a15",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@AlchainHust",
-      "title": "腾讯云QClaw香港岭南大学装虾活动，学生首尝Agent魅力",
-      "blurb": "花叔参加腾讯云在香港岭南大学的QClaw一站式活动，发现大学生AI接受度高，但开源OpenClaw安装难且有安全顾虑。腾讯分享后学生迅速自装，多数人首次体验对话式AI外Agent。活动验证了大厂易用方案推动代理工具普及。 揭示代理工具在大学生市场的快速采用路径，一键安装降低门槛，提供校园场景下用户反馈和分发洞察，帮助AI独立开发者判断推广策略。",
-      "link": "https://x.com/AlchainHust/status/2035711825199644688",
-      "canonical_link": "https://x.com/AlchainHust/status/2035711825199644688",
-      "published_at": "2026-03-22T21:34:55.000+08:00",
-      "score": 8,
-      "tags": [
-        "launch",
-        "distribution",
-        "agent"
-      ]
-    },
-    {
-      "id": "e80c92eeb6e9e58c",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@austinit",
-      "title": "AI赋能产品经理编程，懂需求者胜过纯技术员",
-      "blurb": "AI消除编程壁垒，让产品经理如王自如能高效构建Agent架构，优于普通程序员。过去嘲笑'就差程序员'的时代结束，产品思维主导开发。预言AI助其还债，强调需求洞察核心。 AI时代产品感>纯代码技能，指导独立开发者优先练需求判断，提升从idea到产品的执行力。",
-      "link": "https://x.com/austinit/status/2035690828811915416",
-      "canonical_link": "https://x.com/austinit/status/2035690828811915416",
-      "published_at": "2026-03-22T20:11:29.000+08:00",
-      "score": 6,
-      "tags": [
-        "build",
-        "strategy",
-        "workflow"
-      ]
-    },
-    {
-      "id": "9c905b7ba8916151",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@seclink",
-      "title": "宇树科技IPO招股书关键要点：极高效率研发模式",
-      "blurb": "宇树科技2025年前三季度研发费用9020万元，费用率降至7.73%，营收爆发式增长。研发人员175人，占36.46%。IPO募资42亿，主要投智能机器人模型和本体研发。盈利能力强，净利率近35%，核心零部件自研控成本。 硬科技创业标杆：低研发占比高毛利模式罕见，揭示具身智能赛道规模化机会与成本控制关键；IPO募投预示重金加码大脑模型，关注供应链与竞品风险。",
-      "link": "https://x.com/seclink/status/2035661551839990224",
-      "canonical_link": "https://x.com/seclink/status/2035661551839990224",
-      "published_at": "2026-03-22T18:15:09.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI",
-        "创业",
-        "具身智能",
-        "硬科技"
-      ]
-    },
-    {
-      "id": "8743faef9620fd1e",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@jasonlk",
-      "title": "AI-native创始人6天达1M ARR，传统需18-24月",
-      "blurb": "AI原生创业者增长速度爆炸，一切不同。宣传SaaStr AI 2026（5/12-14 SF）。 数据化AI对SaaS增长的颠覆性影响，机会点：快速MVP验证转向AI-native设计。",
-      "link": "https://x.com/jasonlk/status/2035661513328050375",
-      "canonical_link": "https://x.com/jasonlk/status/2035661513328050375",
-      "published_at": "2026-03-22T18:15:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "SaaS",
-        "增长"
-      ]
-    },
-    {
-      "id": "37541bad74482a2e",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@penny777",
-      "title": "微信 ClawBot 一键安装教程",
-      "blurb": "微信支持OpenClaw，执行npx命令安装ClawBot插件，扫码连接即可在微信聊天中使用。解决插件不可见问题，提供精确命令。 AI工具本土化落地快，出海开发者可无缝集成微信生态，提升产品可用性。",
-      "link": "https://x.com/penny777/status/2035654447876145287",
-      "canonical_link": "https://x.com/penny777/status/2035654447876145287",
-      "published_at": "2026-03-22T17:46:55.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链",
-        "出海"
-      ]
-    },
-    {
-      "id": "5ca328529b08e597",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@fkysly",
-      "title": "sub2api封号风险高",
-      "blurb": "新号机器登录用openclaw，未放sub2api，长时间稳定正常。得出结论：sub2api问题大。 AI账号管理风险提示，避免依赖第三方API服务；执行细节分享。",
-      "link": "https://x.com/fkysly/status/2035652866455769313",
-      "canonical_link": "https://x.com/fkysly/status/2035652866455769313",
-      "published_at": "2026-03-22T17:40:38.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链",
-        "独立开发"
-      ]
-    },
-    {
-      "id": "094a71075adb03cc",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@servasyy_ai",
-      "title": "安卓微信正式支持 OpenClaw",
-      "blurb": "安卓用户微信终于支持 OpenClaw 接入，与 iOS 同步。附安装截图确认，标志全平台覆盖。 安卓用户基数巨大，此更新消除平台壁垒，加速微信 AI 虾生态爆发；实战验证降低试错成本。",
-      "link": "https://x.com/servasyy_ai/status/2035648755635237137",
-      "canonical_link": "https://x.com/servasyy_ai/status/2035648755635237137",
-      "published_at": "2026-03-22T17:24:18.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链",
-        "产品进展"
-      ]
-    },
-    {
-      "id": "bff172f7c8e6c4c9",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@fkysly",
-      "title": "AI Agent高级模式视频分享",
-      "blurb": "推荐《Advanced patterns for dynamic agents》视频，由小姐姐讲解动态Agent高级模式。 实战学习资源，提供Agent开发工作流优化；前瞻性强。",
-      "link": "https://x.com/fkysly/status/2035648062895579538",
-      "canonical_link": "https://x.com/fkysly/status/2035648062895579538",
-      "published_at": "2026-03-22T17:21:33.000+08:00",
-      "score": 7,
-      "tags": [
-        "AI",
-        "工具链"
-      ]
-    },
-    {
-      "id": "c17b133cd7ad9d3e",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@chuhaiqu",
-      "title": "独立开发者用AI agent接管TikTok运营制造爆款",
-      "blurb": "Oliver让AI Larry全面管理TikTok：生成素材、数据归因分析、迭代视觉文案，甚至故意留瑕疵拉互动。开放社交/App权限，实现自动化优化。为防限流，AI存草稿手动加音乐发布。展示了AI作为专职员工的全流程。 一人出海SaaS增长实战案例，自动化运营降低人力成本，易复制到TikTok/短视频分发，抓住AI代理增长机会。",
-      "link": "https://x.com/chuhaiqu/status/2035647437696856065",
-      "canonical_link": "https://x.com/chuhaiqu/status/2035647437696856065",
-      "published_at": "2026-03-22T17:19:04.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI",
-        "出海",
-        "增长"
-      ]
-    },
-    {
-      "id": "e54835a3185d8d46",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@d__raptis",
-      "title": "Launched tiny tool to preview photos on resume templates",
-      "blurb": "Jim Raptis 快速构建了一个简历照片预览工具，用户可在常见模板上试看照片专业度。工具集成在 aiselfie.studio，附带演示视频。体现了 solo 开发者发布微型功能的执行力。 展示如何通过小工具快速验证用户痛点、提升产品曝光，适合 AI 图像工具生态的 lead gen 策略。",
-      "link": "https://x.com/d__raptis/status/2035645973960314947",
-      "canonical_link": "https://x.com/d__raptis/status/2035645973960314947",
-      "published_at": "2026-03-22T17:13:15.000+08:00",
-      "score": 7,
-      "tags": [
-        "build",
-        "launch"
-      ]
-    },
-    {
-      "id": "2eff95d5a68ab1f9",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@luoleiorg",
-      "title": "双路直播NDI高流量软路由瓶颈复盘",
-      "blurb": "YouTube+抖音双直播，MacBook 4K桌面经NDI内网传推流PC，单路近300Mbps双路600Mbps+。软路由CPU满载断网，多交换机下流量仍经网关。 直播工作流实战痛点细节，工具链优化经验，对内容/AI视频创作者有直接借鉴，避免常见陷阱。",
-      "link": "https://x.com/luoleiorg/status/2035644258791936317",
-      "canonical_link": "https://x.com/luoleiorg/status/2035644258791936317",
-      "published_at": "2026-03-22T17:06:26.000+08:00",
-      "score": 7,
-      "tags": [
-        "工具链",
-        "直播",
-        "开发工作流"
-      ]
-    },
-    {
-      "id": "1b7056d577695874",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@turingou",
-      "title": "wanman工具借鉴autoresearch后仅加4行代码优化自主性",
-      "blurb": "让wanman分析autoresearch代码，仅添加自主性保证声明、SkillManager.autoPromote、固定时间预算和results.tsv摘要。展示AI工具快速迭代能力。 AI开发工具链实战：最小改动提升自主性和输出结构，体现高效工程实践；预示Agent工具向成熟方向演进。",
-      "link": "https://x.com/turingou/status/2035642572165812403",
-      "canonical_link": "https://x.com/turingou/status/2035642572165812403",
-      "published_at": "2026-03-22T16:59:44.000+08:00",
-      "score": 7,
-      "tags": [
-        "AI",
-        "工具链",
-        "独立开发"
-      ]
-    },
-    {
-      "id": "15e0b91f9c074a2e",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@servasyy_ai",
-      "title": "微信放开对接 OpenClaw，养虾机会增多",
-      "blurb": "微信更新 8.0.70 版本后支持 OpenClaw 插件对接，提供安装命令 npx -y @tencent-weixin/openclaw-weixin-cli@latest install 并扫码激活。当前支持有限，推荐开源工具 weixin-bot-sdk + weixin-bot 支持 OpenAI/Claude/Gemini/Ollama 等模型，兼容文本/图片/视频/语音/Claude code。 微信生态开放 AI 代理…",
-      "link": "https://x.com/servasyy_ai/status/2035641292672426223",
-      "canonical_link": "https://x.com/servasyy_ai/status/2035641292672426223",
-      "published_at": "2026-03-22T16:54:39.000+08:00",
-      "score": 9,
-      "tags": [
-        "AI",
-        "工具链",
-        "出海"
-      ]
-    },
-    {
-      "id": "300cdabfbf23b716",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@idoubicc",
-      "title": "WorkAny Bot 支持微信 ClawBot 云端部署",
-      "blurb": "无需技术门槛：浏览器一键部署 OpenClaw、添加微信渠道、扫码登录。开箱即用，支持云端模型。 解决自部署痛点，云服务丝滑体验加速商业化；机会：托管服务变现路径清晰。",
-      "link": "https://x.com/idoubicc/status/2035640070854566281",
-      "canonical_link": "https://x.com/idoubicc/status/2035640070854566281",
-      "published_at": "2026-03-22T16:49:47.000+08:00",
-      "score": 8,
-      "tags": [
-        "AI",
-        "工具链",
-        "SaaS"
-      ]
-    },
-    {
-      "id": "15838a6944e60dba",
-      "source_id": "artist",
-      "source_name": "AI Artist Signals",
-      "source_type": "artist",
-      "platform": "X",
-      "author": "@recatm",
-      "title": "Cursor Composer 2 与 Kimi 2.5 模型争议始末",
-      "blurb": "API抓包暴露Cursor Composer 2使用Kimi 2.5模型ID，引发Moonshot预训练负责人误判偷用而公开炮轰，后Kimi官方澄清系Fireworks商业合作接入。Cursor称发布博客中未披露base model为疏漏。事件迅速转为双方互推合作，流量暴增。 揭示AI工具模型接入的披露灰区、商业合作机制及危机公关，对AIGC运营商提供宝贵市场信号和风险警示。",
-      "link": "https://x.com/recatm/status/2035630392200294866",
-      "canonical_link": "https://x.com/recatm/status/2035630392200294866",
-      "published_at": "2026-03-22T16:11:20.000+08:00",
-      "score": 9,
-      "tags": [
-        "model-comparison",
-        "business",
-        "tooling"
-      ]
-    },
-    {
-      "id": "d6384661dc993159",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@lijigang",
-      "title": "内化‘问题比答案更重要’：笔记+AI固化问题为Skill",
-      "blurb": "新建Problems笔记文件，记录卡点/困惑/重复陷阱；逐一与AI讨论，形成新角度或Skill。先看见问题，再认真对待。 可执行个人知识管理闭环，提升prompt工程与Skill积累；前瞻AI时代问题导向思维。",
-      "link": "https://x.com/lijigang/status/2035630193357025668",
-      "canonical_link": "https://x.com/lijigang/status/2035630193357025668",
-      "published_at": "2026-03-22T16:10:32.000+08:00",
-      "score": 8,
-      "tags": [
-        "工作流",
-        "AI创业"
-      ]
-    },
-    {
-      "id": "757ab30efab54363",
-      "source_id": "x_ai_signals",
-      "source_name": "X AI Signals",
-      "source_type": "x_ai_signals",
-      "platform": "X",
-      "author": "@oran_ge",
-      "title": "微信为Agent开入口：旧世界王者拥抱新世界",
-      "blurb": "微信支持龙虾，即互联网巨头为Agent让路；劝内卷玩家转向新世界建设，企业存活非内卷。 行业判断信号：微信变Agent控制入口，预示分发平台规则变迁；创业转向机会。",
-      "link": "https://x.com/oran_ge/status/2035624735594488164",
-      "canonical_link": "https://x.com/oran_ge/status/2035624735594488164",
-      "published_at": "2026-03-22T15:48:51.000+08:00",
-      "score": 7,
-      "tags": [
-        "行业判断",
-        "AI出海"
-      ]
     }
-  ],
-  "total_pages": 17
+  ]
 }
