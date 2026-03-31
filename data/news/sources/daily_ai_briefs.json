@@ -4,119 +4,254 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-03-30T11:47:11.209+08:00",
-    "item_count": 4,
-    "window_start": "2026-03-27T00:00:00.000Z",
-    "window_end": "2026-03-30T03:47:11.209Z"
+    "updated_at": "2026-03-31T12:31:58.568+08:00",
+    "item_count": 9,
+    "window_start": "2026-03-30T00:00:00.000Z",
+    "window_end": "2026-03-31T04:31:58.568Z"
   },
   "items": [
     {
-      "id": "3ce1570e3894110a",
+      "id": "865fcd4101919fae",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "anthropics/claude-code",
-      "title": "Claude Code runs Git reset –hard origin/main against project repo every 10 mins",
-      "blurb": "开发者使用Claude Code时需立即检查Git配置，避免数据丢失。",
-      "link": "https://github.com/anthropics/claude-code/issues/40710",
-      "canonical_link": "https://github.com/anthropics/claude-code/issues/40710",
-      "published_at": "2026-03-30T11:47:11.209+08:00",
-      "score": 9,
+      "platform": "TLDR AI",
+      "author": "m1astra",
+      "title": "Claude Mythos (3 minute read)",
+      "blurb": "Anthropic 'Mythos' 模型泄露，比 Opus 在编码、推理和网络安全基准大幅领先。",
+      "link": "https://m1astra-mythos.pages.dev/",
+      "canonical_link": "https://m1astra-mythos.pages.dev/",
+      "published_at": "2026-03-30T20:00:00.000+08:00",
+      "score": 10,
       "tags": [
-        "Hacker News",
-        "agent"
+        "TLDR AI",
+        "model-release"
       ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Hacker News热门讨论（204分，134评论），暴露Anthropic Claude Code代理工具严重bug，每10分钟强制重置Git仓库，引发开发者安全担忧。",
-      "recommendation": "开发者使用Claude Code时需立即检查Git配置，避免数据丢失。",
-      "summary": "Anthropic的Claude Code工具被发现每10分钟执行'git reset --hard origin/main'，覆盖本地更改。问题源于代理行为bug，已在GitHub issue上报。社区热议强调AI编码代理需更强安全机制。",
+      "source_page": "https://tldr.tech/ai/2026-03-30",
+      "source_signal": "TLDR AI headline; leak of next-gen Anthropic model surpassing Opus.",
+      "recommendation": "Anthropic 'Mythos' 模型泄露，比 Opus 在编码、推理和网络安全基准大幅领先。",
+      "summary": "Mythos 是 Anthropic 更大更智能的模型系列，在软件编码、学术推理和网络安全测试中远超 Claude Opus 4.6。高计算密集，成本高昂，正在优化效率前发布。",
       "takeaways": [
-        "AI代理工具易引入意外破坏性操作",
-        "Anthropic需快速修复以维护信任"
+        "超越 Opus 的多基准领先",
+        "高效化开发中"
       ],
-      "topic": "agent"
+      "topic": "model-release"
     },
     {
-      "id": "387706ed1a409ed0",
+      "id": "98b514ad156eef04",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "buchodi.com",
-      "title": "ChatGPT won't let you type until Cloudflare reads your React state",
-      "blurb": "前端开发者可借鉴此反检测技巧优化AI应用访问。",
-      "link": "https://buchodi.com/chatgpt-wont-let-you-type-until-cloudflare-reads-your-react-state-i-decrypted-the-program-that-does-it",
-      "canonical_link": "https://buchodi.com/chatgpt-wont-let-you-type-until-cloudflare-reads-your-react-state-i-decrypted-the-program-that-does-it",
-      "published_at": "2026-03-30T11:47:11.209+08:00",
+      "platform": "TLDR AI",
+      "author": "AutoBe",
+      "title": "Function Calling Harness: From 6.75% to 100% (32 minute read)",
+      "blurb": "AutoBe 利用 harness 将 qwen3-coder 函数调用成功率从 6.75% 提升至 99.8%。",
+      "link": "https://autobe.dev/blog/function-calling-harness-qwen-meetup-korea",
+      "canonical_link": "https://autobe.dev/blog/function-calling-harness-qwen-meetup-korea",
+      "published_at": "2026-03-30T20:00:00.000+08:00",
       "score": 9,
       "tags": [
-        "Hacker News",
-        "tooling"
+        "TLDR AI",
+        "benchmark"
       ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Hacker News爆款（378分，284评论），逆向工程揭示ChatGPT反爬虫机制依赖Cloudflare读取前端React状态，引发隐私与性能讨论。",
-      "recommendation": "前端开发者可借鉴此反检测技巧优化AI应用访问。",
-      "summary": "作者解密ChatGPT加载前Cloudflare脚本扫描React状态以防机器人。过程涉及JS混淆与内存读取。揭示大模型服务常见反作弊策略，但也暴露用户隐私风险。",
+      "source_page": "https://tldr.tech/ai/2026-03-30",
+      "source_signal": "TLDR deep dive; dramatic benchmark improvement in agent function calling.",
+      "recommendation": "AutoBe 利用 harness 将 qwen3-coder 函数调用成功率从 6.75% 提升至 99.8%。",
+      "summary": "AutoBe 开源代理通过类型 schema、编译验证和结构反馈，将函数调用成功率从 6.75% 提升超 99.8%。针对后端生成任务，剖析工程细节。该方法通用，提升代理可靠性。",
       "takeaways": [
-        "Cloudflare用于AI服务的精细前端指纹识别",
-        "类似机制可能影响用户体验"
+        "成功率提升至近 100%",
+        "约束-验证-反馈循环"
       ],
-      "topic": "tooling"
+      "topic": "benchmark"
     },
     {
-      "id": "957f0c1bbae0845d",
+      "id": "cc5979474f79b472",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Testing Catalog",
+      "title": "Meta tests Avocado 9B, Avocado Mango Agent, and more (2 minute read)",
+      "blurb": "Meta 测试 Avocado 9B 和 Mango Agent 等变体，发布推迟至五月。",
+      "link": "https://testingcatalog.com/exclusive-meta-tests-avocado-9b-avocado-mango-agent-and-more",
+      "canonical_link": "https://testingcatalog.com/exclusive-meta-tests-avocado-9b-avocado-mango-agent-and-more",
+      "published_at": "2026-03-30T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-30",
+      "source_signal": "TLDR AI headline; Meta's ongoing model experiments and delays.",
+      "recommendation": "Meta 测试 Avocado 9B 和 Mango Agent 等变体，发布推迟至五月。",
+      "summary": "Meta Avocado 模型测试中，9B 版及代理变体落后竞争对手，能解复杂数学但非首创。考虑许可 Google Gemini。内部路由部分请求至 Gemini。",
+      "takeaways": [
+        "多变体并行实验",
+        "暂落后，考虑外部技术"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "2ff2a34ba4867793",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "gjlondon.com",
-      "title": "Coding Agents Could Make Free Software Matter Again",
-      "blurb": "开源爱好者关注AI代理如何加速FOSS贡献。",
-      "link": "https://gjlondon.com/blog/ai-agents-could-make-free-software-matter-again",
-      "canonical_link": "https://gjlondon.com/blog/ai-agents-could-make-free-software-matter-again",
-      "published_at": "2026-03-30T11:47:11.209+08:00",
+      "author": "Ollama",
+      "title": "Ollama is now powered by MLX on Apple Silicon in preview",
+      "blurb": "Ollama 引入 MLX 支持，提升 Apple Silicon 上本地模型运行效率，预览版已上线。",
+      "link": "https://ollama.com/blog/mlx",
+      "canonical_link": "https://ollama.com/blog/mlx",
+      "published_at": "2026-03-31T11:40:00.000+08:00",
       "score": 8,
       "tags": [
         "Hacker News",
-        "agent"
+        "infra"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Hacker News讨论（126分，118评论），探讨AI编码代理如何重振开源软件生态，提供具体工作流洞见。",
-      "recommendation": "开源爱好者关注AI代理如何加速FOSS贡献。",
-      "summary": "文章论证编码代理能自动化开源维护，让免费软件重获活力。强调代理在代码审查、bug修复上的潜力。结合当前工具趋势预测未来影响。",
+      "source_signal": "Top HN story with early traction (14 points in 52 min); key infra update for local LLM inference on Apple hardware.",
+      "recommendation": "Ollama 引入 MLX 支持，提升 Apple Silicon 上本地模型运行效率，预览版已上线。",
+      "summary": "Ollama 现支持 MLX 框架在 Apple Silicon 上运行，提供更快的本地推理。预览版优化了性能，适用于开发者本地部署大模型。该更新强化了 Ollama 在边缘计算领域的竞争力。",
       "takeaways": [
-        "代理降低开源参与门槛",
-        "可能重塑软件开发社区"
+        "MLX 加速 Apple Silicon 推理",
+        "预览版立即可用，提升本地 AI 体验"
       ],
-      "topic": "agent"
+      "topic": "infra"
     },
     {
-      "id": "d499131b2b3df7af",
+      "id": "40285bbf5d8cbe79",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "TechCrunch",
+      "title": "Anthropic's Claude popularity with paying consumers is skyrocketing (4 minute read)",
+      "blurb": "Claude 付费订阅今年翻倍，新用户主要低阶层，Anthropic 增长迅猛。",
+      "link": "https://techcrunch.com/2026/03/28/anthropics-claude-popularity-with-paying-consumers-is-skyrocketing",
+      "canonical_link": "https://techcrunch.com/2026/03/28/anthropics-claude-popularity-with-paying-consumers-is-skyrocketing",
+      "published_at": "2026-03-30T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "business"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-30",
+      "source_signal": "TLDR AI headline; strong business metrics for Claude subscriptions.",
+      "recommendation": "Claude 付费订阅今年翻倍，新用户主要低阶层，Anthropic 增长迅猛。",
+      "summary": "Anthropic Claude 付费用户激增，今年订阅量翻倍，主要为入门级。OpenAI 仍领跑但 Anthropic 追赶迅速。凸显消费者 AI 平台竞争加剧。",
+      "takeaways": [
+        "付费订阅翻倍",
+        "低阶用户驱动增长"
+      ],
+      "topic": "business"
+    },
+    {
+      "id": "f2360bb1b263ebd6",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "dreddnafious",
-      "title": "There is No Spoon. A software engineers primer for demystified ML",
-      "blurb": "软件工程师快速上手ML实用知识。",
-      "link": "https://github.com/dreddnafious/thereisnospoon",
-      "canonical_link": "https://github.com/dreddnafious/thereisnospoon",
-      "published_at": "2026-03-30T11:47:11.209+08:00",
-      "score": 7,
+      "author": "drona23",
+      "title": "Universal Claude.md – cut Claude output tokens by 63%",
+      "blurb": "此工具通过优化提示，将 Claude 输出 token 减少 63%，显著降低成本。",
+      "link": "https://github.com/drona23/claude-token-efficient",
+      "canonical_link": "https://github.com/drona23/claude-token-efficient",
+      "published_at": "2026-03-31T09:32:00.000+08:00",
+      "score": 8,
       "tags": [
         "Hacker News",
         "tooling"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Hacker News分享（71分，16评论），GitHub仓库提供软件工程师ML入门指南，去神秘化机器学习基础。",
-      "recommendation": "软件工程师快速上手ML实用知识。",
-      "summary": "仓库作为ML入门手册，针对工程师解释核心概念如模型训练与部署。避免数学门槛，提供代码示例与工作流。适合从零构建ML管道。",
+      "source_signal": "High HN ranking (181 points, 71 comments); concrete efficiency benchmark for Claude usage.",
+      "recommendation": "此工具通过优化提示，将 Claude 输出 token 减少 63%，显著降低成本。",
+      "summary": "Universal Claude.md 是一个 GitHub 项目，利用结构化提示减少 Claude 模型输出 token 达 63%。适用于各种任务，提高 token 效率。该工具开源，便于集成到工作流中。",
       "takeaways": [
-        "简化ML学习曲线",
-        "强调工程实践而非理论"
+        "输出 token 减少 63%",
+        "开源工具即插即用"
       ],
       "topic": "tooling"
+    },
+    {
+      "id": "cc31acf65dc79379",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "1st1",
+      "title": "lat.md (GitHub Repo)",
+      "blurb": "lat.md 是代理同步的 Markdown 规范，帮助理解代码库大图和业务逻辑。",
+      "link": "https://github.com/1st1/lat.md",
+      "canonical_link": "https://github.com/1st1/lat.md",
+      "published_at": "2026-03-30T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "TLDR AI",
+        "tooling"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-30",
+      "source_signal": "TLDR engineering; agent tooling for codebase understanding.",
+      "recommendation": "lat.md 是代理同步的 Markdown 规范，帮助理解代码库大图和业务逻辑。",
+      "summary": "lat.md 规范用 Markdown 和 Wiki 链接构建代码库知识图谱，确保关键测试覆盖角案例。加速代理编码，避免反复搜索。",
+      "takeaways": [
+        "代码库知识图谱",
+        "提升代理开发速度"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "22602cbb4dfd9f3d",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "concensure",
+      "title": "Semantic – Reducing LLM \"Agent Loops\" by 27.78% via AST Logic Graphs",
+      "blurb": "Semantic 使用 AST 逻辑图将 LLM 代理循环减少 27.78%，优化代理性能。",
+      "link": "https://github.com/concensure/Semantic",
+      "canonical_link": "https://github.com/concensure/Semantic",
+      "published_at": "2026-03-31T11:48:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "agent"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Fresh HN post (13 points in 43 min); quantifiable agent efficiency gain.",
+      "recommendation": "Semantic 使用 AST 逻辑图将 LLM 代理循环减少 27.78%，优化代理性能。",
+      "summary": "Semantic 工具通过抽象语法树（AST）逻辑图，减少 LLM 代理的迭代循环 27.78%。提升代理任务效率，减少计算开销。GitHub 开源，针对复杂代理工作流。",
+      "takeaways": [
+        "代理循环减少 27.78%",
+        "基于 AST 的逻辑优化"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "fe19907f3999059e",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Claude Code",
+      "title": "Schedule tasks on the web (5 minute read)",
+      "blurb": "Claude Code Web 支持定时任务，在 Anthropic 基础设施上运行。",
+      "link": "https://code.claude.com/docs/en/web-scheduled-tasks",
+      "canonical_link": "https://code.claude.com/docs/en/web-scheduled-tasks",
+      "published_at": "2026-03-30T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "TLDR AI",
+        "product"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-03-30",
+      "source_signal": "TLDR engineering; new Claude Code feature for persistent tasks.",
+      "recommendation": "Claude Code Web 支持定时任务，在 Anthropic 基础设施上运行。",
+      "summary": "Claude Code Web 用户可调度任务，如每日审阅 PR、夜间 CI 分析，即使关机也运行。全用户可用，提升开发工作流自动化。",
+      "takeaways": [
+        "持久化任务调度",
+        "示例：PR 审阅、依赖审计"
+      ],
+      "topic": "product"
     }
   ]
 }
