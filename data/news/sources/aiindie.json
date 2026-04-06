@@ -4,222 +4,257 @@
     "name": "AI Indie Hacker Signals",
     "type": "aiindie",
     "refresh_hours": 24,
-    "updated_at": "2026-04-05T15:52:09.589+08:00",
-    "item_count": 11,
-    "window_start": "2026-04-04T03:52:09.589Z",
-    "window_end": "2026-04-05T07:52:09.589Z"
+    "updated_at": "2026-04-06T16:20:04.245+08:00",
+    "item_count": 13,
+    "window_start": "2026-04-05T04:20:04.245Z",
+    "window_end": "2026-04-06T08:20:04.245Z"
   },
   "items": [
     {
-      "id": "dbff22ea21de55b8",
+      "id": "3b79ea5fae97d428",
       "source_id": "aiindie",
       "source_name": "AI Indie Hacker Signals",
       "source_type": "aiindie",
       "platform": "X",
       "author": "@AlchainHust",
-      "title": "Launched Nuwa-skill: 6 parallel agents extract runnable cognitive skills from great thinkers",
-      "blurb": "花叔发布了开源工具Nuwa-skill，输入一位伟大思想家的姓名，六个AI代理并行从书籍、播客、批评、决策、社交媒体等来源提取其心理模型，输出可运行的认知技能。不同于角色扮演或提炼离职同事，这是针对公开思考一生的思想家如Naval、Munger、Feynman的高纯度认知资源提取。一键安装，开源免费。 展示了多代理系统构建知识蒸馏工具的具体执行细节，从viral工具colleague-skill中学习并pivot，提供AI indie…",
-      "link": "https://x.com/AlchainHust/status/2040698564397912524",
-      "canonical_link": "https://x.com/AlchainHust/status/2040698564397912524",
-      "published_at": "2026-04-05T15:50:26.000+08:00",
-      "score": 9,
+      "title": "蒸馏价值$10000/h的X运营导师，使用女娲.skill开源工具",
+      "blurb": "分享用女娲.skill蒸馏高价值X运营导师的实战，强调自定义主题导师潜力。项目支持输入名字自动启动6 agent采集书/播客/推文等材料，三重验证心智模型。提供GitHub链接鼓励fork改用。 X作为AI indie核心分发渠道，此蒸馏案例提供运营教练级洞见，降低学习曲线。开源工具证明个性化AI coach构建杠杆，适用于增长/内容策略判断。",
+      "link": "https://x.com/AlchainHust/status/2041067964414259305",
+      "canonical_link": "https://x.com/AlchainHust/status/2041067964414259305",
+      "published_at": "2026-04-06T16:18:18.000+08:00",
+      "score": 8,
       "tags": [
-        "build",
-        "launch",
-        "agent",
+        "distribution",
         "tooling",
+        "agent",
         "workflow"
       ]
     },
     {
-      "id": "4e014455a2e62118",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@SimonHoiberg",
-      "title": "日常交互选Opus 4.6，复杂任务用GPT-5.4",
-      "blurb": "Simon从GPT-5.4切换回Opus 4.6用于日常沟通，因Opus更愉快。GPT-5.4在编码和多步工具调用更强，但回复略烦人。他决定支付高成本使用Opus，等待降价。 实际模型对比指导AI工作流优化，平衡性能、成本与用户体验。",
-      "link": "https://x.com/SimonHoiberg/status/2040679792752689634",
-      "canonical_link": "https://x.com/SimonHoiberg/status/2040679792752689634",
-      "published_at": "2026-04-05T14:35:51.000+08:00",
-      "score": 7,
-      "tags": [
-        "workflow",
-        "tooling"
-      ]
-    },
-    {
-      "id": "dedbc3497e42638e",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@yihui_indie",
-      "title": "Seedance 2.0 视频生成：1分钟180元，个人贵团队便宜",
-      "blurb": "使用 Seedance 2.0 生成视频，因废片率高平均1分钟成本180元人民币。对个人开发者太贵，但专业影视团队视之为便宜工具。类比外行不解程序员SaaS订阅价值，揭示定价差距。 剖析 AI 工具成本与价值感知，帮助 indie hacker 评估工作流经济性，并启发产品定价针对不同用户规模。",
-      "link": "https://x.com/yihui_indie/status/2040644339282620694",
-      "canonical_link": "https://x.com/yihui_indie/status/2040644339282620694",
-      "published_at": "2026-04-05T12:14:58.000+08:00",
-      "score": 8,
-      "tags": [
-        "pricing",
-        "monetization",
-        "workflow",
-        "tooling"
-      ]
-    },
-    {
-      "id": "40b37b03c64931b1",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@Shpigford",
-      "title": "GLM 5.1：OpenClaw 中 Opus 的替代品",
-      "blurb": "Josh Pigford 分享 GLM 5.1 作为 Opus 替代，在 OpenClaw 代理中表现接近 Opus/Sonnet，速度快、工具调用强。经过多模型测试，包括记忆、CLI 和外部工具任务。需 GLM coding plan（$30/月），提供集成文档，帮助切换节省成本。 提供 AI 代理模型选择的实操评估方法和结果，展示多模型工作流杠杆，帮助 indie hacker 优化工具栈、降低依赖昂贵模型。",
-      "link": "https://x.com/Shpigford/status/2040574186523947186",
-      "canonical_link": "https://x.com/Shpigford/status/2040574186523947186",
-      "published_at": "2026-04-05T07:36:12.000+08:00",
-      "score": 9,
-      "tags": [
-        "workflow",
-        "agent",
-        "tooling",
-        "automation"
-      ]
-    },
-    {
-      "id": "2eda000a8c732ab3",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@arvidkahl",
-      "title": "支持Claude速率限制：对开发者代理滥用的购物车测试",
-      "blurb": "Arvid赞同Claude优先真实客户体验，限制如每天循环调用日历10万次的滥用行为。称'为200美元做任何事'是开发者终极购物车测试。如果烧token于表演性代理无意义，则促成此变化。该观点源于Ian Landsman的热议帖。 帮助AI独立黑客辨别高价值代理构建，避免token浪费，提升对基础设施成本和真实需求的判断。",
-      "link": "https://x.com/arvidkahl/status/2040549497848131772",
-      "canonical_link": "https://x.com/arvidkahl/status/2040549497848131772",
-      "published_at": "2026-04-05T05:58:06.000+08:00",
-      "score": 9,
-      "tags": [
-        "agent",
-        "workflow",
-        "business",
-        "strategy"
-      ]
-    },
-    {
-      "id": "1d5ea39483d57b25",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@arvidkahl",
-      "title": "详细文档助力大客户代理采用",
-      "blurb": "Arvid讨论保密与可用性平衡，认为其产品文档详尽，有助于大客户驱动的代理集成。因为产品非纯服务SaaS，数据护城河强，文档降低代理使用门槛。 揭示文档在企业级代理推广中的杠杆作用，提供可复制的产品决策框架。",
-      "link": "https://x.com/arvidkahl/status/2040484913707717051",
-      "canonical_link": "https://x.com/arvidkahl/status/2040484913707717051",
-      "published_at": "2026-04-05T01:41:28.000+08:00",
-      "score": 8,
-      "tags": [
-        "agent",
-        "workflow",
-        "build"
-      ]
-    },
-    {
-      "id": "03035f35fc4c930d",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@goocarlos",
-      "title": "pmframe.works 添加收藏工具能力，便于首页快速索引",
-      "blurb": "在产品上线数小时后快速迭代，添加收藏夹功能到首页。用户反馈驱动，提升框架索引便利性。展示快速产品优化闭环。 演示indie hacker的快速反馈-迭代循环，适用于AI工具开发，帮助builder掌握用户驱动的feature rollout。",
-      "link": "https://x.com/goocarlos/status/2040477604978008408",
-      "canonical_link": "https://x.com/goocarlos/status/2040477604978008408",
-      "published_at": "2026-04-05T01:12:25.000+08:00",
-      "score": 7,
-      "tags": [
-        "build",
-        "workflow"
-      ]
-    },
-    {
-      "id": "dc230039db2a52e1",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@op7418",
-      "title": "Karpathy针对AI知识库方案给出更详细版本 https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f",
-      "blurb": "分享Karpathy本地AI知识库详细实现，使用Obsidian+LLM编译RAW资料成MD Wiki。功能包括摘要、索引、反向链接、健康检查，避免知识污染。强调LLM驱动的知识闭环。 提供高杠杆AI工作流模板，可重复构建个人知识库，提升AI agent的上下文可靠性和查询精度，对indie hacker的ops和prompt优化至关重要。",
-      "link": "https://x.com/op7418/status/2040471456820408449",
-      "canonical_link": "https://x.com/op7418/status/2040471456820408449",
-      "published_at": "2026-04-05T00:48:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "workflow",
-        "agent",
-        "automation",
-        "tooling"
-      ]
-    },
-    {
-      "id": "527821a5e0f37d14",
+      "id": "a82d70b1760273e7",
       "source_id": "aiindie",
       "source_name": "AI Indie Hacker Signals",
       "source_type": "aiindie",
       "platform": "X",
       "author": "@marclou",
-      "title": "✅ ACQUIRED on @trust_mrr AI interior design startup sold for $200. 1 day 1 acquisition",
-      "blurb": "Marc Lou 在 TrustMRR 平台上完成首笔收购，一个 AI 室内设计初创项目以 200 美元售出。实现了 '1 天 1 笔收购' 的目标。该平台专注于微型 SaaS 和 AI 项目的快速交易。 展示了 indie hacker 通过构建收购市场快速货币化 AI 小项目的实证路径，提供低门槛退出策略和市场验证，帮助理解微型产品翻转的杠杆。",
-      "link": "https://x.com/marclou/status/2040447571714592841",
-      "canonical_link": "https://x.com/marclou/status/2040447571714592841",
-      "published_at": "2026-04-04T23:13:05.000+08:00",
-      "score": 9,
+      "title": "Responding to user confusion on TrustMRR per-app $29 listing fee",
+      "blurb": "用户反馈TrustMRR的29美元费用需按每个应用单独支付，感觉像欺骗性收费。@marclou解释付费墙已在startup页面显示，已有1000多家初创上架，未见他人困惑。愿意优化文案，并鼓励用户成功出售应用。 公开处理定价异议展示了SaaS市场平台的收费透明实践，避免误解提升信任，对AI indie hacker构建付费产品有借鉴价值。",
+      "link": "https://x.com/marclou/status/2041057321271414985",
+      "canonical_link": "https://x.com/marclou/status/2041057321271414985",
+      "published_at": "2026-04-06T15:36:01.000+08:00",
+      "score": 8,
       "tags": [
+        "pricing",
         "monetization",
         "business"
       ]
     },
     {
-      "id": "537a0210f2fe928d",
+      "id": "b67378d3d6cf8334",
       "source_id": "aiindie",
       "source_name": "AI Indie Hacker Signals",
       "source_type": "aiindie",
       "platform": "X",
-      "author": "@arvidkahl",
-      "title": "AI时代公开构建风险上升，创始人减少透明",
-      "blurb": "Arvid分享播客反馈：许多创始人因AI而大幅减少公开构建透明度。AI改变idea与执行复杂度平衡，传统透明 playbook如今易被竞争者复制。 提供市场反馈洞察，帮助独立黑客调整公开策略，保护核心竞争力。",
-      "link": "https://x.com/arvidkahl/status/2040415009109414129",
-      "canonical_link": "https://x.com/arvidkahl/status/2040415009109414129",
-      "published_at": "2026-04-04T21:03:41.000+08:00",
-      "score": 8,
+      "author": "@CoooolXyh",
+      "title": "vibe coding了一个vibe coding产品",
+      "blurb": "作者首次通过vibe coding（随意编码）方式，快速构建了一个vibe coding相关产品。体现了轻松原型验证的开发风格。 展示AI开发者在灵感驱动下的快速shipping实践，鼓励独立黑客用低压方式测试idea。",
+      "link": "https://x.com/CoooolXyh/status/2041025347546951965",
+      "canonical_link": "https://x.com/CoooolXyh/status/2041025347546951965",
+      "published_at": "2026-04-06T13:28:57.000+08:00",
+      "score": 6,
       "tags": [
-        "strategy",
-        "business",
-        "postmortem"
+        "build",
+        "workflow"
       ]
     },
     {
-      "id": "b9ffcc942da602b2",
+      "id": "4fdcbd91fb06d441",
       "source_id": "aiindie",
       "source_name": "AI Indie Hacker Signals",
       "source_type": "aiindie",
       "platform": "X",
-      "author": "@goocarlos",
-      "title": "顺手做了 pmframe.works 产品思维框架索引站，每个框架可视化+案例+Skill下载，免费开放",
-      "blurb": "作者推出 pmframe.works，一个产品思维框架的快速索引站，覆盖设计思维、JTBD、Kano模型等。每个框架提供可视化结构图、真实案例拆解和可下载Skill。免费开放，帮助产品人快速调用框架少走弯路。 为AI indie hacker提供结构化产品决策工具，Skill可直接集成AI工作流，提升prompt工程和方法论应用效率。作为Dify CEO的亲制工具，展示高效side project shipping实践。",
-      "link": "https://x.com/goocarlos/status/2040335470127992947",
-      "canonical_link": "https://x.com/goocarlos/status/2040335470127992947",
-      "published_at": "2026-04-04T15:47:38.000+08:00",
+      "author": "@xiongchun007",
+      "title": "MySQL information_schema表名大小写不稳定踩坑",
+      "blurb": "分享踩坑经验：MySQL的information_schema返回表名大小写是上下文相关的，不稳定。不同查询方式结果不一致，提醒开发者不可盲目信任。 数据工具和AI工程中常见数据库坑，提供具体防范知识，节省调试时间，提升工具链可靠性。",
+      "link": "https://x.com/xiongchun007/status/2041019639367606394",
+      "canonical_link": "https://x.com/xiongchun007/status/2041019639367606394",
+      "published_at": "2026-04-06T13:06:16.000+08:00",
+      "score": 7,
+      "tags": [
+        "tooling",
+        "workflow"
+      ]
+    },
+    {
+      "id": "fa2eff68b7699202",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@ShouChen_",
+      "title": "从openclaw切换到picoclaw，更轻量响应更快",
+      "blurb": "CPO分享从openclaw换到picoclaw的体验，精简无用上下文后响应速度肉眼可见提升。更轻量设计适合日常开发迭代。 AI工具栈优化细节直接影响开发效率，picoclaw作为claw系轻量替代提供低成本性能升级参考。帮助indie hacker在资源有限下维持高产出。",
+      "link": "https://x.com/ShouChen_/status/2041008652111257605",
+      "canonical_link": "https://x.com/ShouChen_/status/2041008652111257605",
+      "published_at": "2026-04-06T12:22:37.000+08:00",
+      "score": 7,
+      "tags": [
+        "workflow",
+        "tooling"
+      ]
+    },
+    {
+      "id": "1243e52070440f3c",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@op7418",
+      "title": "用 Skill + 飞书 + CodePilot 自动化内容网站更新",
+      "blurb": "op7418 分享了 guizang.ai 网站的内容更新 workflow：直接通过飞书连接 CodePilot 的 Skill 更新数据和新闻。过去需要后台管理，现在简化成一个 Skill 操作。极大提升了内容生产的效率，避免域名闲置浪费。 展示 AI 自动化在个人内容站点运维中的杠杆，帮助 indie hacker 快速构建内容分发引擎，节省 ops 时间专注产品迭代。",
+      "link": "https://x.com/op7418/status/2040981766991949870",
+      "canonical_link": "https://x.com/op7418/status/2040981766991949870",
+      "published_at": "2026-04-06T10:35:47.000+08:00",
+      "score": 8,
+      "tags": [
+        "workflow",
+        "automation",
+        "tooling",
+        "content"
+      ]
+    },
+    {
+      "id": "e188b327ae58e7b2",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@op7418",
+      "title": "Codepilot 脱离 Claude Code 并集成多服务商 Codeplan",
+      "blurb": "因 Anthropic 限制系统提示修改，Codepilot 计划脱离 Claude Code。新版添加服务商 Codeplan 购买链接，用户一键跳转。快速响应平台政策变化，确保工具可用性。 AI 工具开发者需警惕 LLM 供应商控制欲增强，此为多供应商策略实战案例，提升 indie hacker 产品韧性。",
+      "link": "https://x.com/op7418/status/2040977451254493399",
+      "canonical_link": "https://x.com/op7418/status/2040977451254493399",
+      "published_at": "2026-04-06T10:18:38.000+08:00",
+      "score": 7,
+      "tags": [
+        "strategy",
+        "business",
+        "tooling"
+      ]
+    },
+    {
+      "id": "ae322c81f58bb04c",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@Shpigford",
+      "title": "测试GPT 5.4在Cursor中的新更新和thinking level设置",
+      "blurb": "Shpigford计划测试GPT 5.4针对不愉快交互的更新，作为日常编码驱动模型。询问/thinking level官方设置建议，显示对LLM工作流的持续迭代。 展示独立开发者对前沿LLM工具的实验心态，提供参数调优实战洞察。帮助优化AI辅助编码体验。",
+      "link": "https://x.com/Shpigford/status/2040962073513906620",
+      "canonical_link": "https://x.com/Shpigford/status/2040962073513906620",
+      "published_at": "2026-04-06T09:17:32.000+08:00",
+      "score": 7,
+      "tags": [
+        "workflow",
+        "tooling"
+      ]
+    },
+    {
+      "id": "b45018bcdc647406",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@xiongchun007",
+      "title": "#DataCollie 日拱一卒：简化业务逻辑牺牲交互友好性",
+      "blurb": "在构建DataCollie数据工具时，作者决定为了降低业务控制逻辑复杂度而牺牲部分交互友好性。这一产品决策让他豁然开朗，避免钻进死胡同。体现了开发中优先简洁性的实用判断。 对AI独立黑客而言，这展示了在追求完美用户体验前，确保核心逻辑简洁的重要性，便于快速迭代和维护，提高整体开发杠杆。",
+      "link": "https://x.com/xiongchun007/status/2040857314073403801",
+      "canonical_link": "https://x.com/xiongchun007/status/2040857314073403801",
+      "published_at": "2026-04-06T02:21:15.000+08:00",
+      "score": 8,
+      "tags": [
+        "build",
+        "strategy",
+        "workflow"
+      ]
+    },
+    {
+      "id": "252ea700e8a0de18",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@xiongchun007",
+      "title": "AI agents需持久内存，无状态仅玩具",
+      "blurb": "作者强调AI agents需要持久内存而非仅上下文窗口，无状态agents只是玩具，有状态的才是成熟产品。这一观点直击agent开发痛点。 为AI独立开发者提供agent产品化清晰判断，避免低阶玩具构建，转向高价值stateful设计。",
+      "link": "https://x.com/xiongchun007/status/2040855277864690126",
+      "canonical_link": "https://x.com/xiongchun007/status/2040855277864690126",
+      "published_at": "2026-04-06T02:13:10.000+08:00",
+      "score": 7,
+      "tags": [
+        "agent",
+        "strategy",
+        "workflow"
+      ]
+    },
+    {
+      "id": "114c16708a20ddef",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@appfigures",
+      "title": "AI会议笔记app Summary AI 2月收入110万美元，6个月32万下载",
+      "blurb": "Summary AI是一款AI会议笔记应用，6个月前从巴塞罗那推出，2月收入达110万美元，下载量32万。通过在52国8000+关键词投放Apple Ads，以及28位TikTok创作者带来1200万+播放实现爆发增长。两位游戏行业老兵抓住移动笔记机会成功变现。Appfigures强调不要被'无聊应用'吓退。 证明AI实用工具在移动端的巨大变现潜力，提供广告投放和TikTok分发等可复制增长路径。对AI独立开发者展示市场验证和非性感品…",
+      "link": "https://x.com/appfigures/status/2040853072319033808",
+      "canonical_link": "https://x.com/appfigures/status/2040853072319033808",
+      "published_at": "2026-04-06T02:04:24.000+08:00",
+      "score": 9,
+      "tags": [
+        "growth",
+        "distribution",
+        "monetization"
+      ]
+    },
+    {
+      "id": "da53bd801a8c41bd",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@AlchainHust",
+      "title": "女娲.skill 10小时300+ star，已迭代5次，花几千万token，支持选人引导+7个现成案例",
+      "blurb": "开源女娲.skill项目用于自动蒸馏名人能力为AI skill，发布不到10小时获300+ star。作者迭代5次耗费几千万token，新增需求导向推荐蒸馏对象功能，并提供7个内置案例如乔布斯、马斯克、芒格、费曼等。证明了6 agent协作采集验证心智模型的可行性。 展示AI agent多线程调研提炼高价值知识的实战落地，开源快速获认可证明产品市场fit。内置名人skill直接提升决策、写作能力，节省indie hacker从零构建时…",
+      "link": "https://x.com/AlchainHust/status/2040803094640972248",
+      "canonical_link": "https://x.com/AlchainHust/status/2040803094640972248",
+      "published_at": "2026-04-05T22:45:48.000+08:00",
       "score": 9,
       "tags": [
         "build",
+        "tooling",
+        "agent",
+        "automation",
+        "workflow"
+      ]
+    },
+    {
+      "id": "3b60c6ccd754148a",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@patio11",
+      "title": "LLM税务计算建议帮助用户节省4850美元罚款",
+      "blurb": "Patio11的帖子分享LLM在税务欠缴罚款计算方法选择上的应用，用户反馈直接节省4850美元。尽管不推荐复杂税务全靠LLM，但特定场景价值显著。Patio11对此表示'爱这份工作'。 资深创业者分享AI在财务运营中的真实杠杆证明，提升独立开发者对AI工具判断力。强调提示工程在非核心业务的高ROI。",
+      "link": "https://x.com/patio11/status/2040652039470887363",
+      "canonical_link": "https://x.com/patio11/status/2040652039470887363",
+      "published_at": "2026-04-05T12:45:34.000+08:00",
+      "score": 8,
+      "tags": [
         "workflow",
-        "tooling"
+        "automation",
+        "business"
       ]
     }
   ]
