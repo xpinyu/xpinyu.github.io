@@ -4,200 +4,254 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-04-10T20:56:17.366+08:00",
-    "item_count": 7,
-    "window_start": "2026-04-09T00:00:00.000Z",
-    "window_end": "2026-04-10T12:56:17.366Z"
+    "updated_at": "2026-04-11T21:51:12.310+08:00",
+    "item_count": 9,
+    "window_start": "2026-04-10T00:00:00.000Z",
+    "window_end": "2026-04-11T13:51:12.310Z"
   },
   "items": [
     {
-      "id": "55361f078038ba60",
+      "id": "443ae3d72882bd95",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Meta",
-      "title": "Meta introduced Muse Spark",
-      "blurb": "Meta 的 Muse Spark 是多模态模型新进展，支持视觉思维链和代理编排，值得关注其在工具集成上的创新。",
-      "link": "https://ai.meta.com/blog/introducing-muse-spark-msl",
-      "canonical_link": "https://ai.meta.com/blog/introducing-muse-spark-msl",
-      "published_at": "2026-04-09T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "TLDR AI",
-        "model-release"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-04-09",
-      "source_signal": "TLDR AI 头条推出，Meta 推出多模态推理模型，支持工具使用和多代理协调，推动个人超级智能发展。",
-      "recommendation": "Meta 的 Muse Spark 是多模态模型新进展，支持视觉思维链和代理编排，值得关注其在工具集成上的创新。",
-      "summary": "Meta 推出 Muse Spark，多模态推理模型具备工具使用、视觉链式思考和多代理协调能力。作为向个人超级智能迈进的一部分，该模型提升了复杂任务处理。适用于开发者和研究者构建高级 AI 系统。",
-      "takeaways": [
-        "支持工具调用和多代理协作，提升复杂推理能力",
-        "标志 Meta 在多模态 AI 领域的战略推进"
-      ],
-      "topic": "model-release"
-    },
-    {
-      "id": "f7ebe90f3c709185",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Anthropic",
-      "title": "Scaling Managed Agents: Decoupling the brain from the hands",
-      "blurb": "Anthropic 的托管代理框架分离模型大脑与执行手，灵活支持未来组件，适合构建可靠代理系统。",
-      "link": "https://anthropic.com/engineering/managed-agents",
-      "canonical_link": "https://anthropic.com/engineering/managed-agents",
-      "published_at": "2026-04-09T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "agent"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-04-09",
-      "source_signal": "TLDR AI 工程研究栏目，安thropic 分享托管代理系统设计，适应模型演进的关键基础设施。",
-      "recommendation": "Anthropic 的托管代理框架分离模型大脑与执行手，灵活支持未来组件，适合构建可靠代理系统。",
-      "summary": "Anthropic 构建 Managed Agents 系统，将 Claude 与外部组件解耦，支持未来 harnesses 和沙箱。设计为'尚未想到的程序'，频繁质疑模型局限。提升代理在生产环境的安全性和适应性。",
-      "takeaways": [
-        "解耦设计适应模型改进",
-        "支持沙箱和权限控制，确保生产安全"
-      ],
-      "topic": "agent"
-    },
-    {
-      "id": "36f3751dc1cdadc3",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "PyTorch",
-      "title": "Monarch: an API to your supercomputer",
-      "blurb": "Monarch 通过 Python API 将集群转化为可控超级计算机，优化代理训练基础设施。",
-      "link": "https://pytorch.org/blog/monarch-an-api-to-your-supercomputer",
-      "canonical_link": "https://pytorch.org/blog/monarch-an-api-to-your-supercomputer",
-      "published_at": "2026-04-09T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "infra"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-04-09",
-      "source_signal": "TLDR AI 工程栏目，PyTorch 分布式框架简化超大规模训练，针对代理优化。",
-      "recommendation": "Monarch 通过 Python API 将集群转化为可控超级计算机，优化代理训练基础设施。",
-      "summary": "Monarch 是 PyTorch 分布式编程框架，通过简单 API 管理大型集群训练。将开发机转为超级计算机，提供一致抽象和遥测。特别优化代理使用场景。",
-      "takeaways": [
-        "简化分布式训练部署",
-        "暴露遥测，支持代理级扩展"
-      ],
-      "topic": "infra"
-    },
-    {
-      "id": "39f77c9da06b1aa1",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Claw-Eval",
-      "title": "Claw-Eval Benchmark for AI Agents",
-      "blurb": "Claw-Eval 是代理评估新基准，覆盖真实世界任务，结构化评分标准高价值。",
-      "link": "https://github.com/claw-eval/claw-eval",
-      "canonical_link": "https://github.com/claw-eval/claw-eval",
-      "published_at": "2026-04-09T20:00:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "TLDR AI",
-        "benchmark"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-04-09",
-      "source_signal": "TLDR AI 快速链接，GitHub 仓库提供 139 真实任务的人类验证基准，使用 Docker 沙箱评估代理。",
-      "recommendation": "Claw-Eval 是代理评估新基准，覆盖真实世界任务，结构化评分标准高价值。",
-      "summary": "Claw-Eval 基准评估 LLM 代理在 139 真实任务上的表现，使用 Docker 沙箱、多服务和结构化评分。人类验证确保可靠性。适用于代理开发和比较。",
-      "takeaways": [
-        "139 任务真实场景覆盖",
-        "Docker 沙箱确保公平评估"
-      ],
-      "topic": "benchmark"
-    },
-    {
-      "id": "84910dda8df4d871",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Cursor",
-      "title": "Bugbot now self-improves with learned rules",
-      "blurb": "Cursor Bugbot 通过学习规则自优化，适用于代码审查工具链。",
-      "link": "https://cursor.com/blog/bugbot-learning",
-      "canonical_link": "https://cursor.com/blog/bugbot-learning",
-      "published_at": "2026-04-09T20:00:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "TLDR AI",
-        "tooling"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-04-09",
-      "source_signal": "TLDR AI 工程栏目，Bugbot 解析率近 80%，通过反馈生成规则自改进。",
-      "recommendation": "Cursor Bugbot 通过学习规则自优化，适用于代码审查工具链。",
-      "summary": "Bugbot 利用过去运行信号生成学习规则，提升解析率至 80%。覆盖 11 万仓库，生成 4.4 万规则。聚焦特定问题和业务上下文。",
-      "takeaways": [
-        "实时自改进机制",
-        "显著优于其他 AI 代码审查"
-      ],
-      "topic": "tooling"
-    },
-    {
-      "id": "766ebac5bbf5c7ac",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "PYMNTS",
-      "title": "Perplexity's Shift to AI Agents Boosts Revenue 50%",
-      "blurb": "Perplexity 代理转型带来 50% 收入增长，验证代理商业模式。",
-      "link": "https://pymnts.com/artificial-intelligence-2/2026/perplexitys-shift-to-ai-agents-boosts-revenue-50",
-      "canonical_link": "https://pymnts.com/artificial-intelligence-2/2026/perplexitys-shift-to-ai-agents-boosts-revenue-50",
-      "published_at": "2026-04-09T20:00:00.000+08:00",
-      "score": 7,
+      "author": "CoreWeave",
+      "title": "CoreWeave Takes As Much Financial Engineering As It Does Datacenter Design",
+      "blurb": "CoreWeave收入积压达878亿美元，Meta和OpenAI占大头，2025年营收激增2.7倍。",
+      "link": "https://nextplatform.com/cloud/2026/04/09/coreweave-takes-as-much-financial-engineering-as-it-does-datacenter-design/5215794",
+      "canonical_link": "https://nextplatform.com/cloud/2026/04/09/coreweave-takes-as-much-financial-engineering-as-it-does-datacenter-design/5215794",
+      "published_at": "2026-04-10T20:00:00.000+08:00",
+      "score": 10,
       "tags": [
         "TLDR AI",
         "business"
       ],
-      "source_page": "https://tldr.tech/ai/2026-04-09",
-      "source_signal": "TLDR AI 快速链接，从搜索转向代理提升收入 50%，具体商业信号。",
-      "recommendation": "Perplexity 代理转型带来 50% 收入增长，验证代理商业模式。",
-      "summary": "Perplexity 从 AI 搜索转向代理服务，收入增长 50%。证明代理在商业应用中的价值。",
+      "source_page": "https://tldr.tech/ai/2026-04-10",
+      "source_signal": "Reveals massive $87.8B revenue backlog with key customers like Meta and OpenAI, strong business signal for AI infra.",
+      "recommendation": "CoreWeave收入积压达878亿美元，Meta和OpenAI占大头，2025年营收激增2.7倍。",
+      "summary": "积压中Meta占40.1%、OpenAI占25.5%，仅24家命名客户。2025年销售额51.3亿美元，净亏11.7亿美元。最近发行17.5亿美元债券扩展数据中心。",
       "takeaways": [
-        "代理模式收入翻倍潜力",
-        "商业验证代理优先战略"
+        "巨额积压反映AI算力需求爆炸",
+        "依赖少数大客户但增长迅猛"
       ],
       "topic": "business"
     },
     {
-      "id": "f8c48c1ff65129d9",
+      "id": "9fec7f6325ab6223",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "marimo-team",
-      "title": "Show HN: Marimo pair – Reactive Python notebooks as environments for agents",
-      "blurb": "Marimo pair 提供代理专用响应式笔记本环境，促进 AI 工作流开发。",
-      "link": "https://github.com/marimo-team/marimo-pair",
-      "canonical_link": "https://github.com/marimo-team/marimo-pair",
-      "published_at": "2026-04-10T20:00:00.000+08:00",
-      "score": 6,
+      "author": "Linus Torvalds",
+      "title": "AI assistance when contributing to the Linux kernel",
+      "blurb": "Linux内核官方文档新增AI编码助手指南，规范贡献流程中的AI使用。",
+      "link": "https://github.com/torvalds/linux/blob/master/Documentation/process/coding-assistants.rst",
+      "canonical_link": "https://github.com/torvalds/linux/blob/master/Documentation/process/coding-assistants.rst",
+      "published_at": "2026-04-11T20:00:00.000+08:00",
+      "score": 9,
       "tags": [
         "Hacker News",
         "tooling"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Hacker News Show HN，响应式 Python 笔记本作为代理环境，33 分 2 小时热度。",
-      "recommendation": "Marimo pair 提供代理专用响应式笔记本环境，促进 AI 工作流开发。",
-      "summary": "Marimo pair 是响应式 Python 笔记本，专为代理设计的环境。支持实时交互和协作。",
+      "source_signal": "High engagement (380 points, 275 comments) on official Linux kernel docs update for AI coding assistants.",
+      "recommendation": "Linux内核官方文档新增AI编码助手指南，规范贡献流程中的AI使用。",
+      "summary": "Linus Torvalds仓库中新增Documentation/process/coding-assistants.rst，指导开发者使用AI工具贡献代码。强调AI辅助需披露，标志开源社区对AI工具的正式接纳。",
       "takeaways": [
-        "代理优化笔记本界面",
-        "提升开发效率"
+        "要求AI生成代码需明确标注",
+        "推动AI在内核开发中的标准化"
       ],
       "topic": "tooling"
+    },
+    {
+      "id": "cc4db1db29dec85f",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Alibaba",
+      "title": "Alibaba Claims Viral Happy Horse AI Model in Latest Breakthrough",
+      "blurb": "阿里巴巴Happy Horse视频AI模型登顶全球文本到视频排行榜，即将开放API。",
+      "link": "https://bloomberg.com/news/articles/2026-04-10/stealth-alibaba-video-ai-model-tops-global-ranking-on-debut",
+      "canonical_link": "https://bloomberg.com/news/articles/2026-04-10/stealth-alibaba-video-ai-model-tops-global-ranking-on-debut",
+      "published_at": "2026-04-10T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-10",
+      "source_signal": "Viral model topping global text-to-video leaderboard, marking Alibaba's stealth breakthrough.",
+      "recommendation": "阿里巴巴Happy Horse视频AI模型登顶全球文本到视频排行榜，即将开放API。",
+      "summary": "该模型在本周Artificial Analysis排行榜上位居首位，引发中国AI行业震动。阿里巴巴计划近期提供API访问，推动视频生成技术竞争。",
+      "takeaways": [
+        "首次登顶全球视频生成榜单",
+        "API即将开源商用"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "880d2b318fefc5e4",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "OpenAI",
+      "title": "ChatGPT $100 Pro Plan Introduced",
+      "blurb": "OpenAI推出100美元/月的ChatGPT Pro计划，针对重度用户，提供介于Plus和企业级之间的选项。",
+      "link": "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-plans",
+      "canonical_link": "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-plans",
+      "published_at": "2026-04-10T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "TLDR AI",
+        "product"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-10",
+      "source_signal": "TLDR AI highlighted as top headline for new pricing tier targeting power users, signaling OpenAI's monetization strategy expansion.",
+      "recommendation": "OpenAI推出100美元/月的ChatGPT Pro计划，针对重度用户，提供介于Plus和企业级之间的选项。",
+      "summary": "该计划扩展了OpenAI的定价体系，确认200美元计划仍存在但未在定价页列出。旨在满足专业用户需求，推动收入多元化。尽管竞争激烈，此举强化了OpenAI在消费级AI市场的领导地位。",
+      "takeaways": [
+        "新增Pro计划填补20美元Plus与200美元Team间的定价空白",
+        "确认高端200美元计划持续可用"
+      ],
+      "topic": "product"
+    },
+    {
+      "id": "3e59f8b58e032d5e",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Hugging Face",
+      "title": "Multimodal Embedding & Reranker Models with Sentence Transformers",
+      "blurb": "Sentence Transformers v5.4发布多模态嵌入和重排序模型，支持文本图像音频视频统一空间。",
+      "link": "https://huggingface.co/blog/multimodal-sentence-transformers",
+      "canonical_link": "https://huggingface.co/blog/multimodal-sentence-transformers",
+      "published_at": "2026-04-10T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-10",
+      "source_signal": "v5.4 update introduces multimodal models for cross-modal tasks like search and RAG.",
+      "recommendation": "Sentence Transformers v5.4发布多模态嵌入和重排序模型，支持文本图像音频视频统一空间。",
+      "summary": "新模型将不同模态映射到共享嵌入空间，用于跨模态搜索和RAG。尽管跨模态相似度较低，重排序器提供高质量配对评分。",
+      "takeaways": [
+        "统一多模态嵌入空间",
+        "提升检索增强生成准确性"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "7a0413788fe1f7dc",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Anthropic",
+      "title": "Anthropic launches advisor tool for Claude Platform API users",
+      "blurb": "Anthropic推出Claude API顾问工具，Opus提供高级推理，Sonnet/Haiku执行降低成本。",
+      "link": "https://testingcatalog.com/anthropic-launches-advisor-tool-for-claude-platform-api-users",
+      "canonical_link": "https://testingcatalog.com/anthropic-launches-advisor-tool-for-claude-platform-api-users",
+      "published_at": "2026-04-10T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "agent"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-10",
+      "source_signal": "New API tool enabling Opus as advisor with cheaper executors, advancing agent capabilities.",
+      "recommendation": "Anthropic推出Claude API顾问工具，Opus提供高级推理，Sonnet/Haiku执行降低成本。",
+      "summary": "开发者可配置Messages API，使用Opus作为顾问结合高效执行模型。即刻公开可用，提升代理推理能力同时控制成本。",
+      "takeaways": [
+        "Opus顾问+低成本执行器组合",
+        "Messages API直接集成"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "3db9b785dacddc5e",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Perplexity",
+      "title": "Perplexity launches Personal Finance powered by Plaid",
+      "blurb": "Perplexity与Plaid集成推出个人理财仪表板，支持账户链接和净值计算。",
+      "link": "https://testingcatalog.com/perplexity-launches-personal-finance-powered-by-plaid",
+      "canonical_link": "https://testingcatalog.com/perplexity-launches-personal-finance-powered-by-plaid",
+      "published_at": "2026-04-10T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "product"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-10",
+      "source_signal": "Launched as key product expansion, integrating Plaid for comprehensive finance tools beyond portfolio tracking.",
+      "recommendation": "Perplexity与Plaid集成推出个人理财仪表板，支持账户链接和净值计算。",
+      "summary": "用户可链接支票、储蓄、信用卡和贷款账户，分析支出、追踪负债并计算净值。从投资组合扩展为完整理财中心，针对AI用户，提供数据洞察而不执行交易。",
+      "takeaways": [
+        "支持多账户类型链接和支出分析",
+        "转型为全功能理财工具"
+      ],
+      "topic": "product"
+    },
+    {
+      "id": "ca9d5a5037941920",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Anthropic",
+      "title": "Making Claude Cowork ready for enterprise",
+      "blurb": "Claude Cowork企业版正式可用，支持角色访问控制和使用分析，提升团队协作效率。",
+      "link": "https://claude.com/blog/cowork-for-enterprise",
+      "canonical_link": "https://claude.com/blog/cowork-for-enterprise",
+      "published_at": "2026-04-10T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "product"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-10",
+      "source_signal": "Featured in headlines for enterprise GA, emphasizing controls and integrations that enable scalable adoption.",
+      "recommendation": "Claude Cowork企业版正式可用，支持角色访问控制和使用分析，提升团队协作效率。",
+      "summary": "新增组织控制如角色访问、支出限额和可观测性功能。管理员可通过详细分析管理采用，并集成Zoom等工具。Zapier和Airtree等公司已用于项目管理和运营优化。",
+      "takeaways": [
+        "增强企业级功能包括RBAC和支出管理",
+        "集成工具支持无缝工作流"
+      ],
+      "topic": "product"
+    },
+    {
+      "id": "e7f26e60ceaac0cc",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "GR Inc",
+      "title": "Introducing KellyBench",
+      "blurb": "KellyBench评估LLM体育博彩决策，模拟英超赛季显示Claude Opus和GPT等模型均亏损。",
+      "link": "https://gr.inc/releases/introducing-kellybench",
+      "canonical_link": "https://gr.inc/releases/introducing-kellybench",
+      "published_at": "2026-04-10T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "TLDR AI",
+        "benchmark"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-10",
+      "source_signal": "New benchmark exposing LLM limits in sequential decision-making under uncertainty.",
+      "recommendation": "KellyBench评估LLM体育博彩决策，模拟英超赛季显示Claude Opus和GPT等模型均亏损。",
+      "summary": "通过2023-24英超赛季模拟测试长期策略适应性，无模型实现正回报。凸显代理在不确定性下学习经验的需求。",
+      "takeaways": [
+        "揭示LLM长期决策短板",
+        "呼吁复杂环境基准"
+      ],
+      "topic": "benchmark"
     }
   ]
 }
