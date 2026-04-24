@@ -4,366 +4,295 @@
     "name": "AI Indie Hacker Signals",
     "type": "aiindie",
     "refresh_hours": 24,
-    "updated_at": "2026-04-24T05:39:44.582+08:00",
-    "item_count": 19,
-    "window_start": "2026-04-22T17:39:44.582Z",
-    "window_end": "2026-04-23T21:39:44.582Z"
+    "updated_at": "2026-04-25T05:41:30.814+08:00",
+    "item_count": 15,
+    "window_start": "2026-04-23T17:41:30.814Z",
+    "window_end": "2026-04-24T21:41:30.814Z"
   },
   "items": [
     {
-      "id": "b4b340f47fe89420",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@levelsio",
-      "title": "drone.pieter.com 新游戏模式：士兵携带3架无人机，按F切换攻击敌人",
-      "blurb": "levelsio 在 drone.pieter.com 上推出新游戏模式，玩家作为士兵携带3架无人机，按F键切换到无人机视角攻击高处敌人，同时自身易被敌方无人机针对。游戏结合士兵步行和无人机飞行，增加策略性和沉浸感。该更新是 #vibejam 参赛作品的一部分，展示快速迭代开发。 展示了独立开发者如何在短时间内构建复杂多人游戏原型，使用AI工具加速资产生成，对AI indie hacker 提供游戏开发和快速shipping的实战经验。",
-      "link": "https://x.com/levelsio/status/2047398523717706142",
-      "canonical_link": "https://x.com/levelsio/status/2047398523717706142",
-      "published_at": "2026-04-24T03:33:41.000+08:00",
-      "score": 8,
-      "tags": [
-        "build",
-        "workflow",
-        "tooling"
-      ]
-    },
-    {
-      "id": "0576a1bf3d3819ff",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@levelsio",
-      "title": "drone.pieter.com 声音升级：真实射击音效+环境音，Audacity 编辑循环",
-      "blurb": "使用 Audacity 编辑真实射击循环音效，替换合成音，并添加鸟鸣、远处战争等环境音，提升 drone.pieter.com 的沉浸感和恐怖氛围。新游戏模式允许士兵发射背包无人机攻击，失败后切换回士兵视角。计划下一步添加多人模式。 突出音频在游戏中的杠杆作用，以及 solo builder 的工具栈（Audacity + AI资产），帮助AI indie hacker 理解多感官迭代对用户留存的影响。",
-      "link": "https://x.com/levelsio/status/2047394974422155357",
-      "canonical_link": "https://x.com/levelsio/status/2047394974422155357",
-      "published_at": "2026-04-24T03:19:35.000+08:00",
-      "score": 7,
-      "tags": [
-        "build",
-        "workflow"
-      ]
-    },
-    {
-      "id": "cb074dcb84b1cf89",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@Shpigford",
-      "title": "KeptWell iOS/iPadOS apps now on TestFlight, out of private beta",
-      "blurb": "Josh 开放 KeptWell.org iOS/iPadOS app TestFlight 测试，并脱离私有 beta 任何人可用。链接直接加入，提供跨设备体验。 展示 indie 快速迭代发布路径，从 beta 到 public，强调 TestFlight 杠杆分发与反馈循环。",
-      "link": "https://x.com/Shpigford/status/2047388976139379170",
-      "canonical_link": "https://x.com/Shpigford/status/2047388976139379170",
-      "published_at": "2026-04-24T02:55:45.000+08:00",
-      "score": 7,
-      "tags": [
-        "launch",
-        "distribution",
-        "build"
-      ]
-    },
-    {
-      "id": "89b96d05df3f7bd9",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@marclou",
-      "title": "免费反向链接工具升级 Pro Max +++",
-      "blurb": "marclou 的免费反向链接工具迎来重大升级，从基础版迭代到 Pro Max 版本。持续优化展示产品演进路径。该工具是其SEO产品线的一部分，帮助用户提升网站流量。 独立SEO工具的迭代更新提供背链构建的实战案例，帮助AI indie hacker 理解免费工具的留存和升级 monetization 路径。",
-      "link": "https://x.com/marclou/status/2047333942416863344",
-      "canonical_link": "https://x.com/marclou/status/2047333942416863344",
-      "published_at": "2026-04-23T23:17:04.000+08:00",
-      "score": 6,
-      "tags": [
-        "seo",
-        "build"
-      ]
-    },
-    {
-      "id": "3f9635e23922199b",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@xiongchun007",
-      "title": "DeepSeek 开源 TileLang LLM kernel library，极限优化 GPU 性能",
-      "blurb": "DeepSeek 开源了一个用 TileLang 编写的 kernel library，针对 LLM 压榨 GPU 极限性能，包括 MoE 路由&门控、FP8/FP4 量化（融合算子）、Engram + mHC pipeline，以及 PyTorch 训练层封装。该库部分已落地训练/推理场景，虽不完美但方向清晰。作者预测极致性价比的 V4 模型即将到来。 为 AI indie hacker 揭示开源 LLM 基础设施前沿进展，提供高性…",
-      "link": "https://x.com/xiongchun007/status/2047326636098691519",
-      "canonical_link": "https://x.com/xiongchun007/status/2047326636098691519",
-      "published_at": "2026-04-23T22:48:02.000+08:00",
-      "score": 9,
-      "tags": [
-        "tooling",
-        "workflow",
-        "automation"
-      ]
-    },
-    {
-      "id": "44b8646aa734442d",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@RevenueCat",
-      "title": "Introducing Benchmarks! Compare your app's subscription metrics to others in your category",
-      "blurb": "RevenueCat 在仪表板新增 Benchmarks 功能，用户可在 Analytics 的新标签页直接查看自家 app 订阅指标与同类 app 的比较数据。这帮助开发者快速基准化评估产品表现，包括转化率、留存等关键指标。只需前往侧边栏的 Benchmarks 标签即可立即使用。 对 AI 独立开发者而言，订阅变现是核心路径，此功能提供竞争基准洞察，帮助诊断定价、留存问题，提升 monetization 效率。",
-      "link": "https://x.com/RevenueCat/status/2047320302355374412",
-      "canonical_link": "https://x.com/RevenueCat/status/2047320302355374412",
-      "published_at": "2026-04-23T22:22:52.000+08:00",
-      "score": 9,
-      "tags": [
-        "analytics",
-        "monetization",
-        "retention"
-      ]
-    },
-    {
-      "id": "ef9866f9982aa0bc",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@marckohlbrugge",
-      "title": "AI时代开源是未来，闭源软件护城河失效",
-      "blurb": "Marc引用levelsio开源Chrome扩展，呼吁开源一切；想象平行宇宙中开源为默认，闭源如吃看不到的沙拉；AI让软件瞬间复制，护城河消失，未来属于开源。该观点源于AI复制能力的现实。 AI indie hacker需重新审视商业模式，开源可加速迭代、社区贡献和分发，而非依赖秘密代码；提供战略转向信号，避免AI commoditization陷阱。",
-      "link": "https://x.com/marckohlbrugge/status/2047319068571525569",
-      "canonical_link": "https://x.com/marckohlbrugge/status/2047319068571525569",
-      "published_at": "2026-04-23T22:17:57.000+08:00",
-      "score": 8,
-      "tags": [
-        "strategy",
-        "business",
-        "agent"
-      ]
-    },
-    {
-      "id": "4908a2a86742de4e",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@op7418",
-      "title": "开源网页PPT Skills，AI生成PPT彻底解决模板难题",
-      "blurb": "自制PPT模板后开发网页版Skills，明日开源。展示高级字体/布局示例，针对AI PPT生成痛点。结合此前分享，优化AIGC设计输出。 提供AI提示工程工具（PPT Skills），reusable for indie hacker pitch/deck，提升产品展示效率和专业度。",
-      "link": "https://x.com/op7418/status/2047317436157026628",
-      "canonical_link": "https://x.com/op7418/status/2047317436157026628",
-      "published_at": "2026-04-23T22:11:28.000+08:00",
-      "score": 7,
-      "tags": [
-        "tooling",
-        "prompt",
-        "workflow"
-      ]
-    },
-    {
-      "id": "fa3fa7d395267298",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@AlchainHust",
-      "title": "Huashu Design 发布三天突破5000+ Star",
-      "blurb": "开源项目Huashu Design在发布三天内GitHub星标超过5000。作者提醒未安装的用户在设计上落后于Claude和Codex。提供直接安装链接，展示产品快速增长势头。 为AI独立开发者证明逆向Claude Design的工具能快速获社区认可，验证设计辅助痛点。提供开源launch后增长实证，帮助判断产品市场契合度。",
-      "link": "https://x.com/AlchainHust/status/2047306660352495731",
-      "canonical_link": "https://x.com/AlchainHust/status/2047306660352495731",
-      "published_at": "2026-04-23T21:28:39.000+08:00",
-      "score": 9,
-      "tags": [
-        "launch",
-        "growth"
-      ]
-    },
-    {
-      "id": "cdcb053a95055588",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@RevenueCat",
-      "title": "5 lessons from vibe coding an app with AI: Don't wait for perfect idea, monetize early, etc.",
-      "blurb": "Ethan 分享用 AI 'vibe coding' 建 app 的 5 教训：1.别等完美idea，自动化自身行为；2.美图非产品，定义'working'标准；3.简单修复常浅层；4.用多 LLM 互查；5.早 monetize 聚焦 PMF。链接完整故事。 揭示 AI 构建 pitfalls 与 tactics，帮助 indie 避坑提效，从 prototype 到 monetized product。",
-      "link": "https://x.com/RevenueCat/status/2047303256859201643",
-      "canonical_link": "https://x.com/RevenueCat/status/2047303256859201643",
-      "published_at": "2026-04-23T21:15:08.000+08:00",
-      "score": 8,
-      "tags": [
-        "build",
-        "workflow",
-        "agent",
-        "automation"
-      ]
-    },
-    {
-      "id": "72b7ad92e6489281",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@op7418",
-      "title": "Claude桌面端开发者模式配置第三方模型API详细步骤",
-      "blurb": "不登录安装Claude桌面端，Help→Troubleshooting→Enable developer mode重启。右上角Developer→Configure third-party inference，填API地址/Key→Apply locally。支持Code plan或第三方Claude API，Anthropic或封堵。 AI工作流黑客技巧，绕官方限制用廉价第三方模型，降低成本提升灵活性，对indie hacker工具…",
-      "link": "https://x.com/op7418/status/2047297968743874586",
-      "canonical_link": "https://x.com/op7418/status/2047297968743874586",
-      "published_at": "2026-04-23T20:54:07.000+08:00",
-      "score": 8,
-      "tags": [
-        "tooling",
-        "workflow",
-        "automation"
-      ]
-    },
-    {
-      "id": "7492b34f4a7aad48",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@marclou",
-      "title": "TrustMRR 新闻通讯达10K读者，100% AI生成，开信40% 点击10%",
-      "blurb": "TrustMRR 新闻通讯达到10K读者，全由廉价GPT模型生成：输入数据指定结构输出HTML，人工仅快速审阅。开信率~40%，CTR~10%，100%订阅来自网站右下弹窗（垂直滚动900px显示）。展示了AI内容自动化的规模化潜力。 证明AI可完全取代人工写新闻通讯，结合具体指标和增长循环，对AI indie hacker 提供内容分发和订阅获取的低成本模板。",
-      "link": "https://x.com/marclou/status/2047295192047481277",
-      "canonical_link": "https://x.com/marclou/status/2047295192047481277",
-      "published_at": "2026-04-23T20:43:05.000+08:00",
-      "score": 9,
-      "tags": [
-        "content",
-        "automation",
-        "growth"
-      ]
-    },
-    {
-      "id": "900595295e0b135a",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@SimonHoiberg",
-      "title": "Automated my own job title out of existence 3 times in the last 2 years",
-      "blurb": "作者过去两年内三次通过构建自动化系统取代了自己的职位：先是支持主管，然后DevOps，最后内容运营。每次自动化手动工作后，他转向下一个瓶颈。这被视为2026年创始人的真正作弊码：不是管理公司，而是反复自动化当前角色。 强调AI时代独立黑客的核心杠杆：用自动化和AI工具提升个人产能，避免早雇人，专注于高价值决策，帮助solo founder高效扩展。",
-      "link": "https://x.com/SimonHoiberg/status/2047237646112453052",
-      "canonical_link": "https://x.com/SimonHoiberg/status/2047237646112453052",
-      "published_at": "2026-04-23T16:54:25.000+08:00",
-      "score": 9,
-      "tags": [
-        "workflow",
-        "automation"
-      ]
-    },
-    {
-      "id": "2e356a91f5c4fb6b",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@Pauline_Cx",
-      "title": "我运营SaaS使用的工具栈",
-      "blurb": "Pauline分享了她独立运营SaaS的全套工具栈，按类别划分：写作用Obsidian，社交分发用X/LinkedIn/YT、Brevo、Beehiiv、postsyncer；视频编辑用Subclip；分析用Umami；开发用Cursor、Supabase、Vercel；运维用Google Workspace；支付用Stripe、Polar；支持用feedbask；联盟用Refindie；Reddit分析用自定义方案；设计用Color…",
-      "link": "https://x.com/Pauline_Cx/status/2047212667073339896",
-      "canonical_link": "https://x.com/Pauline_Cx/status/2047212667073339896",
-      "published_at": "2026-04-23T15:15:09.000+08:00",
-      "score": 9,
-      "tags": [
-        "workflow",
-        "tooling",
-        "build"
-      ]
-    },
-    {
-      "id": "8d132029c337de39",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@yongfook",
-      "title": "Claude in Rails: hardly any permission alerts; Node: several per minute",
-      "blurb": "作者在使用Claude于Rails项目时，几乎没有'需要你的权限'警报。而在Node项目中，每分钟几次，非常恼人。这揭示了AI编码助手在不同技术栈中的实际集成差异。 提供具体AI工具在生产环境中的性能对比，帮助开发者选择更顺畅的栈，避免中断，提升编码效率。",
-      "link": "https://x.com/yongfook/status/2047189940472324261",
-      "canonical_link": "https://x.com/yongfook/status/2047189940472324261",
-      "published_at": "2026-04-23T13:44:51.000+08:00",
-      "score": 7,
-      "tags": [
-        "workflow",
-        "tooling"
-      ]
-    },
-    {
-      "id": "0fdd1f5c90b86009",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@pbteja1998",
-      "title": "SiteGPT 代理从 Opus 切换到 GLM 5.1",
-      "blurb": "在 SiteGPT 中，所有代理模型从 Opus 切换到更便宜的 GLM 5.1。该决定优化成本，同时保持性能。该更新反映AI产品运营中的模型选择策略。 展示AI产品中模型优化的实际操作，平衡性能与成本，对运行代理产品的 indie hacker 有直接借鉴。",
-      "link": "https://x.com/pbteja1998/status/2047135014547304634",
-      "canonical_link": "https://x.com/pbteja1998/status/2047135014547304634",
-      "published_at": "2026-04-23T10:06:36.000+08:00",
-      "score": 7,
-      "tags": [
-        "agent",
-        "workflow"
-      ]
-    },
-    {
-      "id": "4d66830dffb0b376",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@CoooolXyh",
-      "title": "Zed 编辑器推出 Parallel Agents 功能",
-      "blurb": "Zed 编辑器终于支持 Parallel Agents，提供多代理并行协作编码能力。分享官方博客链接，标志着主流编辑器向 AI 工作流深度集成迈进。 展示代码编辑器 AI 代理并行化的趋势，为 indie hacker 提供高效开发工具信号，提升 AI 辅助编程杠杆。",
-      "link": "https://x.com/CoooolXyh/status/2047110230052687917",
-      "canonical_link": "https://x.com/CoooolXyh/status/2047110230052687917",
-      "published_at": "2026-04-23T08:28:06.000+08:00",
-      "score": 7,
-      "tags": [
-        "tooling",
-        "workflow",
-        "agent"
-      ]
-    },
-    {
-      "id": "68d98892df369d22",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@patio11",
-      "title": "Journalists: Use LLMs to find public evidence confirming uncitable beliefs",
-      "blurb": "Patrick 分享技巧：向 LLM 描述你的世界观信念，让其搜索公开证据确认（如 PDF 文件）。举金融监管机构敏感事实为例，避免幻觉需手动验证文档。后续讨论 'parallel construction'，LLM 成情报金矿。 AI 独立黑客可用此验证市场假设、竞争情报或产品信念，加速决策而非依赖主观或付费调研。",
-      "link": "https://x.com/patio11/status/2047055577625358727",
-      "canonical_link": "https://x.com/patio11/status/2047055577625358727",
-      "published_at": "2026-04-23T04:50:56.000+08:00",
-      "score": 8,
-      "tags": [
-        "workflow",
-        "tooling",
-        "strategy"
-      ]
-    },
-    {
-      "id": "2438849d11a01031",
+      "id": "7eae3b0cfe263150",
       "source_id": "aiindie",
       "source_name": "AI Indie Hacker Signals",
       "source_type": "aiindie",
       "platform": "X",
       "author": "@ChanningAllen",
-      "title": "IH播客每月10-15k下载仍受欢迎，但因单位经济差停更",
-      "blurb": "IH播客制作需全天资源，包括找客、准备、录制、编辑，却不直接贡献订阅或广告收入。转向newsletter：用户生成内容、模板化，每周3期仅30min努力，广告ROI可量化，并转化IH+订阅（$200/年）。单位经济天差地别，专注核心业务。 展示indie hacker内容策略postmortem：高投入播客 vs 高杠杆newsletter，帮助AI开发者评估资源分配，避免无效内容实验。",
-      "link": "https://x.com/ChanningAllen/status/2047034251627872715",
-      "canonical_link": "https://x.com/ChanningAllen/status/2047034251627872715",
-      "published_at": "2026-04-23T03:26:12.000+08:00",
+      "title": "闭源软件增长业务赚钱，品牌营销即护城河",
+      "blurb": "回应开源讨论，认为闭源是为商业获利。软件无moat时，营销和品牌足矣。质疑赚钱是否觉得'恶心'。 IndieHackers联合创始人判断：AI时代代码商品化，优先品牌而非开源。指导monetization决策。",
+      "link": "https://x.com/ChanningAllen/status/2047766056987447501",
+      "canonical_link": "https://x.com/ChanningAllen/status/2047766056987447501",
+      "published_at": "2026-04-25T03:54:08.000+08:00",
+      "score": 8,
+      "tags": [
+        "strategy",
+        "business",
+        "monetization"
+      ]
+    },
+    {
+      "id": "f5951cee3e11045b",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@marclou",
+      "title": "AI made doers more productive and dreamers more talkative",
+      "blurb": "Marc Lou回应质疑多代理AI无法构建可靠用户软件的帖子，指出AI让实干者（doers）更高效，让空谈者（dreamers）更爱吹嘘。这揭示了AI社区炒作与实际生产力差距。 作为年入数十万的连续创业者，其判断帮助AI indie hacker辨别真实杠杆与 hype，避免浪费时间在不成熟的多代理上，聚焦实用提升。",
+      "link": "https://x.com/marclou/status/2047745195324633103",
+      "canonical_link": "https://x.com/marclou/status/2047745195324633103",
+      "published_at": "2026-04-25T02:31:14.000+08:00",
+      "score": 7,
+      "tags": [
+        "strategy",
+        "business"
+      ]
+    },
+    {
+      "id": "c6980ddada2f103a",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@levelsio",
+      "title": "🛜 Multiplayer for my vibe coded war/drone sim is live: https://drone.pieter.com/",
+      "blurb": "Pieter Levels推出其AI辅助编码（vibe coded）的战争/无人机模拟游戏多玩家模式，使用Node.js服务器支持实时对战，并集成AI生成的东欧战争音乐。从单人见敌发无人机到多人混战，全程一人完成。尽管预料服务器易被入侵，仍快速上线。 展示了AI工具栈在独立开发者手中的高杠杆：一人用Cursor AI等工具从0到多人游戏，强调快速ship优先于完美，适用于AI indie hacker的原型迭代。",
+      "link": "https://x.com/levelsio/status/2047720990315073754",
+      "canonical_link": "https://x.com/levelsio/status/2047720990315073754",
+      "published_at": "2026-04-25T00:55:03.000+08:00",
       "score": 9,
       "tags": [
+        "build",
+        "launch",
+        "workflow",
+        "tooling"
+      ]
+    },
+    {
+      "id": "3f25881c717776ca",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@xiongchun007",
+      "title": "opencode 是适配 DS V4 最快的 Coding Agent",
+      "blurb": "@opencode 最快适配 DeepSeek V4，发版当天支持，桌面版体验优秀。作者测试 CC 桌面版后立即卸载，认为其糟糕。附截图展示工具界面，提供实际对比。 Coding Agent 是 AI indie hacker 核心 workflow，此帖基于亲测分享适配速度和 UX 判断，帮助避免低效工具。强调桌面支持对生产力杠杆重要。",
+      "link": "https://x.com/xiongchun007/status/2047715852603310285",
+      "canonical_link": "https://x.com/xiongchun007/status/2047715852603310285",
+      "published_at": "2026-04-25T00:34:38.000+08:00",
+      "score": 7,
+      "tags": [
+        "workflow",
+        "agent",
+        "tooling"
+      ]
+    },
+    {
+      "id": "291c53fac8ac4a81",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@SimonHoiberg",
+      "title": "LinkedIn is a zombie platform: drove $3k-$5k/day FounderStack sales early 2025, now traffic dropped hard due to AI bots",
+      "blurb": "Simon分享LinkedIn从繁荣到衰落的亲身经历。2025年初，其帖子每天带来3000-5000美元FounderStack销售额。但年中后，尽管互动仍高，网站流量暴跌90%，原因是90%的评论和点赞来自AI机器人。真实用户已离开，平台成僵尸状态，其他平台衰退较慢。 提醒AI独立黑客社交分发渠道的脆弱性，提供真实营收数据和转化断崖案例，帮助判断平台ROI并警惕AI内容泛滥。",
+      "link": "https://x.com/SimonHoiberg/status/2047704168635277354",
+      "canonical_link": "https://x.com/SimonHoiberg/status/2047704168635277354",
+      "published_at": "2026-04-24T23:48:12.000+08:00",
+      "score": 8,
+      "tags": [
+        "distribution",
+        "growth",
+        "strategy"
+      ]
+    },
+    {
+      "id": "cdb3c0181bff318c",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@marclou",
+      "title": "✅ ACQUIRED on @trust_mrr $53 MRR AI startup sold in 28 days.",
+      "blurb": "Marc Lou 通过 Trust MRR 平台收购了一个月收入仅53美元的AI初创公司，该产品在28天内成功售出。这展示了构建简单AI工具并快速退出的可行路径。交易细节通过截图呈现，强调了小型MVP的变现潜力。 对AI独立黑客而言，这证明低MRR产品也能通过专业平台如Trust MRR实现快速退出，降低风险并加速资金回笼，提供可复制的monetization模板。",
+      "link": "https://x.com/marclou/status/2047658084966019275",
+      "canonical_link": "https://x.com/marclou/status/2047658084966019275",
+      "published_at": "2026-04-24T20:45:05.000+08:00",
+      "score": 8,
+      "tags": [
         "monetization",
-        "strategy",
-        "postmortem"
+        "business"
+      ]
+    },
+    {
+      "id": "82dbd5a74b95b9a5",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@d__raptis",
+      "title": "Added 3D device mockups to BrandBird because flat ones are boring",
+      "blurb": "Jim在其SaaS BrandBird中推出3D设备mockup功能，以取代乏味的平面mockup。附视频演示效果，并提供studio页面链接。该更新旨在让产品截图在社交媒体更突出。 展示solo开发者产品迭代速度，3D视觉提升对AI工具launch和营销至关重要，提供可复制的build实践。",
+      "link": "https://x.com/d__raptis/status/2047651331188703405",
+      "canonical_link": "https://x.com/d__raptis/status/2047651331188703405",
+      "published_at": "2026-04-24T20:18:15.000+08:00",
+      "score": 6,
+      "tags": [
+        "build",
+        "launch"
+      ]
+    },
+    {
+      "id": "ef0ff5e3745e25e1",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@czue",
+      "title": "Migrating scriv.ai off ancient RAG stack to agentic/tool-based workflow",
+      "blurb": "Cory Zue 正在将 scriv.ai 从过时的 RAG 栈迁移到基于代理和工具的工作流。他感慨如今拥有大上下文能力后，以前用 AI 实现的一些方法显得非常愚蠢。这展示了 AI 技术栈的快速演进和架构优化的必要性。 对 AI 独立黑客而言，这突显了及时更新技术栈的重要性，利用大上下文和 agentic 工作流提升产品效率，避免旧技术拖累竞争力。",
+      "link": "https://x.com/czue/status/2047641600558329977",
+      "canonical_link": "https://x.com/czue/status/2047641600558329977",
+      "published_at": "2026-04-24T19:39:35.000+08:00",
+      "score": 8,
+      "tags": [
+        "workflow",
+        "agent",
+        "tooling"
+      ]
+    },
+    {
+      "id": "78add18b9264a884",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@yihui_indie",
+      "title": "靠Codex Compute Use搞定了2024-2025年度英国公司纳税",
+      "blurb": "yihui_indie使用Codex Compute Use自动化处理英国公司纳税申报。AI代理操作浏览器，分析Wise Business和Stripe收入流水，查找平台成本，计算应缴税款。随后在TinyTax提交CT600给HMRC和Company Accounts给Companies House，避免了拖延导致的200英镑罚款。此案例展示了AI在繁琐财务任务上的实际应用。 为AI独立开发者展示了使用AI代理自动化海外公司税务合规的…",
+      "link": "https://x.com/yihui_indie/status/2047600431531278651",
+      "canonical_link": "https://x.com/yihui_indie/status/2047600431531278651",
+      "published_at": "2026-04-24T16:56:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow",
+        "automation",
+        "business"
+      ]
+    },
+    {
+      "id": "9cc6ed2177116d6a",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@Pauline_Cx",
+      "title": "Refindie 达到 450 名活跃 affiliates，正在为 SaaS 生成收入",
+      "blurb": "Pauline 分享其联盟管理 SaaS Refindie 里程碑：450 名活跃 affiliates 已上线。这些 affiliates 为使用 Refindie 的其他 SaaS 产品生成真实收入。为庆祝，他们设计了首个正式 logo，标志产品成熟。 展示了 indie hacker 通过联盟系统实现分发和货币化杠杆的具体案例。450 名活跃用户提供硬指标证明，强调低成本增长路径。对 AI indie hacker，这启发构建类…",
+      "link": "https://x.com/Pauline_Cx/status/2047593931316023566",
+      "canonical_link": "https://x.com/Pauline_Cx/status/2047593931316023566",
+      "published_at": "2026-04-24T16:30:10.000+08:00",
+      "score": 8,
+      "tags": [
+        "growth",
+        "distribution",
+        "monetization"
+      ]
+    },
+    {
+      "id": "5e587e9e1098fa12",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@balconychy",
+      "title": "Deepseek官方：Coding用pro-Max达Opus 4.5水平",
+      "blurb": "引用Deepseek报告，pro-Max才能匹敌Opus 4.5。Pro价格Flash 12倍，无plan难支撑。 具体模型benchmark指导coding成本优化，提升AI dev效率。",
+      "link": "https://x.com/balconychy/status/2047593034691256560",
+      "canonical_link": "https://x.com/balconychy/status/2047593034691256560",
+      "published_at": "2026-04-24T16:26:36.000+08:00",
+      "score": 7,
+      "tags": [
+        "tooling",
+        "workflow"
+      ]
+    },
+    {
+      "id": "fcc9a37a675b2e24",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@blankwebdev",
+      "title": "AITDK SEO Extension 加了 tooltip 和 learn more",
+      "blurb": "blankwebdev 为 AITDK SEO Extension 新增 tooltip 和 learn more 功能，帮助用户快速理解 SEO 术语，避免逐个查询。更新通过截图展示新界面，提升用户体验。标注 #AITDK，展示 indie 产品快速迭代。 AI indie hacker 常建 SEO 相关工具，此更新突出小功能优化用户痛点，提高留存。体现了关注细节的 operator 思维，在增长工具中提供学习支持是高杠杆实践。",
+      "link": "https://x.com/blankwebdev/status/2047582181023998241",
+      "canonical_link": "https://x.com/blankwebdev/status/2047582181023998241",
+      "published_at": "2026-04-24T15:43:28.000+08:00",
+      "score": 8,
+      "tags": [
+        "build",
+        "seo",
+        "growth",
+        "retention"
+      ]
+    },
+    {
+      "id": "abf3c7b22751065a",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@op7418",
+      "title": "Agent在充足上下文下超强：3行文字用Codepilot memory生成PPT skill",
+      "blurb": "PPT skill源于Codepilot agent memory生长。只需3行描述氛围，第一版即可用。随后agent参考历史项目和收藏文章优化。证明上下文+工具解锁agent潜力。 揭示长期memory如何杠杆agent自主开发工具，对AI indie hacker workflow革命性。强调最小输入最大输出策略。",
+      "link": "https://x.com/op7418/status/2047563437631234372",
+      "canonical_link": "https://x.com/op7418/status/2047563437631234372",
+      "published_at": "2026-04-24T14:29:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow",
+        "agent",
+        "automation",
+        "prompt"
+      ]
+    },
+    {
+      "id": "a04997a1c2d47f23",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@austinit",
+      "title": "DeepSeek V4 Pro 前端实测：未来感登录页面生成",
+      "blurb": "Austin 使用一句话提示词测试 DeepSeek V4 Pro 生成未来感 AI 游戏登录页面。模型与 Claude Code 兼容良好，主动进入 plan 模式生成代码，但因算力不足卡顿两次。分享视频效果，展示实际输出。 为 AI indie hacker 提供新模型在 coding 工作流中的真实 benchmark，帮助评估接入成本与效果，避免盲目跟风。",
+      "link": "https://x.com/austinit/status/2047525841639522758",
+      "canonical_link": "https://x.com/austinit/status/2047525841639522758",
+      "published_at": "2026-04-24T11:59:36.000+08:00",
+      "score": 7,
+      "tags": [
+        "workflow",
+        "tooling"
+      ]
+    },
+    {
+      "id": "cdd008660a651cb5",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@op7418",
+      "title": "昨天答应的 PPTSkill 来了！包含10个板式、5套主题，AI规划大纲",
+      "blurb": "发布了PPTSkill工具，包含10个板式、5套主题，覆盖各种场景，使用WebGL流体动画背景。AI功能帮助规划大纲、选主题、图片匹配和添加。文章详述Skill制作方法和使用教程。 展示AI indie hacker如何快速shipping炫酷AI工具，提升设计生产力。提供WebGL+AI集成实战细节，可复用构建类似内容生成产品。",
+      "link": "https://x.com/op7418/status/2047486744875139295",
+      "canonical_link": "https://x.com/op7418/status/2047486744875139295",
+      "published_at": "2026-04-24T09:24:15.000+08:00",
+      "score": 9,
+      "tags": [
+        "build",
+        "launch",
+        "workflow",
+        "tooling",
+        "agent"
       ]
     }
   ]
