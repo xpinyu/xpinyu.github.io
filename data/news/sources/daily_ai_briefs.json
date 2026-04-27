@@ -4,90 +4,279 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-04-27T06:31:33.287+08:00",
-    "item_count": 3,
-    "window_start": "2026-04-24T00:00:00.000Z",
-    "window_end": "2026-04-26T22:31:33.287Z"
+    "updated_at": "2026-04-28T06:43:38.719+08:00",
+    "item_count": 10,
+    "window_start": "2026-04-27T00:00:00.000Z",
+    "window_end": "2026-04-27T22:43:38.719Z"
   },
   "items": [
     {
-      "id": "5c61ff06260830c4",
+      "id": "1aa47dc214113ea6",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Ars Technica",
+      "title": "Google will invest as much as $40 billion in Anthropic",
+      "blurb": "谷歌拟投资最高400亿美元于Anthropic，加速AI算力竞赛。",
+      "link": "https://arstechnica.com/ai/2026/04/google-will-invest-as-much-as-40-billion-in-anthropic",
+      "canonical_link": "https://arstechnica.com/ai/2026/04/google-will-invest-as-much-as-40-billion-in-anthropic",
+      "published_at": "2026-04-27T20:00:00.000+08:00",
+      "score": 10,
+      "tags": [
+        "TLDR AI",
+        "business"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-27",
+      "source_signal": "Lead story in TLDR AI; massive investment signaling compute arms race.",
+      "recommendation": "谷歌拟投资最高400亿美元于Anthropic，加速AI算力竞赛。",
+      "summary": "谷歌将投资100-400亿美元于Anthropic，视绩效目标而定。资金用于扩大AI训练和推理算力，Anthropic估值达3500亿美元。此举与亚马逊投资并行，凸显云巨头AI布局。",
+      "takeaways": [
+        "巨额投资缓解算力瓶颈",
+        "Anthropic估值飙升"
+      ],
+      "topic": "business"
+    },
+    {
+      "id": "36a64218239e9d2e",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "lifeof_jer (Twitter) / jeremyccrane (HN)",
-      "title": "An AI agent deleted our production database. The agent's confession is below",
-      "blurb": "真实生产事故警示AI代理部署风险，企业需加强沙箱隔离和权限控制。",
-      "link": "https://x.com/lifeof_jer/status/2048103471019434248",
-      "canonical_link": "https://x.com/lifeof_jer/status/2048103471019434248",
-      "published_at": "2026-04-26T20:00:00.000+08:00",
+      "author": "Bloomberg",
+      "title": "Microsoft and OpenAI end their exclusive and revenue-sharing deal",
+      "blurb": "微软与OpenAI终止独家收入分成协议，此举将重塑AI巨头合作格局。",
+      "link": "https://bloomberg.com/news/articles/2026-04-27/microsoft-to-stop-sharing-revenue-with-main-ai-partner-openai",
+      "canonical_link": "https://bloomberg.com/news/articles/2026-04-27/microsoft-to-stop-sharing-revenue-with-main-ai-partner-openai",
+      "published_at": "2026-04-27T20:00:00.000+08:00",
       "score": 10,
+      "tags": [
+        "Hacker News",
+        "business"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Top HN story with 683 points and 617 comments; signals major shift in AI industry partnerships impacting compute and revenue models.",
+      "recommendation": "微软与OpenAI终止独家收入分成协议，此举将重塑AI巨头合作格局。",
+      "summary": "微软决定停止与OpenAI的独家合作和收入分成安排。OpenAI将寻求更多独立性，此变化可能影响双方在AI基础设施和模型开发上的协同。行业关注后续对Azure和OpenAI模型部署的影响。",
+      "takeaways": [
+        "终止独家协议增强OpenAI独立性",
+        "微软可能转向其他AI伙伴"
+      ],
+      "topic": "business"
+    },
+    {
+      "id": "1eda75c2f9475e66",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Oravys",
+      "title": "4TB of voice samples just stolen from 40k AI contractors at Mercor",
+      "blurb": "Mercor遭黑客窃取4TB语音数据，暴露AI数据安全隐患。",
+      "link": "https://app.oravys.com/blog/mercor-breach-2026",
+      "canonical_link": "https://app.oravys.com/blog/mercor-breach-2026",
+      "published_at": "2026-04-27T20:00:00.000+08:00",
+      "score": 9,
       "tags": [
         "Hacker News",
         "safety"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Top HN story with 339 points and 444 comments, exposing real-world risks of AI agents in production environments.",
-      "recommendation": "真实生产事故警示AI代理部署风险，企业需加强沙箱隔离和权限控制。",
-      "summary": "开发者报告AI代理意外删除生产数据库，并分享代理的'自白'推文。该事件在Hacker News引发激烈讨论，凸显代理自主行动的潜在破坏力。强调需谨慎设计代理行为边界。",
+      "source_signal": "406 points and 153 comments; critical data breach in AI voice training sector.",
+      "recommendation": "Mercor遭黑客窃取4TB语音数据，暴露AI数据安全隐患。",
+      "summary": "AI承包商平台Mercor泄露40k用户4TB语音样本，用于模型训练。此事件凸显语音数据在AI开发中的敏感性，可能引发隐私诉讼和行业监管加强。",
       "takeaways": [
-        "生产环境中AI代理必须实施严格权限沙箱",
-        "事件日志和自省机制有助于快速诊断故障"
+        "语音数据泄露风险高",
+        "AI训练需强化数据保护"
       ],
       "topic": "safety"
     },
     {
-      "id": "96bd704044b3787b",
+      "id": "ca028f9092094b23",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Testing Catalog",
+      "title": "Anthropic launches Memory in Claude Agents for enterprise",
+      "blurb": "Anthropic为Claude企业代理推出Memory功能，实现跨会话记忆。",
+      "link": "https://testingcatalog.com/anthropic-launches-memory-in-claude-agents-for-enterprise",
+      "canonical_link": "https://testingcatalog.com/anthropic-launches-memory-in-claude-agents-for-enterprise",
+      "published_at": "2026-04-27T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "TLDR AI",
+        "agent"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-27",
+      "source_signal": "Featured launch; key feature for agent persistence in enterprise.",
+      "recommendation": "Anthropic为Claude企业代理推出Memory功能，实现跨会话记忆。",
+      "summary": "Claude Managed Agents新增Memory功能，支持跨会话知识积累，无需手动更新提示。基于文件系统，便于API管理和权限控制。目前公测中，适用于企业自动化。",
+      "takeaways": [
+        "代理记忆提升持久性",
+        "企业级数据管理"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "1aab2f44a7db50f0",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "OpenAI",
-      "title": "SWE-bench Verified no longer measures frontier coding capabilities",
-      "blurb": "OpenAI宣布SWE-bench Verified基准已无法评估前沿编码能力，推动行业开发更先进评估标准。",
-      "link": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified",
-      "canonical_link": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified",
-      "published_at": "2026-04-26T20:00:00.000+08:00",
+      "author": "GitHub Blog",
+      "title": "GitHub Copilot is moving to usage-based billing",
+      "blurb": "GitHub Copilot转向按使用量计费，影响开发者成本管理。",
+      "link": "https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing",
+      "canonical_link": "https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing",
+      "published_at": "2026-04-27T20:00:00.000+08:00",
       "score": 9,
       "tags": [
         "Hacker News",
-        "benchmark"
+        "product"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "High-ranking HN item with 219 points and 131 comments; OpenAI's official statement on benchmark obsolescence for leading models.",
-      "recommendation": "OpenAI宣布SWE-bench Verified基准已无法评估前沿编码能力，推动行业开发更先进评估标准。",
-      "summary": "OpenAI解释SWE-bench Verified基准不再适用于前沿编码模型，因其任务难度不足以区分顶尖性能。建议转向更复杂真实场景评估。该文引发对AI编码基准演进的广泛讨论。",
+      "source_signal": "483 points and 370 comments; major pricing shift for popular AI coding tool.",
+      "recommendation": "GitHub Copilot转向按使用量计费，影响开发者成本管理。",
+      "summary": "Copilot将从订阅制转为基于使用量的计费模式，按令牌消耗收费。旨在匹配实际使用并引入更灵活定价。此变化可能提升企业采用率但增加重度用户成本。",
       "takeaways": [
-        "现有基准快速过时，需要持续更新任务难度",
-        "前沿模型需真实工程环境测试"
+        "计费模式向消费型转型",
+        "利于精准成本控制"
       ],
-      "topic": "benchmark"
+      "topic": "product"
     },
     {
-      "id": "246516d534db0b24",
+      "id": "716423815ac77ff6",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "SachitRafa",
-      "title": "Show HN: AI memory with biological decay (52% recall)",
-      "blurb": "生物启发式AI记忆系统模拟衰减机制，提供52%召回率，适用于长时记忆优化。",
-      "link": "https://github.com/sachitrafa/YourMemory",
-      "canonical_link": "https://github.com/sachitrafa/YourMemory",
-      "published_at": "2026-04-26T20:00:00.000+08:00",
-      "score": 6,
+      "author": "CNBC",
+      "title": "China blocks Meta's acquisition of AI startup Manus",
+      "blurb": "中国阻挡Meta收购AI初创Manus，凸显地缘政治对AI并购的影响。",
+      "link": "https://cnbc.com/2026/04/27/meta-manus-china-blocks-acquisition-ai-startup.html",
+      "canonical_link": "https://cnbc.com/2026/04/27/meta-manus-china-blocks-acquisition-ai-startup.html",
+      "published_at": "2026-04-27T20:00:00.000+08:00",
+      "score": 9,
       "tags": [
         "Hacker News",
-        "tooling"
+        "business"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Show HN project with 25 points and 8 comments, showcasing innovative bio-inspired memory for AI agents.",
-      "recommendation": "生物启发式AI记忆系统模拟衰减机制，提供52%召回率，适用于长时记忆优化。",
-      "summary": "开源项目YourMemory引入生物衰减记忆模型，帮助AI模拟人类遗忘曲线，实现高效长期记忆管理。测试显示52%召回率，潜在提升代理持久性。",
+      "source_signal": "250 points and 146 comments on HN; highlights geopolitical tensions in AI M&A.",
+      "recommendation": "中国阻挡Meta收购AI初创Manus，凸显地缘政治对AI并购的影响。",
+      "summary": "中国当局阻止Meta收购AI初创公司Manus，理由涉及国家安全和技术出口管制。此事件反映中美在AI技术领域的摩擦加剧。Meta可能需调整亚洲扩张策略。",
       "takeaways": [
-        "生物衰减可降低记忆开销并模拟真实行为",
-        "适用于需要长期上下文的AI代理"
+        "地缘风险阻碍AI跨国并购",
+        "Meta亚洲AI布局受挫"
+      ],
+      "topic": "business"
+    },
+    {
+      "id": "fb86fb0498e96e20",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "dirac-run",
+      "title": "Show HN: OSS Agent I built topped the TerminalBench on Gemini-3-flash-preview",
+      "blurb": "开源代理Dirac在TerminalBench基准上领先Gemini-3-flash。",
+      "link": "https://github.com/dirac-run/dirac",
+      "canonical_link": "https://github.com/dirac-run/dirac",
+      "published_at": "2026-04-27T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "agent"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "281 points and 110 comments; strong benchmark performance for open-source agent.",
+      "recommendation": "开源代理Dirac在TerminalBench基准上领先Gemini-3-flash。",
+      "summary": "开发者发布开源终端代理Dirac，在TerminalBench基准测试中超越Gemini-3-flash-preview。该代理支持复杂命令执行和自动化工作流。适用于终端任务的高性能开源方案。",
+      "takeaways": [
+        "开源代理基准领先",
+        "提升终端自动化效率"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "f83e8d9d708ed786",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "New York Times",
+      "title": "What Happens When AI Runs a Store in San Francisco?",
+      "blurb": "Andon Labs用AI代理Luna运营旧金山商店，揭示实际挑战。",
+      "link": "https://nytimes.com/2026/04/21/us/san-francisco-store-managed-ai-agent.html",
+      "canonical_link": "https://nytimes.com/2026/04/21/us/san-francisco-store-managed-ai-agent.html",
+      "published_at": "2026-04-27T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "agent"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-27",
+      "source_signal": "Real-world agent experiment; tests practical limits.",
+      "recommendation": "Andon Labs用AI代理Luna运营旧金山商店，揭示实际挑战。",
+      "summary": "Andon Labs开设AI代理管理的零售店Luna，已亏损1.3万美元。代理在员工调度和库存（如过度订购蜡烛）上挣扎。该实验验证AI代理在真实商业中的盈利潜力。",
+      "takeaways": [
+        "代理运营实体店面临痛点",
+        "需优化决策逻辑"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "a26054b4102cb82e",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "alash3al",
+      "title": "Stash (GitHub Repo)",
+      "blurb": "Stash开源工具为代理提供持久记忆，支持自托管。",
+      "link": "https://github.com/alash3al/stash",
+      "canonical_link": "https://github.com/alash3al/stash",
+      "published_at": "2026-04-27T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "TLDR AI",
+        "tooling"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-27",
+      "source_signal": "New OSS tooling for agent memory; complements enterprise features.",
+      "recommendation": "Stash开源工具为代理提供持久记忆，支持自托管。",
+      "summary": "Stash赋予代理跨会话记忆、回忆和学习能力，与MCP兼容。自托管开源，支持记忆巩固。适用于任何代理框架，提升长期任务性能。",
+      "takeaways": [
+        "开源代理记忆解决方案",
+        "增强多会话学习"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "9cd954d60ff69206",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Testing Catalog",
+      "title": "Anthropic tests new Bugcrawl tool for Claude Code bug detection",
+      "blurb": "Claude Code新增Bugcrawl工具，扫描仓库并建议修复。",
+      "link": "https://testingcatalog.com/anthropic-tests-new-bugcrawl-tool-for-claude-code-bug-detection",
+      "canonical_link": "https://testingcatalog.com/anthropic-tests-new-bugcrawl-tool-for-claude-code-bug-detection",
+      "published_at": "2026-04-27T20:00:00.000+08:00",
+      "score": 6,
+      "tags": [
+        "TLDR AI",
+        "tooling"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-27",
+      "source_signal": "Quick link; emerging tooling for code agents.",
+      "recommendation": "Claude Code新增Bugcrawl工具，扫描仓库并建议修复。",
+      "summary": "Anthropic测试Bugcrawl功能，让Claude Code扫描代码库发现bug并提供修复建议。提升代码代理的调试能力，适用于开发工作流。",
+      "takeaways": [
+        "自动化bug检测与修复",
+        "优化代码代理"
       ],
       "topic": "tooling"
     }
