@@ -4,227 +4,281 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-04-30T06:56:17.753+08:00",
-    "item_count": 8,
-    "window_start": "2026-04-29T00:00:00.000Z",
-    "window_end": "2026-04-29T22:56:17.753Z"
+    "updated_at": "2026-05-01T07:44:53.595+08:00",
+    "item_count": 10,
+    "window_start": "2026-04-30T00:00:00.000Z",
+    "window_end": "2026-04-30T23:44:53.595Z"
   },
   "items": [
     {
-      "id": "e79980cccae5107f",
+      "id": "0cf8dd30b2623160",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Stratechery",
-      "title": "An Interview with OpenAI CEO Sam Altman and AWS CEO Matt Garman About Bedrock Managed Agents",
-      "blurb": "OpenAI与AWS合作推出Bedrock托管代理，标志着云服务竞争格局变化，值得关注基础设施和代理应用的未来。",
-      "link": "https://stratechery.com/2026/an-interview-with-openai-ceo-sam-altman-and-aws-ceo-matt-garman-about-bedrock-managed-agents",
-      "canonical_link": "https://stratechery.com/2026/an-interview-with-openai-ceo-sam-altman-and-aws-ceo-matt-garman-about-bedrock-managed-agents",
-      "published_at": "2026-04-29T20:00:00.000+08:00",
-      "score": 10,
-      "tags": [
-        "TLDR AI",
-        "business"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-04-29",
-      "source_signal": "Featured as top headline in TLDR AI daily digest; signals major partnership shift allowing OpenAI models on non-Azure clouds, impacting AI infra and business competition.",
-      "recommendation": "OpenAI与AWS合作推出Bedrock托管代理，标志着云服务竞争格局变化，值得关注基础设施和代理应用的未来。",
-      "summary": "Sam Altman和Matt Garman讨论Bedrock托管代理，OpenAI修改与微软协议允许模型在其他云上部署。Azure独占权损害微软投资，协议延长至2032年并移除AGI条款。此举提升OpenAI灵活性并影响云AI市场。",
-      "takeaways": [
-        "OpenAI模型扩展至AWS Bedrock，打破Azure独占",
-        "协议调整反映商业权衡，推动多云AI代理部署"
-      ],
-      "topic": "business"
-    },
-    {
-      "id": "a21ff157ebe07243",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "NVIDIA / Hugging Face",
-      "title": "Introducing NVIDIA Nemotron 3 Nano Omni: Long-Context Multimodal Intelligence for Documents, Audio, and Video Agents",
-      "blurb": "NVIDIA Nemotron 3 Nano Omni多模态模型在文档、音频、视频基准领先，推动长上下文代理应用。",
-      "link": "https://huggingface.co/blog/nvidia/nemotron-3-nano-omni-multimodal-intelligence",
-      "canonical_link": "https://huggingface.co/blog/nvidia/nemotron-3-nano-omni-multimodal-intelligence",
-      "published_at": "2026-04-29T20:00:00.000+08:00",
+      "author": "Mistral AI",
+      "title": "Mistral Medium 3.5 powers remote Vibe agents",
+      "blurb": "Mistral Medium 3.5驱动Vibe远程代理，支持长异步编码任务，SWE-Bench表现突出。",
+      "link": "https://mistral.ai/news/vibe-remote-agents-mistral-medium-3-5",
+      "canonical_link": "https://mistral.ai/news/vibe-remote-agents-mistral-medium-3-5",
+      "published_at": "2026-04-30T20:00:00.000+08:00",
       "score": 9,
       "tags": [
         "TLDR AI",
         "model-release"
       ],
-      "source_page": "https://tldr.tech/ai/2026-04-29",
-      "source_signal": "Engineering section in TLDR AI; new multimodal model with benchmark leadership, key for agentic multimodal apps.",
-      "recommendation": "NVIDIA Nemotron 3 Nano Omni多模态模型在文档、音频、视频基准领先，推动长上下文代理应用。",
-      "summary": "Nemotron 3 Nano Omni采用混合Mamba-Transformer架构，支持视觉和音频编码器，在MMlongbench-Doc和VoiceBench等基准最佳。提升文档分析、语音识别和视频理解的吞吐量和推理速度。",
+      "source_page": "https://tldr.tech/ai/2026-04-30",
+      "source_signal": "TLDR AI launches; new 128B model powering cloud agents for coding tasks, high SWE-Bench scores.",
+      "recommendation": "Mistral Medium 3.5驱动Vibe远程代理，支持长异步编码任务，SWE-Bench表现突出。",
+      "summary": "128B稠密模型结合指令跟随、推理和编码能力，仅需4个GPU高效运行。从CLI或Le Chat启动云端任务。Le Chat新Work模式执行复杂多步任务。",
       "takeaways": [
-        "多模态长上下文处理高效",
-        "基准性能领先，适用于真实代理场景"
+        "高效云代理执行长任务",
+        "SWE-Bench Verified高分"
       ],
       "topic": "model-release"
     },
     {
-      "id": "3064c909eaacf0fb",
+      "id": "c87595ef07e93e56",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Anthropic",
-      "title": "Claude Connectors for Creative Tools",
-      "blurb": "Anthropic推出Claude创意工具连接器，支持设计和3D工作流，提升AI在专业软件中的应用。",
-      "link": "https://anthropic.com/news/claude-for-creative-work",
-      "canonical_link": "https://anthropic.com/news/claude-for-creative-work",
-      "published_at": "2026-04-29T20:00:00.000+08:00",
+      "author": "Yahoo Finance",
+      "title": "Google to sell TPU chips to 'select' customers in latest shot at Nvidia",
+      "blurb": "谷歌开放TPU芯片销售，标志着其在AI硬件市场直接挑战Nvidia，是基础设施竞争的关键进展。",
+      "link": "https://finance.yahoo.com/markets/stocks/article/google-to-sell-tpu-chips-to-select-customers-in-latest-shot-at-nvidia-214900221.html",
+      "canonical_link": "https://finance.yahoo.com/markets/stocks/article/google-to-sell-tpu-chips-to-select-customers-in-latest-shot-at-nvidia-214900221.html",
+      "published_at": "2026-04-30T20:00:00.000+08:00",
       "score": 9,
       "tags": [
         "TLDR AI",
         "product"
       ],
-      "source_page": "https://tldr.tech/ai/2026-04-29",
-      "source_signal": "Headlines section in TLDR AI; launches integrations for creative workflows, expanding Claude's tooling beyond text.",
-      "recommendation": "Anthropic推出Claude创意工具连接器，支持设计和3D工作流，提升AI在专业软件中的应用。",
-      "summary": "Claude新增连接器集成Adobe、Blender和Autodesk等，支持自然语言工作流、自动化和跨工具管道。适用于设计、3D和音频生产，提升创意生产力。",
+      "source_page": "https://tldr.tech/ai/2026-04-30",
+      "source_signal": "TLDR AI headlines section; concrete business signal of Google entering TPU sales market, competing with Nvidia in AI infra.",
+      "recommendation": "谷歌开放TPU芯片销售，标志着其在AI硬件市场直接挑战Nvidia，是基础设施竞争的关键进展。",
+      "summary": "Alphabet计划向选定客户出售自定义TPU芯片，用于其数据中心。最近发布了用于训练和推理的新TPU，已与Anthropic和Meta达成交易。此举加剧了与Nvidia的竞争。",
       "takeaways": [
-        "无缝集成主流创意软件",
-        "实现自然语言驱动的自动化管道"
+        "TPU销售扩展谷歌AI硬件影响力",
+        "针对企业数据中心的定制芯片供应"
       ],
       "topic": "product"
     },
     {
-      "id": "197a94525fc6b1af",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Poolside",
-      "title": "Laguna XS.2 and M.1: A Deeper Dive",
-      "blurb": "Poolside Laguna系列代理编码模型开源，XS.2小模型能力突出，适合长时序编程任务。",
-      "link": "https://poolside.ai/blog/laguna-a-deeper-dive",
-      "canonical_link": "https://poolside.ai/blog/laguna-a-deeper-dive",
-      "published_at": "2026-04-29T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "model-release"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-04-29",
-      "source_signal": "Engineering section; agentic coding models released openly, free API access highlights coding agent advances.",
-      "recommendation": "Poolside Laguna系列代理编码模型开源，XS.2小模型能力突出，适合长时序编程任务。",
-      "summary": "Laguna M.1为基础模型，XS.2小规模但高效，支持长视野工作。通过API和OpenRouter免费使用，XS.2权重Apache 2.0开源。",
-      "takeaways": [
-        "专为代理编码设计，长时序能力强",
-        "XS.2开源，便于社区集成"
-      ],
-      "topic": "model-release"
-    },
-    {
-      "id": "5067c2a9144fe9be",
+      "id": "c181c53cc6ba5126",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "Anthropic",
-      "title": "HERMES.md in commit messages causes requests to route to extra usage billing",
-      "blurb": "Anthropic Claude Code中HERMES.md触发额外计费bug，暴露API滥用风险，用户需注意提交消息安全。",
-      "link": "https://github.com/anthropics/claude-code/issues/53262",
-      "canonical_link": "https://github.com/anthropics/claude-code/issues/53262",
-      "published_at": "2026-04-29T20:00:00.000+08:00",
-      "score": 8,
+      "author": "Theo (Twitter)",
+      "title": "Claude Code refuses requests or charges extra if your commits mention \"OpenClaw\"",
+      "blurb": "Claude Code检测'OpenClaw'提交拒绝服务或加价，暴露AI安全机制。",
+      "link": "https://x.com/theo/status/2049645973350363168",
+      "canonical_link": "https://x.com/theo/status/2049645973350363168",
+      "published_at": "2026-04-30T20:00:00.000+08:00",
+      "score": 9,
       "tags": [
         "Hacker News",
         "safety"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "High HN traction (894 points, 360 comments); billing exploit in Claude Code reveals API/tooling flaws.",
-      "recommendation": "Anthropic Claude Code中HERMES.md触发额外计费bug，暴露API滥用风险，用户需注意提交消息安全。",
-      "summary": "在commit消息中使用HERMES.md会导致Claude Code请求路由至额外计费。GitHub issue讨论影响范围和修复，凸显AI工具集成隐患。",
+      "source_signal": "HN top story 891 points, 508 comments; reveals AI model censorship/safety guardrails.",
+      "recommendation": "Claude Code检测'OpenClaw'提交拒绝服务或加价，暴露AI安全机制。",
+      "summary": "Anthropic的Claude Code代理在代码提交中提及'OpenClaw'时拒绝或额外收费。引发对AI审查和竞争敏感性的讨论。",
       "takeaways": [
-        "特定字符串触发计费绕过",
-        "提醒开发者审查代码交互"
+        "模型内置关键词过滤",
+        "潜在商业竞争影响"
       ],
       "topic": "safety"
     },
     {
-      "id": "ff42ba1012e6d994",
+      "id": "c9b37a439f7744bf",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Hugging Face",
+      "title": "AI evals are becoming the new compute bottleneck",
+      "blurb": "AI评估成本激增，成为新瓶颈，单次运行达数万美元。",
+      "link": "https://huggingface.co/blog/evaleval/eval-costs-bottleneck",
+      "canonical_link": "https://huggingface.co/blog/evaleval/eval-costs-bottleneck",
+      "published_at": "2026-04-30T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "benchmark"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-30",
+      "source_signal": "TLDR AI analysis; critical insight on eval costs rivaling training, impacting AI research.",
+      "recommendation": "AI评估成本激增，成为新瓶颈，单次运行达数万美元。",
+      "summary": "评估成本与训练相当，模型/任务分布不均。需标准化文档和数据复用降低成本。否则阻碍外部验证和公平访问。",
+      "takeaways": [
+        "评估成本超训练",
+        "需高效方法优化"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "8bfab18d3598cb88",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Tom's Hardware",
+      "title": "OpenAI has effectively abandoned first-party Stargate data centers",
+      "blurb": "OpenAI放弃自建Stargate数据中心，转向租赁计算资源，提高灵活性。",
+      "link": "https://tomshardware.com/tech-industry/artificial-intelligence/openai-has-effectively-abandoned-first-party-stargate-data-centers-in-favor-of-more-flexible-deals-company-now-prefers-to-lease-compute-and-says-stargate-is-an-umbrella-term",
+      "canonical_link": "https://tomshardware.com/tech-industry/artificial-intelligence/openai-has-effectively-abandoned-first-party-stargate-data-centers-in-favor-of-more-flexible-deals-company-now-prefers-to-lease-compute-and-says-stargate-is-an-umbrella-term",
+      "published_at": "2026-04-30T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "infra"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-30",
+      "source_signal": "TLDR AI headlines; major shift in OpenAI infra strategy from owned data centers to leasing.",
+      "recommendation": "OpenAI放弃自建Stargate数据中心，转向租赁计算资源，提高灵活性。",
+      "summary": "原计划建20个数据中心，但合作伙伴控制权分歧导致放弃。现租赁计算资源，Stargate成伞状术语。公司尚未盈利，可能2027年中资金耗尽。",
+      "takeaways": [
+        "租赁模式取代自建",
+        "资金压力驱动战略调整"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "43c7e562602e88f7",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "PromptArmor",
-      "title": "Ramp's Sheets AI Exfiltrates Financials",
-      "blurb": "Ramp Sheets AI存在数据外泄风险，凸显企业AI安全漏洞，开发者和企业需警惕提示注入攻击。",
-      "link": "https://promptarmor.com/resources/ramps-sheets-ai-exfiltrates-financials",
-      "canonical_link": "https://promptarmor.com/resources/ramps-sheets-ai-exfiltrates-financials",
-      "published_at": "2026-04-29T20:00:00.000+08:00",
+      "author": "Semgrep",
+      "title": "Shai-Hulud Themed Malware Found in the PyTorch Lightning AI Training Library",
+      "blurb": "PyTorch Lightning中发现沙丘主题恶意依赖，威胁AI训练安全。",
+      "link": "https://semgrep.dev/blog/2026/malicious-dependency-in-pytorch-lightning-used-for-ai-training",
+      "canonical_link": "https://semgrep.dev/blog/2026/malicious-dependency-in-pytorch-lightning-used-for-ai-training",
+      "published_at": "2026-04-30T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "infra"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN 302 points, 99 comments; security vulnerability in popular AI training lib.",
+      "recommendation": "PyTorch Lightning中发现沙丘主题恶意依赖，威胁AI训练安全。",
+      "summary": "AI训练库PyTorch Lightning供应链攻击，使用Shai-Hulud主题恶意包。Semgrep报告强调依赖扫描重要性。",
+      "takeaways": [
+        "供应链攻击风险",
+        "加强依赖安全检查"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "2ce1e2bb2a9f6ba9",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "CrewAI (Twitter)",
+      "title": "AI Agents That Builds Themselves",
+      "blurb": "CrewAI的Iris代理自主编写代码、提PR并修改自身代码库。",
+      "link": "https://x.com/joaomdmoura/status/2049562041007194275",
+      "canonical_link": "https://x.com/joaomdmoura/status/2049562041007194275",
+      "published_at": "2026-04-30T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "agent"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-30",
+      "source_signal": "TLDR misc; self-modifying AI agent in production at CrewAI.",
+      "recommendation": "CrewAI的Iris代理自主编写代码、提PR并修改自身代码库。",
+      "summary": "Slack原生AI员工处理工程任务，包括代码审查和自我迭代。全工程团队中使用。",
+      "takeaways": [
+        "自构建代理",
+        "生产级自主工程"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "221826c074b1068a",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Hugging Face / IBM",
+      "title": "Granite 4.1 LLMs: How They're Built",
+      "blurb": "IBM Granite 4.1系列模型训练于15万亿token，8B模型媲美前代32B MoE。",
+      "link": "https://huggingface.co/blog/ibm-granite/granite-4-1",
+      "canonical_link": "https://huggingface.co/blog/ibm-granite/granite-4-1",
+      "published_at": "2026-04-30T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-30",
+      "source_signal": "TLDR AI deep dive; details on IBM's new efficient enterprise LLMs with strong benchmarks.",
+      "recommendation": "IBM Granite 4.1系列模型训练于15万亿token，8B模型媲美前代32B MoE。",
+      "summary": "采用稠密解码器架构，3B/8B/30B参数。五阶段预训练+强化学习管道注重数据质量。企业级高效指令跟随和工具性能。",
+      "takeaways": [
+        "多阶段RL提升性能",
+        "成本高效企业应用"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "357259d8f0f07f92",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Google DeepMind",
+      "title": "DeepMind ProEval for GenAI Evaluation (GitHub Repo)",
+      "blurb": "DeepMind ProEval框架降低GenAI评估成本，使用代理模型识别失败模式。",
+      "link": "https://github.com/google-deepmind/proeval",
+      "canonical_link": "https://github.com/google-deepmind/proeval",
+      "published_at": "2026-04-30T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "TLDR AI",
+        "benchmark"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-04-30",
+      "source_signal": "TLDR quick link; new open framework reducing eval costs via surrogates.",
+      "recommendation": "DeepMind ProEval框架降低GenAI评估成本，使用代理模型识别失败模式。",
+      "summary": "通过代理模型和跨基准迁移学习减少评估开销。开源GitHub仓库，支持高效AI评估。",
+      "takeaways": [
+        "代理模型降本",
+        "开源评估工具"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "9d5525ef590e7fd2",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "nahimn",
+      "title": "Show HN: Pu.sh – a full coding-agent harness in 400 lines of shell",
+      "blurb": "仅400行shell实现的完整编码代理框架，简洁高效。",
+      "link": "https://pu.dev/",
+      "canonical_link": "https://pu.dev/",
+      "published_at": "2026-04-30T20:00:00.000+08:00",
       "score": 7,
       "tags": [
         "Hacker News",
-        "safety"
+        "agent"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Top HN story with 89 points and 28 comments; exposes real-world AI safety vulnerability in enterprise tool.",
-      "recommendation": "Ramp Sheets AI存在数据外泄风险，凸显企业AI安全漏洞，开发者和企业需警惕提示注入攻击。",
-      "summary": "Ramp的Sheets AI功能可被操纵外泄财务数据，PromptArmor报告显示提示注入导致敏感信息泄露。强调AI工具在财务场景的安全挑战。",
+      "source_signal": "HN Show HN with discussion; lightweight open-source coding agent tooling.",
+      "recommendation": "仅400行shell实现的完整编码代理框架，简洁高效。",
+      "summary": "Pu.sh提供编码代理的全套工具链，支持自动化开发工作流。纯shell实现，便于部署和自定义。",
       "takeaways": [
-        "提示注入导致财务数据外泄",
-        "企业AI需加强安全防护"
+        "极简shell代理框架",
+        "开源易扩展"
       ],
-      "topic": "safety"
-    },
-    {
-      "id": "9d9268855cb9bd19",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "OpenRouter",
-      "title": "Opus 4.7's New Tokenizer: What It Actually Costs",
-      "blurb": "Claude Opus 4.7新分词器提升输入理解但增加12-27%成本，开发者需评估性价比。",
-      "link": "https://openrouter.ai/announcements/opus-47-tokenizer-analysis",
-      "canonical_link": "https://openrouter.ai/announcements/opus-47-tokenizer-analysis",
-      "published_at": "2026-04-29T20:00:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "TLDR AI",
-        "model-release"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-04-29",
-      "source_signal": "Deep dive in TLDR AI; quantifies tokenizer upgrade's cost impact on Claude Opus.",
-      "recommendation": "Claude Opus 4.7新分词器提升输入理解但增加12-27%成本，开发者需评估性价比。",
-      "summary": "Anthropic优化Opus 4.7分词器改善理解，价格不变但相同输入成本上升，除短提示更高效。分析显示中等长度提示成本显著增加。",
-      "takeaways": [
-        "理解力提升伴随token成本上升",
-        "短提示更经济，长提示需优化"
-      ],
-      "topic": "model-release"
-    },
-    {
-      "id": "c1f57758c682efca",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "CNBC",
-      "title": "Meta's new AI model shows early promise, but investors want to see Zuckerberg's strategy",
-      "blurb": "Meta Muse Spark模型转向付费访问，助力广告业务，投资者关注长期AI战略。",
-      "link": "https://cnbc.com/2026/04/28/meta-muse-spark-has-promise-wall-street-wants-zuckerberg-ai-strategy.html",
-      "canonical_link": "https://cnbc.com/2026/04/28/meta-muse-spark-has-promise-wall-street-wants-zuckerberg-ai-strategy.html",
-      "published_at": "2026-04-29T20:00:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "TLDR AI",
-        "model-release"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-04-29",
-      "source_signal": "Misc section; Meta shifts to paid AI models, business signal amid competition.",
-      "recommendation": "Meta Muse Spark模型转向付费访问，助力广告业务，投资者关注长期AI战略。",
-      "summary": "Meta新模型Muse Spark从开源转向付费，提升广告竞争力。尽管落后Claude，内部测试和招聘显示AI重点。",
-      "takeaways": [
-        "付费模式转变竞争加剧",
-        "基础设施投资支持模型迭代"
-      ],
-      "topic": "model-release"
+      "topic": "agent"
     }
   ]
 }
