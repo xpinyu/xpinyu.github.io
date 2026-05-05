@@ -4,65 +4,281 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-05-04T13:57:46.655+08:00",
-    "item_count": 2,
-    "window_start": "2026-05-01T00:00:00.000Z",
-    "window_end": "2026-05-04T05:57:46.655Z"
+    "updated_at": "2026-05-05T15:58:55.836+08:00",
+    "item_count": 10,
+    "window_start": "2026-05-04T00:00:00.000Z",
+    "window_end": "2026-05-05T07:58:55.836Z"
   },
   "items": [
     {
-      "id": "0e924843aa563a76",
+      "id": "44584d3a9e3dbbeb",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "donsupreme",
-      "title": "OpenAI's o1 correctly diagnosed 67% of ER patients vs. 50-55% by triage doctors",
-      "blurb": "OpenAI o1 在哈佛急诊诊断试验中准确率达 67%，远超医生的 50-55%，标志 AI 在高风险医疗领域的重大突破。关注其对临床应用的潜在变革。",
-      "link": "https://theguardian.com/technology/2026/apr/30/ai-outperforms-doctors-in-harvard-trial-of-emergency-triage-diagnoses",
-      "canonical_link": "https://theguardian.com/technology/2026/apr/30/ai-outperforms-doctors-in-harvard-trial-of-emergency-triage-diagnoses",
-      "published_at": "2026-05-04T13:57:46.655+08:00",
-      "score": 10,
+      "platform": "TLDR AI",
+      "author": "WSJ",
+      "title": "Anthropic Nears $1.5 Billion Joint Venture With Wall Street Firms",
+      "blurb": "Anthropic与华尔街15亿美元合资，推动企业AI落地。",
+      "link": "https://wsj.com/business/deals/anthropic-nears-1-5-billion-joint-venture-with-wall-street-firms-8f5448ee",
+      "canonical_link": "https://wsj.com/business/deals/anthropic-nears-1-5-billion-joint-venture-with-wall-street-firms-8f5448ee",
+      "published_at": "2026-05-04T20:00:00.000+08:00",
+      "score": 9,
       "tags": [
-        "Hacker News",
-        "benchmark"
+        "TLDR AI",
+        "business"
       ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Hacker News 首页高分 349 分、287 条评论，凸显社区对 AI 医疗基准超越人类医生的强烈兴趣，此为高影响力安全与基准信号。",
-      "recommendation": "OpenAI o1 在哈佛急诊诊断试验中准确率达 67%，远超医生的 50-55%，标志 AI 在高风险医疗领域的重大突破。关注其对临床应用的潜在变革。",
-      "summary": "Guardian 报道哈佛大学试验结果：OpenAI o1 模型诊断急诊患者正确率 67%，而分诊医生仅 50-55%。这项基准测试验证了 AI 在紧急医疗 triage 中的优越性能。故事在 HN 上引发广泛讨论，突出 AI 安全与可靠性。",
+      "source_page": "https://tldr.tech/ai/2026-05-04",
+      "source_signal": "TLDR quick link; major funding for AI ops company, concrete business signal.",
+      "recommendation": "Anthropic与华尔街15亿美元合资，推动企业AI落地。",
+      "summary": "投资者组建公司帮助企业整合AI运营。Anthropic融资强化商业化路径。标志AI基础设施投资热潮。",
       "takeaways": [
-        "o1 诊断准确率显著高于人类医生。",
-        "推动 AI 在医疗决策中的实际部署。"
+        "专注企业AI集成服务",
+        "华尔街深度参与"
       ],
-      "topic": "benchmark"
+      "topic": "business"
     },
     {
-      "id": "66cdfd5cb8f3e838",
+      "id": "c4bd0f2de5658bf6",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Testing Catalog",
+      "title": "Anthropic tests Jupiter-v1-p ahead of its developer conference",
+      "blurb": "Anthropic新模型Jupiter即将发布，红队测试显示安全优先。",
+      "link": "https://testingcatalog.com/anthropic-tests-jupiter-v1-p-before-potential-launch-on-may-6",
+      "canonical_link": "https://testingcatalog.com/anthropic-tests-jupiter-v1-p-before-potential-launch-on-may-6",
+      "published_at": "2026-05-04T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-04",
+      "source_signal": "TLDR headline; signals imminent Anthropic model release with red-teaming, tied to May 6 event.",
+      "recommendation": "Anthropic新模型Jupiter即将发布，红队测试显示安全优先。",
+      "summary": "Anthropic启动Jupiter-v1-p红队测试，符合责任扩展政策。预计在5月6日开发者大会亮相。强化越狱探测和宪法分类器。",
+      "takeaways": [
+        "前沿模型部署前安全强化",
+        "与开发者大会同步发布"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "540704a32912e63b",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "alattaran",
-      "title": "DeepClaude – Claude Code agent loop with DeepSeek V4 Pro, 17x cheaper",
-      "blurb": "DeepClaude 结合 Claude 代码代理与 DeepSeek V4 Pro，实现 17 倍成本节省。开发者可高效构建低成本 AI 编码代理。",
-      "link": "https://github.com/aattaran/deepclaude",
-      "canonical_link": "https://github.com/aattaran/deepclaude",
-      "published_at": "2026-05-04T13:57:46.655+08:00",
+      "author": "OpenAI",
+      "title": "How OpenAI delivers low-latency voice AI at scale",
+      "blurb": "OpenAI详解低延迟语音AI大规模部署的技术栈，对构建实时AI应用有直接指导价值。",
+      "link": "https://openai.com/index/delivering-low-latency-voice-ai-at-scale",
+      "canonical_link": "https://openai.com/index/delivering-low-latency-voice-ai-at-scale",
+      "published_at": "2026-05-05T03:58:55.836+08:00",
       "score": 9,
+      "tags": [
+        "Hacker News",
+        "infra"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Top HN story with 388 points and 122 comments; details OpenAI's production infra for real-time voice AI, critical for understanding scalable multimodal deployment.",
+      "recommendation": "OpenAI详解低延迟语音AI大规模部署的技术栈，对构建实时AI应用有直接指导价值。",
+      "summary": "文章揭示了OpenAI如何通过优化网络、边缘计算和模型蒸馏实现低延迟语音交互。重点包括实时转录、TTS合成和中断处理的工程实践。适用于高并发场景的语音代理开发。",
+      "takeaways": [
+        "采用预测性预取和分层缓存降低首字延迟",
+        "边缘推理结合云后端平衡成本与性能"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "298998f4f1b235cf",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Intel",
+      "title": "AutoRound",
+      "blurb": "Intel AutoRound量化工具，支持超低比特LLM部署。",
+      "link": "https://github.com/intel/auto-round",
+      "canonical_link": "https://github.com/intel/auto-round",
+      "published_at": "2026-05-04T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "tooling"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-04",
+      "source_signal": "TLDR engineering repo; Intel's quantization toolkit for LLMs/VLMs at ultra-low bits.",
+      "recommendation": "Intel AutoRound量化工具，支持超低比特LLM部署。",
+      "summary": "高级量化工具针对大模型，实现单GPU快速量化。与Transformers、vLLM兼容。高精度低比特转换仅需少量调优。",
+      "takeaways": [
+        "7B模型10分钟量化",
+        "无缝集成主流框架"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "4fbe69adde0e7721",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Testing Catalog",
+      "title": "Google is testing new Omni model for video generation",
+      "blurb": "Google Omni视频模型测试中，或统一图像视频生成。",
+      "link": "https://testingcatalog.com/google-is-testing-new-omni-model-for-video-generation-ahead-of-i-o",
+      "canonical_link": "https://testingcatalog.com/google-is-testing-new-omni-model-for-video-generation-ahead-of-i-o",
+      "published_at": "2026-05-04T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-04",
+      "source_signal": "TLDR launch news; Google unifying video/image gen under Omni, potential I/O reveal.",
+      "recommendation": "Google Omni视频模型测试中，或统一图像视频生成。",
+      "summary": "Omni模型出现在Gemini视频UI，可能成为产品名。旨在整合视频和图像工具。I/O 2026潜在发布，应对视频AI竞争。",
+      "takeaways": [
+        "统一多模态生成框架",
+        "Gemini集成加速产品化"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "5e1fb74e73e18305",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "angelos-p",
+      "title": "Train Your Own LLM from Scratch",
+      "blurb": "从零训练LLM的完整代码仓库，适合初学者快速上手模型训练流程。",
+      "link": "https://github.com/angelos-p/llm-from-scratch",
+      "canonical_link": "https://github.com/angelos-p/llm-from-scratch",
+      "published_at": "2026-05-05T12:58:55.836+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "tooling"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "178 points on HN; practical GitHub repo for hands-on LLM training, ideal for education and custom model building.",
+      "recommendation": "从零训练LLM的完整代码仓库，适合初学者快速上手模型训练流程。",
+      "summary": "仓库提供PyTorch实现的从数据预处理到微调的全流程，支持小型数据集训练。包括Transformer架构、优化器和评估脚本。便于本地GPU实验。",
+      "takeaways": [
+        "一步步代码实现便于调试",
+        "支持自定义数据集快速迭代"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "063c54c5bd86880c",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Addy Osmani",
+      "title": "Agent Skills",
+      "blurb": "剖析AI代理的核心技能框架，对设计自主代理系统极具启发。",
+      "link": "https://addyosmani.com/blog/agent-skills",
+      "canonical_link": "https://addyosmani.com/blog/agent-skills",
+      "published_at": "2026-05-05T05:58:55.836+08:00",
+      "score": 8,
       "tags": [
         "Hacker News",
         "agent"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Hacker News 322 分、121 条评论，开源代理工具展示成本优化，社区热议其对开发者工作流的实际价值。",
-      "recommendation": "DeepClaude 结合 Claude 代码代理与 DeepSeek V4 Pro，实现 17 倍成本节省。开发者可高效构建低成本 AI 编码代理。",
-      "summary": "GitHub 项目 DeepClaude 创建 Claude 代码代理循环，使用 DeepSeek V4 Pro 替代昂贵组件，整体成本降低 17 倍。适用于自动化代码生成与迭代工作流。该工具在 HN 上获高热度，体现代理工具创新。",
+      "source_signal": "232 points and 100 comments on HN; explores core competencies for AI agents in production workflows.",
+      "recommendation": "剖析AI代理的核心技能框架，对设计自主代理系统极具启发。",
+      "summary": "文章定义了代理所需的规划、工具使用和记忆管理等技能。讨论了在复杂任务中的应用案例和挑战。强调技能组合提升代理鲁棒性。",
       "takeaways": [
-        "17 倍成本降低，提升代理可及性。",
-        "融合 Claude 与 DeepSeek 优化编码循环。"
+        "技能模块化设计便于复用",
+        "动态技能评估优化代理行为"
       ],
       "topic": "agent"
+    },
+    {
+      "id": "e11a6772769e8685",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "TechCrunch",
+      "title": "Replit's Amjad Masad on the Cursor deal, fighting Apple, and why he'd rather not sell",
+      "blurb": "Replit接近10亿美元年化收入，毛利率正向领先Cursor。",
+      "link": "https://techcrunch.com/2026/05/01/replits-amjad-masad-on-the-cursor-deal-fighting-apple-and-why-hed-rather-not-sell",
+      "canonical_link": "https://techcrunch.com/2026/05/01/replits-amjad-masad-on-the-cursor-deal-fighting-apple-and-why-hed-rather-not-sell",
+      "published_at": "2026-05-04T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "business"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-04",
+      "source_signal": "TLDR business deep dive; Replit CEO on $1B run rate, positive margins vs Cursor.",
+      "recommendation": "Replit接近10亿美元年化收入，毛利率正向领先Cursor。",
+      "summary": "Masad分享Replit强劲增长、300%净收入留存和独立意愿。与Cursor负毛利对比突出。批评Apple App Store实践，可能诉讼。",
+      "takeaways": [
+        "非技术用户安全平台优势",
+        "拒绝出售专注独立发展"
+      ],
+      "topic": "business"
+    },
+    {
+      "id": "57261a9a830e68f9",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "David Breunig",
+      "title": "Lessons for Agentic Coding: What should we do when code is cheap?",
+      "blurb": "代理编码时代的最佳实践总结，帮助开发者适应代码生成泛滥。",
+      "link": "https://dbreunig.com/2026/05/04/10-lessons-for-agentic-coding.html",
+      "canonical_link": "https://dbreunig.com/2026/05/04/10-lessons-for-agentic-coding.html",
+      "published_at": "2026-05-05T15:01:55.836+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "agent"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Fresh HN post with comments; practical lessons for agent-driven coding in era of abundant cheap code generation.",
+      "recommendation": "代理编码时代的最佳实践总结，帮助开发者适应代码生成泛滥。",
+      "summary": "作者基于经验提出10条教训，包括过度生成代码的风险和人类监督的重要性。强调架构优先和迭代验证。适用于团队AI编码工作流。",
+      "takeaways": [
+        "优先设计而非编码",
+        "人类审阅代理输出不可少"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "29e49c278e7d1bcc",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Testing Catalog",
+      "title": "OpenAI adds animated Pets and config imports to Codex",
+      "blurb": "Codex新增宠物动画和配置导入，提升桌面编码体验。",
+      "link": "https://testingcatalog.com/openai-adds-animated-pets-and-config-imports-to-codex",
+      "canonical_link": "https://testingcatalog.com/openai-adds-animated-pets-and-config-imports-to-codex",
+      "published_at": "2026-05-04T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "TLDR AI",
+        "product"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-04",
+      "source_signal": "TLDR product update; enhances Codex UX with pets, config import, dictation for desktop coding app.",
+      "recommendation": "Codex新增宠物动画和配置导入，提升桌面编码体验。",
+      "summary": "更新引入屏幕叠加宠物互动、自动导入其他代理配置和语音字典。旨在提高可用性和趣味性。作为综合桌面应用竞争力。",
+      "takeaways": [
+        "跨代理配置兼容",
+        "语音输入精度优化"
+      ],
+      "topic": "product"
     }
   ]
 }
