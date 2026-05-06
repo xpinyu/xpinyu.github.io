@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="别把欲望外包给邻居。那会让人、公司和社会越来越像、越来越卷，也越来越危险。">
+<title>模仿欲望</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --ochre: #E8B830;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 720px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.88;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 999;
+    transition: width 80ms linear;
+    pointer-events: none;
+  }
+
+  .container {
+    max-width: var(--content-w);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+
+  header .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.28rem;
+    font-weight: 500;
+    line-height: 1.24;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    max-width: 620px;
+  }
+
+  header .subtitle {
+    font-size: 1rem;
+    color: var(--text-2);
+    line-height: 1.92;
+    max-width: 660px;
+  }
+
+  header .meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+    color: var(--text-3);
+  }
+
+  .thesis {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+    margin-bottom: 72px;
+  }
+
+  .thesis .thesis-label,
+  .takeaway .thesis-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 14px;
+  }
+
+  .thesis p,
+  .takeaway p {
+    font-size: 1.03rem;
+    line-height: 1.9;
+  }
+
+  .thesis p + p,
+  .takeaway p + p {
+    margin-top: 16px;
+  }
+
+  .thesis strong { color: var(--ochre); }
+  .takeaway strong { color: #8EC5A0; }
+
+  section { margin-bottom: 72px; }
+
+  .section-num {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.52rem;
+    font-weight: 600;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  section > .section-hook {
+    font-size: 0.85rem;
+    color: var(--text-3);
+    margin-bottom: 24px;
+    line-height: 1.62;
+  }
+
+  h3 {
+    font-size: 1.08rem;
+    font-weight: 600;
+    margin: 36px 0 12px;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    margin-bottom: 18px;
+    font-size: 1rem;
+  }
+
+  p:last-child { margin-bottom: 0; }
+
+  strong { font-weight: 600; }
+
+  .sep {
+    height: 1px;
+    background: var(--border);
+    margin: 72px 0;
+    border: none;
+  }
+
+  blockquote {
+    margin: 28px 0;
+    padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.03);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.96rem;
+    line-height: 1.88;
+  }
+
+  blockquote p { margin-bottom: 0; }
+
+  .note {
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin: 24px 0;
+    font-size: 0.88rem;
+    line-height: 1.82;
+    border-left: 3px solid;
+  }
+
+  .note-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .note-neutral { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+  .note-insight { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-ok { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-problem { background: var(--red-bg); border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+
+  .bullet-list {
+    margin: 24px 0;
+    padding-left: 1.2rem;
+  }
+
+  .bullet-list li {
+    margin: 10px 0;
+  }
+
+  .causal {
+    margin: 24px 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: cause;
+  }
+
+  .causal li {
+    counter-increment: cause;
+    position: relative;
+    padding: 8px 0 8px 44px;
+    line-height: 1.78;
+  }
+
+  .causal li::before {
+    content: counter(cause);
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #1A2540;
+    color: #F5F0EB;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .causal li + li {
+    border-top: 1px dashed var(--border);
+  }
+
+  .takeaway {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+    margin: 72px 0 24px;
+  }
+
+  .topbar {
+    position: fixed;
+    top: 2px;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250, 246, 238, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229, 221, 208, 0.6);
+  }
+
+  .topbar a {
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center;
+    padding: 48px 0 64px;
+    font-size: 0.72rem;
+    color: var(--text-3);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  nav.toc {
+    position: fixed;
+    top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 250px));
+    width: 210px;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    z-index: 50;
+  }
+
+  nav.toc a {
+    display: block;
+    padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  nav.toc a:hover,
+  nav.toc a.active {
+    color: var(--text-1);
+    border-color: var(--text-1);
+  }
+
+  @media (max-width: 1120px) {
+    nav.toc { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 640px) {
+    header h1 { font-size: 1.82rem; }
+    .thesis,
+    .takeaway { padding: 28px 24px; }
+    blockquote { padding: 16px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+
+<div class="topbar">
+  <a href="/" class="home-link">← pinyu.ai</a>
+</div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">短贴</a>
+  <a href="#opening">恶魔岛</a>
+  <a href="#mimetic">模仿性竞争</a>
+  <a href="#differentiation">差异化</a>
+  <a href="#time">更远坐标</a>
+  <a href="#optionality">安全路径</a>
+  <a href="#risk">停滞风险</a>
+  <a href="#summary">重新连起来</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Peter Thiel × Mimetic Desire</div>
+    <h1>模仿欲望</h1>
+    <p class="subtitle">彼得·蒂尔的宗教骨架：模仿、竞争、线性时间与末日风险如何连成一条链</p>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.05</span>
+    </div>
+  </header>
+
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">短贴</div>
+    <p>很多人把彼得·蒂尔那句“竞争是失败者的游戏”当成商业口号。更深一层，他受吉拉尔影响，把世界看成一个<strong>模仿系统</strong>：人会抄彼此的欲望，所以最危险的对手通常不是最不同的人，而是最像你、抢同一岗位/身份/客户的人。</p>
+    <p>这就是他反热门赛道、强调差异化、在 PayPal 把每个人职责和指标切开的原因：不只是为了效率，而是在拆“模仿 → 内耗”的引信。</p>
+    <p>再往上，他的长期主义也不只是自律。只有相信<strong>时间向前、未来能不同于现在</strong>，你才会为一个超出同侪比较的目标认真做计划。</p>
+    <p><strong>一句话：别把欲望外包给邻居。那会让人、公司和社会越来越像、越来越卷，也越来越危险。</strong></p>
+  </div>
+
+  <section id="opening">
+    <div class="section-num">00</div>
+    <h2>门根本没锁</h2>
+    <p class="section-hook">当身份完全由同侪竞争定义时，人会失去离场的想象力</p>
+
+    <blockquote>
+      <p>“我都不知道，原来还能从恶魔岛逃出去。”</p>
+    </blockquote>
+
+    <p>彼得·蒂尔离开纽约律所 Sullivan &amp; Cromwell 时，有同事这样对他说。那句狠话最有意思的地方，在于门根本没锁。走出去并不难，难的是：<strong>当一个人的身份完全由同侪竞争定义时，他会失去离场的想象力。</strong></p>
+
+    <p>把这句话当作入口，蒂尔很多看似分散的判断会突然连起来：他为什么长期反竞争，为什么迷恋差异化和“秘密”，为什么强调计划与未来，为什么会把技术、全球化、社交媒体放进一种近乎末日论的框架里。</p>
+
+    <p>Perell 给蒂尔压成了三句话：<strong>不要模仿邻居、时间向前走、未来会不同于现在。</strong> 真正有价值的地方，不在三句格言本身，而在它们背后是一条连贯逻辑链。</p>
+
+    <div class="note note-neutral">
+      <div class="note-label">边界</div>
+      <p>先说边界。这套解释<strong>最扎实</strong>的部分，是吉拉尔对蒂尔的影响、蒂尔明确的反竞争立场，以及他在商业中的组织设计。再往《启示录》、末日风险和社交媒体“泄压阀”走，解释力还在，但证据明显更像高质量推断，不该当成已经坐实的事实。把它当成理解蒂尔的一把钥匙，姿势会更对。</p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="mimetic">
+    <div class="section-num">01</div>
+    <h2>蒂尔反感的，首先是“模仿性竞争”</h2>
+    <p class="section-hook">很多时候，人不是先有欲望再竞争，而是先看见别人想要什么，才开始想要它</p>
+
+    <p>蒂尔在斯坦福时深受法国思想家雷内·吉拉尔影响。吉拉尔最核心的判断很简单，也很刺耳：<strong>人并不总是先独立地想要某样东西，再进入竞争；很多时候，人是先看见别人想要什么，才开始想要它。</strong></p>
+
+    <p>这就是“模仿性欲望”。</p>
+
+    <p>它的威力在于，模仿既是学习捷径，也是冲突来源。孩子学语言、学行为，靠的就是模仿；但一旦两个相似的人盯上同一个稀缺目标，模仿会迅速转成嫉妒、怨恨和对抗。</p>
+
+    <p>Perell 选的例子很准：</p>
+
+    <ul class="bullet-list">
+      <li>一屋子玩具，孩子偏偏去抢同一个；</li>
+      <li>哥伦比亚大学的学生会偷同学的书、散布错误学习指南；</li>
+      <li>学术圈和律所围着稀缺头衔、名额、晋升彼此消耗；</li>
+      <li>《罗密欧与朱丽叶》开头写的就是“两个门第同样显赫的家族”。</li>
+    </ul>
+
+    <p>这里最值得记住的一点是：<strong>最激烈的冲突，常常发生在最相似的人之间。</strong></p>
+
+    <p>真正让人焦躁的，往往不是远方陌生人，而是和你同层级、同赛道、抢同一份体面的人。</p>
+
+    <p>这也解释了那句“恶魔岛”。律所的问题，不只是工时长，而是所有人都在同一个狭窄坐标系里互相衡量。外面的人拼命想进，里面的人想逃，但一旦身份被这套比较系统接管，退出就像背叛了自己。</p>
+
+    <p>所以蒂尔说“不要竞争”，深层含义不是一句温和的“做自己”，更像一条<strong>欲望卫生原则</strong>：别把自己想要什么，外包给周围人。</p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="differentiation">
+    <div class="section-num">02</div>
+    <h2>“差异化”在他那里，是防止内耗的结构设计</h2>
+    <p class="section-hook">独特不只是品牌姿态，它首先是在拆“大家都去抢同一个玩具”的组织条件</p>
+
+    <p>这套模型一进入商业，就能看出蒂尔为什么总把“独特”说得比“更好”还重要。</p>
+
+    <p>PayPal 是最具体的例子。蒂尔做 CEO 时，大约每三个月就重组一次组织结构。每个人只对应一个清晰职责、一个指标、一个业务部分，而且尽量不让两个人落在同一评价战场里。</p>
+
+    <p>这不是管理洁癖，而是在<strong>提前拆除模仿性冲突</strong>。</p>
+
+    <p>只要两个员工被放进同一套模糊评价里，同样的晋升竞争、同样的“影响力”、同样的“老板认可”，他们就很容易从协作滑向内耗。把边界切清，是在防止“大家都去抢同一个玩具”。</p>
+
+    <p>这跟蒂尔在《从0到1》里反复强调的“垄断”“差异化”“避免竞争”是连在一起的。</p>
+
+    <p>Perell 用航空业和 Google 的对比，把这件事讲得很清楚。2012 年，美国航空公司平均单程票价是 <strong>178 美元</strong>，但每位乘客只赚 <strong>37 美分</strong>。同一时期，Google 营收约 <strong>500 亿美元</strong>，美国航空业约 <strong>1600 亿美元</strong>，可 Google 的利润率有 <strong>21%</strong>，市值还远超美国全部航空公司之和。</p>
+
+    <p>这个对比的重点，不是赞美 Google、贬低航空。真正的点在于：<strong>当一个行业太容易互相复制时，努力不一定能留下利润。</strong></p>
+
+    <p>一家降价，别人也降。一家加点腿部空间，别人跟上。大家盯着同一批顾客，用同一把尺子评估自己，最后价值被竞争吃掉。</p>
+
+    <div class="note note-insight">
+      <div class="note-label">更深一层</div>
+      <p>所以蒂尔喜欢说“竞争是失败者的游戏”，不能只当一句刺耳名言来听。放回吉拉尔框架里，它是在说：<strong>同质化竞争会让公司像人一样，越来越像彼此，也越来越敌对。</strong></p>
+    </div>
+
+    <p>这也让“独立思考”这个词变具体了。对蒂尔来说，独立思考先不是观点新奇，而是能不能找到一个<strong>不被同侪尺度绑架的问题</strong>。他偏爱“秘密”、偏爱非共识、偏爱冷门机会，逻辑都在这里。</p>
+
+    <p>顺着这条线，他给 Facebook 的第一笔外部投资，也部分来自同样的判断：社交媒体既靠口耳相传扩散，又把“人会互相模仿”这件事本身做成了产品。平台之所以重要，触到的是人的天性，而不只是分发效率。</p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="time">
+    <div class="section-num">03</div>
+    <h2>要想不被邻居牵着走，你得先有一个更远的坐标</h2>
+    <p class="section-hook">长期主义不是高绩效习惯，它首先依赖一种时间观</p>
+
+    <p>很多人把蒂尔的长期主义理解成高绩效习惯：会规划、能延迟满足、比别人更能吃苦。</p>
+
+    <p>Perell 给的解释更深一层：<strong>长期主义依赖一种时间观。</strong></p>
+
+    <p>如果你觉得未来大体只是今天的重复，那最理性的做法往往就是适应当下。只有当你真相信未来可以实质性地不同于现在，长期计划才有意义。</p>
+
+    <p>这就是文中为什么要拉进基督教的“线性时间观”。</p>
+
+    <p>Perell 的说法是，基督教传统把历史理解为有开端、有展开、有终局的一条线，而不是永远转圈。奥古斯丁把希腊的“成长”概念和犹太的“神圣历史”结合起来，给西方提供了一种历史有方向的想象。你可以不接受“基督教发明进步”这种强说法，但较弱、也更可信的版本很有用：</p>
+
+    <p><strong>你怎么看时间，会直接影响你肯不肯为一个当下看不到回报的未来下注。</strong></p>
+
+    <p>这部分有两个好例子。一个是中世纪大教堂。Perell 借 Pascal-Emmanuel Gobry 的话，把大教堂比作中世纪的“阿波罗计划”。这种工程必须依赖跨代协作、明确目标和长时间尺度，没有长期时间观，很难成立。</p>
+
+    <p>另一个是日本伊势神宫。它并不是靠“永远不动”保存，而是自 7 世纪以来按仪式周期持续重建。这样一来，建筑保住了，技艺也保住了，下一代匠人还在被持续训练。长期主义在这里不是口号，而是制度。</p>
+
+    <p>蒂尔那句“一个坏计划也比没有计划好”，放进这里就顺了。没有计划并不中立。很多时候，它只是意味着你被<strong>眼前的刺激和周围人的欲望</strong>拖着走。</p>
+
+    <p>这也是 Perell 批评现代社会“永恒的当下”的原因：新闻流、社交媒体、实时内容，让人一直在处理现在，几乎没力气想象十年后的世界长什么样。</p>
+
+    <p>蒂尔在《从0到1》里还把未来态度分成四象限：明确乐观、模糊乐观、明确悲观、模糊悲观。他偏爱的显然是<strong>明确乐观</strong>：未来会更好，而且我们知道该怎么去做。这里的重点不是“乐观”两个字，而是<strong>明确</strong>。没有方向的乐观，最后很容易退化成“总会变好”的空话。</p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="optionality">
+    <div class="section-num">04</div>
+    <h2>一旦未来感变弱，最聪明的人也会开始复制同一条安全路径</h2>
+    <p class="section-hook">没有更长的时间坐标，人就会回到最近的参照物那里</p>
+
+    <p>这部分很像对当代精英教育和职业轨道的补刀。</p>
+
+    <p>Perell 观察到，今天最有天赋的一批人，常常被推向同样几条窄路：名校、法学、咨询、投行、再继续积累“选择权”。2007 年，<strong>一半哈佛大四学生去了金融或咨询</strong>。在蒂尔看来，这对个人和社会都很收缩。</p>
+
+    <p>因为当一个社会没有足够清晰、可信的未来图景时，人会退回最容易度量、最容易比较、也最容易得到同侪认可的路径。于是，“高影响力”被“高地位”替代，“我要建什么”被“我先保留选项”替代。</p>
+
+    <p>Perell 引了 Mihir Desai 对 optionality 的批评，也很值得记。选择权本来是手段，却越来越像人生目标。问题是，<strong>人生不是期权交易</strong>。你一直囤安全垫、不肯承诺，久了以后，不只是没去做真正重要的事，你整个人也会被这种犹疑塑形。</p>
+
+    <div class="note note-problem">
+      <div class="note-label">结构性后果</div>
+      <p>这跟前面那条逻辑是通的：没有更长的时间坐标，人就会回到最近的参照物那里。最近的参照物通常是谁？同学、同事、同龄人。于是又回到了“模仿邻居”。</p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="risk">
+    <div class="section-num">05</div>
+    <h2>在蒂尔那里，停滞很危险，因为技术会放大冲突的后果</h2>
+    <p class="section-hook">停滞不是温和的静止，它可能把社会推回更高风险的零和争夺</p>
+
+    <p>Perell 最有野心、也最容易引争议的部分，在这里。</p>
+
+    <p>他的判断是：蒂尔并不是普通意义上的科技乐观主义者。蒂尔当然相信技术重要，但他也非常清楚，现代技术让<strong>极少数人就能造成极大破坏</strong>。核武器只是最直观的例子。</p>
+
+    <p>如果前面的两步成立：</p>
+
+    <ul class="bullet-list">
+      <li>人类会模仿彼此的欲望，模仿会升级成冲突；</li>
+      <li>技术和全球化会把冲突规模放大；</li>
+    </ul>
+
+    <p>那么“末日”在蒂尔那里就不只是一种宗教语气，而会变成一种政治—技术判断。</p>
+
+    <p>这也是 Perell 为什么把《启示录》看得这么重。按他的理解，蒂尔相信现代时代不会永久持续，接下来出现的东西会“非常不同”，而且大概率是<strong>好很多或坏很多</strong>，很难稳定停在中间。</p>
+
+    <p>这句话背后还有另一层：<strong>停滞本身并不安全。</strong></p>
+
+    <p>Perell 在《未来的终结》那条线上补了一层背景：美国人曾经习惯于具体的大计划，造更多飞机、登月、治愈癌症。1968 到 1971 年，泛美航空甚至收到 <strong>93005</strong> 份商业登月预订。可 1972 之后，再没有普通人踏上月球。数字世界显得很快，物理世界却慢了下来。</p>
+
+    <p>与此同时，实际中位数工资长期停滞，住房、教育、医疗成本又持续上升；美国有 <strong>4000 多万人</strong> 背着总计 <strong>1.5 万亿美元以上</strong> 的学生贷款。你不需要全盘接受蒂尔的宏大判断，也能看懂这层意思：</p>
+
+    <p><strong>当社会缺少新的增长、新的共同目标和新的未来叙事时，竞争更容易退化成分配之争。</strong> 分配之争一多，模仿性敌意就更容易上头。</p>
+
+    <p>Perell 甚至进一步猜测：蒂尔也许会把社交媒体看作一种“泄压阀”——它一边制造模仿性冲突，一边把更大的冲突吸纳在线上。这一段证据最弱，我不会把它当结论。但它抛出了一个很难回避的问题：</p>
+
+    <p><strong>平台到底是在给模仿性暴力装涡轮，还是在用更低成本容纳它？现实很可能不是单选题。</strong></p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="summary">
+    <div class="section-num">06</div>
+    <h2>把三句话重新连起来</h2>
+    <p class="section-hook">不要把它们当励志金句看，而要把它们还原成一条世界模型</p>
+
+    <p>所以，“不要模仿邻居、时间向前走、未来会不同于现在”，最好不要当三条励志金句来记。</p>
+
+    <p>更接近蒂尔世界模型的版本，大概是这样：</p>
+
+    <ol class="causal">
+      <li><strong>人会模仿彼此的欲望。</strong> 欲望并不总是自产的，很多时候是附近的人替你定义的。</li>
+      <li><strong>模仿一旦落到稀缺目标上，就会变成零和竞争。</strong> 最危险的对手通常就是最像你的人。</li>
+      <li><strong>要脱离这种竞争，你得有一个比同侪比较更高的坐标。</strong> 这也是长期计划、使命感、宗教方向感在蒂尔那里为什么重要。</li>
+      <li><strong>如果社会失去未来感，就会把最聪明的人重新压回安全、体面、可比较的轨道。</strong> 看起来稳定，实际更容易内耗。</li>
+      <li><strong>在高技术时代，这种内耗不会只停留在低增长层面。</strong> 它有可能被技术和全球化放大成文明风险。</li>
+    </ol>
+
+    <h3>读完最该带走的 4 个点</h3>
+
+    <ul class="bullet-list">
+      <li><strong>独立思考首先是“欲望卫生”</strong>：先分清自己在追什么，是出于真实判断，还是出于附近的人都在追。</li>
+      <li><strong>如果一定要模仿，尽量模仿那些不和你争同一奖杯的人</strong>：前辈、跨代人物、甚至已故作者，都比每天并排比较的同侪更安全。</li>
+      <li><strong>差异化不是包装，而是避开模仿性内耗的结构设计</strong>：对个人、公司、行业都适用。</li>
+      <li><strong>停滞不是温和的静止</strong>：当技术威力上升、共同未来感下降，停滞更容易把社会推回零和争夺。</li>
+    </ul>
+
+    <p>最后可以把蒂尔的整套建议压缩成一句很朴素的话：</p>
+
+    <p><strong>先别急着问“怎么赢过邻居”，先问“我是不是已经把欲望交给了邻居”。</strong></p>
+
+    <p>用他更宗教化的表达，这几乎就是第一条和第十条诫命的现代翻译：<strong>向上看，别总朝旁边看；别贪恋邻居的东西。</strong></p>
+  </section>
+
+  <div class="takeaway">
+    <div class="thesis-label">一句压缩</div>
+    <p>很多人把蒂尔的反竞争当成商业策略，真正的骨架却更深：模仿性欲望会制造同质化竞争，只有更远的时间坐标和更高的目标，才能把人从同侪比较里拽出来。</p>
+    <p><strong>别把欲望抄给邻居。那会让人、公司和社会越来越像、越来越卷，也越来越危险。</strong></p>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', function() {
+  var h = document.documentElement;
+  var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+var toc = document.getElementById('toc');
+if (toc) {
+  var links = Array.from(toc.querySelectorAll('a'));
+  var targets = links.map(function(a) {
+    return document.querySelector(a.getAttribute('href'));
+  }).filter(Boolean);
+
+  var update = function() {
+    var current = '';
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].getBoundingClientRect().top <= 140) current = targets[i].id;
+    }
+    links.forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
