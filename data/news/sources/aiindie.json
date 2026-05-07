@@ -4,12 +4,315 @@
     "name": "AI Indie Hacker Signals",
     "type": "aiindie",
     "refresh_hours": 24,
-    "updated_at": "2026-05-06T16:12:49.325+08:00",
-    "item_count": 11,
-    "window_start": "2026-05-05T04:12:49.325Z",
-    "window_end": "2026-05-06T08:12:49.325Z"
+    "updated_at": "2026-05-07T16:24:36.220+08:00",
+    "item_count": 17,
+    "window_start": "2026-05-06T04:24:36.220Z",
+    "window_end": "2026-05-07T08:24:36.220Z"
   },
   "items": [
+    {
+      "id": "8ffd9a79f57596e2",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@SimonHoiberg",
+      "title": "One of the hardest product decisions is removing something people already have",
+      "blurb": "删除用户已有的功能是最艰难的产品决策之一，因为添加功能感觉慷慨，而删除感觉粗鲁。但每个平庸功能都会成为整个产品的税负，包括支持、bug、文档、UI和认知负担。小而精的产品通常胜过臃肿的产品。 AI独立黑客常面临功能膨胀，这提醒优先核心价值，优化资源分配以实现更高增长和稳定性。",
+      "link": "https://x.com/SimonHoiberg/status/2052296379926548544",
+      "canonical_link": "https://x.com/SimonHoiberg/status/2052296379926548544",
+      "published_at": "2026-05-07T15:56:01.000+08:00",
+      "score": 8,
+      "tags": [
+        "build",
+        "strategy"
+      ]
+    },
+    {
+      "id": "7b99bb687a804c90",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@ruiyanghim",
+      "title": "AI 写页面：DesignMD 提取设计 tokens 和组件规则",
+      "blurb": "DesignMD 从 URL 生成 DESIGN.md，提取 design tokens、typography、component styles，供 AI coding agent 使用。避免 AI 自由发挥导致视觉不一致。将视觉判断转为可复用规则，适合复刻站点或生成设计约束。 提升 AI 生成前端页面的视觉一致性和可复用性，减少手动修正。",
+      "link": "https://x.com/ruiyanghim/status/2052244832614326584",
+      "canonical_link": "https://x.com/ruiyanghim/status/2052244832614326584",
+      "published_at": "2026-05-07T12:31:11.000+08:00",
+      "score": 8,
+      "tags": [
+        "tooling",
+        "workflow",
+        "prompt"
+      ]
+    },
+    {
+      "id": "5751a7090c0326ac",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@blankwebdev",
+      "title": "AITDK SEO Extension 4月份流量数据更新，邀晒流量",
+      "blurb": "AITDK SEO 扩展 4 月流量数据已更新，并以晒流量形式分享。附图展示具体指标变化。体现产品运营节奏。 独立开发者公开 SEO 工具月度流量数据，提供真实增长信号和市场验证参考。帮助判断 SEO 策略有效性及内容分发潜力。",
+      "link": "https://x.com/blankwebdev/status/2052238425273868551",
+      "canonical_link": "https://x.com/blankwebdev/status/2052238425273868551",
+      "published_at": "2026-05-07T12:05:43.000+08:00",
+      "score": 7,
+      "tags": [
+        "growth",
+        "seo",
+        "analytics"
+      ]
+    },
+    {
+      "id": "b1435a7dc4a5aae2",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@ruiyanghim",
+      "title": "Symphony：issue tracker 指挥多 agent 的总控台",
+      "blurb": "Symphony 将 issue tracker 转为控制平面，每个任务分配给 agent，按 DAG 处理阻塞关系，人只负责审结果和判断。解决了工程师同时盯多 agent session 时注意力分散的问题。部分团队使用三周内 PR 数提升 500%。它不取代工程师，而是自动化机械耗神任务。 为 AI indie hacker 提供管理多 agent 的系统化工作流，避免上下文切换，提高开发效率。",
+      "link": "https://x.com/ruiyanghim/status/2052184315564544024",
+      "canonical_link": "https://x.com/ruiyanghim/status/2052184315564544024",
+      "published_at": "2026-05-07T08:30:43.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow",
+        "agent",
+        "automation"
+      ]
+    },
+    {
+      "id": "b5fa2691d2e0a7b8",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@Shpigford",
+      "title": "Keptwell.org 医疗数据提取：处理 LOINC 等术语系统标准化挑战",
+      "blurb": "Keptwell.org 从 PDF/音频自动提取化验、诊断、药物等，但医院用多名称表示同一血检（如 'total bili' 等）。集成 LOINC（10万代码）、SNOMED CT（35万概念）、RxNorm、ICD-10 系统，实现自动合并趋势线。强调代码匹配，避免如 hemoglobin/MCHC 错配导致数据 silent lie。 揭示医疗文档 AI 解析的实战痛点与解决方案，帮助 indie hacker 避坑，提升数据…",
+      "link": "https://x.com/Shpigford/status/2052161112833982833",
+      "canonical_link": "https://x.com/Shpigford/status/2052161112833982833",
+      "published_at": "2026-05-07T06:58:31.000+08:00",
+      "score": 8,
+      "tags": [
+        "workflow",
+        "automation",
+        "tooling",
+        "postmortem"
+      ]
+    },
+    {
+      "id": "f156f67d299863c5",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@ruiyanghim",
+      "title": "推特冷启动：SoPilot 找热帖高质量互动",
+      "blurb": "冷启动别只发帖，用 SoPilot 找6小时内升温推文，早期高质量留言参与。围绕关键词搜索热帖，自动互动但强调观点补充和真人语气。连接机会发现与执行。 提供社媒增长雷达和互动策略，提升 AI indie hacker 账号曝光。",
+      "link": "https://x.com/ruiyanghim/status/2052123868098433494",
+      "canonical_link": "https://x.com/ruiyanghim/status/2052123868098433494",
+      "published_at": "2026-05-07T04:30:31.000+08:00",
+      "score": 7,
+      "tags": [
+        "distribution",
+        "growth",
+        "content"
+      ]
+    },
+    {
+      "id": "845e5e579851c09a",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@ChanningAllen",
+      "title": "朋友往往是糟糕的客户，总想免费使用",
+      "blurb": "Channing Allen指出，朋友比陌生人更难成为付费客户，因为他们常要求免费使用产品。这反映了创业中人情与商业边界的冲突。独立开发者需警惕此类情况以维护定价策略。 对AI独立黑客而言，此洞见强化monetization判断，避免朋友折扣稀释产品价值，聚焦付费用户验证PMF。",
+      "link": "https://x.com/ChanningAllen/status/2052108725192679698",
+      "canonical_link": "https://x.com/ChanningAllen/status/2052108725192679698",
+      "published_at": "2026-05-07T03:30:21.000+08:00",
+      "score": 8,
+      "tags": [
+        "monetization",
+        "business"
+      ]
+    },
+    {
+      "id": "81db8177422362d0",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@ChanningAllen",
+      "title": "HatchAI公开发布首月获10+离不开的用户",
+      "blurb": "Channing Allen回顾近期成就：IndieHackers流量与营收达历史新高，其AI产品@UseHatchAI在首月即有10+用户称'离不开'。这展示了AI助手的早期 retention 信号。 提供AI indie产品月1用户留存案例，强调'can't-live-without'指标的价值，帮助判断产品杠杆与增长潜力。",
+      "link": "https://x.com/ChanningAllen/status/2052089693961887878",
+      "canonical_link": "https://x.com/ChanningAllen/status/2052089693961887878",
+      "published_at": "2026-05-07T02:14:43.000+08:00",
+      "score": 7,
+      "tags": [
+        "growth",
+        "retention",
+        "business"
+      ]
+    },
+    {
+      "id": "459f6ce6194ae6ff",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@bresslertweets",
+      "title": "Built a real-time dashboard tracking Leonardo DiCaprio’s age, girlfriend’s age and the difference",
+      "blurb": "使用FormulaBot AI数据分析工具（已有160万用户），构建了一个实时仪表盘，在莱昂纳多·迪卡普里奥生日自动更新其年龄、女友年龄及年龄差。展示了AI工具在趣味数据可视化上的应用，并提供互动链接。 展示AI工具的快速原型能力，用于病毒式营销和用户获取，启发独立开发者用趣味项目测试工具杠杆。",
+      "link": "https://x.com/bresslertweets/status/2052050840437829797",
+      "canonical_link": "https://x.com/bresslertweets/status/2052050840437829797",
+      "published_at": "2026-05-06T23:40:20.000+08:00",
+      "score": 7,
+      "tags": [
+        "build",
+        "launch",
+        "distribution"
+      ]
+    },
+    {
+      "id": "8caa8e759cdadd23",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@d__raptis",
+      "title": "Added shareable links on SuperMotionCo",
+      "blurb": "在SuperMotionCo上新增可分享链接功能，便于用户将教程和入职培训视频分享给客户或团队审阅。展示了solo开发者快速迭代产品的执行力。 强调功能迭代对用户体验和协作的提升，帮助独立黑客理解分享机制在增长中的作用。",
+      "link": "https://x.com/d__raptis/status/2052042772023214497",
+      "canonical_link": "https://x.com/d__raptis/status/2052042772023214497",
+      "published_at": "2026-05-06T23:08:16.000+08:00",
+      "score": 6,
+      "tags": [
+        "build",
+        "growth"
+      ]
+    },
+    {
+      "id": "9e05423f111839be",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@appfigures",
+      "title": "Appfigures 新增 iPad App 下载与收入估算数据集",
+      "blurb": "Appfigures 发布 iPad app & game 下载/收入估算，所有报告现包含 iPhone+iPad 数据。2026 前 4 月 iPad 9 亿下载、35 亿消费，占 App Store 8%。免费获取任意 App 估算。 提供移动 App 市场细分数据，帮助 AI indie hacker 评估 iPad 机会，优化跨设备 monetization 策略。",
+      "link": "https://x.com/appfigures/status/2052042681728286832",
+      "canonical_link": "https://x.com/appfigures/status/2052042681728286832",
+      "published_at": "2026-05-06T23:07:55.000+08:00",
+      "score": 6,
+      "tags": [
+        "analytics",
+        "business",
+        "growth",
+        "monetization"
+      ]
+    },
+    {
+      "id": "dec1f5c54fbc8e39",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@RevenueCat",
+      "title": "RevenueCat 推出 Paywalls AI Editor：对话式 AI 代理，几秒生成付费墙",
+      "blurb": "RevenueCat 发布 Paywalls AI Editor，一个能从文本提示快速生成生产级付费墙的 AI 工具。用户可用自然语言编辑视觉风格，如调整年付计划突出度、颜色调色板，实时预览更新。支持一键添加多语言本地化，加速全球扩展。公测开启，挑战 3 分 16 秒生成纪录。 对 AI 独立开发者构建订阅 App 至关重要，提供 AI 驱动的付费墙生成与优化，极大提升 monetization 效率和测试速度。",
+      "link": "https://x.com/RevenueCat/status/2052041950568608251",
+      "canonical_link": "https://x.com/RevenueCat/status/2052041950568608251",
+      "published_at": "2026-05-06T23:05:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "monetization",
+        "workflow",
+        "agent",
+        "automation"
+      ]
+    },
+    {
+      "id": "6baa88d99287dee8",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@SimonHoiberg",
+      "title": "The worst AI products are built around the happy path",
+      "blurb": "最差的AI产品只针对完美输入、干净账户和明显用例设计，而真实客户会出现各种‘诅咒’行为，如粘贴垃圾数据、跳过设置、信任错误输出并期望撤销。这些混乱时刻才是真正设计产品的关键所在。独立开发者需重视边缘案例以提升产品鲁棒性。 对AI独立黑客而言，这提供产品设计的核心洞见，帮助避免常见陷阱，提高用户保留和实际可用性。",
+      "link": "https://x.com/SimonHoiberg/status/2052028686572851539",
+      "canonical_link": "https://x.com/SimonHoiberg/status/2052028686572851539",
+      "published_at": "2026-05-06T22:12:18.000+08:00",
+      "score": 9,
+      "tags": [
+        "build",
+        "workflow",
+        "agent"
+      ]
+    },
+    {
+      "id": "1fbd297cf273179e",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@fxxkol",
+      "title": "搭建6人 AI 数字员工团队，用 Git+Markdown 跑通协作",
+      "blurb": "将人生视为公司运营，搭战略、技术、财务等6人 AI 数字员工团队。飞书协作踩坑后换 Git+Markdown 成功运行。强调管理 AI 体系比单纯使用 AI 更重要。 展示 AI 代理团队构建和协作优化，提供 indie hacker 个人/项目 ops 杠杆。",
+      "link": "https://x.com/fxxkol/status/2051961800258994300",
+      "canonical_link": "https://x.com/fxxkol/status/2051961800258994300",
+      "published_at": "2026-05-06T17:46:31.000+08:00",
+      "score": 7,
+      "tags": [
+        "workflow",
+        "agent",
+        "automation"
+      ]
+    },
+    {
+      "id": "2513eebc5811b41e",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@xiongchun007",
+      "title": "Claude Code + DeepSeek V4 机场随时 VibeCoding，上下文切换时间忽略不计",
+      "blurb": "作者分享以往在机场写代码多为装逼，实际难产出，因人脑需时间进入状态。现在借助 Claude Code 和 DeepSeek V4，百公里提速0.3秒，几乎无上下文切换，可随时随地 VibeCoding。附机场实景编码图示意高杠杆场景。 为 AI indie hacker 揭示具体 AI 编码工具组合如何打破环境限制，实现移动开发高产出。提供可复用工具栈和心态转变，极大提升个人工作流杠杆。",
+      "link": "https://x.com/xiongchun007/status/2051961015471165671",
+      "canonical_link": "https://x.com/xiongchun007/status/2051961015471165671",
+      "published_at": "2026-05-06T17:43:24.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow",
+        "tooling",
+        "automation"
+      ]
+    },
+    {
+      "id": "16cb31092d4b1bf1",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@Pauline_Cx",
+      "title": "How can I promote my affiliation program?",
+      "blurb": "作者分享推广affiliate程序的实用策略：在navbar和footer放置affiliate链接，便于用户和潜在推广者快速发现。添加转化助推器，如展示真实收益（即使是小额）和提供现成推广内容。通过社交媒体传播，并利用如PartnerStack这样的聚合平台增加曝光。 对AI indie hacker，这提供了SaaS affiliate变现的具体执行细节，提升发现率和转化，帮助独立开发者高效规模化收入，而非泛泛建议。",
+      "link": "https://x.com/Pauline_Cx/status/2051957679640199367",
+      "canonical_link": "https://x.com/Pauline_Cx/status/2051957679640199367",
+      "published_at": "2026-05-06T17:30:09.000+08:00",
+      "score": 8,
+      "tags": [
+        "monetization",
+        "distribution"
+      ]
+    },
     {
       "id": "29c360803d8d0fcf",
       "source_id": "aiindie",
@@ -17,210 +320,16 @@
       "source_type": "aiindie",
       "platform": "X",
       "author": "@ruiyanghim",
-      "title": "codex2api：Codex账号池与额度管理的API层",
-      "blurb": "项目用Go+Gin+React构建，支持PostgreSQL/Redis或SQLite，轻量/标准模式。核心是Refresh Token调度、刷新、限流恢复、用量观测和管理后台。从代理转向资源运营系统。 解决多账号AI调用痛点，提供可观测、可维护的运营框架，帮助indie扩展API服务而不乱。",
+      "title": "codex2api：Codex 账号池和额度的 API 管理层",
+      "blurb": "codex2api 用 Go+Gin+React 构建，支持账号池调度、刷新、限流、观测和管理后台。从代理转向资源运营层，适合多账号多调用场景。提供 PostgreSQL/Redis 或轻量 SQLite 模式。 帮助 indie hacker 规模化管理 AI API 资源，避免额度耗尽和运维混乱。",
       "link": "https://x.com/ruiyanghim/status/2051912569687007589",
       "canonical_link": "https://x.com/ruiyanghim/status/2051912569687007589",
       "published_at": "2026-05-06T14:30:53.000+08:00",
-      "score": 9,
-      "tags": [
-        "tooling",
-        "automation",
-        "workflow"
-      ]
-    },
-    {
-      "id": "f6d5c1c0895934fc",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@tibo_maker",
-      "title": "Shipped product catalog integration in Outrank for e-commerce SEO",
-      "blurb": "Outrank 推出产品目录集成功能，针对拥有10k+产品的电商商店。内容可自动拉取目录，自然提及产品，生成上下文视觉，并推送产品页面，避免硬广。这让 Outrank 成为电商 SEO 最佳工具，构建完整内容到转化的漏斗。 展示了 AI 驱动的 SEO 工具如何深度垂直优化电商场景，提供内容生成与转化全链路杠杆。对 indie hacker 而言，这强调针对高价值垂直的功能迭代，能显著提升产品竞争力与 MRR 增长。",
-      "link": "https://x.com/tibo_maker/status/2051909523364032851",
-      "canonical_link": "https://x.com/tibo_maker/status/2051909523364032851",
-      "published_at": "2026-05-06T14:18:47.000+08:00",
-      "score": 9,
-      "tags": [
-        "build",
-        "seo",
-        "content",
-        "growth"
-      ]
-    },
-    {
-      "id": "cd84812d46afa8e4",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@benshandebiao",
-      "title": "Codex优于Claude Code在课程整理任务",
-      "blurb": "用Claude Code和Codex整理课程，前者出错多且不听话，后者准确高效。 实际工具对比，提供AI coding代理选型判断。",
-      "link": "https://x.com/benshandebiao/status/2051903637186810101",
-      "canonical_link": "https://x.com/benshandebiao/status/2051903637186810101",
-      "published_at": "2026-05-06T13:55:24.000+08:00",
-      "score": 6,
-      "tags": [
-        "workflow",
-        "tooling"
-      ]
-    },
-    {
-      "id": "9091a883d7f76258",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@Shpigford",
-      "title": "过去24h高频shipping：SEO优化、outrank Phase1、Endcap AI outreach pipeline",
-      "blurb": "过去24小时多项更新：proxyuser移动布局+SEO meta/schema，outrank SEO Phase1（Ahrefs优化+Hootsuite替代页），Endcap内部工具用Anthropic Haiku AI分类商店、Firecrawl/Hunter数据丰富、Instantly outreach funnel。详细数十项build和deploy细节。 展示indie高节奏shipping和AI集成实战（如Haiku s…",
-      "link": "https://x.com/Shpigford/status/2051825411437265281",
-      "canonical_link": "https://x.com/Shpigford/status/2051825411437265281",
-      "published_at": "2026-05-06T08:44:33.000+08:00",
-      "score": 9,
-      "tags": [
-        "build",
-        "growth",
-        "seo",
-        "automation",
-        "agent",
-        "tooling"
-      ]
-    },
-    {
-      "id": "4acb666fbdbf3036",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@ruiyanghim",
-      "title": "CliRelay：统一多AI CLI提供商的中继系统",
-      "blurb": "统一Claude Code、Gemini CLI、OpenAI Codex等入口，支持故障切换、限额控制、日志统计、TUI控制台。把散乱配置收成可维护系统。 多模型切换常见痛点，提供日志驱动优化路径，提升AI工作流效率和稳定性。",
-      "link": "https://x.com/ruiyanghim/status/2051821945059184825",
-      "canonical_link": "https://x.com/ruiyanghim/status/2051821945059184825",
-      "published_at": "2026-05-06T08:30:47.000+08:00",
-      "score": 9,
-      "tags": [
-        "tooling",
-        "workflow",
-        "automation"
-      ]
-    },
-    {
-      "id": "8fabf5c34822f2e8",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@ProductHunt",
-      "title": "Missed your YC shot? Product Hunt x YC: Launch Friday with “YC application” tag for interview",
-      "blurb": "Product Hunt 与 Y Combinator 合作：错过 YC 申请的创业者可在本周五于 PH 调度发布产品，并标注“YC application”。@gustaf 将审阅顶级发布，一个或多个获 YC 面试机会。这是平台提供的限时杠杆通道。 对 AI 独立黑客而言，这是高效分发产品、获取 YC 曝光和反馈的实战机会，帮助验证 MVP、加速增长并进入顶级网络。",
-      "link": "https://x.com/ProductHunt/status/2051740567722197038",
-      "canonical_link": "https://x.com/ProductHunt/status/2051740567722197038",
-      "published_at": "2026-05-06T03:07:25.000+08:00",
-      "score": 8,
-      "tags": [
-        "launch",
-        "distribution"
-      ]
-    },
-    {
-      "id": "7e175f39f745d160",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@ruiyanghim",
-      "title": "Sub-Router：AI中转站可切换主题的前台系统",
-      "blurb": "提供注册、登录、Dashboard、API key管理、价格表、订阅等完整页面，支持后台主题切换、中英双语。共享页与主题分离，便于维护。 快速搭建专业API代理前端，降低从后端到销售转化门槛。",
-      "link": "https://x.com/ruiyanghim/status/2051701084406862258",
-      "canonical_link": "https://x.com/ruiyanghim/status/2051701084406862258",
-      "published_at": "2026-05-06T00:30:31.000+08:00",
       "score": 8,
       "tags": [
         "tooling",
-        "build",
-        "monetization"
-      ]
-    },
-    {
-      "id": "ff8d5e58e115fe0b",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@RevenueCat",
-      "title": "55%三日试用Day 0取消：优化post-purchase screen的6级指南",
-      "blurb": "55%的3天试用在Day 0取消，问题在于缺失的post-purchase screen。提出6级优化：从默认占位到提供明确下一步，并分享13个真实app案例。强调app aftercare让用户感受到重视，减少即时流失。 订阅是AI indie产品的核心monetization，此提供数据驱动战术和benchmark，帮助提升Day 0保留和LTV。",
-      "link": "https://x.com/RevenueCat/status/2051648170933842264",
-      "canonical_link": "https://x.com/RevenueCat/status/2051648170933842264",
-      "published_at": "2026-05-05T21:00:16.000+08:00",
-      "score": 8,
-      "tags": [
-        "monetization",
-        "retention",
-        "pricing"
-      ]
-    },
-    {
-      "id": "59b1ffbffee839c0",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@czue",
-      "title": "Upgraded six projects from Python 3.12 to 3.14 in 2 hours using agents + uv + Docker/kamal + Pegasus CLI/skills",
-      "blurb": "一两年前，Python版本升级是多日苦差事。今天作者用agents + uv + Docker/kamal + Pegasus CLI/skills组合，将六个项目从Python 3.12快速升级到3.14，只花2小时。极大简化了依赖管理和部署流程。 展示AI agents与现代工具栈如何极大加速基础设施维护，让AI独立开发者高效管理多项目，释放时间专注产品构建。",
-      "link": "https://x.com/czue/status/2051647499299967456",
-      "canonical_link": "https://x.com/czue/status/2051647499299967456",
-      "published_at": "2026-05-05T20:57:36.000+08:00",
-      "score": 9,
-      "tags": [
-        "workflow",
-        "agent",
         "automation",
-        "tooling"
-      ]
-    },
-    {
-      "id": "a07413f9608f38db",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@fxxkol",
-      "title": "AIOPC数字员工团队搭建与协作优化",
-      "blurb": "作者组建了6人数字员工团队，包括数字分身，用于推进业务线。尝试飞书云文档协作时发现机器人覆盖式更新导致历史diff失效，转而使用独立Markdown Git仓库进行协作。强调打磨流程让团队自主运转。 展示了AI代理团队从组建到协作的实际踩坑与迭代，为indie hacker提供一人公司自动化运营的可复用经验。",
-      "link": "https://x.com/fxxkol/status/2051551259698860457",
-      "canonical_link": "https://x.com/fxxkol/status/2051551259698860457",
-      "published_at": "2026-05-05T14:35:10.000+08:00",
-      "score": 8,
-      "tags": [
-        "workflow",
-        "agent",
-        "automation"
-      ]
-    },
-    {
-      "id": "14b4a375879bdbee",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@yihui_indie",
-      "title": "游轮上7x24h AI视频黑灯工厂：Codex+SKILL+dreamina批量生产流程",
-      "blurb": "作者分享在游轮上实现海量Seedance 2.0视频生成的自动化流程：Codex + XHigh批量生成提示词，自建SKILL接入GPT Image2 API生图和dreamina cli生成视频，本地MBP用Real-ESRGAN超分720p到1080p。整个链路由Codex + SKILL 7x24h执行，燃烧token、GPU、电量和账单。展示了高效AI内容生产的黑灯工厂模式。 为AI indie hacker提供可复制的端到端…",
-      "link": "https://x.com/yihui_indie/status/2051550656574706130",
-      "canonical_link": "https://x.com/yihui_indie/status/2051550656574706130",
-      "published_at": "2026-05-05T14:32:47.000+08:00",
-      "score": 9,
-      "tags": [
-        "workflow",
-        "automation",
-        "tooling",
-        "agent"
+        "ops"
       ]
     }
   ]
