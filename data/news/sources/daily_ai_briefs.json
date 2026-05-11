@@ -4,281 +4,119 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-05-10T18:07:43.173+08:00",
-    "item_count": 10,
+    "updated_at": "2026-05-11T18:31:43.699+08:00",
+    "item_count": 4,
     "window_start": "2026-05-08T00:00:00.000Z",
-    "window_end": "2026-05-10T10:07:43.173Z"
+    "window_end": "2026-05-11T10:31:43.699Z"
   },
   "items": [
     {
-      "id": "b18f64e527ebbccb",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "OpenAI",
-      "title": "OpenAI Released Realtime Audio Models",
-      "blurb": "OpenAI 发布实时音频模型，支持对话推理和多语种翻译。",
-      "link": "https://openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api",
-      "canonical_link": "https://openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api",
-      "published_at": "2026-05-08T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "TLDR AI",
-        "model-release"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-08",
-      "source_signal": "Major model release highlighted in TLDR AI headlines; advances real-time voice AI.",
-      "recommendation": "OpenAI 发布实时音频模型，支持对话推理和多语种翻译。",
-      "summary": "新模型包括 GPT-Realtime-2 用于对话推理、GPT-Realtime-Translate 用于实时翻译，以及 GPT-Realtime-Whisper 用于流式转录。这些模型优化了语音智能应用。",
-      "takeaways": [
-        "实时性提升了语音交互体验",
-        "API 即用便于开发者集成"
-      ],
-      "topic": "model-release"
-    },
-    {
-      "id": "b49747eb61f8f2a3",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "OpenAI",
-      "title": "Codex now works directly in Chrome on macOS and Windows",
-      "blurb": "OpenAI Codex 直接在 Chrome 中运行，支持跨标签自动化任务。",
-      "link": "https://x.com/OpenAI/status/2052480800004956323",
-      "canonical_link": "https://x.com/OpenAI/status/2052480800004956323",
-      "published_at": "2026-05-08T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "TLDR AI",
-        "product"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-08",
-      "source_signal": "Featured headline in TLDR AI; OpenAI product launch enabling browser-native AI automation.",
-      "recommendation": "OpenAI Codex 直接在 Chrome 中运行，支持跨标签自动化任务。",
-      "summary": "Codex 现可在 macOS 和 Windows 的 Chrome 中直接运行，无需接管浏览器。它后台并行处理重复性浏览器任务，如导航结构化页面和数据流。演示视频展示了实际应用场景。",
-      "takeaways": [
-        "浏览器原生集成提升了自动化效率",
-        "适用于复杂数据导航工作流"
-      ],
-      "topic": "product"
-    },
-    {
-      "id": "e21935cd49f64800",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Anthropic",
-      "title": "Natural Language Autoencoders",
-      "blurb": "Anthropic 推出自然语言自编码器，用于模型激活解读。",
-      "link": "https://anthropic.com/research/natural-language-autoencoders",
-      "canonical_link": "https://anthropic.com/research/natural-language-autoencoders",
-      "published_at": "2026-05-08T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "TLDR AI",
-        "research"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-08",
-      "source_signal": "Research feature in TLDR AI; advances AI interpretability and safety.",
-      "recommendation": "Anthropic 推出自然语言自编码器，用于模型激活解读。",
-      "summary": "NLAs 将 AI 模型激活转换为人类可读文本，帮助检测安全问题和隐藏动机。尽管有幻觉和高成本局限，仍推进了对齐审计。",
-      "takeaways": [
-        "提升模型可解释性和安全审计",
-        "开源训练资源可用"
-      ],
-      "topic": "research"
-    },
-    {
-      "id": "340116b445ad43c6",
+      "id": "8eca67ab515044be",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "Hacker News",
-      "author": "Timothy Gowers",
-      "title": "A recent experience with ChatGPT 5.5 Pro",
-      "blurb": "ChatGPT 5.5 Pro 在复杂推理任务中表现出色，但仍需人类监督。",
-      "link": "https://gowers.wordpress.com/2026/05/08/a-recent-experience-with-chatgpt-5-5-pro",
-      "canonical_link": "https://gowers.wordpress.com/2026/05/08/a-recent-experience-with-chatgpt-5-5-pro",
-      "published_at": "2026-05-09T18:07:00.000+08:00",
-      "score": 9,
+      "author": "jola.dev",
+      "title": "Running local models on an M4 with 24GB memory",
+      "blurb": "适合硬件爱好者和本地 AI 开发者阅读，详细基准测试 M4 24GB 运行 Llama 等模型的速度与内存使用。",
+      "link": "https://jola.dev/posts/running-local-models-on-m4",
+      "canonical_link": "https://jola.dev/posts/running-local-models-on-m4",
+      "published_at": "2026-05-11T07:31:43.699+08:00",
+      "score": 8,
+      "tags": [
+        "Hacker News",
+        "infra"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News 热门榜单，325 分 103 条评论，聚焦 Apple M4 芯片本地运行大模型的实际性能测试，对边缘计算和本地 AI 基础设施有参考价值。",
+      "recommendation": "适合硬件爱好者和本地 AI 开发者阅读，详细基准测试 M4 24GB 运行 Llama 等模型的速度与内存使用。",
+      "summary": "文章测试了在 M4 Max 24GB 内存 Mac 上运行多种开源模型如 Llama 3.1 70B 的性能。通过 MLX 框架量化模型，实现流畅推理。结果显示 8B 模型可达 100+ tokens/s，较大模型也实用，强调本地 AI 的低延迟优势。",
+      "takeaways": [
+        "M4 Max 24GB 可高效运行 70B 量化模型，适合日常开发；",
+        "MLX 优化显著提升 Apple Silicon 推理速度，推荐本地部署。"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "6ea13c40bbf4d9cf",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "adamjgmiller",
+      "title": "Show HN: adamsreview – better multi-agent PR reviews for Claude Code",
+      "blurb": "GitHub 开源工具，针对 Claude Code 的多代理 PR 审查，简化团队开发流程。",
+      "link": "https://github.com/adamjgmiller/adamsreview",
+      "canonical_link": "https://github.com/adamjgmiller/adamsreview",
+      "published_at": "2026-05-11T11:31:43.699+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "tooling"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Show HN 项目，38 分 12 条评论，展示基于 Claude 的多代理 PR 审查工具，提升代码审查效率。",
+      "recommendation": "GitHub 开源工具，针对 Claude Code 的多代理 PR 审查，简化团队开发流程。",
+      "summary": "adamsreview 是多代理系统，为 PR 提供深入审查，使用 Claude 分析代码变更、安全和最佳实践。支持自定义代理，支持异步运行。适用于 Claude 用户优化代码审查工作流。",
+      "takeaways": [
+        "多代理协作提升 PR 审查深度和准确性；",
+        "开源免费，易集成到 GitHub 工作流。"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "21415db077f3de32",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "James Shore",
+      "title": "An AI coding agent, used to write code, needs to reduce your maintenance costs",
+      "blurb": "开发者必读，揭示 AI 工具从生成转向维护优化的必要性，提供实际评估标准。",
+      "link": "https://jamesshore.com/v2/blog/2026/you-need-ai-that-reduces-your-maintenance-costs",
+      "canonical_link": "https://jamesshore.com/v2/blog/2026/you-need-ai-that-reduces-your-maintenance-costs",
+      "published_at": "2026-05-11T08:31:43.699+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "agent"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News 榜单中出现，172 分 41 条评论，强调 AI 编码代理的核心价值在于降低维护负担，而非仅生成代码。",
+      "recommendation": "开发者必读，揭示 AI 工具从生成转向维护优化的必要性，提供实际评估标准。",
+      "summary": "作者认为优秀 AI 编码代理应减少代码维护成本，而非增加 bug。测试显示当前工具如 Cursor 多引入问题。建议评估指标包括修复率和长期稳定性，呼吁工具向维护导向转型。",
+      "takeaways": [
+        "AI 代理价值在于净减少维护工作量；",
+        "基准测试应覆盖代码健康度和修复效率。"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "3c885879b15f7d0c",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Adam Dunkels",
+      "title": "How Fast Does Claude, Acting as a User Space IP Stack, Respond to Pings?",
+      "blurb": "有趣的 AI 代理网络基准，展示 Claude 处理低级协议的延迟性能。",
+      "link": "https://dunkels.com/adam/claude-user-space-ip-stack-ping",
+      "canonical_link": "https://dunkels.com/adam/claude-user-space-ip-stack-ping",
+      "published_at": "2026-05-11T07:31:43.699+08:00",
+      "score": 7,
       "tags": [
         "Hacker News",
         "benchmark"
       ],
       "source_page": "https://news.ycombinator.com/",
-      "source_signal": "High-engagement HN post with 632 points and 467 comments; provides real-world benchmark of advanced ChatGPT capabilities.",
-      "recommendation": "ChatGPT 5.5 Pro 在复杂推理任务中表现出色，但仍需人类监督。",
-      "summary": "数学家 Timothy Gowers 测试了 ChatGPT 5.5 Pro 在数学证明和逻辑推理上的表现。模型展示了显著进步，能处理多步推理，但偶尔出错。该体验突显了前沿模型在专业领域的潜力与局限。",
+      "source_signal": "Hacker News 技术榜，86 分 26 条评论，基准测试 Claude 模拟用户空间 IP 栈的 ping 响应速度，探索 AI 在网络协议中的潜力。",
+      "recommendation": "有趣的 AI 代理网络基准，展示 Claude 处理低级协议的延迟性能。",
+      "summary": "作者用 Claude 实现用户空间 IP 栈，并测试 ping 响应时间。结果显示 Claude 延迟约 200-500ms，远高于传统栈但可优化。通过提示工程和工具调用，AI 能模拟复杂网络行为。",
       "takeaways": [
-        "5.5 Pro 推理能力大幅提升",
-        "适合辅助复杂任务而非完全取代人类"
+        "Claude 作为 IP 栈延迟数百毫秒，适合非实时场景；",
+        "提示优化可显著提升 AI 网络代理性能。"
       ],
       "topic": "benchmark"
-    },
-    {
-      "id": "cb7452b17fed82ac",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Google DeepMind",
-      "title": "AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields",
-      "blurb": "DeepMind 的 AlphaEvolve 代理使用 Gemini 设计高级算法。",
-      "link": "https://deepmind.google/blog/alphaevolve-impact",
-      "canonical_link": "https://deepmind.google/blog/alphaevolve-impact",
-      "published_at": "2026-05-08T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "agent"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-08",
-      "source_signal": "Engineering highlight in TLDR AI; DeepMind agent for algorithm discovery.",
-      "recommendation": "DeepMind 的 AlphaEvolve 代理使用 Gemini 设计高级算法。",
-      "summary": "AlphaEvolve 是 Gemini 驱动的编码代理，能设计数学和计算机科学算法。现升级支持解释自然世界物理，帮助科学家加速发现。",
-      "takeaways": [
-        "跨领域算法发现潜力巨大",
-        "开源问题解决能力强"
-      ],
-      "topic": "agent"
-    },
-    {
-      "id": "f5c9388390c77beb",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "Google",
-      "title": "Gemini API File Search is now multimodal",
-      "blurb": "Gemini API 文件搜索现支持多模态，提升了开发者构建 RAG 应用的效率。",
-      "link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanded-gemini-api-file-search-multimodal-rag",
-      "canonical_link": "https://blog.google/innovation-and-ai/technology/developers-tools/expanded-gemini-api-file-search-multimodal-rag",
-      "published_at": "2026-05-10T12:07:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "Hacker News",
-        "product"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Top HN story with 95 points and 13 comments; signals Google expanding Gemini API capabilities for multimodal RAG, key for developer tooling.",
-      "recommendation": "Gemini API 文件搜索现支持多模态，提升了开发者构建 RAG 应用的效率。",
-      "summary": "Google 宣布 Gemini API 的文件搜索功能升级为多模态，支持图像和文本结合搜索。开发者可通过简单 API 调用实现更丰富的检索体验。该更新显著提升了文件处理和 RAG 工作流的实用性。",
-      "takeaways": [
-        "多模态支持扩展了 Gemini 在视觉任务中的应用",
-        "便于开发者集成到现有工具链中"
-      ],
-      "topic": "product"
-    },
-    {
-      "id": "8182cfc65a6b8cfd",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "GitHub Blog",
-      "title": "Improving token efficiency in GitHub Agentic Workflows",
-      "blurb": "GitHub 优化代理工作流中的 token 使用，降低成本。",
-      "link": "https://github.blog/ai-and-ml/github-copilot/improving-token-efficiency-in-github-agentic-workflows",
-      "canonical_link": "https://github.blog/ai-and-ml/github-copilot/improving-token-efficiency-in-github-agentic-workflows",
-      "published_at": "2026-05-08T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "workflow"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-08",
-      "source_signal": "Deep dive in TLDR AI; addresses key infra challenge in agentic AI costs.",
-      "recommendation": "GitHub 优化代理工作流中的 token 使用，降低成本。",
-      "summary": "GitHub Copilot 代理工作流改善了代码库质量，但 token 成本上升。团队通过系统优化减少了 token 消耗，并分享了工具和初步结果。",
-      "takeaways": [
-        "自动化优化显著降低隐性成本",
-        "适用于大规模代理部署"
-      ],
-      "topic": "workflow"
-    },
-    {
-      "id": "63d13d7e16c8b804",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Testing Catalog",
-      "title": "Meta prepares Hatch AI Agent with waitlist and social skills",
-      "blurb": "Meta 开发 Hatch AI 代理，集成社交和购物功能。",
-      "link": "https://testingcatalog.com/meta-prepares-hatch-agent-under-waitlist-and-social-media-skills",
-      "canonical_link": "https://testingcatalog.com/meta-prepares-hatch-agent-under-waitlist-and-social-media-skills",
-      "published_at": "2026-05-08T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "agent"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-08",
-      "source_signal": "TLDR AI headline; signals Meta's push into consumer AI agents competing with OpenAI.",
-      "recommendation": "Meta 开发 Hatch AI 代理，集成社交和购物功能。",
-      "summary": "Hatch 是 Meta 的消费级 AI 代理，支持图像/视频生成、购物和学习，深度集成 Instagram 和 Facebook。内部测试将于六月开始，并设等待名单。",
-      "takeaways": [
-        "社交平台深度集成增强用户粘性",
-        "Q4 Instagram 购物工具即将推出"
-      ],
-      "topic": "agent"
-    },
-    {
-      "id": "4484cde3f41f3820",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Perplexity",
-      "title": "Perplexity Brings Personal Computer to Mac",
-      "blurb": "Perplexity Personal Computer 向所有 Mac 用户开放。",
-      "link": "https://perplexity.ai/hub/blog/personal-computer-is-available-to-all-mac-users",
-      "canonical_link": "https://perplexity.ai/hub/blog/personal-computer-is-available-to-all-mac-users",
-      "published_at": "2026-05-08T20:00:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "TLDR AI",
-        "product"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-08",
-      "source_signal": "Quick link in TLDR AI; agent tooling expansion.",
-      "recommendation": "Perplexity Personal Computer 向所有 Mac 用户开放。",
-      "summary": "通过桌面 app，所有 Mac 用户可使用 Personal Computer，AI 代理访问本地文件、应用、连接器和 web。",
-      "takeaways": [
-        "Mac 原生代理访问本地资源",
-        "提升桌面 AI 生产力"
-      ],
-      "topic": "product"
-    },
-    {
-      "id": "c6114c87cddc8b3b",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "antirez",
-      "title": "ds4.c (GitHub Repo)",
-      "blurb": "ds4.c 是 DeepSeek V4 Flash 的轻量本地推理引擎。",
-      "link": "https://github.com/antirez/ds4",
-      "canonical_link": "https://github.com/antirez/ds4",
-      "published_at": "2026-05-08T20:00:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "TLDR AI",
-        "infra"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-08",
-      "source_signal": "Quick link/repo in TLDR AI; lightweight inference engine for DeepSeek model.",
-      "recommendation": "ds4.c 是 DeepSeek V4 Flash 的轻量本地推理引擎。",
-      "summary": "ds4.c 是一个狭窄、小型原生推理引擎，仅支持 Metal（未来或 CUDA）。目标是端到端完整体验，目前 alpha 阶段。",
-      "takeaways": [
-        "本地部署高效简洁",
-        "专注单一模型优化"
-      ],
-      "topic": "infra"
     }
   ]
 }
