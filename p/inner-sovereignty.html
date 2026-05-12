@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一场关于念头、外部干扰、心理边界与内在主权的苏格拉底式对话">
+<title>谁在我里面说话</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --ochre: #E8B830;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 720px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.88;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 999;
+    transition: width 80ms linear;
+    pointer-events: none;
+  }
+
+  .topbar {
+    position: fixed;
+    top: 2px;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250, 246, 238, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229, 221, 208, 0.6);
+  }
+
+  .topbar a {
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  .container {
+    max-width: var(--content-w);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+
+  header .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.28rem;
+    font-weight: 500;
+    line-height: 1.24;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    max-width: 620px;
+  }
+
+  header .subtitle {
+    font-size: 1rem;
+    color: var(--text-2);
+    line-height: 1.92;
+    max-width: 660px;
+  }
+
+  header .meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+    color: var(--text-3);
+  }
+
+  nav.toc {
+    position: fixed;
+    top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 250px));
+    width: 210px;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    z-index: 50;
+  }
+
+  nav.toc a {
+    display: block;
+    padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  nav.toc a:hover,
+  nav.toc a.active {
+    color: var(--text-1);
+    border-color: var(--text-1);
+  }
+
+  .thesis,
+  .takeaway {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+  }
+
+  .thesis { margin-bottom: 72px; }
+  .takeaway { margin: 72px 0 24px; }
+
+  .thesis .thesis-label,
+  .takeaway .thesis-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 14px;
+  }
+
+  .thesis p,
+  .takeaway p {
+    font-size: 1.03rem;
+    line-height: 1.9;
+  }
+
+  .thesis p + p,
+  .takeaway p + p {
+    margin-top: 16px;
+  }
+
+  .thesis strong { color: var(--ochre); }
+  .takeaway strong { color: #8EC5A0; }
+
+  section { margin-bottom: 72px; }
+
+  .section-num {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.52rem;
+    font-weight: 600;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  section > .section-hook {
+    font-size: 0.85rem;
+    color: var(--text-3);
+    margin-bottom: 24px;
+    line-height: 1.62;
+  }
+
+  p {
+    margin-bottom: 18px;
+    font-size: 1rem;
+  }
+
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-2); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .sep {
+    height: 1px;
+    background: var(--border);
+    margin: 72px 0;
+    border: none;
+  }
+
+  blockquote {
+    margin: 28px 0;
+    padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.03);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.96rem;
+    line-height: 1.88;
+  }
+
+  blockquote p { margin-bottom: 0; }
+
+  .note {
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin: 24px 0;
+    font-size: 0.88rem;
+    line-height: 1.82;
+    border-left: 3px solid;
+  }
+
+  .note-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .note-insight { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-ok { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-problem { background: var(--red-bg); border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+
+  .bullet-list {
+    margin: 24px 0;
+    padding-left: 1.2rem;
+  }
+
+  .bullet-list li {
+    margin: 10px 0;
+  }
+
+  .dialogue {
+    display: grid;
+    gap: 18px;
+    margin-top: 28px;
+  }
+
+  .turn {
+    padding: 22px 24px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+  }
+
+  .turn p {
+    margin-bottom: 14px;
+  }
+
+  .turn p:last-child {
+    margin-bottom: 0;
+  }
+
+  .turn-pinyu {
+    background: #F6F0E6;
+  }
+
+  .turn-socrates {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+  }
+
+  .speaker {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+  }
+
+  .turn-pinyu .speaker {
+    background: rgba(184, 134, 74, 0.14);
+    color: var(--amber);
+  }
+
+  .turn-socrates .speaker {
+    background: rgba(27, 63, 139, 0.1);
+    color: var(--accent);
+  }
+
+  .causal {
+    margin: 24px 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: cause;
+  }
+
+  .causal li {
+    counter-increment: cause;
+    position: relative;
+    padding: 8px 0 8px 44px;
+    line-height: 1.78;
+  }
+
+  .causal li::before {
+    content: counter(cause);
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #1A2540;
+    color: #F5F0EB;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .causal li + li {
+    border-top: 1px dashed var(--border);
+  }
+
+  footer {
+    text-align: center;
+    padding: 48px 0 64px;
+    font-size: 0.72rem;
+    color: var(--text-3);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 1120px) {
+    nav.toc { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 640px) {
+    header h1 { font-size: 1.82rem; }
+    .thesis,
+    .takeaway { padding: 28px 24px; }
+    blockquote { padding: 16px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+
+<div class="topbar">
+  <a href="/" class="home-link">← pinyu.ai</a>
+</div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">对话摘要</a>
+  <a href="#opening">念头真是你的吗</a>
+  <a href="#voice">比念头更小的单位</a>
+  <a href="#upstream">下游急救和上游治理</a>
+  <a href="#rhythm">真正的污染是节奏</a>
+  <a href="#questions">谁定义你的问题</a>
+  <a href="#customs">内心需要海关</a>
+  <a href="#practice">撤销居留权</a>
+  <a href="#summary">一句带走</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Inner Sovereignty × Socratic Dialogue</div>
+    <h1>谁在我里面说话</h1>
+    <p class="subtitle">一场关于念头、外部干扰、心理边界与内在主权的苏格拉底式对话</p>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.05</span>
+    </div>
+  </header>
+
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">对话摘要</div>
+    <p>“和念头保持距离”当然有用。但它处理的是已经闯进屋里的念头。更底层的问题是：这些念头为什么总能进来？</p>
+    <p><strong>自由从这里开始：重新决定谁有资格在你里面说话。</strong></p>
+  </div>
+
+  <section id="opening">
+    <div class="section-num">00</div>
+    <h2>念头真是你的吗</h2>
+    <p class="section-hook">从一个看似温和的心理技术开始拆</p>
+
+    <div class="dialogue">
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>我以前一直觉得，“和自己的念头保持距离”很有限。它像一种温柔的自我管理，能让我不被念头卷走，但总觉得不够。</p>
+        <p>现在我突然意识到，很多需要保持距离的念头，其实是外部干扰制造出来的。那为什么还要一直对念头做功？是不是更应该隔绝其它人？</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>你一上来就用了一个危险的词：“自己的念头”。</p>
+        <p>我想先问你：一个念头出现在你脑中，就能算是你的吗？</p>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>不能。很多念头像是我在想，其实只是我被某些东西触发了。比如看见别人进展很快，我脑子里就冒出“我是不是落后了”。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>那这句话是你的吗，还是某个看不见的排行榜借你的嘴说话？</p>
+        <p>注意，这里问题已经变了。原来的问题是：“我如何不被这个念头控制？”现在的问题是：“这个念头凭什么有资格进入我的内心法庭？”</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="voice">
+    <div class="section-num">01</div>
+    <h2>比念头更小的单位，是声音</h2>
+    <p class="section-hook">念头表面上是句子，深处常常是一个说话者</p>
+
+    <div class="dialogue">
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>你说“内心法庭”，这很准。很多时候，我以为自己在想，其实已经站上了被告席。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>审判一定有法官。你可以把一个强念头拆开看。</p>
+        <blockquote>
+          <p>“我不够快。”<br>谁要求你快？<br>“我不够成功。”<br>谁发明了这张成绩单？<br>“别人会怎么看我？”<br>这个“别人”究竟坐在哪里？</p>
+        </blockquote>
+        <p>念头像一张传票。真正值得查的，是谁签发了它。</p>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>所以 mindfulness 让我说：“这个念头不等于我。”但还可以继续问：“这个念头是谁的声音？”</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>对。第一句让你从念头里退出来。第二句让你追到念头的社会来源。</p>
+        <p>一个念头可能来自父母的期待，来自行业的默认标准，来自朋友无意间的比较，来自社交媒体训练出来的速度，也可能来自一个你早就不尊敬、但仍然害怕的人。</p>
+        <p>狡猾的地方在这里：有些声音失去了现实中的权力，却继续在你里面占着办公室。</p>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>这很阴险。人走了，办公室还在。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>而且它还会使用你的语气。最难清除的外部声音，听起来往往很像你自己。</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="upstream">
+    <div class="section-num">02</div>
+    <h2>下游急救和上游治理</h2>
+    <p class="section-hook">不要每天拖地，却不问水从哪里漏进来</p>
+
+    <div class="dialogue">
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>那“和念头保持距离”是不是太下游了？</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>它在下游，仍然有用。一个念头已经把你抓住时，你需要急救。ACT 里的认知解离，佛教里的观照，都能帮你多出一点空间。</p>
+        <p>但如果每天早上醒来，屋里都有一地水，你不能只赞美拖把。</p>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>要找漏水点。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>更准确：要找供水系统。</p>
+        <p>有些念头会稳定漏进来，因为背后有一套环境在持续生产它。你反复刷一个平台，反复见一类人，反复进入某个比较场，它就会稳定地产出同一种焦虑。</p>
+        <ul class="causal">
+          <li>输入制造比较</li>
+          <li>比较制造内在观众</li>
+          <li>内在观众制造自我审判</li>
+          <li>自我审判伪装成“我的念头”</li>
+        </ul>
+        <p>你以为自己在和念头搏斗，其实是在和一个上游工厂搏斗。</p>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>那隔绝其它人就有道理了。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>慢一点。你说“隔绝其它人”，听起来像把所有人赶出去。可你真正想挡住的，可能是未经授权的心理写入。人只是载体。</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="rhythm">
+    <div class="section-num">03</div>
+    <h2>真正的污染是节奏</h2>
+    <p class="section-hook">内容会过期，节奏会留下来</p>
+
+    <div class="dialogue">
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>我以前总把外部干扰理解成内容污染：谁说了什么、我看见了什么、哪句话刺激到我。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>内容污染当然存在。但还有更隐蔽的一层：节奏污染。</p>
+        <p>一个平台真正改变你的地方，未必在观点；它会训练你用某种速度活着。快速判断，快速比较，快速兴奋，快速厌倦。慢一点的东西开始显得无聊，含混的东西开始显得可疑，长期的东西开始显得不划算。</p>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>所以污染发生在速度层。我被调速了。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>对。很多人的心智先被调速，之后才替那种速度找理由。</p>
+        <p>这比观点更危险。观点还可以辩论，节奏会直接改变你觉得什么值得忍受。你不再能忍受慢熟的关系、长周期的作品、不立刻产生反馈的思考。然后你说：“我最近很浮躁。”</p>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>但浮躁不是我的性格，可能是我的时间感被外部系统接管了。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>这句话比“我要更自律”有用。自律常常还在责备自己，节奏治理才开始处理环境。</p>
+        <div class="note note-insight">
+          <div class="note-label">换一个问题</div>
+          <p>先别急着问“我为什么分心”。问：“我最近让哪些系统训练了我的时间感？”</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="questions">
+    <div class="section-num">04</div>
+    <h2>谁定义你的问题</h2>
+    <p class="section-hook">最高级的控制，会把困扰本身塞给你</p>
+
+    <div class="dialogue">
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>我感觉有一类干扰特别深。它没有逼我相信某个答案，却让我一直围绕某些问题打转。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>说说看。</p>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>比如“我是不是成功”“我是不是落后”“我是不是有影响力”“别人会不会觉得我不够聪明”。我哪怕反驳它，也还是在它的坐标系里。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>这就是更深的地方。谁能规定你焦虑什么，谁就已经部分拥有了你的心智。</p>
+        <p>一个问题进入你以后，会迫使你把精力投入它。你可以回答“是”，可以回答“不是”，可以写长文反驳它。可你还在向它缴税。</p>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>所以有些问题本身就应该被拒绝，根本别进入答题环节。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>正是。内在主权的第一步，是拿回提问权。答案可以晚一点。</p>
+        <blockquote>
+          <p>“我是不是比同龄人快？”<br>也许根本不是你的问题。<br>“我是否正在建造一个值得长期居住的生活？”<br>这可能才是你的问题。</p>
+        </blockquote>
+        <p>有些自由要从拒绝某个问题开始，答案救不了你。</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="customs">
+    <div class="section-num">05</div>
+    <h2>内心需要海关</h2>
+    <p class="section-hook">成熟的边界更像入境审查</p>
+
+    <div class="dialogue">
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>如果这样看，“隔绝其它人”这句话还是太粗了。它容易变成一种反社会的姿态。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>而且它有点偷懒。把所有人都挡在外面，当然减少干扰，但也减少校准、亲密、营养。</p>
+        <p>免疫系统不会拒绝一切外物。它要区分食物、共生菌和病原体。你的内心也一样。</p>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>那该怎么分类？</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>不要先按“喜欢不喜欢”分。喜欢很容易被骗。按它对你心智的长期效果分。</p>
+        <ul class="bullet-list">
+          <li>入侵者：让你反复自证、比较、羞耻，离开后还在脑内继续审判你。</li>
+          <li>噪音源：没有恶意，但持续稀释你的注意力，把你的内在时间切碎。</li>
+          <li>校准者：有时让你不舒服，却让你更清醒，更接近真实问题。</li>
+          <li>滋养者：让你恢复诚实、稳定和创造力，不需要靠表演维持关系。</li>
+        </ul>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>所以重点落在门槛上：谁能进入我的判断系统。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>是。你可以开放地爱人，但严格地授权声音。</p>
+        <p>有人可以出现在你的生活里，不代表他可以坐进你的内心法庭。有人可以给你反馈，不代表他可以定义你的价值。有人可以指出你的错误，不代表他可以拥有你的羞耻。</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="practice">
+    <div class="section-num">06</div>
+    <h2>撤销居留权</h2>
+    <p class="section-hook">审查念头的签证</p>
+
+    <div class="dialogue">
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>说到这里，我想要一个真正可操作的方法。不要太鸡汤，最好有点像审讯。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>那就叫“念头考古”。一个强念头出现时，不要急着安抚它，先审它。</p>
+        <ul class="causal">
+          <li>原文：把念头逐字写下来，不要美化。比如“我必须更快证明自己”。</li>
+          <li>声源：这句话像谁说的？来自哪个人、圈子、平台、时代叙事？</li>
+          <li>授权：我是否真的承认这个声源有资格审判我？如果没有，它为什么还在？</li>
+          <li>塑形：如果我长期服从它，我会变成更自由的人，还是更好比较、更好操控的人？</li>
+          <li>处置：保留、降权、隔离，还是撤销居留权。</li>
+        </ul>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>“撤销居留权”这个说法很准。这个念头以后还会来；关键是，它没有合法身份。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>对。你不需要证明它荒谬，也不需要和它辩论到赢。</p>
+        <p>有些念头最想要的就是庭审。只要你认真反驳它，它就获得了地位。更锋利的动作是：你不是我的问题。你没有资格开庭。</p>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>这比“保持距离”更狠。保持距离还是承认它在场，撤销居留权是取消它的制度位置。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>但别把它用成自我封闭。最狡猾的逃避也会伪装成主权。</p>
+        <div class="note note-problem">
+          <div class="note-label">危险版本</div>
+          <p>凡是让我不舒服的反馈，都是外部干扰；凡是指出我盲点的人，都是未经授权的声音。这样做没有主权，只剩一座监狱。</p>
+        </div>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>那怎么区分干扰和校准？</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>看它最终让你更清楚，还是更混乱；更能行动，还是更想自证；更接近事实，还是更沉迷观众。</p>
+        <p>好的校准会让你疼一下，然后变清醒。坏的干扰会让你兴奋或羞耻很久，但什么也看不清。</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="summary">
+    <div class="section-num">07</div>
+    <h2>最后，真的有一个纯粹的自己吗</h2>
+    <p class="section-hook">自由是在影响中选择塑造者</p>
+
+    <div class="dialogue">
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>如果很多念头都来自外部，那是不是应该追求一个纯粹的、不受影响的自己？</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>这个想法很诱人，但它可能是另一种幻觉。</p>
+        <p>人并不会先带着一个完整的自己出现，再被外界污染。很多时候，所谓“我”本来就是由关系、语言、榜样、创伤、阅读、身体状态和长期承诺一点点生成的。</p>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>所以问题从“保护纯粹自我”变成了“挑选参与生成我的东西”。</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>这才是成熟版本。</p>
+        <p>完全不受影响并不自由，反而贫瘠。自由是我知道自己会被塑造，所以我更谨慎地选择塑造者。</p>
+      </div>
+
+      <div class="turn turn-pinyu">
+        <div class="speaker">pinyu</div>
+        <p>如果压成一句话呢？</p>
+      </div>
+
+      <div class="turn turn-socrates">
+        <div class="speaker">苏格拉底</div>
+        <p>可以这样说：<strong>和念头保持距离还不够；还要和制造这些念头的系统保持距离。</strong></p>
+        <p>再往深一点：<strong>不要把每个出现在你里面的声音，都误认为自己。</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="takeaway">
+    <div class="thesis-label">一句带走</div>
+    <p>念头出现，不等于它属于你；声音进入，不等于它被授权。</p>
+    <p><strong>内在主权，是重新决定谁有资格在你里面说话。</strong></p>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', function() {
+  var h = document.documentElement;
+  var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+var toc = document.getElementById('toc');
+if (toc) {
+  var links = Array.from(toc.querySelectorAll('a'));
+  var targets = links.map(function(a) {
+    return document.querySelector(a.getAttribute('href'));
+  }).filter(Boolean);
+
+  var update = function() {
+    var current = '';
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].getBoundingClientRect().top <= 140) current = targets[i].id;
+    }
+    links.forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
