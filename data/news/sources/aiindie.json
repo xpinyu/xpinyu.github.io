@@ -4,125 +4,176 @@
     "name": "AI Indie Hacker Signals",
     "type": "aiindie",
     "refresh_hours": 24,
-    "updated_at": "2026-05-11T18:31:43.699+08:00",
-    "item_count": 15,
-    "window_start": "2026-05-10T06:31:43.699Z",
-    "window_end": "2026-05-11T10:31:43.699Z"
+    "updated_at": "2026-05-12T19:48:29.173+08:00",
+    "item_count": 10,
+    "window_start": "2026-05-11T07:48:29.173Z",
+    "window_end": "2026-05-12T11:48:29.173Z"
   },
   "items": [
     {
-      "id": "86524c1adea13112",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@yihui_indie",
-      "title": "讨教管理增长AI SKILL和Claude Code与Codex同步方案",
-      "blurb": "作者公开询问两个痛点：如何管理日益增长的AI技能库；如何高效同步Claude Code和Codex之间的技能。反映高级AI用户在多模型环境下技能积累与迁移的实际挑战。帖子引发9条回复，显示社区活跃讨论。 捕捉AI工作流规模化痛点，潜在回复提供技能管理系统或同步工具推荐，对追求杠杆的AI indie hacker有参考价值。",
-      "link": "https://x.com/yihui_indie/status/2053776081497510296",
-      "canonical_link": "https://x.com/yihui_indie/status/2053776081497510296",
-      "published_at": "2026-05-11T17:55:49.000+08:00",
-      "score": 8,
-      "tags": [
-        "workflow",
-        "tooling",
-        "agent"
-      ]
-    },
-    {
-      "id": "49a2247b456d79b8",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@yihui_indie",
-      "title": "Claude Code在写内容+工具调用上强于Codex",
-      "blurb": "作者当天体感分享：Claude Code在内容生成结合工具调用任务上明显优于Codex。简短实测对比，突出实际使用差异。 提供模型选择实证，帮助AI开发者基于任务匹配工具，避免通用假设，提升编码代理性能。",
-      "link": "https://x.com/yihui_indie/status/2053774191166657011",
-      "canonical_link": "https://x.com/yihui_indie/status/2053774191166657011",
-      "published_at": "2026-05-11T17:48:19.000+08:00",
-      "score": 7,
-      "tags": [
-        "agent",
-        "automation",
-        "prompt"
-      ]
-    },
-    {
-      "id": "00661d5673679bc4",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@yihui_indie",
-      "title": "帮学员解决AI网页样式问题：提示词需指定CSS和shadcn/ui",
-      "blurb": "作者在会员群帮助学员解决AI生成网页始终默认HTML样式、无美化效果的问题。学员描述为'黑白改彩色'无效，实际只需提示中添加'请添加 CSS 样式，并使用合适的 shadcn/ui 组件'即可解决。强调Vibe Coding学习卡点在于如何精确向AI描述问题，而非AI使用本身，并推广其AI编程课程和群支持价值。 揭示AI编程中提示工程的精确性对输出质量的影响，帮助AI独立开发者快速诊断并优化prompt，避免无效迭代，提升开发效率。",
-      "link": "https://x.com/yihui_indie/status/2053773801658479019",
-      "canonical_link": "https://x.com/yihui_indie/status/2053773801658479019",
-      "published_at": "2026-05-11T17:46:46.000+08:00",
-      "score": 9,
-      "tags": [
-        "prompt",
-        "workflow",
-        "tooling"
-      ]
-    },
-    {
-      "id": "7656404621295b74",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@tibo_maker",
-      "title": "90天SEO冲刺手册，3000+人下载",
-      "blurb": "分享完整90天SEO playbook，直接喂给Claude/Codex执行。周周分解任务，帮助网站被AI提及。强调SEO是AI时代流量基础，已有3000+下载。 为AI产品提供可执行的SEO增长框架，提高被AI搜索引擎提及的机会。证明具体 playbook的高杠杆性和受欢迎度。",
-      "link": "https://x.com/tibo_maker/status/2053769665139089754",
-      "canonical_link": "https://x.com/tibo_maker/status/2053769665139089754",
-      "published_at": "2026-05-11T17:30:20.000+08:00",
-      "score": 9,
-      "tags": [
-        "seo",
-        "content",
-        "distribution",
-        "growth"
-      ]
-    },
-    {
-      "id": "91f0f8073f89f339",
+      "id": "2ed44a096c3dd1a1",
       "source_id": "aiindie",
       "source_name": "AI Indie Hacker Signals",
       "source_type": "aiindie",
       "platform": "X",
       "author": "@levelsio",
-      "title": "VPS + Claude Code远程AI编码工作流",
-      "blurb": "levelsio分享在Hetzner VPS上安装Claude Code，通过Termius SSH/Tmux远程编码，避免笔记本电池消耗。即使断开连接也能持续运行，直接编辑服务器代码，速度极快。推荐用VPS作为staging/测试环境，非所有人适合直接编辑生产。手机也能接续工作。 提供AI独立黑客的高效远程开发杠杆，解决本地AI编码痛点，提升生产力和移动性。通过真实细节展示可重复工作流。",
-      "link": "https://x.com/levelsio/status/2053769493604597938",
-      "canonical_link": "https://x.com/levelsio/status/2053769493604597938",
-      "published_at": "2026-05-11T17:29:39.000+08:00",
+      "title": "用Claude + Xero API自动化收集发票，简化会计痛点",
+      "blurb": "levelsio分享业务中最烦人环节：每月收集数十个供应商发票，常需手动登录网站处理2FA和下载PDF。他创建Xero API密钥，让Claude登录管理费用，并拖拽PDF自动匹配。下步计划让Claude自主登录供应商下载发票，大幅降低SaaS依赖和账务时间。 展示AI如何自动化独立黑客的核心运营痛点，提高利润率并减少手动劳动，对多产品运营者有高杠杆价值。",
+      "link": "https://x.com/levelsio/status/2054158385742823894",
+      "canonical_link": "https://x.com/levelsio/status/2054158385742823894",
+      "published_at": "2026-05-12T19:14:58.000+08:00",
       "score": 9,
       "tags": [
         "workflow",
-        "automation",
-        "tooling"
+        "automation"
       ]
     },
     {
-      "id": "a6062ea2c3b4f195",
+      "id": "83293969f7c46d0b",
       "source_id": "aiindie",
       "source_name": "AI Indie Hacker Signals",
       "source_type": "aiindie",
       "platform": "X",
-      "author": "@SimonHoiberg",
-      "title": "Systems > prompts: Mission Control for autonomous AI workflows",
-      "blurb": "Simon Hoiberg分享了他的AI工具栈：快速回答用ChatGPT，立即执行用Codex，系统任务用Mission Control。他强调构建自主运行的系统比每次手动提示更有效，并赞扬Mission Control允许AI真正为你工作。该观点源于尝试AI支持代理的讨论，突出系统化AI的重要性。 对AI独立黑客而言，这提供了从单次提示向自主代理系统的升级路径，帮助自动化支持、任务创建等运维工作，大幅提升solo运营杠杆和效率。",
-      "link": "https://x.com/SimonHoiberg/status/2053761636993753368",
-      "canonical_link": "https://x.com/SimonHoiberg/status/2053761636993753368",
-      "published_at": "2026-05-11T16:58:25.000+08:00",
+      "author": "@tdinh_me",
+      "title": "TypingMind原生支持12个LLM提供商，可并行聊天",
+      "blurb": "TypingMind新增对12个LLM提供商的原生支持，用户可同时与多个模型聊天。功能提升工具的多模型兼容性和并行测试能力。该更新优化AI工作流，方便开发者切换和比较模型。 多模型支持降低锁定风险，提供并行聊天杠杆，帮助AI黑客优化提示和评估。",
+      "link": "https://x.com/tdinh_me/status/2054148304293056657",
+      "canonical_link": "https://x.com/tdinh_me/status/2054148304293056657",
+      "published_at": "2026-05-12T18:34:54.000+08:00",
+      "score": 8,
+      "tags": [
+        "tooling",
+        "agent",
+        "prompt"
+      ]
+    },
+    {
+      "id": "239161966f16b029",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@pbteja1998",
+      "title": "Mission Control AI代理获专用邮箱，可读写回复邮件",
+      "blurb": "Mission Control耗12k行代码后，为每个AI代理分配独立邮箱，支持读写、发送、回复、草稿和升级邮件等全功能。代理接近人类队友水平，可自主处理邮件流程。该更新极大扩展代理自治能力。 代理邮箱是关键里程碑，提升AI团队自动化支持/销售，减少人为干预。",
+      "link": "https://x.com/pbteja1998/status/2054104359408140450",
+      "canonical_link": "https://x.com/pbteja1998/status/2054104359408140450",
+      "published_at": "2026-05-12T15:40:17.000+08:00",
+      "score": 9,
+      "tags": [
+        "agent",
+        "automation",
+        "workflow"
+      ]
+    },
+    {
+      "id": "ccab682fc010bc83",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@marclou",
+      "title": "AI在飞机上为DataFast CLI添加漏斗分析功能",
+      "blurb": "marclou用AI为DataFast构建CLI工具，支持查询收入、页面、引荐、漏斗等全指标，并管理账户设置。最新AI自主添加漏斗功能，即使他在3万英尺高空飞行中也完成发货。CLI覆盖UI所有功能，提升终端工作流效率。 证明AI可远程高效发货复杂功能，帮助独立黑客加速产品迭代并构建高杠杆CLI工具。",
+      "link": "https://x.com/marclou/status/2054087451325726784",
+      "canonical_link": "https://x.com/marclou/status/2054087451325726784",
+      "published_at": "2026-05-12T14:33:06.000+08:00",
+      "score": 8,
+      "tags": [
+        "build",
+        "workflow",
+        "tooling"
+      ]
+    },
+    {
+      "id": "7a465450bedd99ee",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@damengchen",
+      "title": "streetinterview.ai新增オフカメラ采访者选项",
+      "blurb": "streetinterview.ai添加オフカメラ采访者功能，只显示麦克风和受访者，提升视频专业感。该AI工具快速迭代用户反馈，优化街头采访输出。 展示AI内容工具的快速特征发货，适用于增长内容循环。",
+      "link": "https://x.com/damengchen/status/2054075246446313838",
+      "canonical_link": "https://x.com/damengchen/status/2054075246446313838",
+      "published_at": "2026-05-12T13:44:36.000+08:00",
+      "score": 7,
+      "tags": [
+        "build",
+        "automation",
+        "content"
+      ]
+    },
+    {
+      "id": "1e233ebd900050b4",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@ailiangzi",
+      "title": "去哪里发布你的新产品？100+个启动平台列表",
+      "blurb": "分享100+个初创产品发布平台列表，包括Product Hunt、Indie Hackers、BetaList、Futurepedia等AI工具目录。覆盖launch目录、SaaS列表、AI专区。帮助快速曝光产品。 indie hacker launch关键在distribution，此列表提供全面低成本渠道选项，避免盲目搜索，提高首周用户获取效率。",
+      "link": "https://x.com/ailiangzi/status/2053997603868790790",
+      "canonical_link": "https://x.com/ailiangzi/status/2053997603868790790",
+      "published_at": "2026-05-12T08:36:04.000+08:00",
+      "score": 8,
+      "tags": [
+        "distribution",
+        "launch"
+      ]
+    },
+    {
+      "id": "71ae17a325d4e5fd",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@czue",
+      "title": "Claude writes API, QA-Claude bugs it via evolving SKILL.md file",
+      "blurb": "作者让Claude编写API，然后用另一个Claude实例进行QA测试，发现bug并反馈。dev-Claude阅读反馈修复代码，或指出QA-Claude错误，仅通过SKILL.md文件沟通，这个文件持续改进成为关键输出，用于AI间协作。作者称这已成为编程常态，彻底改变工作方式。 展示了AI代理自主协作构建API的实战方法，帮助独立黑客加速开发复杂功能，减少人力依赖，提升solo构建杠杆。",
+      "link": "https://x.com/czue/status/2053906025343021071",
+      "canonical_link": "https://x.com/czue/status/2053906025343021071",
+      "published_at": "2026-05-12T02:32:10.000+08:00",
       "score": 9,
       "tags": [
         "workflow",
         "agent",
         "automation"
+      ]
+    },
+    {
+      "id": "8c7fa6de051b4e24",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@xiongchun007",
+      "title": "Anthropic 官方出 Claude Code 的 IDEA 插件",
+      "blurb": "Anthropic 发布了 Claude Code 的官方 IntelliJ IDEA 插件，可在 IDEA Marketplace 直接搜索安装。插件支持在 IDEA 中选中代码行与 Claude 进行上下文交互，避免代码在 IDE 和终端间的反复复制粘贴。该工具显著提升 AI 辅助编码效率，附带安装截图。 对 AI 独立开发者而言，这是一个无缝集成的 AI 编码工作流工具，能减少上下文切换，提高开发速度和生产力。特别是在使用 Cl…",
+      "link": "https://x.com/xiongchun007/status/2053847194965528925",
+      "canonical_link": "https://x.com/xiongchun007/status/2053847194965528925",
+      "published_at": "2026-05-11T22:38:24.000+08:00",
+      "score": 7,
+      "tags": [
+        "workflow",
+        "tooling"
+      ]
+    },
+    {
+      "id": "4d3d39f840a9385f",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@AlchainHust",
+      "title": "Google DeepMind研究员姚顺宇：90%以上代码AI生成，但禁用Claude Code",
+      "blurb": "张小珺访谈DeepMind的姚顺宇，他透露90-100%的代码由AI生成。公司禁止使用Claude Code和CodeX，导致员工效率受影响。顶级研究员高度依赖AI编码，普通开发者无需自卑。 揭示大厂AI编码实际渗透率极高，但政策壁垒明显，为indie hacker提供信心：专注构建高效AI编码栈可超越大厂限制，抓住个人化工具机会。",
+      "link": "https://x.com/AlchainHust/status/2053843325892096477",
+      "canonical_link": "https://x.com/AlchainHust/status/2053843325892096477",
+      "published_at": "2026-05-11T22:23:02.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow"
       ]
     },
     {
@@ -132,169 +183,15 @@
       "source_type": "aiindie",
       "platform": "X",
       "author": "@inkdrop_app",
-      "title": "🎬 New video: Explore Zed's source code to learn how to support multiple AI providers 💪",
-      "blurb": "独立开发者Takuya发布了新视频，深入探索Zed代码编辑器的源代码，讲解如何实现对多个AI提供商的支持。视频包含实际演示，帮助开发者理解多AI集成架构。分享了从开源项目中学习的实用技巧，适用于构建AI增强工具。 对AI独立黑客而言，这提供具体、可复制的多LLM提供商集成方法，提升产品灵活性和用户体验，避免单一依赖风险。",
+      "title": "New video: Explore Zed source code for multi-AI provider support",
+      "blurb": "发布了新视频，深入Zed编辑器源代码，讲解如何实现多AI提供商支持。视频展示具体代码实现，帮助开发者学习集成细节。适用于构建AI增强工具的独立开发者。 提供开源代码学习路径，指导产品如何兼容多AI模型，提升工具通用性和用户留存。",
       "link": "https://x.com/inkdrop_app/status/2053759833032343857",
       "canonical_link": "https://x.com/inkdrop_app/status/2053759833032343857",
       "published_at": "2026-05-11T16:51:15.000+08:00",
       "score": 8,
       "tags": [
         "tooling",
-        "workflow",
-        "automation"
-      ]
-    },
-    {
-      "id": "24f54d4207dc6cab",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@SimonHoiberg",
-      "title": "Support rule: Stop listening if users threaten bad reviews",
-      "blurb": "Simon Hoiberg有一个简单客服规则：如果用户以差评威胁，就停止回应，即使他们是对的。用户可自由发表评论，但不能用作谈判筹码。此规则帮助独立开发者维护时间边界，避免无效争执。 独立黑客常遇难缠客户，此规则提供清晰决策框架，保护核心时间用于构建与增长，提升retention和心理健康。",
-      "link": "https://x.com/SimonHoiberg/status/2053742017444745520",
-      "canonical_link": "https://x.com/SimonHoiberg/status/2053742017444745520",
-      "published_at": "2026-05-11T15:40:28.000+08:00",
-      "score": 8,
-      "tags": [
-        "retention",
-        "business",
-        "strategy"
-      ]
-    },
-    {
-      "id": "fcbe1ea1563f9b48",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@damengchen",
-      "title": "streetinterview.ai更新支持Seedance 2.0、Veo 3.1和Grok Imagine",
-      "blurb": "推送streetinterview.ai更新，现在支持最新AI视频模型Seedance 2.0、Veo 3.1和Grok Imagine。展示生成视频真实度极高。 展示AI工具快速迭代跟进前沿模型的执行力，帮助开发者洞察视频生成趋势和集成实践。",
-      "link": "https://x.com/damengchen/status/2053718815016689885",
-      "canonical_link": "https://x.com/damengchen/status/2053718815016689885",
-      "published_at": "2026-05-11T14:08:16.000+08:00",
-      "score": 8,
-      "tags": [
-        "build",
-        "tooling",
-        "automation"
-      ]
-    },
-    {
-      "id": "8482ffd4f8d7cdc3",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@ruiyanghim",
-      "title": "Codex 0.130.0 版本重度用户痛点修复解析",
-      "blurb": "Codex 0.130.0 版本优化了插件发现性和分享机制，支持bundled hooks和link metadata，提升插件管理。新增codex remote-control简化远程app-server启动，并处理长线程分页、补丁失败后diff准确等工程痛点。bug修复确保live threads配置实时更新和ThreadStore稳定性，减少长期使用摩擦。 为AI编码工具重度用户提供具体迭代信号，帮助indie hacker优化…",
-      "link": "https://x.com/ruiyanghim/status/2053710119230414883",
-      "canonical_link": "https://x.com/ruiyanghim/status/2053710119230414883",
-      "published_at": "2026-05-11T13:33:43.000+08:00",
-      "score": 9,
-      "tags": [
-        "tooling",
         "workflow"
-      ]
-    },
-    {
-      "id": "0cfb526d83192a28",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@op7418",
-      "title": "guizang-ppt-skill 更新：瑞士国际主义风格、Codex 配图接入、多平台封面生成",
-      "blurb": "开源 guizang-ppt-skill 更新，新增瑞士风 B 风格，包括克莱因蓝等四套主题色和 22 种具名版式如 Cover、KPI Tower 等。接入 Codex GPT-Image 2.0 自动生成风格一致配图，并支持公众号、小红书等多平台封面生成。分享 7 条设计纪律硬编码到 Skill，如单一锚点色、极致字号对比、直角纯色等，实现人-AI 协作内容链路闭环。解释拒绝 PPTX 导出因 ROI 低，并展示胶片质感对抗 AI…",
-      "link": "https://x.com/op7418/status/2053657613460771142",
-      "canonical_link": "https://x.com/op7418/status/2053657613460771142",
-      "published_at": "2026-05-11T10:05:04.000+08:00",
-      "score": 9,
-      "tags": [
-        "build",
-        "tooling",
-        "workflow",
-        "content",
-        "automation"
-      ]
-    },
-    {
-      "id": "6f20d51a681f101c",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@Shpigford",
-      "title": "Initial Commit Club周末后160+构建者加入，即将大量添加AI内容",
-      "blurb": "作者更新其构建者社区Initial Commit Club：周五推出后周末家庭出行，现160+人加入。计划赶上Discord讨论，并大量添加独家AI内容到资源库。 展示indie hacker社区快速增长路径和内容迭代策略，提及AI内容扩展，对AI builder网络构建有借鉴。",
-      "link": "https://x.com/Shpigford/status/2053641936104214703",
-      "canonical_link": "https://x.com/Shpigford/status/2053641936104214703",
-      "published_at": "2026-05-11T09:02:47.000+08:00",
-      "score": 6,
-      "tags": [
-        "growth",
-        "content",
-        "strategy"
-      ]
-    },
-    {
-      "id": "562f42127d214a82",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@marclou",
-      "title": "Security Sunday：AI扫描DataFast & TrustMRR安全漏洞",
-      "blurb": "跟随@tdinh_me，使用AI扫描DataFast和TrustMRR代码，发现大量非关键但真实安全问题。效果很好。 验证AI代码审计工具的实际杠杆，帮助indie hacker自动化安全维护，减少手动审查。",
-      "link": "https://x.com/marclou/status/2053598910061617433",
-      "canonical_link": "https://x.com/marclou/status/2053598910061617433",
-      "published_at": "2026-05-11T06:11:48.000+08:00",
-      "score": 7,
-      "tags": [
-        "workflow",
-        "tooling",
-        "automation"
-      ]
-    },
-    {
-      "id": "06673a0e721b7997",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@benshandebiao",
-      "title": "Codex App 过夜任务与自动化PR-CR循环",
-      "blurb": "Codex App 支持长时间任务持续运行过夜，无需额外技巧，且Automations可创建定时循环检查PR Code Review建议，直至可合并。新流程：AI写代码提交PR，触发AI CR，再自动化修复迭代。取代了以往Claude Code等持续运行的hack。 展示AI代理在dev pipeline的全自动化杠杆，减少人为干预，对solo builder加速产品迭代和质量控制至关重要。",
-      "link": "https://x.com/benshandebiao/status/2053499433275498519",
-      "canonical_link": "https://x.com/benshandebiao/status/2053499433275498519",
-      "published_at": "2026-05-10T23:36:31.000+08:00",
-      "score": 9,
-      "tags": [
-        "workflow",
-        "automation",
-        "tooling"
-      ]
-    },
-    {
-      "id": "b2c196a77450e648",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@marclou",
-      "title": "TrustMRR上AI音乐生成器$100/m以$3000售出",
-      "blurb": "公告AI音乐生成器LoveTunesAI在TrustMRR被收购，从生日歌工具到$100/m，售$3000。构建者@ritiksharmarj分享学习。 提供低MRR AI产品快速变现案例，展示微SaaS收购路径和市场反馈。",
-      "link": "https://x.com/marclou/status/2053494790319435886",
-      "canonical_link": "https://x.com/marclou/status/2053494790319435886",
-      "published_at": "2026-05-10T23:18:04.000+08:00",
-      "score": 7,
-      "tags": [
-        "monetization",
-        "launch",
-        "business"
       ]
     }
   ]
