@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="福柯追问：知识、规训与日常制度，怎样一步步塑造出现在这个你。">
+<title>消失的人</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --ink: #1A1714;
+    --muted: #5C5349;
+    --faint: #7B7166;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --deep: #18213A;
+    --gold: #B8864A;
+    --gold-bg: #F6EBD8;
+    --green: #4A8060;
+    --green-bg: #E7F1EA;
+    --red: #B84A3A;
+    --red-bg: #F7E9E5;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 740px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  #progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: var(--accent);
+    z-index: 999;
+    pointer-events: none;
+    transition: width 80ms linear;
+  }
+
+  .topbar {
+    position: fixed;
+    top: 2px;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 10px 24px;
+    background: rgba(250, 246, 238, 0.86);
+    border-bottom: 1px solid rgba(229, 221, 208, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-size: 0.72rem;
+  }
+
+  .topbar a {
+    color: var(--faint);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .topbar a:hover { color: var(--ink); }
+
+  .container {
+    max-width: var(--content-w);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header {
+    padding: 104px 0 50px;
+    margin-bottom: 58px;
+    border-bottom: 1px solid var(--border);
+    animation: enter 0.55s ease both;
+  }
+
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+
+  .eyebrow {
+    margin-bottom: 20px;
+    color: var(--faint);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 620px;
+    margin-bottom: 22px;
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+  }
+
+  .subtitle {
+    max-width: 680px;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.92;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    margin-top: 28px;
+    color: var(--faint);
+    font-size: 0.75rem;
+  }
+
+  nav.toc {
+    position: fixed;
+    top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 250px));
+    width: 210px;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    z-index: 50;
+  }
+
+  nav.toc a {
+    display: block;
+    padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--faint);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  nav.toc a:hover,
+  nav.toc a.active {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .thesis,
+  .takeaway {
+    margin-bottom: 70px;
+    padding: 36px 40px;
+    border-radius: 16px;
+    background: var(--deep);
+    color: #F7F0E8;
+  }
+
+  .takeaway { margin: 78px 0 26px; }
+
+  .label {
+    margin-bottom: 14px;
+    color: rgba(247, 240, 232, 0.52);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .thesis p,
+  .takeaway p {
+    font-size: 1.03rem;
+    line-height: 1.9;
+  }
+
+  .thesis p + p,
+  .takeaway p + p { margin-top: 16px; }
+
+  .thesis strong { color: #E8B830; }
+  .takeaway strong { color: #93C8A5; }
+
+  section { margin-bottom: 74px; }
+
+  .section-num {
+    margin-bottom: 8px;
+    color: var(--faint);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin-bottom: 8px;
+    font-family: var(--serif);
+    font-size: 1.58rem;
+    font-weight: 600;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+  }
+
+  .section-hook {
+    margin-bottom: 24px;
+    color: var(--faint);
+    font-size: 0.85rem;
+    line-height: 1.62;
+  }
+
+  p {
+    margin-bottom: 18px;
+    font-size: 1rem;
+  }
+
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 650; }
+  em { color: var(--muted); font-style: italic; }
+
+  .sep {
+    height: 1px;
+    margin: 72px 0;
+    border: 0;
+    background: var(--border);
+  }
+
+  blockquote {
+    margin: 28px 0;
+    padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    background: rgba(27, 63, 139, 0.04);
+    color: var(--muted);
+    font-size: 0.96rem;
+    line-height: 1.88;
+  }
+
+  .note {
+    margin: 26px 0;
+    padding: 20px 24px;
+    border-left: 3px solid;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    line-height: 1.82;
+  }
+
+  .note .note-label {
+    margin-bottom: 6px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .note-insight { background: var(--gold-bg); border-color: var(--gold); }
+  .note-insight .note-label { color: var(--gold); }
+  .note-ok { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-problem { background: var(--red-bg); border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+
+  .logic {
+    margin: 26px 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: logic;
+  }
+
+  .logic li {
+    position: relative;
+    counter-increment: logic;
+    padding: 10px 0 10px 46px;
+    line-height: 1.78;
+  }
+
+  .logic li::before {
+    content: counter(logic);
+    position: absolute;
+    top: 12px;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--deep);
+    color: #F7F0E8;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .logic li + li {
+    border-top: 1px dashed var(--border);
+  }
+
+  .question-list {
+    margin: 24px 0;
+    padding-left: 1.2rem;
+  }
+
+  .question-list li {
+    margin: 10px 0;
+  }
+
+  footer {
+    padding: 48px 0 66px;
+    color: var(--faint);
+    text-align: center;
+    font-size: 0.72rem;
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 1120px) {
+    nav.toc { display: none; }
+  }
+
+  @media (max-width: 640px) {
+    header { padding-top: 92px; }
+    h1 { font-size: 2rem; }
+    .thesis,
+    .takeaway { padding: 28px 24px; }
+    blockquote { padding: 16px 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<div class="topbar">
+  <a href="/">← pinyu.ai</a>
+</div>
+
+<nav class="toc" id="toc">
+  <a href="#thesis">开场</a>
+  <a href="#wrong-question">从外部控制到自我描述</a>
+  <a href="#logic-chain">主体生产链</a>
+  <a href="#knowledge">知识怎样分类人</a>
+  <a href="#discipline">文明后的规训</a>
+  <a href="#panopticon">自我监视</a>
+  <a href="#struggle">拒绝被做成某种人</a>
+  <a href="#boundary">边界</a>
+  <a href="#practice">使用方法</a>
+  <a href="#takeaway">一句带走</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Foucault × Power × Subject</div>
+    <h1>消失的人</h1>
+    <p class="subtitle">我们以为“我”是出发点。福柯换了一个起点：很多时候，是制度先教会人怎样说“我”。</p>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.05</span>
+    </div>
+  </header>
+
+  <div class="thesis" id="thesis">
+    <div class="label">开场</div>
+    <p>犯人要学会在假释委员会前说出正确的话。病人要学会用诊断语言解释自己的痛苦。学生很早就知道，某些表达方式会被当作成熟，另一些会被当作幼稚。</p>
+    <p><strong>这些制度不只是管理人。它们也在训练人怎样成为“可被承认的人”。</strong></p>
+  </div>
+
+  <section id="wrong-question">
+    <div class="section-num">00</div>
+    <h2>权力不只在外面</h2>
+    <p class="section-hook">福柯把问题从“谁在管我”，推到“我为什么这样描述自己”</p>
+
+    <p>很多人是从监狱和全景敞视认识福柯的。于是他很容易被读成一个阴郁的社会批评家，好像只是不断提醒我们：学校像监狱，医院也有控制。</p>
+
+    <p>后来福柯在《主体与权力》里说，他研究的是“主体”：人在一种文化中，怎样被制造成能够描述自己的存在。</p>
+
+    <p>权力不再是主题本身，而是一条线索。福柯追着它走，是为了看清一个人怎样学会用制度提供的词来描述自己。</p>
+
+    <blockquote>
+      <p>权力会限制人。福柯还关心另一件事：它怎样让人学会替权力解释自己。</p>
+    </blockquote>
+
+    <p>“消失的人”说的不是肉身消失。消失的是启蒙传统里那个先于制度、先于语言、透明地知道自己是谁的人。福柯怀疑，那个“人”并不是起点。很多时候，他是结果。</p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="logic-chain">
+    <div class="section-num">01</div>
+    <h2>主体是这样被生产出来的</h2>
+    <p class="section-hook">沿着这条线往下看，几个福柯名词会连到一起</p>
+
+    <ol class="logic">
+      <li>现代社会喜欢把自己讲成进步故事：酷刑少了，治疗出现了，惩罚也更像矫正。</li>
+      <li>福柯用谱系学打断这个故事。他不急着问制度怎样变好，而是追问它怎样获得解释人的资格。</li>
+      <li>知识先给人分类。正常和异常这类标签，并不是自然落下来的。</li>
+      <li>分类进入制度以后，就变成了观察、评估、诊断这类动作。</li>
+      <li>这些动作会改变人的行动空间。有些选择变得顺手，有些选择带着羞耻。</li>
+      <li>久而久之，人开始用制度给出的词汇理解自己，甚至主动修正自己。</li>
+      <li>福柯说的反主体化，指的就是拒绝被固定成某种可管理的身份。</li>
+    </ol>
+
+    <div class="note note-insight">
+      <div class="note-label">容易被漏掉的一点</div>
+      <p>福柯提醒我们，别把“善意机制”放到权力分析之外。一个制度帮助了你，并不意味着它没有塑造你。治疗和教育都可能真的帮到人；它们也可能顺手教会你怎样解释自己。</p>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <section id="knowledge">
+    <div class="section-num">02</div>
+    <h2>知识先给人命名</h2>
+    <p class="section-hook">权力进入人之前，常常先变成一套看起来中性的分类</p>
+
+    <p>我们本能上喜欢把知识想成权力的解药。权力可能粗暴，知识看起来干净得多。现代社会对自己的信心，也靠这个想象支撑：专业化会带来理性，理性会带来解放。</p>
+
+    <p>福柯没有把这套想象整个推翻。他不是说知识都是骗局，也不是说“1+1=2”只是权力编出来的。他问的是另一层：什么知识会被承认？谁有资格定义标准？谁一开口就会被听成不专业？</p>
+
+    <p>知识从来不只是内容。它还包括资格、格式和后果。课堂里的分数、医院里的诊断、论文的体例，都在决定一种说法能不能被当真。</p>
+
+    <p>话语不是一群人在自由聊天。话语有门。谁能说，怎么说，说完以后会发生什么，这些规则会决定谁被看见，谁被放在背景里。</p>
+
+    <blockquote>
+      <p>一个社会反复说什么，很重要。它反复让谁闭嘴，也很重要。</p>
+    </blockquote>
+
+    <p>这也是福柯为什么总看边缘：疯子、罪犯，以及那些被称为越轨的人。边缘不是补充材料。边缘会暴露中心的前提。你想知道一个社会怎样定义“理性”，就看它怎样处理“疯狂”。</p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="discipline">
+    <div class="section-num">03</div>
+    <h2>分类落地以后，就成了规训</h2>
+    <p class="section-hook">公开酷刑退场以后，权力开始依靠观察、训练和评估</p>
+
+    <p>《规训与惩罚》不肯把现代惩罚制度只讲成文明胜利。旧式惩罚是公开的。犯人在广场上被折磨，国王和教会的权力写在他的身体上。那是一种壮观的权力，残酷、戏剧化、可见。</p>
+
+    <p>现代改革把这套东西撤下去了。公开酷刑消失，监狱和康复程序登场。疼痛减少了，这一点不能轻轻带过。福柯接着问：权力退场了吗，还是换了技术？</p>
+
+    <p>他的回答并不让人轻松：权力从“在身体上留下印记”，转向“通过观察和训练制造驯顺身体”。犯人不再只是被打。他要被看见，被解释，被纠正，还要学会在评估体系面前说出正确的话。</p>
+
+    <p>把这件事说成伪善，太轻松了。很多改革者确实相信自己在减轻痛苦。只是，人道化并不自动等于去权力化。有些控制正是靠温和的语言和专业程序，才变得更容易被接受。</p>
+
+    <div class="note note-ok">
+      <div class="note-label">一个判断标准</div>
+      <p>不要只问一个制度是否更温和。还要问：它把什么变成了可观察的对象？它要求人怎样呈现自己，才算“恢复”或“合格”？</p>
+    </div>
+
+    <p>疯癫问题也沿着同一条路展开。现代社会不再只是把疯子驱逐出去，而是把他纳入治疗体系。词变礼貌了，暴力少了，这些都重要。但“被治疗”不自动等于被解放。有时它只是从被排斥，变成被持续管理。</p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="panopticon">
+    <div class="section-num">04</div>
+    <h2>然后，人开始自己看着自己</h2>
+    <p class="section-hook">全景敞视不是关于摄像头，而是关于自我监视怎样形成</p>
+
+    <p>边沁的全景敞视监狱靠一条规则运转：单向可视性。那栋圆形建筑只是把这条规则做成了空间。管理者可以看见囚犯，囚犯却不知道自己何时被看见。</p>
+
+    <p>结果很简单，也很可怕。你不需要真的时时刻刻被盯着。只要你知道自己可能被看见，你就会开始提前整理自己的行为。</p>
+
+    <p>福柯看重的是这条原则的扩散。学校排名，医院诊断，平台记录点击偏好。不同空间看上去功能不同，却都在让人变得可见，进而变得可管理。</p>
+
+    <p>外面的眼睛慢慢变成身体里的眼睛。你开始主动检查自己：我是不是正常？我看起来像不像那个应该成为的人？</p>
+
+    <blockquote>
+      <p>旧权力需要不断出手。现代规训更省力：它训练你先替自己出手。</p>
+    </blockquote>
+
+    <p>罗德里克把这套分析推到女性身体和审美规训上。控制不一定表现为别人强迫你。它也可以表现为你开始用一套外部语言审视自己、管理自己。你以为这是自我管理，福柯会问：这个“自我”是怎样被训练出来的？</p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="struggle">
+    <div class="section-num">05</div>
+    <h2>拒绝被做成某种人</h2>
+    <p class="section-hook">权力参与制造主体，抵抗也就不只是在外部反抗</p>
+
+    <p>福柯在《主体与权力》中区分了几类斗争。反支配和反剥削都比较好理解：有人统治你，或者从你的劳动中获利。现代政治大部分语言，都围绕这两类斗争展开。</p>
+
+    <p>但福柯盯住第三类：反主体化。也就是反抗那些诱导你接受某种身份的机制。</p>
+
+    <p>这类斗争不太像传统政治冲突。它经常不以命令出现。它可能只是反复告诉你，某种活法才算健康、成熟。它不一定打你，甚至不一定骂你。它只是把可承认的生活路径摆好，再让你自己走进去。</p>
+
+    <p>自愿不等于没有权力。福柯不需要证明你的选择是假的。他只需要追问：选项是谁摆的？偏离要付出什么代价？你为什么会觉得某条路更像“正常人生”？</p>
+
+    <div class="note note-insight">
+      <div class="note-label">容易忽略的一点</div>
+      <p>现代权力不只是控制答案。它也会写好问题。一个人可以在每个具体选择上都觉得自己很自由，却从未怀疑过那张选择菜单是谁写的。</p>
+    </div>
+
+    <p>福柯式的自由不是“完全不受塑造”。那大概是神话。比较可行的自由，是知道自己会被制度和语言塑造，并尽量看清这些塑造的方向。</p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="boundary">
+    <div class="section-num">06</div>
+    <h2>边界：不要把福柯读成万能钥匙</h2>
+    <p class="section-hook">这副眼镜很有用，但不能拿来替代所有分析</p>
+
+    <p>读福柯，常见的坏结果是只剩一句口头禅：一切都是规训，一切都是权力，一切善意都有问题。话说得很猛，判断却停住了。</p>
+
+    <p>第一，福柯不是说所有知识都是假的。他关心的是知识怎样被制度使用。一个诊断可能是真的，但它仍然会把人放进某套管理流程。一个考试可能有效，但它仍然会训练人按某种方式理解能力。</p>
+
+    <p>第二，他不是说现代改革没有意义。监狱和公开肢解不是一回事，医院和粗暴驱逐也不是一回事。问题只是：痛苦减少之后，别急着宣布权力消失。它可能只是换了手段。</p>
+
+    <p>第三，福柯的模型有一个真实张力。他把权力讲成关系性的、流动的东西。可现实经验也常常告诉我们：权力会高度集中。国家机器和平台，确实拥有更硬的后果制造能力。</p>
+
+    <div class="note note-problem">
+      <div class="note-label">不能省掉的问题</div>
+      <p>福柯擅长回答“权力怎样运作”。但当我们追问“权力为什么长期集中在某些机构和群体手里”“集体行动为什么能形成可调用的力量”时，他的工具不够完整。不能用微观规训分析，偷换掉宏观结构分析。</p>
+    </div>
+
+    <p>福柯适合用来补上一层，而不是吞掉一切。只谈国家、资本和平台，会漏掉人的欲望和自我描述是怎样被做出来的。只谈主体化，又会低估硬结构的集中支配。两边都要看。</p>
+  </section>
+
+  <hr class="sep">
+
+  <section id="practice">
+    <div class="section-num">07</div>
+    <h2>怎么使用这副眼镜</h2>
+    <p class="section-hook">不必见什么都喊规训，只要在关键处多问一步</p>
+
+    <p>福柯没有给出一套现成的出路。他没有告诉你怎样站到权力之外，过一种完全纯净的生活。他只是让你换一副眼镜。戴上以后，很多中性的东西没那么中性，很多温和的东西也没那么简单。</p>
+
+    <p>以后遇到某种自称在帮助你、提升你、评估你的系统，先不要急着问它好不好。先问它正在把你训练成什么样的人：</p>
+
+    <ul class="question-list">
+      <li>它把什么变成了可见的对象？</li>
+      <li>它怎样定义正常、风险和失败？</li>
+      <li>谁在这套语言里更容易被承认？</li>
+      <li>如果我想通过它，我必须学会怎样呈现自己？</li>
+      <li>长期服从这套机制以后，我会变成更能行动的人，还是更会自我监控的人？</li>
+      <li>如果我拒绝这个主体位置，代价是什么？谁会来收这笔账？</li>
+    </ul>
+
+    <p>这些问题不会自动给你答案。它们的价值是让你不再把“正常”当天气，不再把“专业”当无害，不再把“自愿”当终点。</p>
+
+    <p>福柯到今天仍然有力量，因为他不只让你看见外部压迫者。他逼你追问贴身的事：你现在用来理解自己的语言，从哪里来？你内心那个不断评估你的声音，是你自己的，还是某套制度在你里面留下的办事处？</p>
+  </section>
+
+  <div class="takeaway" id="takeaway">
+    <div class="label">一句带走</div>
+    <p>“权力无处不在”这句话太空，也已经被说滥。福柯留下的是更细的观察：权力有时已经不站在你对面。</p>
+    <p><strong>它会变成你解释自己的语言，让你把被制造出来的自己误认成真实的自己。</strong></p>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', function() {
+  var h = document.documentElement;
+  var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+var toc = document.getElementById('toc');
+if (toc) {
+  var links = Array.from(toc.querySelectorAll('a'));
+  var targets = links.map(function(a) {
+    return document.querySelector(a.getAttribute('href'));
+  }).filter(Boolean);
+
+  var update = function() {
+    var current = '';
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].getBoundingClientRect().top <= 140) current = targets[i].id;
+    }
+    links.forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
