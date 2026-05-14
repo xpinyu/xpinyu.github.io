@@ -4,173 +4,200 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-05-13T19:58:04.253+08:00",
-    "item_count": 6,
-    "window_start": "2026-05-12T00:00:00.000Z",
-    "window_end": "2026-05-13T11:58:04.253Z"
+    "updated_at": "2026-05-14T20:22:23.424+08:00",
+    "item_count": 7,
+    "window_start": "2026-05-13T00:00:00.000Z",
+    "window_end": "2026-05-14T12:22:23.424Z"
   },
   "items": [
     {
-      "id": "23b7760ca00dd2e8",
+      "id": "e6e72d659fbf4fed",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Not a Tesla App",
-      "title": "Elon Musk Announces xAI Will Become SpaceXAI Division",
-      "blurb": "xAI解散并入SpaceX成立SpaceXAI部门，推动AI与航天垂直整合。",
-      "link": "https://notateslaapp.com/news/4116/elon-musk-announces-xai-will-dissolve-form-spacexai-subdivision",
-      "canonical_link": "https://notateslaapp.com/news/4116/elon-musk-announces-xai-will-dissolve-form-spacexai-subdivision",
-      "published_at": "2026-05-12T20:00:00.000+08:00",
-      "score": 10,
+      "author": "Modal",
+      "title": "How to achieve truly serverless GPUs",
+      "blurb": "Modal实现真正无服务器GPU，推理扩展从千秒降至数十秒。",
+      "link": "https://modal.com/blog/truly-serverless-gpus",
+      "canonical_link": "https://modal.com/blog/truly-serverless-gpus",
+      "published_at": "2026-05-13T20:00:00.000+08:00",
+      "score": 9,
       "tags": [
         "TLDR AI",
-        "business"
+        "infra"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-12",
-      "source_signal": "TLDR AI headline; major business restructure integrating xAI into SpaceX, impacting Grok and X platform.",
-      "recommendation": "xAI解散并入SpaceX成立SpaceXAI部门，推动AI与航天垂直整合。",
-      "summary": "Elon Musk宣布xAI将解散，整合进SpaceX作为SpaceXAI部门，负责X平台和Grok等AI项目。此举简化运营，提升垂直整合，并与SpaceX战略目标对齐。",
+      "source_page": "https://tldr.tech/ai/2026-05-13",
+      "source_signal": "Deep dive on infra scaling for AI inference, key for serverless adoption.",
+      "recommendation": "Modal实现真正无服务器GPU，推理扩展从千秒降至数十秒。",
+      "summary": "Modal文章详述AI推理负载的无服务器优化，针对变异性需求快速扩展副本。 通过技术改进，将启动时间从数千秒缩短至数十秒。 适用于生产环境。",
       "takeaways": [
-        "xAI项目转SpaceX品牌",
-        "强化AI在社交和航天领域的协同"
+        "解决推理可预测性痛点，推动serverless AI",
+        "Modal infra创新提升成本效率"
       ],
-      "topic": "business"
+      "topic": "infra"
+    },
+    {
+      "id": "2c85755fbf68b9b7",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Anthropic",
+      "title": "Claude for Small Business",
+      "blurb": "Anthropic推出Claude for Small Business，专为中小企业优化AI工具，提升生产力。",
+      "link": "https://anthropic.com/news/claude-for-small-business",
+      "canonical_link": "https://anthropic.com/news/claude-for-small-business",
+      "published_at": "2026-05-14T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "Hacker News",
+        "product"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Top story on HN with 334 points and 268 comments, signaling strong community interest in Anthropic's enterprise push for SMBs.",
+      "recommendation": "Anthropic推出Claude for Small Business，专为中小企业优化AI工具，提升生产力。",
+      "summary": "Anthropic发布Claude for Small Business，提供定制化AI助手，支持业务自动化和客户服务。 该产品整合Claude模型，针对中小企业痛点设计，包括定价优惠和易用界面。 已在Hacker News引发热议，获数百点赞。",
+      "takeaways": [
+        "中小企业可低成本接入高级AI，提升运营效率",
+        "Anthropic扩展企业市场，竞争加剧"
+      ],
+      "topic": "product"
     },
     {
       "id": "e9a8c7966a97dfd1",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "HenryNdubuaku",
-      "title": "Show HN: Needle: We Distilled Gemini Tool Calling into a 26M Model",
-      "blurb": "高效提炼Gemini工具调用能力的26M小模型，适合边缘部署和低资源代理开发。",
+      "platform": "TLDR AI",
+      "author": "Cactus Compute",
+      "title": "Cactus Needle",
+      "blurb": "Cactus Needle 26M参数模型开源，支持本地微调，高吞吐速度。",
       "link": "https://github.com/cactus-compute/needle",
       "canonical_link": "https://github.com/cactus-compute/needle",
-      "published_at": "2026-05-13T19:58:04.253+08:00",
-      "score": 9,
-      "tags": [
-        "Hacker News",
-        "model-release"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Hacker News top story with 501 points and 154 comments; demonstrates efficient distillation of Gemini's tool-calling into a tiny 26M model, advancing accessible agent tooling.",
-      "recommendation": "高效提炼Gemini工具调用能力的26M小模型，适合边缘部署和低资源代理开发。",
-      "summary": "Needle项目将Gemini的工具调用能力蒸馏到一个仅26M参数的模型中，实现高效工具使用。开源仓库提供完整实现，支持本地运行。该方法展示了模型压缩在代理工具链中的潜力。",
-      "takeaways": [
-        "26M模型实现Gemini级工具调用，显著降低部署成本",
-        "开源GitHub仓库，便于开发者复现和扩展"
-      ],
-      "topic": "model-release"
-    },
-    {
-      "id": "468bc45b193feba1",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Thinking Machines Lab",
-      "title": "Interaction Models: A Scalable Approach to Human-AI Collaboration",
-      "blurb": "交互模型支持实时音视频文本协作，突破传统回合制限制。",
-      "link": "https://thinkingmachines.ai/blog/interaction-models",
-      "canonical_link": "https://thinkingmachines.ai/blog/interaction-models",
-      "published_at": "2026-05-12T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "research"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-12",
-      "source_signal": "TLDR AI launch highlight; new research on real-time multi-modal interaction models breaking turn-based limits.",
-      "recommendation": "交互模型支持实时音视频文本协作，突破传统回合制限制。",
-      "summary": "Thinking Machines Lab发布交互模型研究预览，支持音视频文本实时协作。从零训练的多流设计确保低延迟响应，实现持续交互。该方法适用于多领域，提升人机智能协作。",
-      "takeaways": [
-        "多模态实时交互架构",
-        "消除回合制，提升响应性"
-      ],
-      "topic": "research"
-    },
-    {
-      "id": "fc5cdf8aa68c67e2",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Testing Catalog",
-      "title": "Google's Gemini Omni video model surfaces ahead of I/O debut",
-      "blurb": "Gemini Omni视频模型即将亮相，支持聊天内视频重混和编辑，强化多模态能力。",
-      "link": "https://testingcatalog.com/googles-gemini-omni-video-model-surfaces-ahead-of-i-o-debut",
-      "canonical_link": "https://testingcatalog.com/googles-gemini-omni-video-model-surfaces-ahead-of-i-o-debut",
-      "published_at": "2026-05-12T20:00:00.000+08:00",
+      "published_at": "2026-05-13T20:00:00.000+08:00",
       "score": 8,
       "tags": [
         "TLDR AI",
         "model-release"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-12",
-      "source_signal": "Featured in TLDR AI headlines; previews Google's upcoming multimodal video model with editing features, signaling I/O launch and multimodal unification.",
-      "recommendation": "Gemini Omni视频模型即将亮相，支持聊天内视频重混和编辑，强化多模态能力。",
-      "summary": "Gemini Omni整合视频重混和编辑功能，直接在聊天中操作，如水印移除和物体替换。虽电影级质量稍逊，但编辑能力突出，可能分Flash和Pro版本推出。该模型推进Gemini多模态统一战略。",
+      "source_page": "https://tldr.tech/ai/2026-05-13",
+      "source_signal": "GitHub repo featured for open weights and consumer device focus.",
+      "recommendation": "Cactus Needle 26M参数模型开源，支持本地微调，高吞吐速度。",
+      "summary": "Cactus Needle是从Gemini 3.1蒸馏的Simple Attention Network，26M参数，可在Mac/PC本地运行。 预填充6000 token/s，解码1200 token/s。 针对手机、手表等设备优化。",
       "takeaways": [
-        "聊天内视频编辑功能领先",
-        "I/O前瞻，预计分层版本发布"
+        "边缘设备AI新范式，全开源权重",
+        "高性能本地推理降低云依赖"
       ],
       "topic": "model-release"
     },
     {
-      "id": "0037d31170588060",
+      "id": "25011284a1868f1e",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "zhengkid",
-      "title": "Agentic Test-Time Scaling",
-      "blurb": "AutoTTS使用编码代理自动优化测试时扩展策略，无需梯度更新。",
-      "link": "https://github.com/zhengkid/AutoTTS",
-      "canonical_link": "https://github.com/zhengkid/AutoTTS",
-      "published_at": "2026-05-12T20:00:00.000+08:00",
+      "author": "Anthropic (ClaudeDevs)",
+      "title": "Fast mode for Claude Opus 4.7",
+      "blurb": "Claude Opus 4.7快速模式现已预览，支持API和多种工具，显著提升响应速度。",
+      "link": "https://x.com/ClaudeDevs/status/2054266327771275435",
+      "canonical_link": "https://x.com/ClaudeDevs/status/2054266327771275435",
+      "published_at": "2026-05-13T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-13",
+      "source_signal": "Featured in TLDR AI headlines as a key model update, highlighting speed improvements for API and tools.",
+      "recommendation": "Claude Opus 4.7快速模式现已预览，支持API和多种工具，显著提升响应速度。",
+      "summary": "Anthropic推出Claude Opus 4.7快速模式，现进入研究预览，支持Claude Code、Cursor等平台。 该模式优化推理速度，即将默认启用。 用户可加入等待列表测试。",
+      "takeaways": [
+        "快速模式降低延迟，适用于实时应用",
+        "扩展至多平台，推动开发者采用"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "e701f8ef8b84cb39",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "OpenAI",
+      "title": "What Parameter Golf taught us",
+      "blurb": "OpenAI Parameter Golf竞赛揭示参数优化新技巧和AI代理作用。",
+      "link": "https://openai.com/index/what-parameter-golf-taught-us",
+      "canonical_link": "https://openai.com/index/what-parameter-golf-taught-us",
+      "published_at": "2026-05-13T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "benchmark"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-13",
+      "source_signal": "Analysis of competition revealing AI agent roles in research.",
+      "recommendation": "OpenAI Parameter Golf竞赛揭示参数优化新技巧和AI代理作用。",
+      "summary": "竞赛吸引1000+参与者，聚焦最小损失参数模型，使用量化、调优等技术。 AI编码代理显著贡献。 发掘新人才，推动研究范式。",
+      "takeaways": [
+        "代理加速研究竞赛",
+        "参数高效化是未来趋势"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "ccd20c16213fcd0a",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "OpenAI",
+      "title": "Building Self-Repairing Agent Loops",
+      "blurb": "OpenAI Codex构建自修复代理循环，提升输出可靠性。",
+      "link": "https://developers.openai.com/cookbook/examples/codex/build_iterative_repair_loops_with_codex",
+      "canonical_link": "https://developers.openai.com/cookbook/examples/codex/build_iterative_repair_loops_with_codex",
+      "published_at": "2026-05-13T20:00:00.000+08:00",
       "score": 8,
       "tags": [
         "TLDR AI",
         "agent"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-12",
-      "source_signal": "TLDR AI engineering repo; automated agentic scaling without gradients, using coding agents for test-time optimization.",
-      "recommendation": "AutoTTS使用编码代理自动优化测试时扩展策略，无需梯度更新。",
-      "summary": "AutoTTS通过编码代理在回放环境中迭代精炼控制器逻辑，实现测试时自动扩展。避免梯度更新和在线LLM调用，支持高效代理改进。GitHub仓库开源完整实现。",
+      "source_page": "https://tldr.tech/ai/2026-05-13",
+      "source_signal": "Cookbook example for agent reliability workflows.",
+      "recommendation": "OpenAI Codex构建自修复代理循环，提升输出可靠性。",
+      "summary": "使用Codex实现代理迭代审查、修复和验证反馈循环。 结构化方法提高任务准确性。 适用于生产代理系统。",
       "takeaways": [
-        "代理驱动测试时优化",
-        "无需梯度，适用于本地部署"
+        "反馈循环关键于可靠代理",
+        "开发者即用工作流"
       ],
       "topic": "agent"
     },
     {
-      "id": "d5bfc37dedd66aa9",
+      "id": "f9a8408b8705281b",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Bloomberg",
-      "title": "Sutskever Says His OpenAI Stake Worth About $7 Billion",
-      "blurb": "Sutskever称其OpenAI股份价值约70亿美元，凸显公司高估值。",
-      "link": "https://bloomberg.com/news/articles/2026-05-11/sutskever-says-his-openai-stake-worth-about-7-billion",
-      "canonical_link": "https://bloomberg.com/news/articles/2026-05-11/sutskever-says-his-openai-stake-worth-about-7-billion",
-      "published_at": "2026-05-12T20:00:00.000+08:00",
+      "author": "VentureBeat",
+      "title": "Perceptron Mk1 shocks with highly performant video analysis AI model",
+      "blurb": "Perceptron Mk1视频分析模型性能高，价格仅对手80-90%。",
+      "link": "https://venturebeat.com/technology/perceptron-mk1-shocks-with-highly-performant-video-analysis-ai-model-80-90-cheaper-than-anthropic-openai-and-google",
+      "canonical_link": "https://venturebeat.com/technology/perceptron-mk1-shocks-with-highly-performant-video-analysis-ai-model-80-90-cheaper-than-anthropic-openai-and-google",
+      "published_at": "2026-05-13T20:00:00.000+08:00",
       "score": 7,
       "tags": [
         "TLDR AI",
-        "business"
+        "model-release"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-12",
-      "source_signal": "TLDR AI quick link; concrete valuation signal for OpenAI co-founder stake amid funding rounds.",
-      "recommendation": "Sutskever称其OpenAI股份价值约70亿美元，凸显公司高估值。",
-      "summary": "OpenAI联合创始人兼前首席科学家Ilya Sutskever表示，其股份价值约70亿美元。他是该AI初创公司最大个人股东之一，此估值反映融资轮次影响。",
+      "source_page": "https://tldr.tech/ai/2026-05-13",
+      "source_signal": "Quick link on cost-competitive video model.",
+      "recommendation": "Perceptron Mk1视频分析模型性能高，价格仅对手80-90%。",
+      "summary": "Mk1视频AI模型在性能媲美Anthropic/OpenAI/Google，但成本低80-90%。 针对视频任务优化。 市场颠覆潜力大。",
       "takeaways": [
-        "个人股份估值70亿",
-        "强化OpenAI市场地位信号"
+        "定价策略重塑视频AI市场",
+        "高性价比吸引企业"
       ],
-      "topic": "business"
+      "topic": "model-release"
     }
   ]
 }
