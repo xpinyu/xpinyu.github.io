@@ -123,6 +123,31 @@
     color: var(--text-3);
   }
 
+  nav.toc {
+    position: fixed;
+    top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 250px));
+    width: 210px;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    z-index: 50;
+  }
+
+  nav.toc a {
+    display: block;
+    padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  nav.toc a:hover,
+  nav.toc a.active {
+    color: var(--text-1);
+    border-color: var(--text-1);
+  }
+
   .thesis,
   .takeaway {
     background: #1A2540;
@@ -162,33 +187,63 @@
     animation: enter 0.6s ease 0.08s both;
   }
 
+  section { margin-bottom: 72px; }
+
+  .section-num {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.52rem;
+    font-weight: 600;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  section > .section-hook {
+    font-size: 0.85rem;
+    color: var(--text-3);
+    margin-bottom: 24px;
+    line-height: 1.62;
+  }
+
   article p {
     margin-bottom: 18px;
+    font-size: 1rem;
   }
+
+  article p:last-child { margin-bottom: 0; }
 
   article strong {
     font-weight: 700;
     color: #162E66;
   }
 
-  .emphasis {
-    margin: 34px 0;
-    padding: 26px 30px;
+  blockquote {
+    margin: 28px 0;
+    padding: 20px 28px;
     border-left: 3px solid var(--accent);
-    background: rgba(27, 63, 139, 0.055);
-    color: var(--text-1);
-    border-radius: 0 12px 12px 0;
+    background: rgba(27, 63, 139, 0.035);
+    color: var(--text-2);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.96rem;
+    line-height: 1.88;
   }
 
-  .emphasis p:last-child {
-    margin-bottom: 0;
-  }
+  blockquote p { margin-bottom: 0; }
 
   .sep {
     border: 0;
     height: 1px;
     background: var(--border);
-    margin: 56px 0;
+    margin: 72px 0;
   }
 
   footer {
@@ -209,11 +264,15 @@
     article { animation: none; }
   }
 
+  @media (max-width: 1120px) {
+    nav.toc { display: none; }
+  }
+
   @media (max-width: 640px) {
     header h1 { font-size: 1.82rem; }
     .thesis,
-    .takeaway,
-    .emphasis { padding: 28px 24px; }
+    .takeaway { padding: 28px 24px; }
+    blockquote { padding: 16px 20px; }
   }
 </style>
 </head>
@@ -224,6 +283,17 @@
 <div class="topbar">
   <a href="/" class="home-link">← pinyu.ai</a>
 </div>
+
+<nav class="toc" id="toc">
+  <a href="#thesis">核心问题</a>
+  <a href="#gap">半明半暗的缺口</a>
+  <a href="#closure">闭合如何接管</a>
+  <a href="#desire">不可闭合的缺失</a>
+  <a href="#misread">答案麻醉缺失</a>
+  <a href="#depth">深度的含义</a>
+  <a href="#maturity">成熟不是无缺口</a>
+  <a href="#takeaway">一句带走</a>
+</nav>
 
 <div class="container">
 
@@ -237,13 +307,18 @@
     </div>
   </header>
 
-  <div class="thesis">
+  <div class="thesis" id="thesis">
     <div class="thesis-label">核心问题</div>
     <p>人最难放下的，往往不是最重要的事，而是<strong>还没有闭合的事</strong>。</p>
     <p>人类注意力的基本单位，可能不是信息，而是等待闭合的意义结构。</p>
   </div>
 
   <article>
+    <section id="gap">
+      <div class="section-num">00</div>
+      <h2>好奇心来自半明半暗</h2>
+      <p class="section-hook">真正抓住人的不是纯粹未知，而是已经打开却尚未闭合的结构</p>
+
     <p>一句没说完的话。<br>一个没有回复的消息。<br>一段关系里模糊的态度。<br>一个看到一半的故事。<br>一个你感觉快想明白、但总差一点的问题。</p>
 
     <p>它们都在心里留下了一个未闭合的回路。</p>
@@ -273,8 +348,14 @@
     <p>一个好问题最有力量的地方，也不是它有多复杂，而是它让你突然意识到：原来我原本的解释不够用了。</p>
 
     <p>好奇心不是从黑暗中产生的，而是从<strong>半明半暗的边界</strong>产生的。</p>
+    </section>
 
     <hr class="sep">
+
+    <section id="closure">
+      <div class="section-num">01</div>
+      <h2>闭合需求接管之后</h2>
+      <p class="section-hook">答案有时不是为了抵达真相，而是为了尽快结束不确定</p>
 
     <p>但好奇心只是第一步。</p>
 
@@ -288,9 +369,9 @@
 
     <p>真正危险的地方在这里：</p>
 
-    <div class="emphasis">
+    <blockquote>
       <p><strong>越渴望闭合的人，越容易被廉价答案安抚。</strong></p>
-    </div>
+    </blockquote>
 
     <p>很多错误判断，并不是因为人缺少信息，而是因为人太急于闭合。</p>
 
@@ -312,13 +393,19 @@
 
     <p>到这里，三条心理机制可以连成一条链：</p>
 
-    <div class="emphasis">
+    <blockquote>
       <p><strong>信息缺口让你看见缺失。<br>认知闭合让你急于结束缺失。<br>蔡格尼克效应让未结束的缺失持续返回。</strong></p>
-    </div>
+    </blockquote>
 
     <p>这条链，就是注意力被捕获的基本过程。</p>
+    </section>
 
     <hr class="sep">
+
+    <section id="desire">
+      <div class="section-num">02</div>
+      <h2>有些缺口不是缺少信息</h2>
+      <p class="section-hook">信息缺口可以被知识闭合，欲望背后的缺失却不能被对象填满</p>
 
     <p>但这里会出现一个更棘手的问题。</p>
 
@@ -354,9 +441,9 @@
 
     <p>所以，信息缺口可以被知识闭合，任务缺口可以被完成释放，但欲望背后的缺失，不能被某个对象彻底填满。</p>
 
-    <div class="emphasis">
+    <blockquote>
       <p><strong>注意力追逐可闭合的缺口，欲望围绕不可闭合的缺失运转。</strong></p>
-    </div>
+    </blockquote>
 
     <p>前者让你想知道“答案是什么”。<br>后者让你不断追问“我到底想要什么”。</p>
 
@@ -378,11 +465,17 @@
 
     <p>所以，更准确地说：</p>
 
-    <div class="emphasis">
+    <blockquote>
       <p><strong>人会被两种缺口牵引：一种缺口等待答案，另一种缺口生产欲望。前者要求闭合，后者无法彻底闭合，却让人继续寻找自己的位置。</strong></p>
-    </div>
+    </blockquote>
+    </section>
 
     <hr class="sep">
+
+    <section id="misread">
+      <div class="section-num">03</div>
+      <h2>不要把所有痛苦都当成缺一个答案</h2>
+      <p class="section-hook">把结构性缺失误判成信息缺口，人就会不断用答案麻醉缺失</p>
 
     <p>这个区分很重要。</p>
 
@@ -411,16 +504,22 @@
     <p>它们都在对你的闭合需求说：再往前一点，你就完整了。</p>
 
     <p>但那个“再往前一点”，常常没有终点。</p>
+    </section>
 
     <hr class="sep">
+
+    <section id="depth">
+      <div class="section-num">04</div>
+      <h2>深度是分辨哪种缺口正在发生</h2>
+      <p class="section-hook">好的设计、教育和写作，不只是制造悬念，而是帮助人判断该闭合还是该理解</p>
 
     <p>所以真正高级的设计、教育和写作，不应该只是制造悬念，也不应该只是延迟答案。</p>
 
     <p>它应该帮助人分辨一件更根本的事：</p>
 
-    <div class="emphasis">
+    <blockquote>
       <p><strong>这个缺口，是需要被闭合，还是需要被理解？</strong></p>
-    </div>
+    </blockquote>
 
     <p>好的学习，不是把知识点堆满，而是让学生不断遇到“我原来的理解差一点不够”的时刻，然后给出足够清楚的路径，让这个缺口被更高层次的理解闭合。</p>
 
@@ -454,15 +553,21 @@
 
     <p>还有另一种更深的状态：</p>
 
-    <div class="emphasis">
+    <blockquote>
       <p><strong>我终于看见，为什么我一直想要。</strong></p>
-    </div>
+    </blockquote>
 
     <p>前者让注意力集中。</p>
 
     <p>后者让主体显影。</p>
+    </section>
 
     <hr class="sep">
+
+    <section id="maturity">
+      <div class="section-num">05</div>
+      <h2>成熟不是把人生变成没有缺口</h2>
+      <p class="section-hook">更重要的是分辨：哪些缺口该完成，哪些缺失正在构成你</p>
 
     <p>当你发现一个问题一直回来找你，它可能不是干扰。</p>
 
@@ -473,9 +578,10 @@
     <p>真正的成熟，不是把人生变成一个没有缺口的整体。</p>
 
     <p>而是终于能够分辨：</p>
+    </section>
   </article>
 
-  <div class="takeaway">
+  <div class="takeaway" id="takeaway">
     <div class="thesis-label">一句带走</div>
     <p>哪些缺口该被完成，哪些缺失正在构成你。</p>
   </div>
@@ -492,6 +598,27 @@ window.addEventListener('scroll', function() {
   var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
   document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
 }, { passive: true });
+
+var toc = document.getElementById('toc');
+if (toc) {
+  var links = Array.from(toc.querySelectorAll('a'));
+  var targets = links.map(function(a) {
+    return document.querySelector(a.getAttribute('href'));
+  }).filter(Boolean);
+
+  var update = function() {
+    var current = '';
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].getBoundingClientRect().top <= 140) current = targets[i].id;
+    }
+    links.forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
 </script>
 
 <script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
