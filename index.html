@@ -12,7 +12,7 @@
     const requested = String(params.get("filter") || "").trim().toLowerCase();
     const normalized = new Set(["voices", "builders", "art"]).has(requested) ? "news" : requested;
     const validFilters = new Set(["news", "essays"]);
-    document.documentElement.dataset.initialFilter = validFilters.has(normalized) ? normalized : "essays";
+    document.documentElement.dataset.initialFilter = validFilters.has(normalized) ? normalized : "news";
   }());
 </script>
 <style>
@@ -149,19 +149,19 @@
   }
 
   .news-view {
-    display: none;
+    display: block;
   }
 
   .essays-view {
-    display: block;
-  }
-
-  html[data-initial-filter]:not([data-initial-filter="essays"]) .news-view {
-    display: block;
-  }
-
-  html[data-initial-filter]:not([data-initial-filter="essays"]) .essays-view {
     display: none;
+  }
+
+  html[data-initial-filter="essays"] .news-view {
+    display: none;
+  }
+
+  html[data-initial-filter="essays"] .essays-view {
+    display: block;
   }
 
   .feed {
@@ -504,8 +504,8 @@
   </div>
 
   <nav class="filter-nav" id="filters" aria-label="Browse content and channels">
-    <a href="/" class="filter-chip" data-filter="essays">Essays</a>
-    <a href="?filter=news" class="filter-chip" data-filter="news">News</a>
+    <a href="/" class="filter-chip" data-filter="news">News</a>
+    <a href="?filter=essays" class="filter-chip" data-filter="essays">Essays</a>
     <a href="https://zencat.uk/" class="filter-chip filter-chip-external" target="_blank" rel="noopener noreferrer" aria-label="ZenCat (opens in a new tab)">
       <span>ZenCat</span>
       <span class="external-mark" aria-hidden="true">↗</span>
@@ -836,7 +836,7 @@
   if (currentFilter === FILTER_NEWS) {
     newsViewEl.hidden = false;
     essaysViewEl.hidden = true;
-    if (normalizeText(queryParams.get("filter")) !== FILTER_NEWS) {
+    if (queryParams.has("filter") && normalizeText(queryParams.get("filter")) !== FILTER_NEWS) {
       replacePageQuery(getRequestedPage(), FILTER_NEWS);
     }
     loadFeed().catch((error) => {
@@ -1003,11 +1003,11 @@
     return normalizeFilter(queryParams.get("filter"));
   }
 
-  function pageHref(pageNumber, filter = FILTER_ESSAYS) {
+  function pageHref(pageNumber, filter = FILTER_NEWS) {
     const params = new URLSearchParams();
     const normalizedFilter = normalizeFilter(filter);
-    if (normalizedFilter === FILTER_NEWS) {
-      params.set("filter", FILTER_NEWS);
+    if (normalizedFilter === FILTER_ESSAYS) {
+      params.set("filter", FILTER_ESSAYS);
     }
     if (normalizedFilter === FILTER_NEWS && pageNumber > 1) {
       params.set("page", String(pageNumber));
@@ -1016,7 +1016,7 @@
     return query ? `?${query}` : "/";
   }
 
-  function replacePageQuery(pageNumber, filter = FILTER_ESSAYS) {
+  function replacePageQuery(pageNumber, filter = FILTER_NEWS) {
     const nextUrl = pageHref(pageNumber, filter);
     window.history.replaceState({}, "", nextUrl);
   }
@@ -1039,7 +1039,7 @@
     if (LEGACY_NEWS_FILTERS.has(filter)) {
       return FILTER_NEWS;
     }
-    return VALID_FILTERS.has(filter) ? filter : FILTER_ESSAYS;
+    return VALID_FILTERS.has(filter) ? filter : FILTER_NEWS;
   }
 
   function normalizePositiveNumber(value, fallback) {
