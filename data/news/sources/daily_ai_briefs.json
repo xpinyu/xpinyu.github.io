@@ -4,200 +4,254 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-05-14T20:22:23.424+08:00",
-    "item_count": 7,
-    "window_start": "2026-05-13T00:00:00.000Z",
-    "window_end": "2026-05-14T12:22:23.424Z"
+    "updated_at": "2026-05-15T21:50:41.320+08:00",
+    "item_count": 9,
+    "window_start": "2026-05-15T00:00:00.000Z",
+    "window_end": "2026-05-15T13:50:41.320Z"
   },
   "items": [
     {
-      "id": "e6e72d659fbf4fed",
+      "id": "dcbab9a12e0103e6",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Modal",
-      "title": "How to achieve truly serverless GPUs",
-      "blurb": "Modal实现真正无服务器GPU，推理扩展从千秒降至数十秒。",
-      "link": "https://modal.com/blog/truly-serverless-gpus",
-      "canonical_link": "https://modal.com/blog/truly-serverless-gpus",
-      "published_at": "2026-05-13T20:00:00.000+08:00",
+      "author": "x.ai",
+      "title": "Introducing Grok Build",
+      "blurb": "SuperGrok 用户可试用此 CLI 代理，加速复杂编码任务。",
+      "link": "https://x.ai/news/grok-build-cli",
+      "canonical_link": "https://x.ai/news/grok-build-cli",
+      "published_at": "2026-05-15T20:00:00.000+08:00",
       "score": 9,
-      "tags": [
-        "TLDR AI",
-        "infra"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-13",
-      "source_signal": "Deep dive on infra scaling for AI inference, key for serverless adoption.",
-      "recommendation": "Modal实现真正无服务器GPU，推理扩展从千秒降至数十秒。",
-      "summary": "Modal文章详述AI推理负载的无服务器优化，针对变异性需求快速扩展副本。 通过技术改进，将启动时间从数千秒缩短至数十秒。 适用于生产环境。",
-      "takeaways": [
-        "解决推理可预测性痛点，推动serverless AI",
-        "Modal infra创新提升成本效率"
-      ],
-      "topic": "infra"
-    },
-    {
-      "id": "2c85755fbf68b9b7",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "Anthropic",
-      "title": "Claude for Small Business",
-      "blurb": "Anthropic推出Claude for Small Business，专为中小企业优化AI工具，提升生产力。",
-      "link": "https://anthropic.com/news/claude-for-small-business",
-      "canonical_link": "https://anthropic.com/news/claude-for-small-business",
-      "published_at": "2026-05-14T20:00:00.000+08:00",
-      "score": 9,
-      "tags": [
-        "Hacker News",
-        "product"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Top story on HN with 334 points and 268 comments, signaling strong community interest in Anthropic's enterprise push for SMBs.",
-      "recommendation": "Anthropic推出Claude for Small Business，专为中小企业优化AI工具，提升生产力。",
-      "summary": "Anthropic发布Claude for Small Business，提供定制化AI助手，支持业务自动化和客户服务。 该产品整合Claude模型，针对中小企业痛点设计，包括定价优惠和易用界面。 已在Hacker News引发热议，获数百点赞。",
-      "takeaways": [
-        "中小企业可低成本接入高级AI，提升运营效率",
-        "Anthropic扩展企业市场，竞争加剧"
-      ],
-      "topic": "product"
-    },
-    {
-      "id": "e9a8c7966a97dfd1",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Cactus Compute",
-      "title": "Cactus Needle",
-      "blurb": "Cactus Needle 26M参数模型开源，支持本地微调，高吞吐速度。",
-      "link": "https://github.com/cactus-compute/needle",
-      "canonical_link": "https://github.com/cactus-compute/needle",
-      "published_at": "2026-05-13T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "model-release"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-13",
-      "source_signal": "GitHub repo featured for open weights and consumer device focus.",
-      "recommendation": "Cactus Needle 26M参数模型开源，支持本地微调，高吞吐速度。",
-      "summary": "Cactus Needle是从Gemini 3.1蒸馏的Simple Attention Network，26M参数，可在Mac/PC本地运行。 预填充6000 token/s，解码1200 token/s。 针对手机、手表等设备优化。",
-      "takeaways": [
-        "边缘设备AI新范式，全开源权重",
-        "高性能本地推理降低云依赖"
-      ],
-      "topic": "model-release"
-    },
-    {
-      "id": "25011284a1868f1e",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Anthropic (ClaudeDevs)",
-      "title": "Fast mode for Claude Opus 4.7",
-      "blurb": "Claude Opus 4.7快速模式现已预览，支持API和多种工具，显著提升响应速度。",
-      "link": "https://x.com/ClaudeDevs/status/2054266327771275435",
-      "canonical_link": "https://x.com/ClaudeDevs/status/2054266327771275435",
-      "published_at": "2026-05-13T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "model-release"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-13",
-      "source_signal": "Featured in TLDR AI headlines as a key model update, highlighting speed improvements for API and tools.",
-      "recommendation": "Claude Opus 4.7快速模式现已预览，支持API和多种工具，显著提升响应速度。",
-      "summary": "Anthropic推出Claude Opus 4.7快速模式，现进入研究预览，支持Claude Code、Cursor等平台。 该模式优化推理速度，即将默认启用。 用户可加入等待列表测试。",
-      "takeaways": [
-        "快速模式降低延迟，适用于实时应用",
-        "扩展至多平台，推动开发者采用"
-      ],
-      "topic": "model-release"
-    },
-    {
-      "id": "e701f8ef8b84cb39",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "OpenAI",
-      "title": "What Parameter Golf taught us",
-      "blurb": "OpenAI Parameter Golf竞赛揭示参数优化新技巧和AI代理作用。",
-      "link": "https://openai.com/index/what-parameter-golf-taught-us",
-      "canonical_link": "https://openai.com/index/what-parameter-golf-taught-us",
-      "published_at": "2026-05-13T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "benchmark"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-13",
-      "source_signal": "Analysis of competition revealing AI agent roles in research.",
-      "recommendation": "OpenAI Parameter Golf竞赛揭示参数优化新技巧和AI代理作用。",
-      "summary": "竞赛吸引1000+参与者，聚焦最小损失参数模型，使用量化、调优等技术。 AI编码代理显著贡献。 发掘新人才，推动研究范式。",
-      "takeaways": [
-        "代理加速研究竞赛",
-        "参数高效化是未来趋势"
-      ],
-      "topic": "benchmark"
-    },
-    {
-      "id": "ccd20c16213fcd0a",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "OpenAI",
-      "title": "Building Self-Repairing Agent Loops",
-      "blurb": "OpenAI Codex构建自修复代理循环，提升输出可靠性。",
-      "link": "https://developers.openai.com/cookbook/examples/codex/build_iterative_repair_loops_with_codex",
-      "canonical_link": "https://developers.openai.com/cookbook/examples/codex/build_iterative_repair_loops_with_codex",
-      "published_at": "2026-05-13T20:00:00.000+08:00",
-      "score": 8,
       "tags": [
         "TLDR AI",
         "agent"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-13",
-      "source_signal": "Cookbook example for agent reliability workflows.",
-      "recommendation": "OpenAI Codex构建自修复代理循环，提升输出可靠性。",
-      "summary": "使用Codex实现代理迭代审查、修复和验证反馈循环。 结构化方法提高任务准确性。 适用于生产代理系统。",
+      "source_page": "https://tldr.tech/ai/2026-05-15",
+      "source_signal": "TLDR AI 头条，xAI 推出终端编码代理，支持子代理和深度集成，对开发者工作流有重大提升。",
+      "recommendation": "SuperGrok 用户可试用此 CLI 代理，加速复杂编码任务。",
+      "summary": "Grok Build 是终端运行的编码代理，早 beta 限 SuperGrok Heavy 订阅者。支持 AGENTS.md、插件、钩子、技能和 MCP 服务器。具备子代理和 headless 模式，便于脚本自动化。",
       "takeaways": [
-        "反馈循环关键于可靠代理",
-        "开发者即用工作流"
+        "原生支持子代理分治大任务",
+        "深度工作树集成提升协作"
       ],
       "topic": "agent"
     },
     {
-      "id": "f9a8408b8705281b",
+      "id": "59ba84515b4297f2",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Andyyyy64",
+      "title": "Show HN: Find the best local LLM for your hardware, ranked by benchmarks",
+      "blurb": "开发者必备工具，可快速匹配硬件与最佳本地 LLM，提升推理效率。",
+      "link": "https://github.com/Andyyyy64/whichllm",
+      "canonical_link": "https://github.com/Andyyyy64/whichllm",
+      "published_at": "2026-05-15T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "Hacker News",
+        "benchmark"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News 热门 Show HN，225 分高热度，提供本地 LLM 硬件基准排名，对优化边缘部署至关重要。",
+      "recommendation": "开发者必备工具，可快速匹配硬件与最佳本地 LLM，提升推理效率。",
+      "summary": "该项目通过基准测试排名不同硬件上运行的本地 LLM 性能，帮助用户选择最优模型。支持多种硬件和流行开源 LLM。开源 GitHub 仓库，便于社区贡献和扩展。",
+      "takeaways": [
+        "覆盖 CPU/GPU 等硬件基准",
+        "按速度、内存等指标排序模型"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "d4549f63a4c10133",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "VentureBeat",
-      "title": "Perceptron Mk1 shocks with highly performant video analysis AI model",
-      "blurb": "Perceptron Mk1视频分析模型性能高，价格仅对手80-90%。",
-      "link": "https://venturebeat.com/technology/perceptron-mk1-shocks-with-highly-performant-video-analysis-ai-model-80-90-cheaper-than-anthropic-openai-and-google",
-      "canonical_link": "https://venturebeat.com/technology/perceptron-mk1-shocks-with-highly-performant-video-analysis-ai-model-80-90-cheaper-than-anthropic-openai-and-google",
-      "published_at": "2026-05-13T20:00:00.000+08:00",
+      "author": "Cursor",
+      "title": "Cloud Agent Development Environments",
+      "blurb": "适合构建代理舰队的团队，简化环境配置和并行管理。",
+      "link": "https://cursor.com/blog/cloud-agent-development-environments",
+      "canonical_link": "https://cursor.com/blog/cloud-agent-development-environments",
+      "published_at": "2026-05-15T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "infra"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-15",
+      "source_signal": "TLDR AI 头条，Cursor 发布云端代理开发环境，支持多仓库和治理，对大规模代理部署关键。",
+      "recommendation": "适合构建代理舰队的团队，简化环境配置和并行管理。",
+      "summary": "Cursor 推出云基开发环境，专为自治编码代理设计。支持多仓库、代码化配置、自动化设置和治理控制。便于管理并行代理舰队。",
+      "takeaways": [
+        "环境即代码降低部署复杂度",
+        "内置治理确保安全扩展"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "d1181b87a151d5bf",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Anthropic",
+      "title": "2028: Two scenarios for global AI leadership",
+      "blurb": "政策制定者阅读，理解美中 AI 竞争动态。",
+      "link": "https://anthropic.com/research/2028-ai-leadership",
+      "canonical_link": "https://anthropic.com/research/2028-ai-leadership",
+      "published_at": "2026-05-15T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "research"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-15",
+      "source_signal": "TLDR AI 深度分析，Anthropic 研究全球 AI 领导力情景，涉及政策、安全和计算优势。",
+      "recommendation": "政策制定者阅读，理解美中 AI 竞争动态。",
+      "summary": "Anthropic 描绘 2028 年两情景：美国维持计算领先塑造规范，或中国因政策松懈追平。美国当前靠出口管制和芯片领先。建议封堵计算访问漏洞和蒸馏攻击。",
+      "takeaways": [
+        "计算优势决定领导地位",
+        "政策行动防中国追赶"
+      ],
+      "topic": "research"
+    },
+    {
+      "id": "c9fa34c30eb0ceb1",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Hugging Face",
+      "title": "Unlocking asynchronicity in continuous batching",
+      "blurb": "推理服务优化参考，利用 CUDA 流消除空闲。",
+      "link": "https://huggingface.co/blog/continuous_async",
+      "canonical_link": "https://huggingface.co/blog/continuous_async",
+      "published_at": "2026-05-15T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "infra"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-15",
+      "source_signal": "TLDR AI 研究，HF 优化连续批处理异步，提升 GPU 利用率 22%。",
+      "recommendation": "推理服务优化参考，利用 CUDA 流消除空闲。",
+      "summary": "异步批处理用 CUDA 流和事件，让 CPU 在 GPU 计算 N 时准备 N+1，减空闲提升 GPU 利用 22%。无需改内核或模型，大幅加速生成。",
+      "takeaways": [
+        "异步消除 CPU-GPU 空闲间隙",
+        "通用推理优化技术"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "e6a62dfcce482a3f",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Larsencc",
+      "title": "How We Built Secure, Scalable Agent Sandbox Infrastructure",
+      "blurb": "代理开发者参考隔离策略，避免安全隐患。",
+      "link": "https://x.com/larsencc/status/2027225210412470668",
+      "canonical_link": "https://x.com/larsencc/status/2027225210412470668",
+      "published_at": "2026-05-15T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "infra"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-15",
+      "source_signal": "TLDR AI 深度，分享代理沙箱基础设施最佳实践，提升安全可扩展性。",
+      "recommendation": "代理开发者参考隔离策略，避免安全隐患。",
+      "summary": "讨论代理代码执行沙箱两种方式：隔离工具或隔离代理。推荐隔离代理，无需保护秘密或状态，便于杀掉重启和独立扩展。虽增网络跳跃，但更安全。",
+      "takeaways": [
+        "隔离代理优于工具隔离",
+        "支持无状态高可用扩展"
+      ],
+      "topic": "infra"
+    },
+    {
+      "id": "8bba06e63b07fc26",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Raindrop AI",
+      "title": "Raindrop Workshop (GitHub Repo)",
+      "blurb": "编码代理集成首选，提供直播追踪和本地重放。",
+      "link": "https://github.com/raindrop-ai/workshop",
+      "canonical_link": "https://github.com/raindrop-ai/workshop",
+      "published_at": "2026-05-15T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "tooling"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-15",
+      "source_signal": "TLDR AI 工程部分，开源工具增强 Claude Code 能力，支持追踪和自愈评估。",
+      "recommendation": "编码代理集成首选，提供直播追踪和本地重放。",
+      "summary": "Raindrop Workshop 赋予 Claude Code 阅读追踪、编写评估和修复代码能力。包括直播追踪、代理集成、自愈循环和本地重放。兼容 TS/Python/Go/Rust 等。",
+      "takeaways": [
+        "自愈 eval 循环自动化修复",
+        "多语言 SDK 支持"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "5d3e65c401fafc69",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Google Developers",
+      "title": "Genkit Middleware",
+      "blurb": "构建全栈代理 app 时使用，提升重试和审批机制。",
+      "link": "https://developers.googleblog.com/announcing-genkit-middleware-intercept-extend-and-harden-your-agentic-apps",
+      "canonical_link": "https://developers.googleblog.com/announcing-genkit-middleware-intercept-extend-and-harden-your-agentic-apps",
+      "published_at": "2026-05-15T20:00:00.000+08:00",
       "score": 7,
       "tags": [
         "TLDR AI",
-        "model-release"
+        "tooling"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-13",
-      "source_signal": "Quick link on cost-competitive video model.",
-      "recommendation": "Perceptron Mk1视频分析模型性能高，价格仅对手80-90%。",
-      "summary": "Mk1视频AI模型在性能媲美Anthropic/OpenAI/Google，但成本低80-90%。 针对视频任务优化。 市场颠覆潜力大。",
+      "source_page": "https://tldr.tech/ai/2026-05-15",
+      "source_signal": "TLDR AI 工程，Google Genkit 框架中间件，支持代理应用可靠性和可观测性。",
+      "recommendation": "构建全栈代理 app 时使用，提升重试和审批机制。",
+      "summary": "Genkit 是跨平台代理应用框架，支持 TS/Go/Dart/Python。可组合钩子拦截生成调用，实现重试、人工审批和全层可观测。工具循环重复至模型完成。",
       "takeaways": [
-        "定价策略重塑视频AI市场",
-        "高性价比吸引企业"
+        "中间件增强可靠性与安全",
+        "开发者工具调试执行流"
       ],
-      "topic": "model-release"
+      "topic": "tooling"
+    },
+    {
+      "id": "d8ad77b30b2d705e",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "Turso.tech",
+      "title": "The Wonders of AI: We Are Retiring Our Bug Bounty Program",
+      "blurb": "展示 AI 如何高效自动化安全工作，企业可借鉴降低人力成本。",
+      "link": "https://turso.tech/blog/the-wonders-of-ai",
+      "canonical_link": "https://turso.tech/blog/the-wonders-of-ai",
+      "published_at": "2026-05-15T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "business"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Hacker News 新帖，AI 取代 bug bounty 的商业信号，反映 AI 在安全测试领域的实际应用。",
+      "recommendation": "展示 AI 如何高效自动化安全工作，企业可借鉴降低人力成本。",
+      "summary": "Turso 宣布因 AI 工具表现优异而退役 bug bounty 程序。AI 能快速发现并修复漏洞，效率远超人工。标志着 AI 在生产环境中取代传统安全流程。",
+      "takeaways": [
+        "AI 自动化 bug 狩猎效果显著",
+        "企业转向 AI 驱动的安全实践"
+      ],
+      "topic": "business"
     }
   ]
 }
