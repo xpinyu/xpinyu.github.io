@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="LTX-2 把声音和画面放进同一次生成。理解它的核心：表示分开、生成耦合、时间对齐。">
+<title>LTX-2：联合音视频生成的最小心智模型</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --ochre: #E8B830;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --blue: #5A7A90;
+    --blue-bg: #EAF0F5;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 720px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.88;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 999;
+    transition: width 80ms linear;
+    pointer-events: none;
+  }
+
+  .topbar {
+    position: fixed;
+    top: 2px;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250, 246, 238, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229, 221, 208, 0.6);
+  }
+
+  .topbar a {
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  .container {
+    max-width: var(--content-w);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+
+  header .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 1.24;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    max-width: 620px;
+  }
+
+  header .subtitle {
+    font-size: 1rem;
+    color: var(--text-2);
+    line-height: 1.92;
+    max-width: 660px;
+  }
+
+  header .meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+    color: var(--text-3);
+  }
+
+  header .meta a {
+    color: var(--text-3);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.15s;
+  }
+
+  header .meta a:hover {
+    color: var(--text-1);
+    border-color: var(--text-1);
+  }
+
+  nav.toc {
+    position: fixed;
+    top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 250px));
+    width: 210px;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    z-index: 50;
+  }
+
+  nav.toc a {
+    display: block;
+    padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  nav.toc a:hover,
+  nav.toc a.active {
+    color: var(--text-1);
+    border-color: var(--text-1);
+  }
+
+  .thesis,
+  .takeaway {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+  }
+
+  .thesis { margin-bottom: 72px; }
+  .takeaway { margin: 72px 0 24px; }
+
+  .thesis .thesis-label,
+  .takeaway .thesis-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 14px;
+  }
+
+  .thesis p,
+  .takeaway p {
+    font-size: 1.03rem;
+    line-height: 1.9;
+  }
+
+  .thesis p + p,
+  .takeaway p + p {
+    margin-top: 16px;
+  }
+
+  .thesis strong { color: var(--ochre); }
+  .takeaway strong { color: #8EC5A0; }
+
+  article {
+    animation: enter 0.6s ease 0.08s both;
+  }
+
+  section { margin-bottom: 72px; }
+
+  .section-num {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.52rem;
+    font-weight: 600;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  section > .section-hook {
+    font-size: 0.85rem;
+    color: var(--text-3);
+    margin-bottom: 24px;
+    line-height: 1.62;
+  }
+
+  h3 {
+    font-size: 1.08rem;
+    font-weight: 600;
+    margin: 36px 0 12px;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    margin-bottom: 18px;
+    font-size: 1rem;
+  }
+
+  p:last-child { margin-bottom: 0; }
+
+  strong {
+    font-weight: 700;
+    color: #162E66;
+  }
+
+  blockquote {
+    margin: 28px 0;
+    padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.035);
+    color: var(--text-2);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.96rem;
+    line-height: 1.88;
+  }
+
+  blockquote p { margin-bottom: 0; }
+
+  .sep {
+    border: 0;
+    height: 1px;
+    background: var(--border);
+    margin: 72px 0;
+  }
+
+  .note {
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin: 24px 0;
+    font-size: 0.88rem;
+    line-height: 1.82;
+    border-left: 3px solid;
+  }
+
+  .note-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .note-neutral { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+  .note-insight { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-ok { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-problem { background: var(--red-bg); border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+
+  .bullet-list {
+    margin: 24px 0;
+    padding-left: 1.2rem;
+  }
+
+  .bullet-list li { margin: 10px 0; }
+
+  .causal {
+    margin: 24px 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: cause;
+  }
+
+  .causal li {
+    counter-increment: cause;
+    position: relative;
+    padding: 8px 0 8px 44px;
+    line-height: 1.78;
+  }
+
+  .causal li::before {
+    content: counter(cause);
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #1A2540;
+    color: #F5F0EB;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .causal li + li { border-top: 1px dashed var(--border); }
+
+  .versus {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin: 24px 0;
+    font-size: 0.86rem;
+  }
+
+  .versus .v-side { padding: 20px 24px; }
+  .versus .v-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .versus .v-left { background: var(--red-bg); }
+  .versus .v-left .v-label { color: var(--red); }
+  .versus .v-right { background: var(--green-bg); }
+  .versus .v-right .v-label { color: var(--green); }
+  .versus .v-mid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    font-weight: 700;
+    color: var(--text-3);
+    background: var(--bg);
+    font-size: 0.75rem;
+  }
+
+  .stream-grid,
+  .bridge-grid,
+  .goal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .stream-card,
+  .bridge-card,
+  .goal-card {
+    padding: 24px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .stream-card h3,
+  .bridge-card h3,
+  .goal-card h3 {
+    margin: 0 0 10px;
+    font-size: 0.95rem;
+  }
+
+  .stream-card p,
+  .bridge-card p,
+  .goal-card p {
+    font-size: 0.85rem;
+    line-height: 1.75;
+    color: var(--text-2);
+  }
+
+  .stream-card.video,
+  .goal-card.video { background: var(--blue-bg); }
+
+  .stream-card.audio,
+  .goal-card.audio { background: var(--purple-bg); }
+
+  .stream-meta {
+    margin-top: 10px;
+    font-size: 0.74rem;
+    color: var(--text-3);
+  }
+
+  .pipeline {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 0;
+    margin: 28px 0;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+  }
+
+  .pipe-node {
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    text-align: center;
+    min-width: 118px;
+  }
+
+  .pipe-node + .pipe-node { border-left: none; }
+  .pipe-node:first-child { border-radius: 8px 0 0 8px; }
+  .pipe-node:last-child { border-radius: 0 8px 8px 0; }
+  .pipe-node.is-input { background: #F2EDE4; }
+  .pipe-node.is-text { background: var(--amber-bg); }
+  .pipe-node.is-cross { background: var(--green-bg); }
+  .pipe-node.is-output { background: var(--blue-bg); }
+
+  pre {
+    margin: 24px 0;
+    padding: 18px 20px;
+    background: #F2EDE4;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow-x: auto;
+  }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.82em;
+    background: #EDE8E0;
+    padding: 2px 7px;
+    border-radius: 5px;
+  }
+
+  pre code {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    font-size: 0.86rem;
+    line-height: 1.75;
+  }
+
+  .formula-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+
+  .formula-label + pre {
+    margin-top: 10px;
+  }
+
+  .time-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .time-card {
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .time-card .time-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  .time-card p {
+    font-size: 0.82rem;
+    line-height: 1.72;
+    color: var(--text-2);
+    margin-bottom: 0;
+  }
+
+  .scenario {
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin: 24px 0;
+  }
+
+  .scenario-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+
+  .scenario p + p { margin-top: 14px; }
+
+  footer {
+    text-align: center;
+    padding: 48px 0 64px;
+    font-size: 0.72rem;
+    color: var(--text-3);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header,
+    article { animation: none; }
+  }
+
+  @media (max-width: 1120px) {
+    nav.toc { display: none; }
+  }
+
+  @media (max-width: 720px) {
+    .time-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    header h1 { font-size: 1.82rem; }
+    .thesis,
+    .takeaway { padding: 28px 24px; }
+    blockquote,
+    pre { padding: 16px 20px; }
+    .stream-grid,
+    .bridge-grid,
+    .goal-grid { grid-template-columns: 1fr; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .pipeline { justify-content: stretch; }
+    .pipe-node {
+      min-width: auto;
+      width: 100%;
+      border-left: 1px solid var(--border);
+      border-top: none;
+    }
+    .pipe-node + .pipe-node {
+      border-left: 1px solid var(--border);
+    }
+    .pipe-node:first-child {
+      border-radius: 8px 8px 0 0;
+      border-top: 1px solid var(--border);
+    }
+    .pipe-node:last-child { border-radius: 0 0 8px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+
+<div class="topbar">
+  <a href="/" class="home-link">← pinyu.ai</a>
+</div>
+
+<nav class="toc" id="toc">
+  <a href="#thesis">核心问题</a>
+  <a href="#why-not-dub">为什么不能后配音</a>
+  <a href="#representation">为什么先分开表示</a>
+  <a href="#layer">一层里发生什么</a>
+  <a href="#text-conditioning">为什么两边都看文本</a>
+  <a href="#cross-reading">怎么互相读</a>
+  <a href="#time-axis">公共时间轴</a>
+  <a href="#scene">一个具体场景</a>
+  <a href="#transfer">怎么迁移使用</a>
+  <a href="#boundary">边界</a>
+  <a href="#takeaway-section">一句带走</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">LTX-2 × Audiovisual Generation</div>
+    <h1>LTX-2：联合音视频生成的最小心智模型</h1>
+    <p class="subtitle">LTX-2 把声音和画面放进同一次生成，不把音频留到最后再补。理解它要抓住三件事：表示分开、生成耦合、时间对齐。</p>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.05</span>
+      <a href="https://arxiv.org/abs/2601.03233" target="_blank" rel="noopener noreferrer">论文</a>
+    </div>
+  </header>
+
+  <div class="thesis" id="thesis">
+    <div class="thesis-label">核心问题</div>
+    <p>视频和音频经常来自同一个事件，但它们不是同一种信号。视频是时空结构，音频是时间结构；两者相关，却不对称。</p>
+    <p><strong>LTX-2 没有把两种模态揉成一种东西。它让它们留在各自合适的表示里，再共同生成同一个事件。</strong></p>
+  </div>
+
+  <article>
+    <section id="why-not-dub">
+      <div class="section-num">00</div>
+      <h2>为什么不能后配音</h2>
+      <p class="section-hook">很多声画关系，靠后期补一条音轨并不能真正补齐</p>
+
+      <p>先抓住这篇论文真正要解决的矛盾：视频和音频经常来自同一个事件，但它们不是同一种信号。</p>
+
+      <p>如果先生成视频再补音频，声音只能给既定画面“配合”。如果先生成音频再补视频，画面又只能倒推声音背后的场景。一个人说话时，嘴型受发音约束；玻璃碎裂时，声音要和碎裂时刻对上；车从左向右开过时，画面里的运动和声音的空间变化也应该一起发生。</p>
+
+      <p>这些不是“视频 + 一条声音轨”。它们更像同一个物理事件在两个感官里的投影。</p>
+
+      <div class="versus">
+        <div class="v-side v-left">
+          <div class="v-label">串联式</div>
+          <p><code>video first -&gt; audio later</code><br>声音只能给既定画面补细节。</p>
+        </div>
+        <div class="v-mid">vs</div>
+        <div class="v-side v-right">
+          <div class="v-label">LTX-2</div>
+          <p><code>text -&gt; generate video and audio together</code><br>声音和画面共同生成同一个事件。</p>
+        </div>
+      </div>
+
+      <p>更正式一点，它想学的是 <code>p(video, audio | text)</code>，也就是在文本条件下，视频和音频的联合分布。</p>
+    </section>
+
+    <hr class="sep">
+
+    <section id="representation">
+      <div class="section-num">01</div>
+      <h2>为什么先分开表示</h2>
+      <p class="section-hook">联合生成不等于把所有东西塞进同一个 latent</p>
+
+      <p>视频是 3D 时空信号：有横向、纵向、时间，还要处理物体、纹理、运动、镜头。音频更像 1D 时间信号：重点是节奏、频率、语音、环境声。</p>
+
+      <p>如果硬塞进同一个 latent，位置编码、压缩率、模型容量都会变别扭。LTX-2 的做法更克制：先保留两种模态最自然的表示，再让生成过程发生强耦合。</p>
+
+      <div class="stream-grid">
+        <div class="stream-card video">
+          <h3>Video path</h3>
+          <p>视频先经过自己的 <code>video VAE</code>，变成 video latent。它需要保留空间结构、运动轨迹和镜头变化，所以 token 更大、信息密度更高。</p>
+          <div class="stream-meta">关键词：space / motion / scene layout</div>
+        </div>
+        <div class="stream-card audio">
+          <h3>Audio path</h3>
+          <p>音频先经过自己的 <code>audio VAE</code>，变成 audio latent。它更关注时间节奏、频率结构、语音和环境声，所以 token 更小、更偏时间组织。</p>
+          <div class="stream-meta">关键词：rhythm / speech / ambience</div>
+        </div>
+      </div>
+
+      <div class="note note-insight">
+        <div class="note-label">关键句</div>
+        真正重要的是这八个字：<strong>表示分开，生成过程耦合</strong>。
+      </div>
+    </section>
+
+    <hr class="sep">
+
+    <section id="layer">
+      <div class="section-num">02</div>
+      <h2>每一层里到底在做什么</h2>
+      <p class="section-hook">双流结构的重点，在每层都反复对齐，不只是两条路并排跑</p>
+
+      <p>LTX-2 的核心是一个不对称双流 Diffusion Transformer。你可以把它想成两条并行的生成流：一条管视频，一条管音频。每一层里，两条流都按相似顺序工作。</p>
+
+      <div class="pipeline" aria-label="layer pipeline">
+        <div class="pipe-node is-input">Current tokens</div>
+        <div class="pipe-node">Self-attention</div>
+        <div class="pipe-node is-text">Text cross-attention</div>
+        <div class="pipe-node is-cross">AV cross-attention</div>
+        <div class="pipe-node">FFN</div>
+        <div class="pipe-node is-output">Updated tokens</div>
+      </div>
+
+      <p><strong>Self-attention</strong> 回答的是“我现在生成到什么状态了”。<strong>Text cross-attention</strong> 回答的是“prompt 要我往哪里去”。<strong>Audio-video cross-attention</strong> 回答的是“另一边此刻发生了什么，我要怎么同步”。</p>
+
+      <p>这一层的顺序很重要。模型会先确认自身状态，再回到文本目标，最后根据另一模态校准结果。</p>
+    </section>
+
+    <hr class="sep">
+
+    <section id="text-conditioning">
+      <div class="section-num">03</div>
+      <h2>为什么两边都要看文本</h2>
+      <p class="section-hook">文本负责意图，跨模态负责对齐，这两个工作不能互相替代</p>
+
+      <p>这里最容易被跳过、但其实很关键的一步是：为什么音频和视频要各自看文本？</p>
+
+      <div class="goal-grid">
+        <div class="goal-card video">
+          <h3>Video reads text</h3>
+          <p>视频看文本，是为了知道画面里该有谁、在哪里、做什么、是什么风格。</p>
+          <div class="stream-meta">scene / character / action / style</div>
+        </div>
+        <div class="goal-card audio">
+          <h3>Audio reads text</h3>
+          <p>音频看文本，是为了知道该说什么语言、什么语气、什么台词，以及有什么环境声。</p>
+          <div class="stream-meta">speech / language / emotion / ambience</div>
+        </div>
+      </div>
+
+      <p>另一模态不能可靠替代文本完成这件事。视频不能告诉音频“具体台词是什么”；音频也不能告诉视频“场景是不是空旷车库”。所以每一层都需要先把各自拉回 prompt，再去互相校准。</p>
+
+      <div class="formula-label">Compression</div>
+      <pre><code>text sets the goal
+cross-modal attention aligns the result</code></pre>
+    </section>
+
+    <hr class="sep">
+
+    <section id="cross-reading">
+      <div class="section-num">04</div>
+      <h2>音频和视频怎么互相读</h2>
+      <p class="section-hook">所谓“互相读”，说的就是双向 cross-attention</p>
+
+      <p>互相读，技术上就是双向 cross-attention。音频流读取视频证据，视频流读取音频证据。这种交换不会只发生在最后一步；每一层都会互相看一眼。</p>
+
+      <div class="bridge-grid">
+        <div class="bridge-card">
+          <h3>Video -&gt; Audio</h3>
+          <p>音频流读取画面证据，比如嘴部形状、车辆运动、脚步节奏、空间大小和远近关系。</p>
+        </div>
+        <div class="bridge-card">
+          <h3>Audio -&gt; Video</h3>
+          <p>视频流读取声音证据，比如语音节奏、发音结构、撞击发生的时刻，以及声音何时开始衰减。</p>
+        </div>
+      </div>
+
+      <div class="formula-label">Cross-Modal Update</div>
+      <pre><code>reader_update = attention(Q_reader, K_source, V_source)
+reader = reader + gate * reader_update</code></pre>
+
+      <p><code>reader</code> 是正在被更新的一边，<code>source</code> 是被读取的一边。音频读视频时，audio 是 <code>reader</code>，video 是 <code>source</code>；视频读音频时则反过来。</p>
+
+      <div class="note note-neutral">
+        <div class="note-label">不要误读</div>
+        这里不是单边服从。更像是两边在生成过程中持续互相约束，避免各写各的。
+      </div>
+    </section>
+
+    <hr class="sep">
+
+    <section id="time-axis">
+      <div class="section-num">05</div>
+      <h2>公共时间轴怎么对齐</h2>
+      <p class="section-hook">它靠的是时间上的软对齐：先在同一时刻相遇，再在内容上选择对象</p>
+
+      <p>关键缺口在这里：音频和视频 token 数量不同、结构不同，怎么知道该读哪个时间附近的东西？</p>
+
+      <p>LTX-2 没有用硬规则规定“第 37 个音频 token 必须对第 37 帧视频”。它采用的是更柔性的时间对齐：给两边 token 都挂上时间位置，然后在跨模态 attention 里只使用时间位置。</p>
+
+      <div class="formula-label">Shared Temporal Axis</div>
+      <pre><code>video token: (x, y, t)
+audio token: (t)
+
+cross-modal attention: only use t for positional alignment
+score = Q_audio(t_audio) · K_video(t_video)</code></pre>
+
+      <div class="time-grid">
+        <div class="time-card">
+          <div class="time-label">Video token</div>
+          <p>视频内部仍然有空间位置 <code>x, y</code> 和时间 <code>t</code>。它保留场景布局和视觉事件的空间分布。</p>
+        </div>
+        <div class="time-card">
+          <div class="time-label">Audio token</div>
+          <p>音频内部主要是时间 <code>t</code>。它关注语音、撞击、环境声在时间维上的组织。</p>
+        </div>
+        <div class="time-card">
+          <div class="time-label">Cross-modal</div>
+          <p>跨模态时只用时间位置做相遇条件，让相近时间的 token 更容易互相注意。</p>
+        </div>
+      </div>
+
+      <ol class="causal">
+        <li><strong>时间先缩小范围。</strong> 第 3 秒附近的音频 token 更容易去读第 3 秒附近的视频 token。</li>
+        <li><strong>内容再选择对象。</strong> 在这些视频 token 里，最终读嘴、车、脚步还是玻璃，交给 attention 的内容匹配来决定。</li>
+        <li><strong>Gate 决定混入多少。</strong> 早期更重整体结构，后期再细化嘴型、撞击声和空间声。</li>
+      </ol>
+
+      <blockquote>
+        <p><strong>时间负责让两边在同一时刻相遇，attention 负责选择具体对象，gate 负责决定混入多少。</strong></p>
+      </blockquote>
+    </section>
+
+    <hr class="sep">
+
+    <section id="scene">
+      <div class="section-num">06</div>
+      <h2>一个具体场景</h2>
+      <p class="section-hook">把抽象结构压回一个能感受到的例子里</p>
+
+      <div class="scenario">
+        <div class="scenario-label">Prompt</div>
+        <p>一个人在空旷车库里说话，远处一辆车从左向右驶过。</p>
+      </div>
+
+      <div class="versus">
+        <div class="v-side v-left">
+          <div class="v-label">串联式方案</div>
+          <p>先生成视频，再让音频模型去猜：这个空间多空旷？车声该怎么移动？说话有没有混响？嘴型和发音是否对得上？</p>
+        </div>
+        <div class="v-mid">vs</div>
+        <div class="v-side v-right">
+          <div class="v-label">LTX-2</div>
+          <p>视频流先知道要生成车库、人物、嘴部和车辆运动；音频流先知道要生成语音、混响、车声和环境感。然后两条流在每一层互相读，持续同步。</p>
+        </div>
+      </div>
+
+      <p>所以，“音频知道车在移动”并不是显式推理。更像是音频 token 在对应时间段读到了车辆运动相关的视频 token。“视频受语音节奏约束”也不是后处理；它来自嘴部附近的视频 token 读到了音频里的语音节奏和发音结构。</p>
+
+      <p>它真正要解决的是：<strong>声音和画面是否像同一件事</strong>。至于“有没有声音”，反倒是更浅一层的问题。</p>
+    </section>
+
+    <hr class="sep">
+
+    <section id="transfer">
+      <div class="section-num">07</div>
+      <h2>怎么迁移使用</h2>
+      <p class="section-hook">这篇论文真正值得带走的，是一个系统设计判断规则</p>
+
+      <p>如果以后看多模态系统，可以抓住一个判断标准：</p>
+
+      <blockquote>
+        <p><strong>当两个模态结构不同，但描述的是同一个过程时，不要急着共享表示；先保留各自最自然的表示，再找出真正需要强对齐的公共轴。</strong></p>
+      </blockquote>
+
+      <p>在 LTX-2 里，这个公共轴是时间。这比“多模态就把 token 拼一起”更精确。拼 token 只是把东西放在一起；联合生成要求它们在生成过程中互相约束。</p>
+
+      <ul class="bullet-list">
+        <li>模态天然异构时，先想清楚它们各自最适合什么表示，再谈能否统一成一个 latent。</li>
+        <li>如果它们描述的是同一个过程，再问真正需要强对齐的共享轴是什么，可能是时间，也可能是动作意图或空间事件。</li>
+        <li>如果共享轴找错了，系统就容易出现“形式联合、实质脱节”的问题。</li>
+      </ul>
+    </section>
+
+    <hr class="sep">
+
+    <section id="boundary">
+      <div class="section-num">08</div>
+      <h2>最容易误读的地方与它的边界</h2>
+      <p class="section-hook">它的聪明之处在克制；它的短板也正来自这个作用范围</p>
+
+      <p>LTX-2 的聪明之处，不在于追求“大一统”。它先承认音频和视频本来就不一样。它没有把两者硬塞进同一个 latent，也没有追求完全对称的双塔，只在必要处强耦合。</p>
+
+      <div class="note note-ok">
+        <div class="note-label">最值得迁移的工程思想</div>
+        该分开的地方分开，该同步的地方高频同步。
+      </div>
+
+      <p>它强在局部事件级同步：谁在说话、什么时候撞击、声音是否跟画面动作对上、空间感是否匹配。</p>
+
+      <div class="note note-problem">
+        <div class="note-label">边界</div>
+        它弱在长程因果一致性。超过约 20 秒、多说话人、低资源语言、复杂叙事关系时，模型仍然容易漂。因为那时问题已经超出了音视频对齐本身，开始牵涉角色、记忆、世界状态和故事因果。
+      </div>
+
+      <p>换句话说，LTX-2 解决的是“同一时刻的事件是否一致”，还没有完全解决“跨很长时间的故事是否一致”。</p>
+
+      <div class="note note-neutral">
+        <div class="note-label">迁移题</div>
+        如果要做“机器人动作 + 摄像头视觉 + 触觉传感”的联合生成，你真正该强共享的轴，是空间、时间、动作意图，还是别的东西？
+      </div>
+    </section>
+  </article>
+
+  <div class="takeaway" id="takeaway-section">
+    <div class="thesis-label">一句带走</div>
+    <p>LTX-2 让声音和画面在各自合适的表示里，共同生成同一个事件；它不是在视频模型外面再挂一层音频。</p>
+    <p><strong>先保留模态差异，再找真正需要强对齐的公共轴，这比一上来追求统一表示更重要。</strong></p>
+  </div>
+
+  <footer>
+    pinyu.ai
+  </footer>
+
+</div>
+
+<script>
+window.addEventListener('scroll', function() {
+  var h = document.documentElement;
+  var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+var toc = document.getElementById('toc');
+if (toc) {
+  var links = Array.from(toc.querySelectorAll('a'));
+  var targets = links.map(function(a) {
+    return document.querySelector(a.getAttribute('href'));
+  }).filter(Boolean);
+
+  var update = function() {
+    var current = '';
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].getBoundingClientRect().top <= 140) current = targets[i].id;
+    }
+    links.forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
