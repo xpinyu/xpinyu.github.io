@@ -4,38 +4,38 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-05-16T22:50:21.949+08:00",
-    "item_count": 4,
+    "updated_at": "2026-05-17T22:51:27.167+08:00",
+    "item_count": 5,
     "window_start": "2026-05-15T00:00:00.000Z",
-    "window_end": "2026-05-16T14:50:21.949Z"
+    "window_end": "2026-05-17T14:51:27.167Z"
   },
   "items": [
     {
-      "id": "98957210385326a7",
+      "id": "aea975ecafe24f96",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "nvlabs.github.io",
-      "title": "SANA-WM, a 2.6B open-source world model for 1-minute 720p video",
-      "blurb": "SANA-WM 提供了一个开源的 2.6B 世界模型，可生成 1 分钟 720p 视频，适合研究和原型开发。",
-      "link": "https://nvlabs.github.io/Sana/WM",
-      "canonical_link": "https://nvlabs.github.io/Sana/WM",
-      "published_at": "2026-05-16T20:00:00.000+08:00",
+      "platform": "TLDR AI",
+      "author": "The Next Web",
+      "title": "Microsoft is quietly shopping for an OpenAI replacement",
+      "blurb": "关注微软可能收购 Inception 等扩散语言模型初创公司的动向，行业格局或将重塑。",
+      "link": "https://thenextweb.com/news/microsoft-startup-deals-life-after-openai",
+      "canonical_link": "https://thenextweb.com/news/microsoft-startup-deals-life-after-openai",
+      "published_at": "2026-05-15T20:00:00.000+08:00",
       "score": 8,
       "tags": [
-        "Hacker News",
-        "model-release"
+        "TLDR AI",
+        "business"
       ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "HN front-page story on new open-source video world model with strong engagement",
-      "recommendation": "SANA-WM 提供了一个开源的 2.6B 世界模型，可生成 1 分钟 720p 视频，适合研究和原型开发。",
-      "summary": "NVIDIA Labs 发布 SANA-WM，这是一个 2.6B 参数的开源世界模型，专为生成长达 1 分钟的 720p 视频设计。该模型已在 GitHub 和项目页面公开，社区讨论其在视频生成和模拟领域的潜力。",
+      "source_page": "https://tldr.tech/ai/2026-05-15",
+      "source_signal": "重大商业信号，微软在 OpenAI 合作调整后开始寻找替代模型供应商",
+      "recommendation": "关注微软可能收购 Inception 等扩散语言模型初创公司的动向，行业格局或将重塑。",
+      "summary": "微软与 OpenAI 签署新协议后， reportedly 开始秘密寻找替代方案，包括洽谈收购 Inception 等公司，同时保留对 OpenAI 的 IP 许可至 2032 年。",
       "takeaways": [
-        "开源 2.6B 世界模型支持高质量长视频生成",
-        "直接可用于研究和下游应用"
+        "微软 27% OpenAI 股权价值约 1350 亿美元",
+        "已解除 AGI 触发条款"
       ],
-      "topic": "model-release"
+      "topic": "business"
     },
     {
       "id": "dcbab9a12e0103e6",
@@ -45,7 +45,7 @@
       "platform": "TLDR AI",
       "author": "x.ai",
       "title": "Introducing Grok Build",
-      "blurb": "Grok Build 是 xAI 推出的终端编码代理，支持子代理和深度工作树集成，适合自动化开发任务。",
+      "blurb": "SuperGrok Heavy 用户可立即体验，支持 AGENTS.md 与子代理的强大终端编码工具。",
       "link": "https://x.ai/news/grok-build-cli",
       "canonical_link": "https://x.ai/news/grok-build-cli",
       "published_at": "2026-05-15T20:00:00.000+08:00",
@@ -55,12 +55,39 @@
         "agent"
       ],
       "source_page": "https://tldr.tech/ai/2026-05-15",
-      "source_signal": "Featured launch of new terminal-based coding agent from xAI",
-      "recommendation": "Grok Build 是 xAI 推出的终端编码代理，支持子代理和深度工作树集成，适合自动化开发任务。",
-      "summary": "Grok Build 是一个从终端运行的编码代理，目前面向 SuperGrok Heavy 用户开放早期测试。它原生支持 AGENTS.md、插件、钩子、技能和 MCP 服务器，并提供无头模式便于脚本集成。",
+      "source_signal": "TLDR AI 头条，xAI 新推出的终端编码代理",
+      "recommendation": "SuperGrok Heavy 用户可立即体验，支持 AGENTS.md 与子代理的强大终端编码工具。",
+      "summary": "Grok Build 是运行于终端的编码代理，现已向 SuperGrok Heavy 订阅者开放早期测试。支持插件、技能、MCP 服务器及无头模式，适合脚本与自动化场景。",
       "takeaways": [
-        "终端原生编码代理支持子任务拆分",
-        "兼容现有工作树和自动化流程"
+        "支持子代理处理大型任务",
+        "具备深度 worktree 集成与无头模式"
+      ],
+      "topic": "agent"
+    },
+    {
+      "id": "8f2e515d20dbe868",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "gidellav",
+      "title": "Zerostack – A Unix-inspired coding agent written in pure Rust",
+      "blurb": "适合需要轻量级终端编码代理的开发者，Rust 实现带来高性能与安全性。",
+      "link": "https://crates.io/crates/zerostack/1.0.0",
+      "canonical_link": "https://crates.io/crates/zerostack/1.0.0",
+      "published_at": "2026-05-17T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "agent"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "HN front page story on new open-source coding agent with strong community discussion",
+      "recommendation": "适合需要轻量级终端编码代理的开发者，Rust 实现带来高性能与安全性。",
+      "summary": "Zerostack 是一个受 Unix 启发的纯 Rust 编码代理，支持子代理和深度工作树集成。已在 crates.io 发布 1.0.0 版本，获得大量讨论。",
+      "takeaways": [
+        "纯 Rust 实现确保高性能与内存安全",
+        "支持子代理与工作树集成"
       ],
       "topic": "agent"
     },
@@ -70,9 +97,9 @@
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "cursor.com",
+      "author": "Cursor",
       "title": "Cloud Agent Development Environments",
-      "blurb": "Cursor 推出云端代理开发环境，支持多仓库配置即代码和并行代理治理，适合大规模自主编码。",
+      "blurb": "企业级团队可利用此系统实现多仓库并行代理治理与环境即代码管理。",
       "link": "https://cursor.com/blog/cloud-agent-development-environments",
       "canonical_link": "https://cursor.com/blog/cloud-agent-development-environments",
       "published_at": "2026-05-15T20:00:00.000+08:00",
@@ -82,41 +109,41 @@
         "infra"
       ],
       "source_page": "https://tldr.tech/ai/2026-05-15",
-      "source_signal": "Detailed technical post on scalable agent infrastructure from Cursor",
-      "recommendation": "Cursor 推出云端代理开发环境，支持多仓库配置即代码和并行代理治理，适合大规模自主编码。",
-      "summary": "Cursor 详细介绍了专为自主编码代理设计的云开发环境系统，支持多仓库管理、环境配置即代码、自动化设置工作流以及对并行代理 fleets 的治理控制。",
+      "source_signal": "Cursor 官方博客，针对自主编码代理的云开发环境方案",
+      "recommendation": "企业级团队可利用此系统实现多仓库并行代理治理与环境即代码管理。",
+      "summary": "Cursor 推出云端代理开发环境，支持多仓库、环境配置即代码、自动化工作流及舰队级治理控制，专为大规模自主编码代理设计。",
       "takeaways": [
-        "云端环境支持多仓库与配置即代码",
-        "提供并行代理治理与自动化工作流"
+        "环境配置即代码便于复制与版本控制",
+        "支持并行代理舰队治理"
       ],
       "topic": "infra"
     },
     {
-      "id": "79ae5d66be20a43d",
+      "id": "5d3e65c401fafc69",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "datadoghq.com",
-      "title": "Toto 2.0: Time series forecasting enters the scaling era",
-      "blurb": "Datadog 发布 Toto 2.0 可扩展时间序列预测模型家族，现已在 Hugging Face 上线。",
-      "link": "https://datadoghq.com/blog/ai/toto-2",
-      "canonical_link": "https://datadoghq.com/blog/ai/toto-2",
+      "author": "Google",
+      "title": "Genkit Middleware",
+      "blurb": "使用 Genkit 中间件可轻松实现重试、人工审批与全链路可观测性，提升代理可靠性。",
+      "link": "https://developers.googleblog.com/announcing-genkit-middleware-intercept-extend-and-harden-your-agentic-apps",
+      "canonical_link": "https://developers.googleblog.com/announcing-genkit-middleware-intercept-extend-and-harden-your-agentic-apps",
       "published_at": "2026-05-15T20:00:00.000+08:00",
       "score": 7,
       "tags": [
         "TLDR AI",
-        "model-release"
+        "tooling"
       ],
       "source_page": "https://tldr.tech/ai/2026-05-15",
-      "source_signal": "New scalable time-series model family released on Hugging Face",
-      "recommendation": "Datadog 发布 Toto 2.0 可扩展时间序列预测模型家族，现已在 Hugging Face 上线。",
-      "summary": "Toto 2.0 是 Datadog 推出的可扩展时间序列预测模型系列，标志着该领域进入规模化时代。模型已开放在 Hugging Face 平台使用，适用于大规模监控和预测场景。",
+      "source_signal": "Google 官方发布，面向全栈代理应用的中间件框架",
+      "recommendation": "使用 Genkit 中间件可轻松实现重试、人工审批与全链路可观测性，提升代理可靠性。",
+      "summary": "Genkit 推出可组合中间件系统，支持拦截生成调用、实现重试与回退、在破坏性工具调用前加入人工审批，并提供开发者工具进行调试。",
       "takeaways": [
-        "时间序列模型进入规模化时代",
-        "直接在 Hugging Face 可用"
+        "支持多语言（TypeScript、Go、Dart、Python）",
+        "工具循环直至模型完成"
       ],
-      "topic": "model-release"
+      "topic": "tooling"
     }
   ]
 }
