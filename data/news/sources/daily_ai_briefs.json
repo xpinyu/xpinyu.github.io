@@ -4,146 +4,146 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-05-17T22:51:27.167+08:00",
+    "updated_at": "2026-05-18T22:59:33.494+08:00",
     "item_count": 5,
-    "window_start": "2026-05-15T00:00:00.000Z",
-    "window_end": "2026-05-17T14:51:27.167Z"
+    "window_start": "2026-05-18T00:00:00.000Z",
+    "window_end": "2026-05-18T14:59:33.494Z"
   },
   "items": [
     {
-      "id": "aea975ecafe24f96",
+      "id": "bb4ddebdfc62310a",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "The Next Web",
-      "title": "Microsoft is quietly shopping for an OpenAI replacement",
-      "blurb": "关注微软可能收购 Inception 等扩散语言模型初创公司的动向，行业格局或将重塑。",
-      "link": "https://thenextweb.com/news/microsoft-startup-deals-life-after-openai",
-      "canonical_link": "https://thenextweb.com/news/microsoft-startup-deals-life-after-openai",
-      "published_at": "2026-05-15T20:00:00.000+08:00",
+      "author": "Nous Research",
+      "title": "Lighthouse Attention",
+      "blurb": "分层选择注意力机制，实现长上下文下17倍加速，兼容FlashAttention。",
+      "link": "https://nousresearch.com/lighthouse-attention",
+      "canonical_link": "https://nousresearch.com/lighthouse-attention",
+      "published_at": "2026-05-18T20:00:00.000+08:00",
       "score": 8,
       "tags": [
         "TLDR AI",
-        "business"
+        "research"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-15",
-      "source_signal": "重大商业信号，微软在 OpenAI 合作调整后开始寻找替代模型供应商",
-      "recommendation": "关注微软可能收购 Inception 等扩散语言模型初创公司的动向，行业格局或将重塑。",
-      "summary": "微软与 OpenAI 签署新协议后， reportedly 开始秘密寻找替代方案，包括洽谈收购 Inception 等公司，同时保留对 OpenAI 的 IP 许可至 2032 年。",
+      "source_page": "https://tldr.tech/ai/2026-05-18",
+      "source_signal": "New attention mechanism research highlighted in engineering section",
+      "recommendation": "分层选择注意力机制，实现长上下文下17倍加速，兼容FlashAttention。",
+      "summary": "Lighthouse Attention提出基于选择的层级注意力，在大上下文场景下正向与反向传播速度提升达17倍。该方法在密集子序列上使用FlashAttention，保持与上游改进的兼容性，同时实现预训练1.4-1.7倍加速。",
       "takeaways": [
-        "微软 27% OpenAI 股权价值约 1350 亿美元",
-        "已解除 AGI 触发条款"
+        "长上下文高效训练",
+        "显著降低计算成本"
       ],
-      "topic": "business"
+      "topic": "research"
     },
     {
-      "id": "dcbab9a12e0103e6",
+      "id": "d89d1b99806eefd1",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "x.ai",
-      "title": "Introducing Grok Build",
-      "blurb": "SuperGrok Heavy 用户可立即体验，支持 AGENTS.md 与子代理的强大终端编码工具。",
-      "link": "https://x.ai/news/grok-build-cli",
-      "canonical_link": "https://x.ai/news/grok-build-cli",
-      "published_at": "2026-05-15T20:00:00.000+08:00",
+      "author": "Anthropic",
+      "title": "How Claude Code works in large codebases: Best practices and where to start",
+      "blurb": "针对数千开发者的大型代码库，分享Claude Code规模化部署的最佳实践。",
+      "link": "https://claude.com/blog/how-claude-code-works-in-large-codebases-best-practices-and-where-to-start",
+      "canonical_link": "https://claude.com/blog/how-claude-code-works-in-large-codebases-best-practices-and-where-to-start",
+      "published_at": "2026-05-18T20:00:00.000+08:00",
       "score": 8,
       "tags": [
         "TLDR AI",
         "agent"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-15",
-      "source_signal": "TLDR AI 头条，xAI 新推出的终端编码代理",
-      "recommendation": "SuperGrok Heavy 用户可立即体验，支持 AGENTS.md 与子代理的强大终端编码工具。",
-      "summary": "Grok Build 是运行于终端的编码代理，现已向 SuperGrok Heavy 订阅者开放早期测试。支持插件、技能、MCP 服务器及无头模式，适合脚本与自动化场景。",
+      "source_page": "https://tldr.tech/ai/2026-05-18",
+      "source_signal": "Production-scale agent workflow guidance from Anthropic",
+      "recommendation": "针对数千开发者的大型代码库，分享Claude Code规模化部署的最佳实践。",
+      "summary": "Claude Code已在拥有数千开发者的生产环境中大规模使用。文章总结了在百万行单体仓库、遗留系统及微服务架构下的成功模式，包括状态管理、审批流程与错误恢复策略。",
       "takeaways": [
-        "支持子代理处理大型任务",
-        "具备深度 worktree 集成与无头模式"
+        "大规模单体仓库适配",
+        "人工审批与优雅降级"
       ],
       "topic": "agent"
     },
     {
-      "id": "8f2e515d20dbe868",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "gidellav",
-      "title": "Zerostack – A Unix-inspired coding agent written in pure Rust",
-      "blurb": "适合需要轻量级终端编码代理的开发者，Rust 实现带来高性能与安全性。",
-      "link": "https://crates.io/crates/zerostack/1.0.0",
-      "canonical_link": "https://crates.io/crates/zerostack/1.0.0",
-      "published_at": "2026-05-17T20:00:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "Hacker News",
-        "agent"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "HN front page story on new open-source coding agent with strong community discussion",
-      "recommendation": "适合需要轻量级终端编码代理的开发者，Rust 实现带来高性能与安全性。",
-      "summary": "Zerostack 是一个受 Unix 启发的纯 Rust 编码代理，支持子代理和深度工作树集成。已在 crates.io 发布 1.0.0 版本，获得大量讨论。",
-      "takeaways": [
-        "纯 Rust 实现确保高性能与内存安全",
-        "支持子代理与工作树集成"
-      ],
-      "topic": "agent"
-    },
-    {
-      "id": "d4549f63a4c10133",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Cursor",
-      "title": "Cloud Agent Development Environments",
-      "blurb": "企业级团队可利用此系统实现多仓库并行代理治理与环境即代码管理。",
-      "link": "https://cursor.com/blog/cloud-agent-development-environments",
-      "canonical_link": "https://cursor.com/blog/cloud-agent-development-environments",
-      "published_at": "2026-05-15T20:00:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "TLDR AI",
-        "infra"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-15",
-      "source_signal": "Cursor 官方博客，针对自主编码代理的云开发环境方案",
-      "recommendation": "企业级团队可利用此系统实现多仓库并行代理治理与环境即代码管理。",
-      "summary": "Cursor 推出云端代理开发环境，支持多仓库、环境配置即代码、自动化工作流及舰队级治理控制，专为大规模自主编码代理设计。",
-      "takeaways": [
-        "环境配置即代码便于复制与版本控制",
-        "支持并行代理舰队治理"
-      ],
-      "topic": "infra"
-    },
-    {
-      "id": "5d3e65c401fafc69",
+      "id": "486c5e8b8d649d35",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
       "author": "Google",
-      "title": "Genkit Middleware",
-      "blurb": "使用 Genkit 中间件可轻松实现重试、人工审批与全链路可观测性，提升代理可靠性。",
-      "link": "https://developers.googleblog.com/announcing-genkit-middleware-intercept-extend-and-harden-your-agentic-apps",
-      "canonical_link": "https://developers.googleblog.com/announcing-genkit-middleware-intercept-extend-and-harden-your-agentic-apps",
-      "published_at": "2026-05-15T20:00:00.000+08:00",
-      "score": 7,
+      "title": "Gemini app rolling out ‘Extended' thinking level, new 3rd-party app integrations",
+      "blurb": "Gemini新增Extended思考模式，并即将集成Canva、Instacart等第三方应用。",
+      "link": "https://9to5google.com/2026/05/17/gemini-app-thinking-level",
+      "canonical_link": "https://9to5google.com/2026/05/17/gemini-app-thinking-level",
+      "published_at": "2026-05-18T20:00:00.000+08:00",
+      "score": 8,
       "tags": [
         "TLDR AI",
-        "tooling"
+        "model-release"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-15",
-      "source_signal": "Google 官方发布，面向全栈代理应用的中间件框架",
-      "recommendation": "使用 Genkit 中间件可轻松实现重试、人工审批与全链路可观测性，提升代理可靠性。",
-      "summary": "Genkit 推出可组合中间件系统，支持拦截生成调用、实现重试与回退、在破坏性工具调用前加入人工审批，并提供开发者工具进行调试。",
+      "source_page": "https://tldr.tech/ai/2026-05-18",
+      "source_signal": "Major model feature rollout surfaced in TLDR AI",
+      "recommendation": "Gemini新增Extended思考模式，并即将集成Canva、Instacart等第三方应用。",
+      "summary": "Google在Gemini应用中推出Extended思考级别选项，支持Fast与Gemini 3.1 Pro模式切换。同时计划添加Canva、Instacart、OpenTable等第三方应用集成，提升多场景使用体验。",
       "takeaways": [
-        "支持多语言（TypeScript、Go、Dart、Python）",
-        "工具循环直至模型完成"
+        "可调节的思考深度",
+        "第三方应用深度集成"
       ],
-      "topic": "tooling"
+      "topic": "model-release"
+    },
+    {
+      "id": "4f2a8dca8ac4665f",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "OpenAI",
+      "title": "ChatGPT Personal Finance",
+      "blurb": "面向Pro用户的金融助手预览版，支持安全连接账户并基于个人数据提供洞见。",
+      "link": "https://openai.com/index/personal-finance-chatgpt",
+      "canonical_link": "https://openai.com/index/personal-finance-chatgpt",
+      "published_at": "2026-05-18T20:00:00.000+08:00",
+      "score": 8,
+      "tags": [
+        "TLDR AI",
+        "product"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-18",
+      "source_signal": "Product launch from OpenAI in daily AI digest",
+      "recommendation": "面向Pro用户的金融助手预览版，支持安全连接账户并基于个人数据提供洞见。",
+      "summary": "OpenAI发布ChatGPT个人财务功能预览，仅限美国Pro用户。用户可安全连接银行账户，查看支出仪表板，并提出基于财务上下文和目标的问题。该功能将AI直接嵌入日常财务管理场景。",
+      "takeaways": [
+        "安全连接真实金融账户",
+        "上下文感知的财务问答"
+      ],
+      "topic": "product"
+    },
+    {
+      "id": "f1a99b325cca38c7",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "Hacker News",
+      "author": "topherjaynes",
+      "title": "AI eats the world (Spring 26) [pdf]",
+      "blurb": "2026春季AI行业全景报告，分析当前趋势与基础设施挑战。",
+      "link": "https://static1.squarespace.com/static/50363cf324ac8e905e7df861/t/6a0af5d0484fbf5fe9a7743e/1779103184855/2026-Spring-AI.pdf",
+      "canonical_link": "https://static1.squarespace.com/static/50363cf324ac8e905e7df861/t/6a0af5d0484fbf5fe9a7743e/1779103184855/2026-Spring-AI.pdf",
+      "published_at": "2026-05-18T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "Hacker News",
+        "business"
+      ],
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "High-signal AI industry report discussed on HN front page",
+      "recommendation": "2026春季AI行业全景报告，分析当前趋势与基础设施挑战。",
+      "summary": "该PDF报告梳理2026年春季AI发展现状，涵盖模型能力、算力需求与商业落地。报告强调基础设施瓶颈与实际部署难点，为从业者提供宏观参考。",
+      "takeaways": [
+        "基础设施瓶颈分析",
+        "商业落地现实评估"
+      ],
+      "topic": "business"
     }
   ]
 }
