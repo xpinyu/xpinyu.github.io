@@ -4,12 +4,255 @@
     "name": "AI Indie Hacker Signals",
     "type": "aiindie",
     "refresh_hours": 24,
-    "updated_at": "2026-05-24T05:47:41.083+08:00",
-    "item_count": 12,
-    "window_start": "2026-05-22T17:47:41.083Z",
-    "window_end": "2026-05-23T21:47:41.083Z"
+    "updated_at": "2026-05-25T05:50:14.442+08:00",
+    "item_count": 14,
+    "window_start": "2026-05-23T17:50:14.442Z",
+    "window_end": "2026-05-24T21:50:14.442Z"
   },
   "items": [
+    {
+      "id": "5b3746ab9e89ebc6",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@Shpigford",
+      "title": "a little example of worktrees in action",
+      "blurb": "Shpigford分享了使用Git worktrees并行处理13个用户反馈的实践。通过为每个worktree哈希路径并映射到独特端口、Neon Postgres实例和Redis DB，结合Claude的launch.json自定义启动命令，实现多环境并行开发。该方法显著提升了处理多任务的效率，避免了环境冲突。 为AI indie hacker提供了可复用的开发工作流杠杆，通过worktrees和AI代理（Claude）实现并行迭代，…",
+      "link": "https://x.com/Shpigford/status/2058632304361136524",
+      "canonical_link": "https://x.com/Shpigford/status/2058632304361136524",
+      "published_at": "2026-05-25T03:32:43.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow",
+        "agent",
+        "automation",
+        "tooling"
+      ]
+    },
+    {
+      "id": "1492e28944e5b8fb",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@appfigures",
+      "title": "Old trend *still* printing",
+      "blurb": "Appfigures引用PSL app案例：通过TikTok病毒传播实现34万下载和4月8万美元收入。该app利用面部评分+自改善计划，将焦虑转化为订阅。数据显示自改善趋势仍在通过短视频分发持续变现。 揭示了AI时代下内容分发（TikTok）与app monetization的结合点，提供真实收入和下载数据支撑的增长洞察。",
+      "link": "https://x.com/appfigures/status/2058601172286517562",
+      "canonical_link": "https://x.com/appfigures/status/2058601172286517562",
+      "published_at": "2026-05-25T01:29:01.000+08:00",
+      "score": 7,
+      "tags": [
+        "growth",
+        "distribution",
+        "monetization"
+      ]
+    },
+    {
+      "id": "ce5d8f0ddb3779c3",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@arvidkahl",
+      "title": "非核心用户采用按次付费模式",
+      "blurb": "通过pSEO引入的非ICP用户，常只需短期访问而非订阅，适合提供24小时或有限时长访问选项，价格为订阅的25%-50%，但使用时长仅3%-8%，利润率高。适合不想长期承诺的用户。 提供定价和 monetization 具体策略，帮助AI indie hacker从SEO流量中最大化收入，尤其对边缘用户转化。",
+      "link": "https://x.com/arvidkahl/status/2058590514744639918",
+      "canonical_link": "https://x.com/arvidkahl/status/2058590514744639918",
+      "published_at": "2026-05-25T00:46:40.000+08:00",
+      "score": 8,
+      "tags": [
+        "pricing",
+        "monetization"
+      ]
+    },
+    {
+      "id": "10e45db50da1043f",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@xiongchun007",
+      "title": "#AgenticAI 开发实战报告",
+      "blurb": "仅靠系统提示词约束LLM不可靠，注意力分散易忽略约束；最佳实践是在用户提示词后自动追加强化规则，效果显著但非100%可靠。必须让LLM满足业务约束，而非兼容其不确定性，业务侧校验兜底重写输出。强调提示词重要性，LLM输出为概率事件。 为AI indie hacker提供agent开发中提示词工程与业务校验的实战可复用战术，直接提升agent可靠性与开发效率。",
+      "link": "https://x.com/xiongchun007/status/2058588155914367080",
+      "canonical_link": "https://x.com/xiongchun007/status/2058588155914367080",
+      "published_at": "2026-05-25T00:37:17.000+08:00",
+      "score": 9,
+      "tags": [
+        "agent",
+        "prompt",
+        "workflow"
+      ]
+    },
+    {
+      "id": "443e835307911574",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@simonhoiberg",
+      "title": "产品打磨的核心是消除微小摩擦",
+      "blurb": "产品迭代往往聚焦大功能，但真正提升体验的是移除用户每次都要思考的小摩擦点，如更好默认设置、更清晰错误提示、减少一步设置、记住用户已提供信息。这些细节虽小但反复出现，导致产品感觉廉价。创始人易忽略这些，转而构建听起来更响亮的更新。 为AI indie hacker提供可复用的产品判断：用户留存和感知价值源于日常微体验，而非宣传功能，帮助避免资源浪费在炫耀性功能上。",
+      "link": "https://x.com/simonhoiberg/status/2058549163948675092",
+      "canonical_link": "https://x.com/simonhoiberg/status/2058549163948675092",
+      "published_at": "2026-05-24T22:02:21.000+08:00",
+      "score": 9,
+      "tags": [
+        "workflow",
+        "build"
+      ]
+    },
+    {
+      "id": "21c36b4ba3fd7761",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@Pauline_Cx",
+      "title": "Add affiliate line to product sidebar",
+      "blurb": "在产品侧边栏添加一行简单文案：“通过分享此工具赚钱”或“加盟计划”。用户是最佳推广大使，此举可快速激活口碑传播。测试后观察转化效果。适用于SaaS产品增长。 为AI indie hacker提供低成本、高杠杆的增长策略，直接针对用户分发和变现，无需额外营销预算。",
+      "link": "https://x.com/Pauline_Cx/status/2058537296018685953",
+      "canonical_link": "https://x.com/Pauline_Cx/status/2058537296018685953",
+      "published_at": "2026-05-24T21:15:11.000+08:00",
+      "score": 8,
+      "tags": [
+        "growth",
+        "monetization",
+        "distribution"
+      ]
+    },
+    {
+      "id": "e69eec7b22516565",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@marclou",
+      "title": "AI startup acquisition #92 completed in 11 days",
+      "blurb": "Marc Lou 完成第92次创业公司收购：一家分析TikTok视频预测病毒传播的AI初创公司。整个收购流程（含托管）仅用11天完成。该项目属于其持续的收购机器运营。 展示AI indie hacker如何通过快速收购扩展产品线和收入来源，提供可复制的收购流程洞见。",
+      "link": "https://x.com/marclou/status/2058528705878847949",
+      "canonical_link": "https://x.com/marclou/status/2058528705878847949",
+      "published_at": "2026-05-24T20:41:03.000+08:00",
+      "score": 8,
+      "tags": [
+        "strategy",
+        "launch",
+        "monetization"
+      ]
+    },
+    {
+      "id": "cdaf89a067f3402e",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@tibo_maker",
+      "title": "Google p-max 已击败所有手动广告设置",
+      "blurb": "Tibo 与多位广告专家合作测试手动分段、受众、retargeting等结构，结果Google Performance Max全面胜出。专家结论：未来广告核心转向更好offer、创意、landing page、tracking和A/B测试。 提供AI时代广告分发的关键判断：人类手动结构已失效，AI工具主导，指出仍可掌控的杠杆点。",
+      "link": "https://x.com/tibo_maker/status/2058519964491952169",
+      "canonical_link": "https://x.com/tibo_maker/status/2058519964491952169",
+      "published_at": "2026-05-24T20:06:19.000+08:00",
+      "score": 9,
+      "tags": [
+        "growth",
+        "distribution"
+      ]
+    },
+    {
+      "id": "38dd981a2c1a1a31",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@tibo_maker",
+      "title": "用Revid.ai自动化YouTube频道",
+      "blurb": "Tibo 演示如何用Revid.ai最高质量模式自动化YT频道：每晚监控目标频道新视频，生成相似内容并按prompt修改XYZ。支持YouTube、TikTok等多平台，可无人值守运行高品质内容。 具体展示AI workflow+automation工具栈，实现内容分发规模化，含设置链接和实际效果证明。",
+      "link": "https://x.com/tibo_maker/status/2058473448028999903",
+      "canonical_link": "https://x.com/tibo_maker/status/2058473448028999903",
+      "published_at": "2026-05-24T17:01:29.000+08:00",
+      "score": 9,
+      "tags": [
+        "automation",
+        "workflow",
+        "content"
+      ]
+    },
+    {
+      "id": "a4bc234f8de90eee",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@yihui_indie",
+      "title": "GPT Image 2 让人做封面图的能力大涨",
+      "blurb": "Yihui观察到GPT Image 2大幅提升视频封面图质量，导致封面与内容倒挂：好看封面吸引点击，但视频内容和剪辑粗糙。这反映AI工具在内容创作中的双刃剑效应，影响博主分发策略。 为AI indie hacker提供内容分发和SEO判断：AI生成封面可提升点击，但需匹配内容质量，避免信任损失。",
+      "link": "https://x.com/yihui_indie/status/2058442810349797634",
+      "canonical_link": "https://x.com/yihui_indie/status/2058442810349797634",
+      "published_at": "2026-05-24T14:59:44.000+08:00",
+      "score": 6,
+      "tags": [
+        "content",
+        "seo",
+        "distribution"
+      ]
+    },
+    {
+      "id": "66ba94a24ce741c1",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@damengchen",
+      "title": "AI时代护城河是做自己",
+      "blurb": "Damon Chen 回应levelsio X收入数据：AI让产品、内容易复制，唯一难被取代的是个人身份、品味、故事和独特视角。多年积累的真实自我成为新护城河。 提供AI indie hacker的战略洞见：从工具/产品转向个人品牌差异化，指导长期定位。",
+      "link": "https://x.com/damengchen/status/2058437633429418049",
+      "canonical_link": "https://x.com/damengchen/status/2058437633429418049",
+      "published_at": "2026-05-24T14:39:10.000+08:00",
+      "score": 7,
+      "tags": [
+        "strategy",
+        "content"
+      ]
+    },
+    {
+      "id": "e7bf232f9e058f40",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@xiongchun007",
+      "title": "模型只是入场券，智能体框架才是终局",
+      "blurb": "模型仅为入场券，智能体框架/Harness才是竞争终局；Google I/O 2026发布Antigravity 2.0为Google版agent开发框架。开发者黄金十年刚开始，需聚焦框架层构建。 提供清晰市场定位判断，帮助AI indie hacker从模型依赖转向agent框架战略，避免低层次竞争。",
+      "link": "https://x.com/xiongchun007/status/2058400494280982875",
+      "canonical_link": "https://x.com/xiongchun007/status/2058400494280982875",
+      "published_at": "2026-05-24T12:11:35.000+08:00",
+      "score": 7,
+      "tags": [
+        "strategy",
+        "agent"
+      ]
+    },
+    {
+      "id": "7bec9469aa8eaf47",
+      "source_id": "aiindie",
+      "source_name": "AI Indie Hacker Signals",
+      "source_type": "aiindie",
+      "platform": "X",
+      "author": "@pbteja1998",
+      "title": "Mission Control HQ是最佳AI agents落地方式",
+      "blurb": "Bhanu Teja 推广Mission Control HQ：通过不可见AI agents完成复杂任务，用户反馈“ezpz setup”和“hard complex tasks done by agents”。强调无需terminal的agent驱动执行。 分享AI agents在真实业务中的ops leverage案例，证明agent workflow的实际生产力提升。",
+      "link": "https://x.com/pbteja1998/status/2058372082183045281",
+      "canonical_link": "https://x.com/pbteja1998/status/2058372082183045281",
+      "published_at": "2026-05-24T10:18:41.000+08:00",
+      "score": 8,
+      "tags": [
+        "agent",
+        "automation",
+        "workflow"
+      ]
+    },
     {
       "id": "e8569234b1797d4b",
       "source_id": "aiindie",
@@ -17,221 +260,16 @@
       "source_type": "aiindie",
       "platform": "X",
       "author": "@arvidkahl",
-      "title": "AI SaaS margins: inference cost reality check",
-      "blurb": "分享建立AI驱动SaaS的真实体验：添加推理层后，托管AI成本极高，导致规模化时毛利率被压缩。询问其他有成熟产品的创始人类似经历，强调hosted AI费用对利润的直接影响。 为AI indie hacker提供真实 monetization 洞见，避免高估AI堆栈带来的利润，提醒关注成本结构而非仅看功能。",
+      "title": "AI SaaS 推理成本压缩毛利",
+      "blurb": "在成熟产品中添加AI推理后，托管AI费用高昂，导致规模化时毛利压缩。询问其他AI SaaS创始人类似经历，强调托管成本对业务模型的直接影响。 真实市场反馈和业务策略洞见，帮助AI indie hacker评估AI集成对长期盈利的影响，避免盲目添加功能。",
       "link": "https://x.com/arvidkahl/status/2058279849442058556",
       "canonical_link": "https://x.com/arvidkahl/status/2058279849442058556",
       "published_at": "2026-05-24T04:12:11.000+08:00",
-      "score": 7,
-      "tags": [
-        "monetization",
-        "business",
-        "strategy"
-      ]
-    },
-    {
-      "id": "5e0040e0b41246b8",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@marckohlbrugge",
-      "title": "自定义Claude提示符构建个人工作流",
-      "blurb": "Marc强调忽略通用技能推荐，转而创建少量适合个人工作流的自定义提示符。这些提示符作为文本文件，Claude会在相关上下文自动调用，实现优雅的AI自动化系统。适合AI indie hacker反复优化的日常任务。 直接提供可复用的AI提示符设计方法，帮助builder构建高效、个性化AI工作流，提升生产力与决策质量。",
-      "link": "https://x.com/marckohlbrugge/status/2058275959929790916",
-      "canonical_link": "https://x.com/marckohlbrugge/status/2058275959929790916",
-      "published_at": "2026-05-24T03:56:44.000+08:00",
-      "score": 8,
-      "tags": [
-        "workflow",
-        "agent",
-        "prompt"
-      ]
-    },
-    {
-      "id": "76e1aed7b6a9a2ef",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@marckohlbrugge",
-      "title": "文本文件提示符的优雅AI系统",
-      "blurb": "Marc分享如何通过创建重复任务的自定义提示符文件，让Claude上下文相关自动触发。强调“只是文本文件”的简洁性，形成高效AI自动化。 提供低成本、可扩展的AI agent实现思路，适用于indie hacker的工具栈优化与ops leverage。",
-      "link": "https://x.com/marckohlbrugge/status/2058275522845536728",
-      "canonical_link": "https://x.com/marckohlbrugge/status/2058275522845536728",
-      "published_at": "2026-05-24T03:55:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "workflow",
-        "agent",
-        "automation"
-      ]
-    },
-    {
-      "id": "597fc90eb4fd2261",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@xiongchun007",
-      "title": "AI Assistant 思考表达与 function call 开发",
-      "blurb": "作者分享其 AI Assistant 已能思考和表达，计划次日完善交互逻辑并添加 function call 功能，将 Agent 打造成有手有脚的可用工具。内容带 #BuildInPublic #DataCollie 标签，展示从原型到可执行 Agent 的迭代过程。强调为 Agent 装上手脚的具体执行路径。 为 AI indie hacker 提供真实 Agent 构建案例，展示从基础模型转向可调用工具的 workflow 实践…",
-      "link": "https://x.com/xiongchun007/status/2058231170081673667",
-      "canonical_link": "https://x.com/xiongchun007/status/2058231170081673667",
-      "published_at": "2026-05-24T00:58:45.000+08:00",
-      "score": 7,
-      "tags": [
-        "agent",
-        "workflow",
-        "build"
-      ]
-    },
-    {
-      "id": "e7b6600a315c650d",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@nathanbarry",
-      "title": "招聘梦中人的高效方法",
-      "blurb": "Nathan分享向潜在候选人发送职位描述并询问推荐人的技巧，约10%情况下对方会直接申请。适用于团队扩展与人才获取。 提供低成本、高转化的招聘分发策略，帮助AI indie hacker在增长阶段高效获取关键人才。",
-      "link": "https://x.com/nathanbarry/status/2058180750894305364",
-      "canonical_link": "https://x.com/nathanbarry/status/2058180750894305364",
-      "published_at": "2026-05-23T21:38:24.000+08:00",
-      "score": 6,
-      "tags": [
-        "growth",
-        "hiring",
-        "strategy"
-      ]
-    },
-    {
-      "id": "50a6b8215fa417a6",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@marclou",
-      "title": "Superwall 在盈利初创公司中的使用数据",
-      "blurb": "Marc Lou 分享 Superwall 在 4.81 亿美元 ARR 的盈利创始人中的采用情况，证明付费墙工具对 indie SaaS 的实际价值。结合自身多产品营收数据，强调可衡量 monetization 决策。 提供真实 monetization 基准数据，帮助 AI indie hacker 评估付费墙工具对 retention 和 revenue 的杠杆作用。",
-      "link": "https://x.com/marclou/status/2058167827581071765",
-      "canonical_link": "https://x.com/marclou/status/2058167827581071765",
-      "published_at": "2026-05-23T20:47:03.000+08:00",
       "score": 8,
       "tags": [
         "monetization",
-        "pricing"
-      ]
-    },
-    {
-      "id": "040ad45043c68d29",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@ailiangzi",
-      "title": "专注copywriting agents",
-      "blurb": "作者坚持专注做copywriting agents，从极简智能体起步，把单一功能做到稳定高质量输出，像命令一样可靠。强调输出中间结果，并分享用AI生成网站服务条款的实践。 提供AI indie hacker聚焦特定agent垂直领域的策略，强调专注和稳定性对长期坚持的重要性。",
-      "link": "https://x.com/ailiangzi/status/2058158528309940628",
-      "canonical_link": "https://x.com/ailiangzi/status/2058158528309940628",
-      "published_at": "2026-05-23T20:10:06.000+08:00",
-      "score": 7,
-      "tags": [
-        "agent",
-        "workflow"
-      ]
-    },
-    {
-      "id": "8417b902ddd76417",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@austinit",
-      "title": "AI时代个人App用TS+RR7+Express全栈",
-      "blurb": "作者从Python后端切换到全TypeScript栈，采用React Router V7与Express.js深度耦合，只处理/api路径。相比前后端分离，耦合度更高但组件复用更方便，尤其适合AI驱动的个人应用。强调AI时代这种架构让开发更舒适。 为AI indie hacker提供具体技术栈决策依据，展示如何在AI浪潮下简化个人项目架构，提升开发效率和组件复用。",
-      "link": "https://x.com/austinit/status/2058158075325063617",
-      "canonical_link": "https://x.com/austinit/status/2058158075325063617",
-      "published_at": "2026-05-23T20:08:18.000+08:00",
-      "score": 8,
-      "tags": [
-        "workflow",
-        "build"
-      ]
-    },
-    {
-      "id": "980e496a67c367bf",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@tibo_maker",
-      "title": "迁移 workflow 到 Missions Control agent 平台",
-      "blurb": "Tibo 讨论 Polsia 交易 agent 的真实使用，决定将所有 workflow 迁移至 Missions Control，强调「use it for yourself」而非出售。展示 agent 平台在个人运营中的 leverage。 提供 agent 平台迁移的 operator 判断，帮助 AI indie hacker 识别何时从实验转向自用自动化以提升效率。",
-      "link": "https://x.com/tibo_maker/status/2058157575229563008",
-      "canonical_link": "https://x.com/tibo_maker/status/2058157575229563008",
-      "published_at": "2026-05-23T20:06:19.000+08:00",
-      "score": 7,
-      "tags": [
-        "agent",
-        "automation",
-        "workflow"
-      ]
-    },
-    {
-      "id": "ac462b7d55436a3d",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@simonhoiberg",
-      "title": "SaaS roadmap: focus on painful known truths",
-      "blurb": "批评早期SaaS团队常因客户、竞品、X意见堆积roadmap。建议只做已知痛点，交付无聊但必要的修复，忽略外部噪音。 提供可重复的产品决策框架，帮助AI indie hacker保持专注，避免功能蔓延，提升执行效率。",
-      "link": "https://x.com/simonhoiberg/status/2058117765043548556",
-      "canonical_link": "https://x.com/simonhoiberg/status/2058117765043548556",
-      "published_at": "2026-05-23T17:28:07.000+08:00",
-      "score": 6,
-      "tags": [
-        "build",
-        "strategy"
-      ]
-    },
-    {
-      "id": "91f15aff777cc13a",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@AlchainHust",
-      "title": "Codex vs Claude Code：Image-gen与决策权衡",
-      "blurb": "作者对比Codex和Claude Code，在部分场景用Codex获取Image-gen能力，但抱怨其自作主张完成决策，不停下来询问人类，导致任务一次性跑完。指出这是AI工具在工作流中的关键缺陷。 提供AI工具选型和prompt/交互设计的实战判断，帮助builder避免agent过度自主带来的问题。",
-      "link": "https://x.com/AlchainHust/status/2058083171200344346",
-      "canonical_link": "https://x.com/AlchainHust/status/2058083171200344346",
-      "published_at": "2026-05-23T15:10:40.000+08:00",
-      "score": 6,
-      "tags": [
-        "agent",
-        "workflow",
-        "tooling"
-      ]
-    },
-    {
-      "id": "9f269552344329aa",
-      "source_id": "aiindie",
-      "source_name": "AI Indie Hacker Signals",
-      "source_type": "aiindie",
-      "platform": "X",
-      "author": "@tdinh_me",
-      "title": "Otto 24/7 autonomous agent building app studio",
-      "blurb": "Tony Dinh 让 Claude Code 驱动的 Otto 代理 24/7 自主运行，持续构建 app studio，无 token 浪费。目标是实现 1000 美元收入，强调「fun」而非 hype。展示真实 AI agent 在 indie hacker 产品构建中的应用案例。 为 AI indie hacker 提供可复用的 agent 工作流模板，证明 autonomous agent 可直接服务于营收目标，而非仅实验。",
-      "link": "https://x.com/tdinh_me/status/2057965308699378173",
-      "canonical_link": "https://x.com/tdinh_me/status/2057965308699378173",
-      "published_at": "2026-05-23T07:22:19.000+08:00",
-      "score": 9,
-      "tags": [
-        "agent",
-        "automation",
-        "workflow"
+        "strategy",
+        "business"
       ]
     }
   ]
