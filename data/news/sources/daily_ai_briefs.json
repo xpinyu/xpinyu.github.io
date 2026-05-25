@@ -4,117 +4,198 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-05-25T05:50:14.442+08:00",
-    "item_count": 4,
-    "window_start": "2026-05-22T00:00:00.000Z",
-    "window_end": "2026-05-24T21:50:14.442Z"
+    "updated_at": "2026-05-26T06:10:39.692+08:00",
+    "item_count": 7,
+    "window_start": "2026-05-25T00:00:00.000Z",
+    "window_end": "2026-05-25T22:10:39.692Z"
   },
   "items": [
     {
-      "id": "66336d2569f274d2",
+      "id": "7f6ba9accbbbe3a1",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Bloomberg",
-      "title": "Cursor Hits $3 Billion Annual Sales Rate Ahead of SpaceX Deal",
-      "blurb": "Cursor商业模式值得借鉴，展示AI开发工具的高速增长潜力。",
-      "link": "https://bloomberg.com/news/articles/2026-05-21/cursor-hits-3-billion-annual-sales-rate-ahead-of-spacex-deal",
-      "canonical_link": "https://bloomberg.com/news/articles/2026-05-21/cursor-hits-3-billion-annual-sales-rate-ahead-of-spacex-deal",
-      "published_at": "2026-05-22T20:00:00.000+08:00",
-      "score": 8,
-      "tags": [
-        "TLDR AI",
-        "business"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-22",
-      "source_signal": "Major ARR milestone for leading AI coding product with acquisition implications",
-      "recommendation": "Cursor商业模式值得借鉴，展示AI开发工具的高速增长潜力。",
-      "summary": "Cursor年化收入达30亿美元，拥有3000多家年付10万美元以上客户。SpaceX获得潜在600亿美元收购权。成为增长最快的AI初创公司之一。",
-      "takeaways": [
-        "AI编码工具市场验证强劲需求",
-        "高价值企业客户驱动收入"
-      ],
-      "topic": "business"
-    },
-    {
-      "id": "2799b6e2b4c4f9f5",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "Alibaba Qwen team",
-      "title": "Qwen3.7: The Agent Frontier",
-      "blurb": "Qwen3.7-Max适合代理任务开发，多个基准领先值得评估。",
-      "link": "https://qwen.ai/blog?id=qwen3.7",
-      "canonical_link": "https://qwen.ai/blog?id=qwen3.7",
-      "published_at": "2026-05-22T20:00:00.000+08:00",
+      "author": "Anthropic",
+      "title": "Anthropic prepares Mythos 1 for Claude Code and Claude Security",
+      "blurb": "Anthropic Mythos 1 即将公开，专注代码与安全场景。",
+      "link": "https://testingcatalog.com/anthropic-prepares-mythos-1-for-claude-code-and-claude-security",
+      "canonical_link": "https://testingcatalog.com/anthropic-prepares-mythos-1-for-claude-code-and-claude-security",
+      "published_at": "2026-05-25T20:00:00.000+08:00",
       "score": 8,
       "tags": [
         "TLDR AI",
         "model-release"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-22",
-      "source_signal": "New proprietary agent-foundation model with leading benchmark scores",
-      "recommendation": "Qwen3.7-Max适合代理任务开发，多个基准领先值得评估。",
-      "summary": "阿里巴巴发布Qwen3.7-Max代理基础模型，在Terminal-Bench、SWE-Pro等多项基准取得顶尖成绩。兼容Claude Code等工具链。性能跨场景稳定。",
+      "source_page": "https://tldr.tech/ai/2026-05-25",
+      "source_signal": "Model nearing broader release with traces on major clouds",
+      "recommendation": "Anthropic Mythos 1 即将公开，专注代码与安全场景。",
+      "summary": "Anthropic 正推进 Mythos 1 模型的广泛可用性，已在 Google Cloud 和 AWS 上用于漏洞发现。Claude Opus 4.8 传闻也在开发中。",
       "takeaways": [
-        "代理专用模型性能突破",
-        "开源生态兼容性强"
+        "Mythos 1 将增强 Claude 的代码与安全能力",
+        "模型已在云平台现身，发布临近"
       ],
       "topic": "model-release"
+    },
+    {
+      "id": "6e49f48db501ff12",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "ByteDance Research",
+      "title": "Lance (Hugging Face Repo)",
+      "blurb": "Lance 模型以 3B 参数实现图文视频多模态能力。",
+      "link": "https://huggingface.co/bytedance-research/Lance",
+      "canonical_link": "https://huggingface.co/bytedance-research/Lance",
+      "published_at": "2026-05-25T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "TLDR AI",
+        "model-release"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-25",
+      "source_signal": "Lightweight 3B multimodal model trained from scratch on limited budget",
+      "recommendation": "Lance 模型以 3B 参数实现图文视频多模态能力。",
+      "summary": "Lance 是原生统一多模态模型，支持图像与视频理解、生成及编辑，仅用 128 块 A100 训练完成，在多项基准上表现强劲。",
+      "takeaways": [
+        "低预算训练实现高性能",
+        "支持图像编辑与视频生成"
+      ],
+      "topic": "model-release"
+    },
+    {
+      "id": "f6d661c9a84e5a55",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Model Context Protocol",
+      "title": "The 2026-07-28 MCP Specification Release Candidate",
+      "blurb": "MCP 协议迎来重大更新，支持无状态 HTTP 部署。",
+      "link": "https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate",
+      "canonical_link": "https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate",
+      "published_at": "2026-05-25T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "TLDR AI",
+        "tooling"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-25",
+      "source_signal": "Major protocol revision with stateless core and OAuth alignment",
+      "recommendation": "MCP 协议迎来重大更新，支持无状态 HTTP 部署。",
+      "summary": "MCP 规范候选版引入无状态核心、OAuth 对齐授权、正式弃用政策等变更，将于 7 月 28 日发布最终版，包含破坏性变更。",
+      "takeaways": [
+        "支持普通 HTTP 基础设施扩展",
+        "与 OAuth/OpenID Connect 更紧密集成"
+      ],
+      "topic": "tooling"
+    },
+    {
+      "id": "6ba70710ca524990",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "OpenAI",
+      "title": "Evaluating Multi-Agent Systems at Scale",
+      "blurb": "OpenAI 提出大规模多代理系统宏观评估工作流。",
+      "link": "https://developers.openai.com/cookbook/examples/partners/macro_evals_for_agentic_systems/macro_evals_for_agentic_systems",
+      "canonical_link": "https://developers.openai.com/cookbook/examples/partners/macro_evals_for_agentic_systems/macro_evals_for_agentic_systems",
+      "published_at": "2026-05-25T20:00:00.000+08:00",
+      "score": 7,
+      "tags": [
+        "TLDR AI",
+        "benchmark"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-25",
+      "source_signal": "Macro-evaluation workflow for population-level agent analysis",
+      "recommendation": "OpenAI 提出大规模多代理系统宏观评估工作流。",
+      "summary": "OpenAI 描述了一种宏观评估方法，可分析整个轨迹群体的模式，而非孤立失败，适用于大规模代理系统评估。",
+      "takeaways": [
+        "从群体模式而非单例分析",
+        "适用于 agentic 系统规模化评估"
+      ],
+      "topic": "benchmark"
+    },
+    {
+      "id": "3e0caa240e1a17d1",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "Perplexity",
+      "title": "Bumblebee Goes Open Source",
+      "blurb": "Perplexity 开源 Bumblebee 安全扫描工具。",
+      "link": "https://perplexity.ai/hub/blog/perplexity-is-open-sourcing-bumblebee",
+      "canonical_link": "https://perplexity.ai/hub/blog/perplexity-is-open-sourcing-bumblebee",
+      "published_at": "2026-05-25T20:00:00.000+08:00",
+      "score": 6,
+      "tags": [
+        "TLDR AI",
+        "safety"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-25",
+      "source_signal": "Open-source security scanner for risky AI configurations",
+      "recommendation": "Perplexity 开源 Bumblebee 安全扫描工具。",
+      "summary": "Bumblebee 是一款只读安全扫描器，可识别开发者机器上风险包、扩展及 AI 工具配置，现已开源。",
+      "takeaways": [
+        "开源安全扫描工具",
+        "检测 AI 工具风险配置"
+      ],
+      "topic": "safety"
     },
     {
       "id": "b315d6f17106bdde",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "Alifatisk",
-      "title": "DeepSeek reasonix, DeepSeek native coding agent with high caching and low cost",
-      "blurb": "推荐关注此原生DeepSeek编码代理，适合追求低成本高缓存的开发者工具链集成。",
+      "platform": "TLDR AI",
+      "author": "DeepSeek",
+      "title": "Reasonix (Website)",
+      "blurb": "Reasonix 为终端原生 DeepSeek 编码代理，适合长期运行。",
       "link": "https://esengine.github.io/DeepSeek-Reasonix",
       "canonical_link": "https://esengine.github.io/DeepSeek-Reasonix",
-      "published_at": "2026-05-24T21:50:00.000+08:00",
-      "score": 8,
+      "published_at": "2026-05-25T20:00:00.000+08:00",
+      "score": 6,
       "tags": [
-        "Hacker News",
+        "TLDR AI",
         "agent"
       ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "High engagement on native DeepSeek coding agent with performance and cost advantages",
-      "recommendation": "推荐关注此原生DeepSeek编码代理，适合追求低成本高缓存的开发者工具链集成。",
-      "summary": "DeepSeek Reasonix是一个基于DeepSeek的原生编码代理，强调高缓存和低成本特性。文章展示了其在实际编码任务中的应用效果。社区讨论聚焦于与现有工具的比较和部署便利性。",
+      "source_page": "https://tldr.tech/ai/2026-05-25",
+      "source_signal": "Terminal-native coding agent optimized for long sessions",
+      "recommendation": "Reasonix 为终端原生 DeepSeek 编码代理，适合长期运行。",
+      "summary": "Reasonix 围绕前缀缓存稳定性设计，可长时间运行且 token 成本低，专为终端环境打造的 DeepSeek 编码代理。",
       "takeaways": [
-        "原生集成降低API调用成本",
-        "高缓存机制提升响应速度"
+        "前缀缓存优化降低成本",
+        "适合长时间终端会话"
       ],
       "topic": "agent"
     },
     {
-      "id": "fb1cfb37b4d415ac",
+      "id": "47c30c16af791607",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "CNBC",
-      "title": "Anthropic, Microsoft in talks for AI chip deal after $5 billion investment",
-      "blurb": "关注Anthropic与微软Maia芯片合作，缓解算力瓶颈的潜在方案。",
-      "link": "https://cnbc.com/2026/05/21/anthropic-microsoft-maia-200-ai-chip.html",
-      "canonical_link": "https://cnbc.com/2026/05/21/anthropic-microsoft-maia-200-ai-chip.html",
-      "published_at": "2026-05-22T20:00:00.000+08:00",
-      "score": 8,
+      "platform": "Hacker News",
+      "author": "Blocks and Files",
+      "title": "Norway's 2 petabytes of Huawei flash storage and LLM training",
+      "blurb": "挪威部署 2PB 华为闪存用于 LLM 训练。",
+      "link": "https://blocksandfiles.com/flash/2026/05/22/norways-2-petabytes-of-huawei-flash-storage-and-llm-training/5244910",
+      "canonical_link": "https://blocksandfiles.com/flash/2026/05/22/norways-2-petabytes-of-huawei-flash-storage-and-llm-training/5244910",
+      "published_at": "2026-05-25T20:00:00.000+08:00",
+      "score": 5,
       "tags": [
-        "TLDR AI",
+        "Hacker News",
         "infra"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-22",
-      "source_signal": "Strategic chip partnership discussions between major AI players",
-      "recommendation": "关注Anthropic与微软Maia芯片合作，缓解算力瓶颈的潜在方案。",
-      "summary": "微软计划向Anthropic供应Maia AI芯片，后者面临算力挑战。Maia性能提升30%，可能助力编程应用。双方此前已有50亿美元投资关系。",
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Large-scale Huawei storage deployment for LLM training",
+      "recommendation": "挪威部署 2PB 华为闪存用于 LLM 训练。",
+      "summary": "挪威使用华为闪存存储构建 2PB 规模基础设施，支持大规模 LLM 训练项目。",
       "takeaways": [
-        "自定义AI芯片成竞争焦点",
-        "多供应商策略缓解算力短缺"
+        "华为闪存用于高性能 LLM 训练",
+        "2PB 级数据存储规模"
       ],
       "topic": "infra"
     }
