@@ -4,200 +4,146 @@
     "name": "Daily AI Briefs",
     "type": "daily_ai_briefs",
     "refresh_hours": 24,
-    "updated_at": "2026-05-26T06:10:39.692+08:00",
-    "item_count": 7,
-    "window_start": "2026-05-25T00:00:00.000Z",
-    "window_end": "2026-05-25T22:10:39.692Z"
+    "updated_at": "2026-05-27T06:15:34.303+08:00",
+    "item_count": 5,
+    "window_start": "2026-05-26T00:00:00.000Z",
+    "window_end": "2026-05-26T22:15:34.303Z"
   },
   "items": [
     {
-      "id": "7f6ba9accbbbe3a1",
+      "id": "4d00e236373a3543",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Anthropic",
-      "title": "Anthropic prepares Mythos 1 for Claude Code and Claude Security",
-      "blurb": "Anthropic Mythos 1 即将公开，专注代码与安全场景。",
-      "link": "https://testingcatalog.com/anthropic-prepares-mythos-1-for-claude-code-and-claude-security",
-      "canonical_link": "https://testingcatalog.com/anthropic-prepares-mythos-1-for-claude-code-and-claude-security",
-      "published_at": "2026-05-25T20:00:00.000+08:00",
+      "author": "the-decoder.com",
+      "title": "Google DeepMind's AlphaProof Nexus solves decades-old math problems for a few hundred dollars",
+      "blurb": "AlphaProof Nexus 以极低成本解决长期未解数学难题，展示 AI 在科研中的潜力。",
+      "link": "https://the-decoder.com/google-deepminds-alphaproof-nexus-solves-decades-old-math-problems-for-a-few-hundred-dollars",
+      "canonical_link": "https://the-decoder.com/google-deepminds-alphaproof-nexus-solves-decades-old-math-problems-for-a-few-hundred-dollars",
+      "published_at": "2026-05-26T20:00:00.000+08:00",
+      "score": 9,
+      "tags": [
+        "TLDR AI",
+        "research"
+      ],
+      "source_page": "https://tldr.tech/ai/2026-05-26",
+      "source_signal": "Significant research breakthrough in automated math problem solving",
+      "recommendation": "AlphaProof Nexus 以极低成本解决长期未解数学难题，展示 AI 在科研中的潜力。",
+      "summary": "Google DeepMind 的 AlphaProof Nexus 自主解决了 353 个开放 Erdős 问题中的 9 个，包括数十年未解难题，每次推理成本仅数百美元。",
+      "takeaways": [
+        "低成本解决开放数学难题",
+        "证明 AI 在纯数学研究中的实用性"
+      ],
+      "topic": "research"
+    },
+    {
+      "id": "dcbab9a12e0103e6",
+      "source_id": "daily_ai_briefs",
+      "source_name": "Daily AI Briefs",
+      "source_type": "daily_ai_briefs",
+      "platform": "TLDR AI",
+      "author": "x.ai",
+      "title": "Introducing Grok Build",
+      "blurb": "Grok Build CLI 为开发者提供强大编码代理，支持复杂项目规划与并行自动化。",
+      "link": "https://x.ai/news/grok-build-cli",
+      "canonical_link": "https://x.ai/news/grok-build-cli",
+      "published_at": "2026-05-26T20:00:00.000+08:00",
       "score": 8,
       "tags": [
         "TLDR AI",
-        "model-release"
+        "agent"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-25",
-      "source_signal": "Model nearing broader release with traces on major clouds",
-      "recommendation": "Anthropic Mythos 1 即将公开，专注代码与安全场景。",
-      "summary": "Anthropic 正推进 Mythos 1 模型的广泛可用性，已在 Google Cloud 和 AWS 上用于漏洞发现。Claude Opus 4.8 传闻也在开发中。",
+      "source_page": "https://tldr.tech/ai/2026-05-26",
+      "source_signal": "Product launch of new coding agent and CLI from xAI",
+      "recommendation": "Grok Build CLI 为开发者提供强大编码代理，支持复杂项目规划与并行自动化。",
+      "summary": "Grok Build 是 xAI 推出的新编码代理与 CLI 工具，目前向 SuperGrok 和 X Premium Plus 用户开放测试。它支持计划模式审查、与用户惯例无缝集成，并提供无头模式与子代理进行自动化和并行处理。",
       "takeaways": [
-        "Mythos 1 将增强 Claude 的代码与安全能力",
-        "模型已在云平台现身，发布临近"
+        "支持复杂编码项目与代理工作流",
+        "集成无头模式实现大规模自动化"
       ],
-      "topic": "model-release"
+      "topic": "agent"
     },
     {
-      "id": "6e49f48db501ff12",
+      "id": "7f318a6524bdab97",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "ByteDance Research",
-      "title": "Lance (Hugging Face Repo)",
-      "blurb": "Lance 模型以 3B 参数实现图文视频多模态能力。",
-      "link": "https://huggingface.co/bytedance-research/Lance",
-      "canonical_link": "https://huggingface.co/bytedance-research/Lance",
-      "published_at": "2026-05-25T20:00:00.000+08:00",
+      "platform": "Hacker News",
+      "author": "signalbloom.ai",
+      "title": "Outsourcing plus local AI will soon become more economical vs. frontier labs",
+      "blurb": "本地 AI 与外包结合将在成本上超越前沿实验室模型，推动 AI 部署模式转变。",
+      "link": "https://signalbloom.ai/posts/outsourcing-plus-localai-will-soon-become-more-economical-vs-frontier-labs",
+      "canonical_link": "https://signalbloom.ai/posts/outsourcing-plus-localai-will-soon-become-more-economical-vs-frontier-labs",
+      "published_at": "2026-05-26T20:00:00.000+08:00",
       "score": 7,
       "tags": [
-        "TLDR AI",
-        "model-release"
+        "Hacker News",
+        "business"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-25",
-      "source_signal": "Lightweight 3B multimodal model trained from scratch on limited budget",
-      "recommendation": "Lance 模型以 3B 参数实现图文视频多模态能力。",
-      "summary": "Lance 是原生统一多模态模型，支持图像与视频理解、生成及编辑，仅用 128 块 A100 训练完成，在多项基准上表现强劲。",
+      "source_page": "https://news.ycombinator.com/",
+      "source_signal": "Business signal on shifting AI economics toward local + outsourcing models",
+      "recommendation": "本地 AI 与外包结合将在成本上超越前沿实验室模型，推动 AI 部署模式转变。",
+      "summary": "文章分析指出，外包结合本地部署的 AI 方案成本将很快低于直接使用前沿实验室模型，成为更经济的选择。",
       "takeaways": [
-        "低预算训练实现高性能",
-        "支持图像编辑与视频生成"
+        "本地化与外包模式成本优势显现",
+        "对前沿模型依赖可能下降"
       ],
-      "topic": "model-release"
+      "topic": "business"
     },
     {
-      "id": "f6d661c9a84e5a55",
+      "id": "bf6b0dd40267c01e",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Model Context Protocol",
-      "title": "The 2026-07-28 MCP Specification Release Candidate",
-      "blurb": "MCP 协议迎来重大更新，支持无状态 HTTP 部署。",
-      "link": "https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate",
-      "canonical_link": "https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate",
-      "published_at": "2026-05-25T20:00:00.000+08:00",
-      "score": 7,
-      "tags": [
-        "TLDR AI",
-        "tooling"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-25",
-      "source_signal": "Major protocol revision with stateless core and OAuth alignment",
-      "recommendation": "MCP 协议迎来重大更新，支持无状态 HTTP 部署。",
-      "summary": "MCP 规范候选版引入无状态核心、OAuth 对齐授权、正式弃用政策等变更，将于 7 月 28 日发布最终版，包含破坏性变更。",
-      "takeaways": [
-        "支持普通 HTTP 基础设施扩展",
-        "与 OAuth/OpenID Connect 更紧密集成"
-      ],
-      "topic": "tooling"
-    },
-    {
-      "id": "6ba70710ca524990",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "OpenAI",
-      "title": "Evaluating Multi-Agent Systems at Scale",
-      "blurb": "OpenAI 提出大规模多代理系统宏观评估工作流。",
-      "link": "https://developers.openai.com/cookbook/examples/partners/macro_evals_for_agentic_systems/macro_evals_for_agentic_systems",
-      "canonical_link": "https://developers.openai.com/cookbook/examples/partners/macro_evals_for_agentic_systems/macro_evals_for_agentic_systems",
-      "published_at": "2026-05-25T20:00:00.000+08:00",
+      "author": "strangeloopcanon.com",
+      "title": "Introducing BenchBench",
+      "blurb": "BenchBench 测试模型创建基准的能力，是评估创造力与自我认知的新工具。",
+      "link": "https://strangeloopcanon.com/p/introducing-benchbench",
+      "canonical_link": "https://strangeloopcanon.com/p/introducing-benchbench",
+      "published_at": "2026-05-26T20:00:00.000+08:00",
       "score": 7,
       "tags": [
         "TLDR AI",
         "benchmark"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-25",
-      "source_signal": "Macro-evaluation workflow for population-level agent analysis",
-      "recommendation": "OpenAI 提出大规模多代理系统宏观评估工作流。",
-      "summary": "OpenAI 描述了一种宏观评估方法，可分析整个轨迹群体的模式，而非孤立失败，适用于大规模代理系统评估。",
+      "source_page": "https://tldr.tech/ai/2026-05-26",
+      "source_signal": "New benchmark for model self-awareness and creativity",
+      "recommendation": "BenchBench 测试模型创建基准的能力，是评估创造力与自我认知的新工具。",
+      "summary": "BenchBench 是一个测试模型能否创建有用基准的评估工具，重点考察创造力而非单纯解题能力。测试中仅 GPT 5.2 获胜，其他模型均难以生成他人难以攻克的有效基准。",
       "takeaways": [
-        "从群体模式而非单例分析",
-        "适用于 agentic 系统规模化评估"
+        "评估模型创造力与基准设计能力",
+        "揭示当前模型在自我认知上的局限"
       ],
       "topic": "benchmark"
     },
     {
-      "id": "3e0caa240e1a17d1",
+      "id": "867c00f5b2f6f37c",
       "source_id": "daily_ai_briefs",
       "source_name": "Daily AI Briefs",
       "source_type": "daily_ai_briefs",
       "platform": "TLDR AI",
-      "author": "Perplexity",
-      "title": "Bumblebee Goes Open Source",
-      "blurb": "Perplexity 开源 Bumblebee 安全扫描工具。",
-      "link": "https://perplexity.ai/hub/blog/perplexity-is-open-sourcing-bumblebee",
-      "canonical_link": "https://perplexity.ai/hub/blog/perplexity-is-open-sourcing-bumblebee",
-      "published_at": "2026-05-25T20:00:00.000+08:00",
-      "score": 6,
+      "author": "thezvi.wordpress.com",
+      "title": "Gemini 3.5 Flash Looks Good For How Fast It Is",
+      "blurb": "Gemini 3.5 Flash 在速度与性能平衡上表现突出，适合代理工作流日常使用。",
+      "link": "https://thezvi.wordpress.com/2026/05/22/gemini-3-5-flash-looks-good-for-how-fast-it-is",
+      "canonical_link": "https://thezvi.wordpress.com/2026/05/22/gemini-3-5-flash-looks-good-for-how-fast-it-is",
+      "published_at": "2026-05-26T20:00:00.000+08:00",
+      "score": 7,
       "tags": [
         "TLDR AI",
-        "safety"
+        "benchmark"
       ],
-      "source_page": "https://tldr.tech/ai/2026-05-25",
-      "source_signal": "Open-source security scanner for risky AI configurations",
-      "recommendation": "Perplexity 开源 Bumblebee 安全扫描工具。",
-      "summary": "Bumblebee 是一款只读安全扫描器，可识别开发者机器上风险包、扩展及 AI 工具配置，现已开源。",
+      "source_page": "https://tldr.tech/ai/2026-05-26",
+      "source_signal": "Model benchmark analysis highlighting speed-performance tradeoffs",
+      "recommendation": "Gemini 3.5 Flash 在速度与性能平衡上表现突出，适合代理工作流日常使用。",
+      "summary": "Zvi 认为 Gemini 3.5 Flash 是同速度级别最佳模型，但在非延迟敏感任务上不及 Opus 4.7 或 GPT-5.5。Google 将其定位为日常代理工作流驱动模型，在 Terminal-Bench 和 MCP Atlas 上超越 3.1 Pro，速度快 4 倍。",
       "takeaways": [
-        "开源安全扫描工具",
-        "检测 AI 工具风险配置"
+        "速度优势明显，适合代理场景",
+        "多基准测试优于前代 Pro 模型"
       ],
-      "topic": "safety"
-    },
-    {
-      "id": "b315d6f17106bdde",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "TLDR AI",
-      "author": "DeepSeek",
-      "title": "Reasonix (Website)",
-      "blurb": "Reasonix 为终端原生 DeepSeek 编码代理，适合长期运行。",
-      "link": "https://esengine.github.io/DeepSeek-Reasonix",
-      "canonical_link": "https://esengine.github.io/DeepSeek-Reasonix",
-      "published_at": "2026-05-25T20:00:00.000+08:00",
-      "score": 6,
-      "tags": [
-        "TLDR AI",
-        "agent"
-      ],
-      "source_page": "https://tldr.tech/ai/2026-05-25",
-      "source_signal": "Terminal-native coding agent optimized for long sessions",
-      "recommendation": "Reasonix 为终端原生 DeepSeek 编码代理，适合长期运行。",
-      "summary": "Reasonix 围绕前缀缓存稳定性设计，可长时间运行且 token 成本低，专为终端环境打造的 DeepSeek 编码代理。",
-      "takeaways": [
-        "前缀缓存优化降低成本",
-        "适合长时间终端会话"
-      ],
-      "topic": "agent"
-    },
-    {
-      "id": "47c30c16af791607",
-      "source_id": "daily_ai_briefs",
-      "source_name": "Daily AI Briefs",
-      "source_type": "daily_ai_briefs",
-      "platform": "Hacker News",
-      "author": "Blocks and Files",
-      "title": "Norway's 2 petabytes of Huawei flash storage and LLM training",
-      "blurb": "挪威部署 2PB 华为闪存用于 LLM 训练。",
-      "link": "https://blocksandfiles.com/flash/2026/05/22/norways-2-petabytes-of-huawei-flash-storage-and-llm-training/5244910",
-      "canonical_link": "https://blocksandfiles.com/flash/2026/05/22/norways-2-petabytes-of-huawei-flash-storage-and-llm-training/5244910",
-      "published_at": "2026-05-25T20:00:00.000+08:00",
-      "score": 5,
-      "tags": [
-        "Hacker News",
-        "infra"
-      ],
-      "source_page": "https://news.ycombinator.com/",
-      "source_signal": "Large-scale Huawei storage deployment for LLM training",
-      "recommendation": "挪威部署 2PB 华为闪存用于 LLM 训练。",
-      "summary": "挪威使用华为闪存存储构建 2PB 规模基础设施，支持大规模 LLM 训练项目。",
-      "takeaways": [
-        "华为闪存用于高性能 LLM 训练",
-        "2PB 级数据存储规模"
-      ],
-      "topic": "infra"
+      "topic": "benchmark"
     }
   ]
 }
