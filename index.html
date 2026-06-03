@@ -3,54 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Signal over consensus.">
+<meta name="description" content="Writing, essays, and technical notes from Pinyu on symbols, AI, software, and systems.">
 <title>pinyu.ai</title>
+<link rel="canonical" href="https://pinyu.ai/">
+
+
 <link rel="stylesheet" href="/fonts/fonts.css">
-<script>
-  (function () {
-    const params = new URLSearchParams(window.location.search);
-    const requested = String(params.get("filter") || "").trim().toLowerCase();
-    const normalized = new Set(["voices", "builders", "art"]).has(requested) ? "news" : requested;
-    const validFilters = new Set(["news", "essays"]);
-    document.documentElement.dataset.initialFilter = validFilters.has(normalized) ? normalized : "news";
-  }());
-</script>
 <style>
   :root {
     --bg: #FAF6EE;
     --surface: #FFFFFF;
-    --text-1: #1A1714;
-    --text-2: #5C5349;
-    --text-3: #776E62;
-    --border: #E5DDD0;
-    --accent: #1B3F8B;
-    --vermillion: #E8432A;
-    --vert: #2D8B47;
+    --text-1: #1F1B17;
+    --text-2: #6B6256;
+    --text-3: #7C7466;
+    --line: rgba(31, 27, 23, 0.08);
+    --line-strong: rgba(31, 27, 23, 0.14);
+    --accent: #C84A2E;
     --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
     --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    /* Type scale: 24 / 17 / 14 / 12 */
+    --fs-display: 1.5rem;
+    --fs-title: 1.0625rem;
+    --fs-body: 0.875rem;
+    --fs-meta: 0.75rem;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { font-size: 16.5px; }
+
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+  }
 
   body {
     font-family: var(--sans);
     background: var(--bg);
     color: var(--text-1);
-    line-height: 1.7;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
   }
 
+  ::selection {
+    background: rgba(200, 74, 46, 0.14);
+  }
+
   .page {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: max(72px, 10vh) 24px 96px;
     width: 100%;
+    max-width: 620px;
     flex: 1;
-    animation: enter 0.5s ease both;
+    margin: 0 auto;
+    padding: max(80px, 12vh) 32px 96px;
+    animation: enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   @keyframes enter {
@@ -58,266 +66,187 @@
   }
 
   .identity {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
 
-  .identity h1 {
+  .wordmark {
     font-family: var(--serif);
-    font-size: 2.72rem;
+    font-size: var(--fs-display);
     font-weight: 400;
-    letter-spacing: 0.01em;
-    margin-bottom: 10px;
+    line-height: 1;
+    color: var(--text-1);
   }
 
-  .identity h1 .dot {
-    color: var(--vermillion);
+  .wordmark .dot { color: var(--accent); }
+
+  .lede {
+    max-width: 50ch;
+    margin-top: 12px;
+    font-size: var(--fs-body);
+    line-height: 1.55;
+    color: var(--text-2);
+    text-wrap: pretty;
   }
 
-  .identity p {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 0.86rem;
-    color: var(--text-3);
-    font-weight: 400;
-    letter-spacing: 0.03em;
-    line-height: 1.6;
-  }
-
-  .filter-nav {
+  .nav {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    gap: 8px 14px;
-    margin-bottom: 16px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
+    gap: 28px;
+    margin-bottom: 4px;
+    padding-bottom: 20px;
+    font-size: var(--fs-meta);
   }
 
-  .filter-chip {
+  .nav-item {
     position: relative;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    padding: 2px 0;
+    padding: 4px 0;
     color: var(--text-3);
-    font-size: 0.7rem;
-    font-weight: 500;
     text-decoration: none;
-    letter-spacing: 0.02em;
-    transition: color 0.15s ease, text-decoration-color 0.15s ease;
+    background: none;
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+    transition: color 0.18s ease;
   }
 
-  .filter-chip:hover {
-    color: var(--text-2);
-  }
+  .nav-item:hover { color: var(--text-1); }
 
-  .filter-chip-external {
-    gap: 3px;
-  }
-
-  .filter-chip-external .external-mark {
-    font-size: 0.72em;
-    line-height: 1;
-    color: currentColor;
-    opacity: 0.52;
-    transform: translateY(-0.08em);
-  }
-
-  .filter-chip.is-active {
+  .nav-item.is-active {
     color: var(--text-1);
-    font-weight: 600;
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.34em;
-    text-decoration-color: rgba(26, 23, 20, 0.42);
   }
 
-  .filter-chip:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-    border-radius: 2px;
+  .links {
+    position: relative;
   }
 
-  .notice {
-    margin-bottom: 14px;
-    padding: 10px 12px;
-    background: rgba(27, 63, 139, 0.05);
-    border: 1px solid rgba(27, 63, 139, 0.15);
-    color: var(--text-2);
-    font-size: 0.74rem;
-    line-height: 1.58;
-  }
-
-  .news-view {
-    display: block;
-  }
-
-  .essays-view {
-    display: none;
-  }
-
-  html[data-initial-filter="essays"] .news-view {
-    display: none;
-  }
-
-  html[data-initial-filter="essays"] .essays-view {
-    display: block;
-  }
-
-  .feed {
-    list-style: none;
-  }
-
-  .feed-item {
-    border-top: 1px solid var(--border);
-    animation: enter 0.35s ease both;
-  }
-
-  .feed-item:first-child {
-    border-top: none;
-  }
-
-  .feed-item:last-child {
-    border-bottom: 1px solid var(--border);
-  }
-
-  .feed-card {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-    margin: 0 -10px;
-    padding: 14px 10px 16px;
-    border-radius: 10px;
-    transition: background-color 0.18s ease, transform 0.18s ease;
-  }
-
-  .feed-card:hover {
-    background: rgba(27, 63, 139, 0.04);
-  }
-
-  .feed-card:hover .feed-title,
-  .feed-card:hover .feed-link {
-    color: var(--accent);
-  }
-
-  .feed-card:focus-visible,
-  .pagination a:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 4px;
-    border-radius: 2px;
-  }
-
-  .feed-topline {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-
-  .feed-heading {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-    gap: 8px 16px;
-  }
-
-  .feed-heading .feed-title {
-    min-width: 0;
-  }
-
-  .source-pill {
+  .links-trigger {
     display: inline-flex;
     align-items: center;
-    padding: 1px 6px;
-    border-radius: 999px;
-    border: 1px solid rgba(27, 63, 139, 0.18);
-    background: rgba(27, 63, 139, 0.06);
-    color: var(--accent);
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    line-height: 1.35;
+    gap: 5px;
   }
 
-  .source-pill.source-art {
-    border-color: rgba(45, 139, 71, 0.16);
-    background: rgba(45, 139, 71, 0.06);
-    color: var(--vert);
+  .links-caret {
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 3px solid currentColor;
+    opacity: 0.55;
+    transform: translateY(1px);
+    transition: opacity 0.18s ease;
   }
 
-  .source-pill.source-builders {
-    border-color: rgba(232, 67, 42, 0.18);
-    background: rgba(232, 67, 42, 0.07);
-    color: var(--vermillion);
+  .links:hover .links-caret,
+  .links:focus-within .links-caret {
+    opacity: 0.9;
   }
 
-  .source-pill.source-voices {
-    border-color: rgba(110, 79, 211, 0.18);
-    background: rgba(110, 79, 211, 0.08);
-    color: #6E4FD3;
+  .links-panel {
+    position: absolute;
+    z-index: 2;
+    top: calc(100% + 6px);
+    left: -14px;
+    min-width: 152px;
+    padding: 12px 14px;
+    background: #FFFCF4;
+    border: 1px solid rgba(31, 27, 23, 0.12);
+    box-shadow: 0 18px 40px rgba(31, 27, 23, 0.10), 0 2px 6px rgba(31, 27, 23, 0.04);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-3px);
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
   }
 
-  .feed-time {
-    font-size: 0.62rem;
-    color: var(--text-3);
-    white-space: nowrap;
-    flex-shrink: 0;
-    margin-left: 0;
-    line-height: 1.3;
-    padding-top: 0.22em;
-    text-align: right;
+  .links::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: -14px;
+    right: -14px;
+    height: 8px;
   }
 
-  .feed-meta {
+  .links:hover .links-panel,
+  .links:focus-within .links-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .links-panel a {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    font-size: 0.67rem;
-    color: var(--text-3);
-    margin-top: 4px;
-    margin-bottom: 0;
-  }
-
-  .feed-title {
-    font-family: var(--serif);
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.34;
-    letter-spacing: 0.005em;
-  }
-
-  .feed-item:first-child .feed-title {
-    font-size: 1.06rem;
-  }
-
-  .feed-blurb {
-    margin-top: 6px;
-    width: 100%;
-    font-size: 0.75rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 5px 0;
     color: var(--text-2);
-    line-height: 1.64;
+    font-size: var(--fs-body);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.18s ease;
+  }
+
+  .links-panel a:hover { color: var(--accent); }
+
+  .external-mark {
+    font-size: 0.84em;
+    line-height: 1;
+    opacity: 0.55;
+  }
+
+  .articles { list-style: none; }
+
+  .articles li + li { border-top: 1px solid var(--line); }
+
+  .articles a {
+    display: block;
+    padding: 18px 0;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .article-title {
+    font-family: var(--serif);
+    font-size: var(--fs-title);
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--text-1);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.22em;
+    transition: text-decoration-color 0.2s ease;
+  }
+
+  .articles a:hover .article-title {
+    text-decoration-color: var(--accent);
+  }
+
+  .article-marker {
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.68em;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--text-3);
+    vertical-align: 0.14em;
+    text-decoration: none;
+  }
+
+  .article-desc {
+    max-width: 60ch;
+    margin-top: 5px;
+    font-size: var(--fs-body);
+    color: var(--text-2);
+    line-height: 1.55;
     display: -webkit-box;
-    line-clamp: 3;
-    -webkit-line-clamp: 3;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-  }
-
-  .feed-link {
-    display: inline-block;
-    margin-top: 7px;
-    font-size: 0.67rem;
-    color: var(--accent);
-    letter-spacing: 0.02em;
-  }
-
-  .empty-state {
-    padding: 36px 0;
-    color: var(--text-2);
-    font-size: 0.8rem;
-    line-height: 1.62;
   }
 
   .pagination {
@@ -325,800 +254,306 @@
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    margin-top: 20px;
-    padding-top: 4px;
+    margin-top: 32px;
+    font-size: var(--fs-meta);
+    color: var(--text-3);
   }
 
-  .pagination a,
-  .pagination span {
-    font-size: 0.72rem;
+  .pagination a {
     color: var(--text-3);
     text-decoration: none;
+    transition: color 0.18s ease;
   }
 
-  .pagination a:hover {
-    color: var(--accent);
-  }
-
-  .pagination .disabled {
-    opacity: 0.45;
-    pointer-events: none;
-  }
+  .pagination a:hover { color: var(--text-1); }
+  .pagination .disabled { opacity: 0.4; }
 
   .page-chip {
-    min-width: 88px;
+    min-width: 80px;
     text-align: center;
+    font-variant-numeric: tabular-nums;
   }
 
-  .articles {
-    list-style: none;
-  }
-
-  .articles li {
-    animation: enter 0.4s ease both;
-  }
-
-  .articles li + li {
-    border-top: 1px solid var(--border);
-  }
-
-  .articles li:last-child {
-    border-bottom: 1px solid var(--border);
-  }
-
-  .articles li:nth-child(1) { animation-delay: 0.06s; }
-  .articles li:nth-child(2) { animation-delay: 0.12s; }
-  .articles li:nth-child(3) { animation-delay: 0.18s; }
-  .articles li:nth-child(4) { animation-delay: 0.24s; }
-  .articles li:nth-child(5) { animation-delay: 0.30s; }
-  .articles li:nth-child(6) { animation-delay: 0.36s; }
-  .articles li:nth-child(7) { animation-delay: 0.42s; }
-  .articles li:nth-child(8) { animation-delay: 0.48s; }
-  .articles li:nth-child(9) { animation-delay: 0.54s; }
-  .articles li:nth-child(10) { animation-delay: 0.60s; }
-  .articles li:nth-child(11) { animation-delay: 0.66s; }
-
-  .articles a {
-    display: block;
-    padding: 16px 0 15px;
-    text-decoration: none;
-    color: inherit;
-    position: relative;
-  }
-
-  .articles a .article-title {
-    transition: color 0.2s;
-  }
-
-  .articles a:hover .article-title {
-    color: var(--accent);
-  }
-
-  .articles a:focus-visible {
-    outline: 2px solid var(--accent);
+  .articles a:focus-visible,
+  .nav-item:focus-visible,
+  .links-panel a:focus-visible,
+  .pagination a:focus-visible {
+    outline: 1px solid var(--accent);
     outline-offset: 4px;
-    border-radius: 2px;
-  }
-
-  .article-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .article-title {
-    font-family: var(--serif);
-    font-size: 1.06rem;
-    font-weight: 500;
-    line-height: 1.34;
-    letter-spacing: 0.005em;
-  }
-
-  .article-desc {
-    font-size: 0.77rem;
-    color: var(--text-3);
-    line-height: 1.54;
-    margin-top: 4px;
-  }
-
-  footer {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 0 24px 48px;
-    width: 100%;
-    font-size: 0.7rem;
-    color: var(--text-3);
-  }
-
-  footer a {
-    color: var(--text-3);
-    text-decoration: none;
-    border-bottom: 1px solid var(--border);
-    transition: color 0.15s;
-  }
-
-  footer a:hover {
-    color: var(--text-1);
-  }
-
-  footer a:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+    border-radius: 1px;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .page,
-    .feed-item,
-    .articles li {
-      animation: none;
-    }
-
-    .feed-card {
-      transition: none;
-    }
+    .page { animation: none; }
+    * { transition: none !important; }
   }
 
   @media (max-width: 640px) {
-    .identity {
-      margin-bottom: 18px;
+    .page { padding: 56px 22px 72px; }
+
+    .identity { margin-bottom: 32px; }
+
+    .wordmark { font-size: 1.375rem; }
+
+    .lede { margin-top: 10px; }
+
+    .nav {
+      gap: 22px;
+      padding-bottom: 16px;
     }
 
-    .identity h1 {
-      font-size: 2.4rem;
-    }
+    .articles a { padding: 16px 0; }
 
-    .filter-nav {
-      gap: 8px 12px;
-    }
-
-    .feed-card {
-      margin: 0 -8px;
-      padding: 14px 8px 16px;
-    }
-
-    .feed-heading {
-      grid-template-columns: 1fr;
-      gap: 4px;
-    }
-
-    .feed-time {
-      justify-self: start;
-      text-align: left;
-      padding-top: 0;
-    }
-
-    .article-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
-    }
+    .article-title { font-size: 1rem; }
   }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "pinyu.ai articles",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "url": "https://pinyulabs.substack.com/p/why-transformer-blocks-are-built",
+      "name": "Why Transformer Blocks Are Built as Residual Updates"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "url": "https://pinyulabs.substack.com/p/loss-is-the-price-of-misplaced-belief",
+      "name": "Loss is the price of misplaced belief"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "url": "https://blog.pinyu.ai/p/power-is-rented",
+      "name": "Power is Rented"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "url": "https://pinyulabs.substack.com/p/what-normalization-really-removes",
+      "name": "What Normalization Really Removes"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "url": "https://blog.pinyu.ai/p/ideas-need-a-body",
+      "name": "Ideas Need a Body"
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "url": "https://blog.pinyu.ai/p/personality-is-an-attention-system",
+      "name": "Personality is an attention system"
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "url": "https://blog.pinyu.ai/p/success-is-a-permission-system",
+      "name": "Success Is a Permission System"
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "url": "https://blog.pinyu.ai/p/good-writing-saves-the-readers-brain",
+      "name": "Good Writing Saves the Reader’s Brain"
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "url": "https://blog.pinyu.ai/p/writing-rewrites-reality",
+      "name": "Writing Rewrites Reality"
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "url": "https://blog.pinyu.ai/p/why-organizations-get-stupid",
+      "name": "Why Organizations Get Stupid"
+    },
+    {
+      "@type": "ListItem",
+      "position": 11,
+      "url": "https://blog.pinyu.ai/p/why-we-need-to-make-things-happen",
+      "name": "Why we need to make things happen ourselves"
+    },
+    {
+      "@type": "ListItem",
+      "position": 12,
+      "url": "https://blog.pinyu.ai/p/people-subscribe-to-a-promise",
+      "name": "People Subscribe to a Promise"
+    },
+    {
+      "@type": "ListItem",
+      "position": 13,
+      "url": "https://blog.pinyu.ai/p/the-theory-of-constraints",
+      "name": "The theory of constraints"
+    },
+    {
+      "@type": "ListItem",
+      "position": 14,
+      "url": "https://blog.pinyu.ai/p/the-real-meaning-of-moving-fast",
+      "name": "The Real Meaning of Moving Fast"
+    },
+    {
+      "@type": "ListItem",
+      "position": 15,
+      "url": "https://blog.pinyu.ai/p/ai-makes-expression-cheap-proof-becomes",
+      "name": "AI Makes Expression Cheap. Proof Becomes the Moat."
+    },
+    {
+      "@type": "ListItem",
+      "position": 16,
+      "url": "https://blog.pinyu.ai/p/the-voice-in-your-head-is-not-the",
+      "name": "The Voice in Your Head Is Not the Problem"
+    },
+    {
+      "@type": "ListItem",
+      "position": 17,
+      "url": "https://blog.pinyu.ai/p/the-most-dangerous-place-to-start",
+      "name": "The Most Dangerous Place to Start a Business Is the Middle"
+    }
+  ]
+}
+</script>
 </head>
 <body>
-<div class="page">
-  <div class="identity">
-    <h1>pinyu<span class="dot">.</span>ai</h1>
-    <p>Signal over consensus.</p>
-  </div>
+<main class="page">
+  <section class="identity" aria-labelledby="site-title">
+    <h1 id="site-title" class="wordmark">pinyu<span class="dot">.</span>ai</h1>
+    <p class="lede">Writing is how I stop being shaped unconsciously by symbols and begin reshaping them deliberately.</p>
+  </section>
 
-  <nav class="filter-nav" id="filters" aria-label="Browse content and channels">
-    <a href="/" class="filter-chip" data-filter="news">News</a>
-    <a href="https://blog.pinyu.ai/" class="filter-chip filter-chip-external" target="_blank" rel="noopener noreferrer" aria-label="Blog (opens in a new tab)">
-      <span>Blog</span>
-      <span class="external-mark" aria-hidden="true">↗</span>
-    </a>
-    <a href="https://xpinyu.medium.com/" class="filter-chip filter-chip-external" target="_blank" rel="noopener noreferrer" aria-label="Labs (opens in a new tab)">
-      <span>Labs</span>
-      <span class="external-mark" aria-hidden="true">↗</span>
-    </a>
-    <a href="https://zencat.uk/" class="filter-chip filter-chip-external" target="_blank" rel="noopener noreferrer" aria-label="ZenCat (opens in a new tab)">
-      <span>ZenCat</span>
-      <span class="external-mark" aria-hidden="true">↗</span>
-    </a>
+  <nav class="nav" aria-label="Writing channels">
+    <a href="/" class="nav-item is-active" aria-current="page">Writing</a>
+    <div class="links">
+      <button type="button" class="nav-item links-trigger" aria-haspopup="menu">Links<span class="links-caret" aria-hidden="true"></span></button>
+      <div class="links-panel" role="menu">
+        <a href="https://blog.pinyu.ai/" target="_blank" rel="noopener noreferrer" role="menuitem">
+          <span>Blog</span>
+          <span class="external-mark" aria-hidden="true">↗</span>
+        </a>
+        <a href="https://pinyulabs.substack.com/" target="_blank" rel="noopener noreferrer" role="menuitem">
+          <span>Labs</span>
+          <span class="external-mark" aria-hidden="true">↗</span>
+        </a>
+        <a href="https://zencat.uk/" target="_blank" rel="noopener noreferrer" role="menuitem">
+          <span>ZenCat</span>
+          <span class="external-mark" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+    <a href="mailto:pinyu@fastmail.com" class="nav-item" title="pinyu@fastmail.com">Contact</a>
   </nav>
 
-  <section class="news-view" id="news-view" aria-live="polite">
-    <div class="notice" id="notice" hidden></div>
-    <ol class="feed" id="feed"></ol>
-    <div class="empty-state" id="empty-state" hidden>No items yet. Add `XAI_API_KEY` to the GitHub Actions secrets and run the workflow to populate this feed.</div>
-    <nav class="pagination" id="pagination" hidden>
-      <span id="prev-slot"></span>
-      <span class="page-chip" id="page-chip"></span>
-      <span id="next-slot"></span>
-    </nav>
-  </section>
+  <ol class="articles">
+    <li class="article">
+      <a href="https://pinyulabs.substack.com/p/why-transformer-blocks-are-built" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">Why Transformer Blocks Are Built as Residual Updates <span class="article-marker">Tech</span></h2>
+        <p class="article-desc">A standard Transformer block often looks like this:</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://pinyulabs.substack.com/p/loss-is-the-price-of-misplaced-belief" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">Loss is the price of misplaced belief <span class="article-marker">Tech</span></h2>
+        <p class="article-desc">A cleaner intuition for cross-entropy in language models</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/power-is-rented" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">Power is Rented</h2>
+        <p class="article-desc">Real influence lives in other people&#39;s expectations of your future.</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://pinyulabs.substack.com/p/what-normalization-really-removes" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">What Normalization Really Removes <span class="article-marker">Tech</span></h2>
+        <p class="article-desc">Shift, scale, and the unstable coordinate systems inside neural networks</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/ideas-need-a-body" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">Ideas Need a Body</h2>
+        <p class="article-desc">Why real understanding is not information transfer, but a temporary change in the person receiving it</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/personality-is-an-attention-system" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">Personality is an attention system</h2>
+        <p class="article-desc">Why MBTI feels compelling, why it is not enough, and what personality is actually doing before you even start thinking</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/success-is-a-permission-system" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">Success Is a Permission System</h2>
+        <p class="article-desc">Why effort and talent still have to pass through status, signals, and self-protection before they become results</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/good-writing-saves-the-readers-brain" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">Good Writing Saves the Reader’s Brain</h2>
+        <p class="article-desc">The deeper lesson behind short sentences, active verbs, and ruthless editing is cognitive design: make the reader spend less energy reconstructing your idea.</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/writing-rewrites-reality" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">Writing Rewrites Reality</h2>
+        <p class="article-desc">How writing helps us stop being unconsciously shaped by symbols</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/why-organizations-get-stupid" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">Why Organizations Get Stupid</h2>
+        <p class="article-desc">Smart people can see the problem. The organization may still refuse to let it become one.</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/why-we-need-to-make-things-happen" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">Why we need to make things happen ourselves</h2>
+        <p class="article-desc">Meaning begins when time becomes consequence</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/people-subscribe-to-a-promise" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">People Subscribe to a Promise</h2>
+        <p class="article-desc">Audience growth is expectation training: the repeated confirmation of a clear promise.</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/the-theory-of-constraints" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">The theory of constraints</h2>
+        <p class="article-desc">most improvement work is pointed at the wrong place</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/the-real-meaning-of-moving-fast" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">The Real Meaning of Moving Fast</h2>
+        <p class="article-desc">Speed is not hustle. It is the density of contact with reality.</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/ai-makes-expression-cheap-proof-becomes" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">AI Makes Expression Cheap. Proof Becomes the Moat.</h2>
+        <p class="article-desc">How AI shifts persuasion from polished expression to verifiable trust</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/the-voice-in-your-head-is-not-the" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">The Voice in Your Head Is Not the Problem</h2>
+        <p class="article-desc">How Psychological Distance Turns Inner Chatter into Self-Coaching</p>
+      </a>
+    </li>
+    <li class="article">
+      <a href="https://blog.pinyu.ai/p/the-most-dangerous-place-to-start" target="_blank" rel="noopener noreferrer">
+        <h2 class="article-title">The Most Dangerous Place to Start a Business Is the Middle</h2>
+        <p class="article-desc">How premium offers help early businesses survive, learn faster, and scale from strength</p>
+      </a>
+    </li>
+  </ol>
 
-  <section class="essays-view" id="essays-view">
-    <ul class="articles">
-      <li>
-        <a href="p/musk-bottleneck-machine.html">
-          <div class="article-header">
-            <div class="article-title">马斯克的瓶颈机器</div>
-          </div>
-          <div class="article-desc">高强度只是表层，真正难学的是把使命、删除、反馈和加速变成组织默认动作</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/writing-shapes-reality.html">
-          <div class="article-header">
-            <div class="article-title">写作重塑现实</div>
-          </div>
-          <div class="article-desc">语言如何把混乱经验变成一个人可以居住、判断和行动的世界</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/ltx-2.html">
-          <div class="article-header">
-            <div class="article-title">LTX-2：联合音视频生成的最小心智模型</div>
-          </div>
-          <div class="article-desc">视频和音频常常来自同一个事件。LTX-2 直接让它们一起生成，在生成过程中持续对齐。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/unfinished-power.html">
-          <div class="article-header">
-            <div class="article-title">被缺口牵引的人</div>
-          </div>
-          <div class="article-desc">从信息缺口、认知闭合、蔡格尼克效应到拉康的缺失，理解我们为什么离不开未完成。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/foucault.html">
-          <div class="article-header">
-            <div class="article-title">消失的人</div>
-          </div>
-          <div class="article-desc">福柯追问：知识、规训与日常制度，怎样一步步塑造出现在这个你。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/inner-sovereignty.html">
-          <div class="article-header">
-            <div class="article-title">谁在我里面说话</div>
-          </div>
-          <div class="article-desc">清理脑内非法住户，重建内在海关。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/mind-complexity.html">
-          <div class="article-header">
-            <div class="article-title">思想要有地方去</div>
-          </div>
-          <div class="article-desc">一场关于思想复杂性、控制论、破我执与心理自由的对话</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/thiel.html">
-          <div class="article-header">
-            <div class="article-title">模仿欲望</div>
-          </div>
-          <div class="article-desc">一场关于彼得·蒂尔、模仿欲望、差异化、时间观与停滞风险的对话</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/luck.html">
-          <div class="article-header">
-            <div class="article-title">Luck Is a Distribution</div>
-          </div>
-          <div class="article-desc">运气并不只靠随机，它也能通过行动、判断和长期积累被放大。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/vwb.html">
-          <div class="article-header">
-            <div class="article-title">From Generator to Video Workbench</div>
-          </div>
-          <div class="article-desc">视频模型正在从生成器走向工作台，竞争点转向复杂约束下的意图执行。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/bwf.html">
-          <div class="article-header">
-            <div class="article-title">Prompts Don't Build Brands</div>
-          </div>
-          <div class="article-desc">品牌图最难的，不是偶尔惊艳，而是把风格沉淀成稳定的一致性系统。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/remap.html">
-          <div class="article-header">
-            <div class="article-title">Redrawing the Map</div>
-          </div>
-          <div class="article-desc">更强的系统会在扰动中一边重组问题空间，一边继续逼近目标。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/eagi.html">
-          <div class="article-header">
-            <div class="article-title">Some Simple Economics of AGI</div>
-          </div>
-          <div class="article-desc">执行变便宜之后，真正稀缺的会是验证。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/ood.html">
-          <div class="article-header">
-            <div class="article-title">Out of Distribution</div>
-          </div>
-          <div class="article-desc">筛选系统越精密，越容易错过分布外的创始人。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/bo.html">
-          <div class="article-header">
-            <div class="article-title">Before Objects</div>
-          </div>
-          <div class="article-desc">意义先在生命中的利害里出现，随后才被写进符号与观念。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/retention.html">
-          <div class="article-header">
-            <div class="article-title">Attention Before Product</div>
-          </div>
-          <div class="article-desc">在平台分发里，注意力常常先于产品本身。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/old.html">
-          <div class="article-header">
-            <div class="article-title">One Layer Down</div>
-          </div>
-          <div class="article-desc">第一性原理不是口号，而是把答案拆回成本、约束和假设。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/self-flow.html">
-          <div class="article-header">
-            <div class="article-title">Self-Flow</div>
-          </div>
-          <div class="article-desc">生成模型也能从正确的训练信号里长出强语义表征。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/scheming.html">
-          <div class="article-header">
-            <div class="article-title">Will AI Cheat on Us?</div>
-          </div>
-          <div class="article-desc">模型是否会 scheming，不是常数，而是配置的函数。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/nfy.html">
-          <div class="article-header">
-            <div class="article-title">Not a Faster You</div>
-          </div>
-          <div class="article-desc">真正的风险不是 AI 难以理解，而是它给出了足够像样的解释。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/subagent.html">
-          <div class="article-header">
-            <div class="article-title">The Markdown Org</div>
-          </div>
-          <div class="article-desc">多 agent 协作未必需要复杂编排，一个 Markdown 文件夹就能形成团队边界。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/sot.html">
-          <div class="article-header">
-            <div class="article-title">Trial Without a Judge</div>
-          </div>
-          <div class="article-desc">内部辩论能放大推理，也暴露了缺少裁决机制的结构问题。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/moa.html">
-          <div class="article-header">
-            <div class="article-title">Mixture-of-Agents</div>
-          </div>
-          <div class="article-desc">MoA 的优势不只在更深推理，而在用模型差异扩大搜索覆盖率。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/rot.html">
-          <div class="article-header">
-            <div class="article-title">The Rot</div>
-          </div>
-          <div class="article-desc">上下文管理的问题不在窗口大小，而在过滤、验证与渐进披露。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/soi.html">
-          <div class="article-header">
-            <div class="article-title">The Shape of Intelligence</div>
-          </div>
-          <div class="article-desc">智能的关键不只是解题，而是把问题变成更容易求解的形状。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/snw.html">
-          <div class="article-header">
-            <div class="article-title">Stilts, Not Weights</div>
-          </div>
-          <div class="article-desc">更好的 AI 产品往往把智能放在架构层，而不是固化进权重。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/apmf.html">
-          <div class="article-header">
-            <div class="article-title">After PMF</div>
-          </div>
-          <div class="article-desc">PMF 之后真正的挑战，是同时启动分发、下一代产品与组织三台引擎。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/sk.html">
-          <div class="article-header">
-            <div class="article-title">Skills, Explained</div>
-          </div>
-          <div class="article-desc">Skill 把容易漂移的 prompt 沉淀成可复用、可管理的工作流单元。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/tip.html">
-          <div class="article-header">
-            <div class="article-title">The Inverse Problem</div>
-          </div>
-          <div class="article-desc">沟通更像逆问题：同一句话可以对应多个完全不同的真实状态。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/tci.html">
-          <div class="article-header">
-            <div class="article-title">The Cognitive Inversion</div>
-          </div>
-          <div class="article-desc">当执行被外包后，定义问题逐渐取代执行本身成为核心生产力。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/cw.html">
-          <div class="article-header">
-            <div class="article-title">Structure Over Information</div>
-          </div>
-          <div class="article-desc">模型处理信息的结构，往往比它拿到多少信息更重要。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/tpr.html">
-          <div class="article-header">
-            <div class="article-title">The Profession, Refactored</div>
-          </div>
-          <div class="article-desc">前沿模型的跃迁正在重写软件工程的判断标准与技能结构。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/deme.html">
-          <div class="article-header">
-            <div class="article-title">Decouple-Then-Merge</div>
-          </div>
-          <div class="article-desc">把扩散训练看成多任务学习，能在零额外推理成本下缓解梯度冲突。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/ctl.html">
-          <div class="article-header">
-            <div class="article-title">Closing the Loop</div>
-          </div>
-          <div class="article-desc">Agent 闭合感知-行动回路后，LLM 通往 AGI 的路径会变得不同。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/cc.html">
-          <div class="article-header">
-            <div class="article-title">Less Code, More Model</div>
-          </div>
-          <div class="article-desc">Claude Code 的故事说明，产品优势常常来自架构上的减法。</div>
-        </a>
-      </li>
-      <li>
-        <a href="p/vrg.html">
-          <div class="article-header">
-            <div class="article-title">Better Reconstruction ≠ Better Generation</div>
-          </div>
-          <div class="article-desc">更好的重建质量，并不必然带来更好的生成效果。</div>
-        </a>
-      </li>
-    </ul>
-  </section>
-</div>
-
-<footer>
-  <a href="mailto:pinyu@fastmail.com">Contact</a>
-</footer>
-
-<noscript>
-  <div style="max-width:640px;margin:0 auto;padding:0 24px 48px;color:#5C5349;font-size:0.75rem;">
-    News needs JavaScript to load. Essays and ZenCat remain available without it.
-  </div>
-</noscript>
-
-<script>
-  const INDEX_URL = "data/news/index.json";
-  const PAGE_PREFIX = "data/news/pages/";
-  const FILTER_NEWS = "news";
-  const FILTER_ESSAYS = "essays";
-  const LEGACY_NEWS_FILTERS = new Set(["voices", "builders", "art"]);
-  const SOURCE_TYPE_AI_VOICES = "x_ai_voices";
-  const SOURCE_TYPE_AI_INDIE = "aiindie";
-  const SOURCE_TYPE_ARTIST = "artist";
-  const SOURCE_CATEGORY_VOICES = "voices";
-  const SOURCE_CATEGORY_BUILDERS = "builders";
-  const SOURCE_CATEGORY_ART = "art";
-  const VALID_FILTERS = new Set([FILTER_NEWS, FILTER_ESSAYS]);
-
-  const filtersEl = document.getElementById("filters");
-  const noticeEl = document.getElementById("notice");
-  const feedEl = document.getElementById("feed");
-  const emptyStateEl = document.getElementById("empty-state");
-  const paginationEl = document.getElementById("pagination");
-  const pageChipEl = document.getElementById("page-chip");
-  const prevSlotEl = document.getElementById("prev-slot");
-  const nextSlotEl = document.getElementById("next-slot");
-  const newsViewEl = document.getElementById("news-view");
-  const essaysViewEl = document.getElementById("essays-view");
-  const defaultEmptyStateMessage = emptyStateEl.textContent;
-  const queryParams = new URLSearchParams(window.location.search);
-  const currentFilter = getRequestedFilter();
-
-  setActiveFilter(currentFilter);
-
-  if (currentFilter === FILTER_NEWS) {
-    newsViewEl.hidden = false;
-    essaysViewEl.hidden = true;
-    if (queryParams.has("filter") && normalizeText(queryParams.get("filter")) !== FILTER_NEWS) {
-      replacePageQuery(getRequestedPage(), FILTER_NEWS);
-    }
-    loadFeed().catch((error) => {
-      showNotice(`Failed to load the feed: ${error.message}`);
-      emptyStateEl.hidden = false;
-      emptyStateEl.textContent = "Try again later. The last build may still be running.";
-      feedEl.innerHTML = "";
-      paginationEl.hidden = true;
-    });
-  } else {
-    newsViewEl.hidden = true;
-    essaysViewEl.hidden = false;
-    if (queryParams.has("filter") || queryParams.has("page")) {
-      replacePageQuery(1, FILTER_ESSAYS);
-    }
-  }
-
-  async function loadFeed() {
-    const indexData = await fetchJson(INDEX_URL);
-
-    const totalPages = normalizePositiveNumber(indexData.total_pages, 1);
-    const requestedPage = getRequestedPage();
-    const currentPage = clamp(requestedPage, 1, totalPages);
-
-    if (requestedPage !== currentPage) {
-      replacePageQuery(currentPage, FILTER_NEWS);
-    }
-
-    const pageData = await fetchJson(`${PAGE_PREFIX}${currentPage}.json`);
-
-    renderFeed(
-      indexData,
-      {
-        items: Array.isArray(pageData.items) ? pageData.items : [],
-        currentPage,
-        totalPages,
-        emptyMessage: defaultEmptyStateMessage,
-      },
-      FILTER_NEWS
-    );
-  }
-
-  async function fetchJson(url) {
-    const response = await fetch(url, { cache: "no-store" });
-    if (!response.ok) {
-      throw new Error(`${response.status} ${response.statusText}`);
-    }
-    return response.json();
-  }
-
-  function renderFeed(indexData, viewState, currentFilter) {
-    const items = Array.isArray(viewState.items) ? viewState.items : [];
-    const currentPage = normalizePositiveNumber(viewState.currentPage, 1);
-    const totalPages = normalizePositiveNumber(viewState.totalPages || indexData.total_pages, 1);
-
-    pageChipEl.textContent = `${currentPage} / ${totalPages}`;
-
-    if (!items.length) {
-      emptyStateEl.hidden = false;
-      emptyStateEl.textContent = viewState.emptyMessage || defaultEmptyStateMessage;
-      feedEl.innerHTML = "";
-    } else {
-      emptyStateEl.hidden = true;
-      emptyStateEl.textContent = defaultEmptyStateMessage;
-      feedEl.innerHTML = items.map(renderItem).join("");
-    }
-
-    renderPagination(currentPage, totalPages, currentFilter);
-    renderNotice(indexData);
-  }
-
-  function renderItem(item) {
-    const itemType = getItemType(item);
-    const pillClass = itemType === SOURCE_CATEGORY_VOICES
-      ? "source-pill source-voices"
-      : itemType === SOURCE_CATEGORY_BUILDERS
-        ? "source-pill source-builders"
-        : itemType === SOURCE_CATEGORY_ART
-          ? "source-pill source-art"
-          : "";
-    const pillLabel = itemType === SOURCE_CATEGORY_VOICES
-      ? "Voices"
-      : itemType === SOURCE_CATEGORY_BUILDERS
-        ? "Builders"
-        : itemType === SOURCE_CATEGORY_ART
-          ? "Art"
-          : "";
-    const metaParts = [
-      item && item.platform,
-      item && item.author,
-    ].filter(Boolean);
-    const href = item && (item.link || item.canonical_link) ? item.link || item.canonical_link : "#";
-
-    return `
-      <li class="feed-item">
-        <a class="feed-card" href="${escapeAttribute(href)}" target="_blank" rel="noopener noreferrer">
-          ${pillLabel ? `<div class="feed-topline"><span class="${pillClass}">${escapeHtml(pillLabel)}</span></div>` : ""}
-          <div class="feed-heading">
-            <h2 class="feed-title">
-              ${escapeHtml(item && item.title ? item.title : "Untitled")}
-            </h2>
-            ${item && item.published_at ? `<span class="feed-time">${escapeHtml(formatTime(item.published_at))} HKT</span>` : ""}
-          </div>
-          ${metaParts.length ? `<div class="feed-meta">${metaParts.map(escapeHtml).join(" · ")}</div>` : ""}
-          ${item && item.blurb ? `<p class="feed-blurb">${escapeHtml(item.blurb)}</p>` : ""}
-          <span class="feed-link">Open link →</span>
-        </a>
-      </li>
-    `;
-  }
-
-  function renderPagination(currentPage, totalPages, currentFilter) {
-    if (totalPages <= 1) {
-      paginationEl.hidden = true;
-      return;
-    }
-
-    paginationEl.hidden = false;
-    prevSlotEl.innerHTML = currentPage > 1
-      ? `<a href="${pageHref(currentPage - 1, currentFilter)}">← Newer</a>`
-      : `<span class="disabled">← Newer</span>`;
-    nextSlotEl.innerHTML = currentPage < totalPages
-      ? `<a href="${pageHref(currentPage + 1, currentFilter)}">Older →</a>`
-      : `<span class="disabled">Older →</span>`;
-  }
-
-  function renderNotice(indexData) {
-    const sources = Array.isArray(indexData.sources) ? indexData.sources : [];
-    const hasSuccessfulSource = sources.some((source) => Boolean(source && source.updated_at));
-
-    if (!hasSuccessfulSource) {
-      showNotice("The page is ready, but the feed has not been populated yet. Add `XAI_API_KEY` to GitHub Actions secrets, then run the workflow once.");
-      return;
-    }
-
-    noticeEl.hidden = true;
-  }
-
-  function showNotice(message) {
-    noticeEl.hidden = false;
-    noticeEl.textContent = message;
-  }
-
-  function setActiveFilter(currentFilter) {
-    const links = filtersEl.querySelectorAll("[data-filter]");
-    links.forEach((link) => {
-      const filter = normalizeText(link.getAttribute("data-filter"));
-      const isActive = filter === currentFilter;
-      link.classList.toggle("is-active", isActive);
-      if (isActive) {
-        link.setAttribute("aria-current", "page");
-      } else {
-        link.removeAttribute("aria-current");
-      }
-    });
-  }
-
-  function getRequestedPage() {
-    const params = new URLSearchParams(window.location.search);
-    return normalizePositiveNumber(params.get("page"), 1);
-  }
-
-  function getRequestedFilter() {
-    return normalizeFilter(queryParams.get("filter"));
-  }
-
-  function pageHref(pageNumber, filter = FILTER_NEWS) {
-    const params = new URLSearchParams();
-    const normalizedFilter = normalizeFilter(filter);
-    if (normalizedFilter === FILTER_ESSAYS) {
-      params.set("filter", FILTER_ESSAYS);
-    }
-    if (normalizedFilter === FILTER_NEWS && pageNumber > 1) {
-      params.set("page", String(pageNumber));
-    }
-    const query = params.toString();
-    return query ? `?${query}` : "/";
-  }
-
-  function replacePageQuery(pageNumber, filter = FILTER_NEWS) {
-    const nextUrl = pageHref(pageNumber, filter);
-    window.history.replaceState({}, "", nextUrl);
-  }
-
-  function getItemType(item) {
-    if (normalizeText(item && item.source_type) === SOURCE_TYPE_AI_VOICES) {
-      return SOURCE_CATEGORY_VOICES;
-    }
-    if (normalizeText(item && item.source_type) === SOURCE_TYPE_AI_INDIE) {
-      return SOURCE_CATEGORY_BUILDERS;
-    }
-    if (normalizeText(item && item.source_type) === SOURCE_TYPE_ARTIST) {
-      return SOURCE_CATEGORY_ART;
-    }
-    return "";
-  }
-
-  function normalizeFilter(value) {
-    const filter = normalizeText(value);
-    if (LEGACY_NEWS_FILTERS.has(filter)) {
-      return FILTER_NEWS;
-    }
-    return VALID_FILTERS.has(filter) ? filter : FILTER_NEWS;
-  }
-
-  function normalizePositiveNumber(value, fallback) {
-    const parsed = Number(value);
-    if (!Number.isFinite(parsed) || parsed < 1) {
-      return fallback;
-    }
-    return Math.floor(parsed);
-  }
-
-  function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
-  }
-
-  function formatTime(value) {
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) {
-      return "Unknown";
-    }
-
-    return new Intl.DateTimeFormat("en-US", {
-      timeZone: "Asia/Hong_Kong",
-      year: "numeric",
-      month: "short",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    }).format(date);
-  }
-
-  function escapeHtml(value) {
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
-  }
-
-  function escapeAttribute(value) {
-    return escapeHtml(value);
-  }
-
-  function normalizeText(value) {
-    return String(value ?? "").trim().toLowerCase();
-  }
-</script>
+</main>
 
 <script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
 </body>

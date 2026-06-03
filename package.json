@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-index.mjs",
+    "sync": "node scripts/sync-articles.mjs && node scripts/build-index.mjs"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.8.0"
+  }
+}
