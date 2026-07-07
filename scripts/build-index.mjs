@@ -460,6 +460,10 @@ ${jsonLd(articles, pageNumber)}
           <span>ZenCat</span>
           <span class="external-mark" aria-hidden="true">↗</span>
         </a>
+        <a href="https://b8zi.com/" target="_blank" rel="noopener noreferrer" role="menuitem">
+          <span>先知神谕</span>
+          <span class="external-mark" aria-hidden="true">↗</span>
+        </a>
       </div>
     </div>
     <a href="mailto:pinyu@fastmail.com" class="nav-item" title="pinyu@fastmail.com">Contact</a>
