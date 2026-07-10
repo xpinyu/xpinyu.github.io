@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Data-parallel training does not share one model object. Each process keeps a private replica; collective communication makes those replicas take the same update.">
+<meta name="author" content="pinyu">
+<meta property="og:title" content="Private Replicas, Identical Update">
+<meta property="og:description" content="What torchrun, init_process_group, and all_reduce actually do — a concrete mental model for PyTorch DDP.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pinyu.ai/p/ddp-replicas.html">
+<title>Private Replicas, Identical Update — PyTorch DDP</title>
+<link rel="canonical" href="https://pinyu.ai/p/ddp-replicas.html">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --ochre: #E8B830;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --blue: #5A7A90;
+    --blue-bg: #EAF0F5;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+    --serif: 'EB Garamond', Georgia, serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --content-w: 720px;
+    --wide-w: 880px;
+    --r0: #1B3F8B;
+    --r1: #B8864A;
+    --sync: #4A8060;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.88;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0; z-index: 100;
+    padding: 10px 24px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250, 246, 238, 0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229, 221, 208, 0.6);
+  }
+  .topbar a { color: var(--text-3); text-decoration: none; transition: color 0.15s; }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+  .container.wide { max-width: var(--wide-w); }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.25rem; font-weight: 500;
+    line-height: 1.22; letter-spacing: -0.02em;
+    margin-bottom: 24px; max-width: 640px;
+  }
+  header .subtitle {
+    font-size: 1.02rem; color: var(--text-2);
+    line-height: 1.9; max-width: 620px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px; flex-wrap: wrap;
+    font-size: 0.75rem; color: var(--text-3);
+  }
+  header .meta a {
+    color: var(--text-3); text-decoration: none;
+    border-bottom: 1px solid var(--border); transition: all 0.15s;
+  }
+  header .meta a:hover { color: var(--text-1); border-color: var(--text-1); }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(16px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.55; z-index: 50;
+  }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none; transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+
+  .thesis, .takeaway {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+  }
+  .thesis { margin-bottom: 72px; }
+  .takeaway { margin: 72px 0 24px; }
+  .thesis .thesis-label, .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p, .takeaway p { font-size: 1.03rem; line-height: 1.9; }
+  .thesis p + p, .takeaway p + p { margin-top: 16px; }
+  .thesis strong { color: var(--ochre); }
+  .takeaway strong { color: #8EC5A0; }
+
+  article { animation: enter 0.6s ease 0.08s both; }
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.52rem; font-weight: 600;
+    line-height: 1.32; letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.62;
+  }
+  h3 {
+    font-size: 1.08rem; font-weight: 600;
+    margin: 36px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; font-size: 1rem; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 700; color: #162E66; }
+  a.inline {
+    color: var(--accent); text-decoration: none;
+    border-bottom: 1px solid rgba(27, 63, 139, 0.25);
+  }
+  a.inline:hover { border-color: var(--accent); }
+
+  blockquote {
+    margin: 28px 0; padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.035);
+    color: var(--text-2); border-radius: 0 10px 10px 0;
+    font-size: 0.96rem; line-height: 1.88;
+  }
+  blockquote p { margin-bottom: 0; }
+
+  .sep { border: 0; height: 1px; background: var(--border); margin: 72px 0; }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px; margin: 24px 0;
+    font-size: 0.88rem; line-height: 1.82; border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .note-neutral { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+  .note-insight { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-ok { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-problem { background: var(--red-bg); border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+
+  .bullet-list {
+    margin: 24px 0;
+    padding-left: 1.2rem;
+  }
+  .bullet-list li { margin: 10px 0; color: var(--text-2); }
+
+  code, .mono {
+    font-family: var(--mono); font-size: 0.86em;
+    background: rgba(26, 23, 20, 0.05); padding: 0.1em 0.35em; border-radius: 4px;
+  }
+
+  .code-block {
+    position: relative; margin: 28px 0;
+    background: #1A2540; border-radius: 12px; overflow: hidden;
+  }
+  .code-block .code-label {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-family: var(--mono); font-size: 0.68rem; color: rgba(232,228,220,0.55);
+    letter-spacing: 0.04em;
+  }
+  .code-block .copy-btn {
+    background: transparent; border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(232,228,220,0.7); border-radius: 6px;
+    padding: 3px 10px; font-size: 0.68rem; cursor: pointer;
+    font-family: var(--sans); transition: all 0.15s;
+  }
+  .code-block .copy-btn:hover { border-color: rgba(255,255,255,0.3); color: #fff; }
+  .code-block .copy-btn.copied { border-color: var(--green); color: #8EC5A0; }
+  .code-block pre {
+    margin: 0; padding: 18px 20px; overflow-x: auto;
+    font-family: var(--mono); font-size: 0.78rem; line-height: 1.7;
+    color: #E8E4DC; background: transparent;
+  }
+  .code-block .cm { color: #7A8899; }
+  .code-block .kw { color: #7EB8E8; }
+  .code-block .fn { color: #E8C57A; }
+  .code-block .st { color: #8EC5A0; }
+  .code-block .nu { color: #E8A070; }
+
+  pre.output {
+    margin: 16px 0 28px; padding: 16px 20px;
+    background: #F3EEE4; color: var(--text-2);
+    border: 1px solid var(--border); border-radius: 10px;
+    font-family: var(--mono); font-size: 0.78rem; line-height: 1.7;
+    overflow-x: auto;
+  }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden; margin: 28px 0; background: var(--surface);
+  }
+  .versus .v-side { padding: 22px 20px; }
+  .versus .v-label {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-3); margin-bottom: 8px;
+  }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 10px; color: var(--text-3); font-size: 0.75rem;
+    border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+    background: #F7F2E8;
+  }
+  .versus p { font-size: 0.9rem; color: var(--text-2); margin: 0; line-height: 1.7; }
+
+  .rule-box {
+    margin: 28px 0; padding: 22px 24px;
+    border: 1px solid var(--border); border-radius: 14px;
+    background: var(--surface);
+  }
+  .rule-box .k {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+  }
+  .rule-box p { margin: 0; font-size: 1rem; line-height: 1.75; }
+  .rule-box p + p { margin-top: 10px; }
+
+  .env-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+    margin: 28px 0;
+  }
+  .env-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px 18px;
+  }
+  .env-card .env-name {
+    font-family: var(--mono); font-size: 0.78rem; font-weight: 700;
+    color: var(--accent); margin-bottom: 6px;
+  }
+  .env-card p {
+    font-size: 0.82rem; color: var(--text-2); margin: 0; line-height: 1.55;
+  }
+
+  .map-table {
+    width: 100%; border-collapse: collapse; margin: 28px 0;
+    font-size: 0.88rem; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+  }
+  .map-table th, .map-table td {
+    text-align: left; padding: 12px 14px;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .map-table th {
+    background: #F3EEE4; font-size: 0.72rem; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--text-3); font-weight: 650;
+  }
+  .map-table tr:last-child td { border-bottom: 0; }
+  .map-table td:first-child { font-weight: 600; color: var(--text-1); }
+  .map-table code { font-size: 0.78em; }
+
+  /* ===== Interactive demos ===== */
+  .demo {
+    margin: 36px 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(26, 23, 20, 0.04);
+  }
+  .demo-head {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #FFFCF7 0%, #FAF6EE 100%);
+  }
+  .demo-head h3 { margin: 0 0 4px; font-size: 1rem; }
+  .demo-head p { margin: 0; font-size: 0.82rem; color: var(--text-3); line-height: 1.55; }
+  .demo-bar {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    background: #FFFCF7; position: sticky; top: 36px; z-index: 4;
+  }
+  .demo-bar button {
+    background: #fff; color: var(--text-1);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 7px 12px; cursor: pointer; font-size: 0.8rem;
+    font-family: var(--sans); transition: all 0.15s;
+  }
+  .demo-bar button:hover:not(:disabled) { border-color: #cfc4b2; }
+  .demo-bar button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .demo-bar button.primary {
+    border-color: var(--accent); color: var(--accent); background: var(--blue-bg);
+  }
+  .demo-bar button.primary:hover:not(:disabled) { background: #dce8f5; }
+  .demo-bar .step-label {
+    margin-left: auto; font-family: var(--mono);
+    font-size: 0.75rem; color: var(--accent); font-weight: 600;
+  }
+  .demo-body { padding: 16px 18px 20px; }
+  .pips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .pip {
+    font-size: 0.68rem; padding: 4px 9px; border-radius: 999px;
+    border: 1px solid var(--border); color: var(--text-3); cursor: pointer;
+    background: #fff; font-family: var(--sans);
+  }
+  .pip.on { border-color: var(--accent); color: var(--accent); background: var(--blue-bg); }
+  .pip.done { color: #a39888; }
+  .demo-title {
+    font-family: var(--serif); font-size: 1.2rem; font-weight: 600;
+    margin-bottom: 6px; line-height: 1.3;
+  }
+  .demo-why {
+    color: var(--text-2); font-size: 0.9rem; margin-bottom: 16px; line-height: 1.7;
+  }
+  .demo-why b { color: var(--text-1); }
+
+  .process-stage {
+    position: relative;
+    border: 2px dashed transparent;
+    border-radius: 16px;
+    padding: 14px;
+    transition: border-color 0.25s, background 0.25s;
+  }
+  .process-stage.grouped {
+    border-color: var(--sync);
+    background: rgba(74, 128, 96, 0.04);
+  }
+  .pg-label {
+    display: none;
+    text-align: center;
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--sync); margin-bottom: 10px;
+  }
+  .process-stage.grouped .pg-label { display: block; }
+
+  .proc-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  .proc-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: #FFFCF7;
+    transition: box-shadow 0.25s, border-color 0.25s, opacity 0.25s;
+  }
+  .proc-card.r0 { border-top: 3px solid var(--r0); }
+  .proc-card.r1 { border-top: 3px solid var(--r1); }
+  .proc-card.waiting {
+    opacity: 0.55;
+    border-style: dashed;
+  }
+  .proc-card.stuck {
+    border-color: var(--red);
+    background: var(--red-bg);
+    box-shadow: 0 0 0 1px rgba(192, 80, 58, 0.15);
+  }
+  .proc-card h4 {
+    margin: 0 0 10px; font-size: 0.84rem; font-weight: 650;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .dot {
+    width: 9px; height: 9px; border-radius: 2px;
+    display: inline-block; margin-right: 2px; vertical-align: middle;
+  }
+  .proc-fields {
+    display: grid; gap: 6px;
+    font-family: var(--mono); font-size: 0.74rem; line-height: 1.55;
+  }
+  .proc-fields .fld {
+    display: flex; justify-content: space-between; gap: 8px;
+    padding: 4px 8px; border-radius: 6px; background: rgba(26,23,20,0.03);
+  }
+  .proc-fields .fld .k { color: var(--text-3); }
+  .proc-fields .fld .v { color: var(--text-1); font-weight: 600; }
+  .proc-fields .fld.hl .v { color: var(--sync); }
+  .proc-fields .fld.warn .v { color: var(--red); }
+  .proc-fields .fld.muted { opacity: 0.45; }
+  .id-badge {
+    display: inline-flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;
+  }
+  .id-badge span {
+    font-family: var(--mono); font-size: 0.62rem;
+    padding: 2px 7px; border-radius: 999px;
+    background: var(--blue-bg); color: var(--accent);
+    border: 1px solid rgba(27,63,139,0.12);
+  }
+  .id-badge.hidden { display: none; }
+
+  .collective-lane {
+    margin: 12px 0 4px;
+    min-height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .collective-lane .fabric {
+    width: 100%; height: 36px;
+    border-radius: 999px;
+    border: 1.5px dashed var(--border);
+    background: #F7F2E8;
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px;
+    font-family: var(--mono); font-size: 0.72rem; color: var(--text-3);
+    transition: all 0.3s;
+  }
+  .collective-lane .fabric.active {
+    border-color: var(--sync);
+    background: var(--green-bg);
+    color: var(--sync);
+    font-weight: 600;
+  }
+  .collective-lane .fabric.broken {
+    border-color: var(--red);
+    background: var(--red-bg);
+    color: var(--red);
+    font-weight: 600;
+  }
+  .packet {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; border-radius: 999px;
+    font-size: 0.68rem; font-weight: 700;
+  }
+  .packet.p0 { background: rgba(27,63,139,0.12); color: var(--r0); }
+  .packet.p1 { background: rgba(184,134,74,0.18); color: var(--r1); }
+
+  .demo-rule {
+    margin-top: 14px; padding: 12px 14px; border-radius: 10px;
+    background: #F7F2E8; border-left: 3px solid var(--green);
+    color: var(--text-2); font-size: 0.88rem; line-height: 1.7;
+  }
+  .demo-rule b { color: var(--green); }
+  .demo-rule.danger {
+    background: var(--red-bg); border-left-color: var(--red);
+  }
+  .demo-rule.danger b { color: var(--red); }
+  .demo-mantra {
+    text-align: center; margin: 14px 0 0;
+    font-family: var(--serif); font-size: 1.05rem; font-weight: 600;
+    color: var(--text-1);
+  }
+
+  /* Failure demo */
+  .fail-toggle {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .fail-toggle label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.88rem; color: var(--text-2); cursor: pointer;
+    user-select: none;
+  }
+  .switch {
+    position: relative; width: 40px; height: 22px; flex-shrink: 0;
+  }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider {
+    position: absolute; inset: 0; border-radius: 999px;
+    background: #ddd3c4; transition: 0.2s; cursor: pointer;
+  }
+  .switch .slider::before {
+    content: ""; position: absolute;
+    width: 16px; height: 16px; left: 3px; top: 3px;
+    background: #fff; border-radius: 50%; transition: 0.2s;
+  }
+  .switch input:checked + .slider { background: var(--red); }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .switch input:focus-visible + .slider {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+
+  /* Multi-node diagram */
+  .mn-toggle {
+    display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+  }
+  .mn-toggle button {
+    background: #fff; color: var(--text-2);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 7px 14px; cursor: pointer; font-size: 0.8rem;
+    font-family: var(--sans); transition: all 0.15s;
+  }
+  .mn-toggle button.on {
+    border-color: var(--accent); color: var(--accent); background: var(--blue-bg);
+    font-weight: 600;
+  }
+  .mn-diagram {
+    border: 1px solid var(--border); border-radius: 14px;
+    background: #FFFCF7; padding: 18px;
+  }
+  .mn-cluster {
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .mn-node {
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 12px 14px; background: var(--surface);
+  }
+  .mn-node-label {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-3); margin-bottom: 8px;
+  }
+  .mn-workers {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .mn-worker {
+    flex: 1; min-width: 100px;
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px; text-align: center;
+    font-family: var(--mono); font-size: 0.72rem;
+    background: #FFFCF7;
+  }
+  .mn-worker .rank { font-weight: 700; color: var(--text-1); font-size: 0.82rem; }
+  .mn-worker .sub { color: var(--text-3); margin-top: 2px; }
+  .mn-rendezvous {
+    text-align: center; padding: 10px;
+    margin: 4px 0;
+    font-family: var(--mono); font-size: 0.72rem;
+    color: var(--text-3);
+    border: 1px dashed var(--border); border-radius: 8px;
+    background: #F7F2E8;
+    transition: opacity 0.35s;
+  }
+  .mn-rendezvous.faded { opacity: 0.25; }
+  .mn-rendezvous strong { color: var(--accent); font-weight: 600; }
+  .mn-collectives {
+    margin-top: 10px; text-align: center;
+    font-size: 0.78rem; color: var(--sync); font-weight: 600;
+    font-family: var(--mono);
+  }
+  .mn-caption {
+    margin-top: 12px; font-size: 0.82rem; color: var(--text-2); line-height: 1.65;
+  }
+
+  footer.page-end {
+    padding: 48px 0 80px;
+    border-top: 1px solid var(--border);
+    font-size: 0.82rem; color: var(--text-3);
+  }
+  footer.page-end a { color: var(--text-2); }
+  footer.page-end ul {
+    margin: 12px 0 0; padding-left: 1.1rem; line-height: 1.9;
+  }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); border: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header, article { animation: none; }
+    .process-stage, .proc-card, .collective-lane .fabric,
+    .mn-rendezvous { transition: none; }
+  }
+  @media (max-width: 1120px) { nav.toc { display: none; } }
+  @media (max-width: 720px) {
+    header h1 { font-size: 1.85rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .demo-bar .step-label { width: 100%; margin-left: 0; }
+    .proc-row { grid-template-columns: 1fr; }
+    .env-grid { grid-template-columns: 1fr; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); border-left: 0; border-right: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%" aria-hidden="true"></div>
+
+<div class="topbar">
+  <a href="/" class="home-link">← pinyu.ai</a>
+  <span style="color:var(--text-3)">Systems · Distributed Training</span>
+</div>
+
+<nav class="toc" id="toc" aria-label="Table of contents">
+  <a href="#idea">Idea</a>
+  <a href="#mystery">Two processes</a>
+  <a href="#goal">Not sharing</a>
+  <a href="#torchrun">torchrun</a>
+  <a href="#init">Process group</a>
+  <a href="#walkthrough">Walkthrough</a>
+  <a href="#allreduce">all_reduce</a>
+  <a href="#contract">The contract</a>
+  <a href="#ddp">DDP</a>
+  <a href="#machines">Many machines</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">PyTorch · Data Parallelism</div>
+    <h1>Private Replicas, Identical Update</h1>
+    <p class="subtitle">Data-parallel training does not put one model object on many GPUs. Each process keeps a private replica, and collective communication makes those replicas take the same update.</p>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.07</span>
+      <a href="https://pytorch.org/docs/stable/distributed.html" target="_blank" rel="noopener noreferrer">torch.distributed</a>
+    </div>
+  </header>
+
+  <div class="thesis" id="idea">
+    <div class="thesis-label">The idea</div>
+    <p>Two ordinary Python processes have separate memory. Each starts with its own copy of a model parameter. How can they train as if they were updating one model?</p>
+    <p>Not by sharing memory. By sharing a schedule. Each process keeps a private replica. At the gradient boundary, every process joins a collective that leaves it with the same reduced gradient. Then each process updates its own weights with that common value.</p>
+    <p><strong>Private process state plus a shared communication contract is not the same thing as a shared Python object.</strong></p>
+  </div>
+
+  <article>
+
+    <section id="mystery">
+      <div class="section-num">1</div>
+      <h2>Two processes, one update</h2>
+      <p class="section-hook">Same script, two processes, different local data — and both end with the same private parameter.</p>
+
+      <p>A minimal CPU program is enough. No GPU is required. The example uses Gloo so it runs on a laptop; real multi-GPU jobs usually pick NCCL instead. The shape of the story is the same either way.</p>
+
+      <div class="code-block">
+        <div class="code-label">
+          <span>toy_ddp.py</span>
+          <button class="copy-btn" type="button" data-copy="toy">Copy</button>
+        </div>
+        <pre id="code-toy"><span class="kw">import</span> torch
+<span class="kw">import</span> torch.distributed <span class="kw">as</span> dist
+
+dist.init_process_group(backend=<span class="st">"gloo"</span>)
+rank = dist.get_rank()
+world_size = dist.get_world_size()
+
+<span class="cm"># Each process owns a private model replica.</span>
+<span class="cm"># They start equal only to keep the example small.</span>
+weight = torch.tensor([<span class="nu">1.0</span>])
+
+<span class="cm"># Different local data → different local gradients.</span>
+local_grad = torch.tensor([<span class="nu">2.0</span> <span class="kw">if</span> rank == <span class="nu">0</span> <span class="kw">else</span> <span class="nu">6.0</span>])
+
+<span class="fn">print</span>(
+    <span class="st">f"rank={rank}: weight={weight.item()}, local_grad={local_grad.item()}"</span>,
+    flush=<span class="kw">True</span>,
+)
+
+<span class="cm"># Sum gradients from every rank into every rank's local tensor.</span>
+dist.all_reduce(local_grad, op=dist.ReduceOp.SUM)
+
+<span class="cm"># DDP normally averages gradients.</span>
+mean_grad = local_grad / world_size
+weight -= <span class="nu">0.1</span> * mean_grad
+
+<span class="fn">print</span>(
+    <span class="st">f"rank={rank}: mean_grad={mean_grad.item()}, updated_weight={weight.item()}"</span>,
+    flush=<span class="kw">True</span>,
+)
+
+dist.destroy_process_group()</pre>
+      </div>
+
+      <p>Launch it with two processes:</p>
+
+      <div class="code-block">
+        <div class="code-label">
+          <span>shell</span>
+          <button class="copy-btn" type="button" data-copy="run">Copy</button>
+        </div>
+        <pre id="code-run">torchrun --standalone --nproc-per-node=2 toy_ddp.py</pre>
+      </div>
+
+      <p>The logical result looks like this (print order is nondeterministic):</p>
+
+      <pre class="output">rank=0: weight=1.0, local_grad=2.0
+rank=1: weight=1.0, local_grad=6.0
+rank=0: mean_grad=4.0, updated_weight=0.6
+rank=1: mean_grad=4.0, updated_weight=0.6</pre>
+
+      <p>Nothing was shared in memory. No process handed model ownership to another. No parameter server sat between them. Both private copies still moved from <code>1.0</code> to <code>0.6</code>.</p>
+
+      <p>That is the mystery. The rest of the article tracks what makes it possible.</p>
+    </section>
+
+    <hr class="sep">
+
+    <section id="goal">
+      <div class="section-num">2</div>
+      <h2>The goal is not sharing a model</h2>
+      <p class="section-hook">The job already has two replicas. What it needs is agreement, not shared ownership.</p>
+
+      <p>A data-parallel job starts with private state on both sides:</p>
+
+      <div class="versus">
+        <div class="v-side">
+          <div class="v-label">Rank 0 · private</div>
+          <p>weight = 1.0<br>local gradient = 2.0</p>
+        </div>
+        <div class="v-mid">vs</div>
+        <div class="v-side">
+          <div class="v-label">Rank 1 · private</div>
+          <p>weight = 1.0<br>local gradient = 6.0</p>
+        </div>
+      </div>
+
+      <p>If each process stepped on its own gradient alone, the replicas would diverge. Rank 0 would move one way, rank 1 another, and after a few steps they would no longer be the same model in any useful sense.</p>
+
+      <p>A common assumption is that the GPUs must somehow share one model object. They do not. Each process holds a <strong>replica</strong>, and the job keeps those replicas aligned by synchronizing the update they apply.</p>
+
+      <div class="rule-box">
+        <div class="k">The real problem</div>
+        <p>Not: how can both processes reach one shared object?</p>
+        <p>But: <strong>how can both replicas agree on one update?</strong></p>
+      </div>
+    </section>
+
+    <hr class="sep">
+
+    <section id="torchrun">
+      <div class="section-num">3</div>
+      <h2>torchrun starts processes and gives them coordinates</h2>
+      <p class="section-hook">A launcher is not a collective. It is how workers get identities and a way to find one another.</p>
+
+      <p><code>torchrun</code> is a process launcher. In the simplest local case it starts worker processes for your training script, assigns each worker an identity, injects environment variables such as <code>RANK</code>, <code>LOCAL_RANK</code>, and <code>WORLD_SIZE</code>, and provides the rendezvous configuration the workers need to discover one another.</p>
+
+      <div class="env-grid">
+        <div class="env-card">
+          <div class="env-name">RANK</div>
+          <p>Global identity in the whole job. Rank 0 often owns logs or checkpoint writes, but for collectives every rank is a peer.</p>
+        </div>
+        <div class="env-card">
+          <div class="env-name">LOCAL_RANK</div>
+          <p>Identity on this machine. On a GPU job you usually pin work to <code>cuda:LOCAL_RANK</code>.</p>
+        </div>
+        <div class="env-card">
+          <div class="env-name">WORLD_SIZE</div>
+          <p>How many processes participate. Two ranks on one node means <code>WORLD_SIZE=2</code>.</p>
+        </div>
+      </div>
+
+      <p><code>torchrun</code> is useful, not magical. You can spawn two Python processes yourself, export the same environment variables, point them at a valid rendezvous endpoint, and still form a working job. What <code>torchrun</code> buys you is reliable bookkeeping for that setup — especially across many machines.</p>
+
+      <div class="note note-neutral">
+        <div class="note-label">What torchrun does not do</div>
+        It does not move gradients, create a process group, or enable DDP. It starts processes and coordinates how they discover each other.
+      </div>
+    </section>
+
+    <hr class="sep">
+
+    <section id="init">
+      <div class="section-num">4</div>
+      <h2>init_process_group turns coordinates into a group</h2>
+      <p class="section-hook">Until this call, each process is isolated Python. After it, each process belongs to a communication group.</p>
+
+      <p>Each process begins alone: private address space, private tensors, no agreed peers. <code>dist.init_process_group()</code> is the rendezvous. Using the launch configuration, every process finds the others and initializes the default process group.</p>
+
+      <p>That call has a precise meaning. Each process still keeps its own Python state and its own distributed-library state. Each receives a local handle to the same <em>logical</em> communication group; calls that omit <code>group=...</code> use that default group. And <code>init_process_group()</code> itself does <strong>not</strong> shard a model, synchronize gradients, or enable DDP.</p>
+
+      <p>After init, two isolated runtimes are members of one process group. The boundary is group membership, not a shared heap.</p>
+    </section>
+
+  </article>
+</div>
+
+<div class="container wide">
+  <article>
+    <section id="walkthrough">
+      <div class="section-num">Interactive</div>
+      <h2>Step through one distributed update</h2>
+      <p class="section-hook">Two private process cards, local tensors only — no shared model object.</p>
+
+      <div class="demo" id="main-demo" role="region" aria-label="Interactive distributed update walkthrough">
+        <div class="demo-head">
+          <h3>Step through one distributed update</h3>
+          <p>Space or → next · ← previous · Play auto-advances. Values change only inside local tensors.</p>
+        </div>
+        <div class="demo-bar">
+          <button type="button" id="prev" aria-label="Previous step">← Prev</button>
+          <button type="button" class="primary" id="next" aria-label="Next step">Next →</button>
+          <button type="button" id="play" aria-label="Play animation">Play</button>
+          <button type="button" id="reset" aria-label="Reset walkthrough">Reset</button>
+          <span class="step-label" id="idx" aria-live="polite">1 / 6</span>
+        </div>
+        <div class="demo-body">
+          <div class="pips" id="pips" role="tablist" aria-label="Walkthrough steps"></div>
+          <div class="demo-title" id="title"></div>
+          <div class="demo-why" id="why"></div>
+
+          <div class="process-stage" id="stage">
+            <div class="pg-label" id="pg-label">ProcessGroup · world_size = 2</div>
+            <div class="proc-row">
+              <div class="proc-card r0" id="card0">
+                <h4><span class="dot" style="background:var(--r0)"></span><span id="card0-name">Process 0</span></h4>
+                <div class="proc-fields" id="fields0"></div>
+                <div class="id-badge hidden" id="badge0"></div>
+              </div>
+              <div class="proc-card r1" id="card1">
+                <h4><span class="dot" style="background:var(--r1)"></span><span id="card1-name">Process 1</span></h4>
+                <div class="proc-fields" id="fields1"></div>
+                <div class="id-badge hidden" id="badge1"></div>
+              </div>
+            </div>
+            <div class="collective-lane" id="lane" aria-hidden="true">
+              <div class="fabric" id="fabric">— no collective active —</div>
+            </div>
+          </div>
+
+          <div class="demo-rule" id="rule"></div>
+          <p class="demo-mantra" id="mantra"></p>
+          <div class="sr-only" id="live" aria-live="polite" aria-atomic="true"></div>
+        </div>
+      </div>
+    </section>
+  </article>
+</div>
+
+<div class="container">
+  <article>
+
+    <hr class="sep">
+
+    <section id="allreduce">
+      <div class="section-num">5</div>
+      <h2>all_reduce is the operation that keeps replicas equal</h2>
+      <p class="section-hook">Every rank gives a local tensor. Every rank ends with the same reduced result — still in private memory.</p>
+
+      <p>The numbers are small enough to check by hand.</p>
+
+      <p><strong>Before <code>all_reduce</code>:</strong></p>
+      <pre class="output">rank 0 owns local_grad = 2
+rank 1 owns local_grad = 6</pre>
+
+      <p><strong>After <code>all_reduce(SUM)</code>:</strong></p>
+      <pre class="output">rank 0 owns local_grad = 8
+rank 1 owns local_grad = 8</pre>
+
+      <p><strong>After dividing by world size:</strong></p>
+      <pre class="output">both own mean_grad = 4</pre>
+
+      <p><strong>After the optimizer-like step <code>weight -= 0.1 * mean_grad</code>:</strong></p>
+      <pre class="output">both privately update weight from 1.0 → 0.6</pre>
+
+      <div class="rule-box">
+        <div class="k">What all_reduce does</div>
+        <p><code>all_reduce(SUM)</code> reduces every rank's contribution and writes the same reduced value into each rank's own local buffer.</p>
+      </div>
+
+      <p>Average those synchronized gradients and both replicas take the same step. That is the core idea behind data-parallel training: DDP does not make many GPUs hold one model. It makes many model replicas take the same gradient step.</p>
+
+      <div class="note note-insight">
+        <div class="note-label">What the toy covers</div>
+        The example captures the semantic core: synchronize, average, update the local replica. Real DDP also installs autograd hooks, keeps parameters aligned at construction, buckets gradients, and often overlaps communication with backward. This is a teaching model, not a reimplementation.
+      </div>
+    </section>
+
+    <hr class="sep">
+
+    <section id="contract">
+      <div class="section-num">6</div>
+      <h2>A collective is a contract, not shared memory</h2>
+      <p class="section-hook">Every participant must enter compatible collective calls in the same order.</p>
+
+      <p>An <code>all_reduce</code> is not "rank 0 asks rank 1 for data." It is not shared memory, and it is not an ordinary RPC that one process can fire alone and forget.</p>
+
+      <p>A collective is a <strong>group-wide protocol step</strong>. Every participating rank must eventually enter compatible collective calls in the same order. They do not need to hit the same wall-clock instant. What must line up is group membership, operations, tensor shapes, and call order.</p>
+
+      <div class="note note-problem">
+        <div class="note-label">Anti-pattern</div>
+        Rank 0 enters a collective that expects the whole group. Rank 1 never participates. Do not run this fragment without a short timeout.
+        <div class="code-block" style="margin:14px 0 0">
+          <div class="code-label">
+            <span>broken.py · conceptual</span>
+            <button class="copy-btn" type="button" data-copy="broken">Copy</button>
+          </div>
+          <pre id="code-broken"><span class="kw">if</span> rank == <span class="nu">0</span>:
+    dist.all_reduce(local_grad)  <span class="cm"># rank 1 never arrives</span></pre>
+        </div>
+      </div>
+
+      <p>Depending on backend, timeouts, and configuration, the failure may surface as a timeout, a communication error, or an apparent hang. Not every broken collective is an infinite hang, but mismatched participation is always a hard correctness bug.</p>
+
+      <div class="demo" id="fail-demo" role="region" aria-label="Interactive collective contract failure simulation">
+        <div class="demo-head">
+          <h3>Break the contract</h3>
+          <p>Simulation only — not a live hang. Pull one rank out of the collective and see the group fail to finish.</p>
+        </div>
+        <div class="demo-body">
+          <div class="fail-toggle">
+            <label for="skip-rank1">
+              <span class="switch">
+                <input type="checkbox" id="skip-rank1" />
+                <span class="slider" aria-hidden="true"></span>
+              </span>
+              Rank 1 skips <code>all_reduce</code>
+            </label>
+          </div>
+          <div class="proc-row" style="margin-bottom:12px">
+            <div class="proc-card r0" id="fcard0">
+              <h4><span class="dot" style="background:var(--r0)"></span>Rank 0</h4>
+              <div class="proc-fields" id="ffields0"></div>
+            </div>
+            <div class="proc-card r1" id="fcard1">
+              <h4><span class="dot" style="background:var(--r1)"></span>Rank 1</h4>
+              <div class="proc-fields" id="ffields1"></div>
+            </div>
+          </div>
+          <div class="collective-lane">
+            <div class="fabric" id="ffabric">group ready · press "Attempt all_reduce"</div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+            <button type="button" class="primary" id="fail-attempt" style="background:var(--blue-bg);color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:0.8rem;font-family:var(--sans)">Attempt all_reduce</button>
+            <button type="button" id="fail-reset" style="background:#fff;color:var(--text-1);border:1px solid var(--border);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:0.8rem;font-family:var(--sans)">Reset</button>
+          </div>
+          <div class="demo-rule" id="fail-rule" style="margin-top:14px">
+            Toggle the skip, then attempt the collective. With both ranks present the group finishes. With a missing member, the contract fails.
+          </div>
+          <div class="sr-only" id="fail-live" aria-live="assertive" aria-atomic="true"></div>
+        </div>
+      </div>
+
+      <div class="rule-box" style="margin-top:28px">
+        <div class="k">The rule</div>
+        <p><code>all_reduce</code> is not "ask another process for data." It means: <strong>every member of this group performs the next agreed protocol step.</strong></p>
+        <p style="margin-top:10px">Compatible shape, dtype, operation, and order all matter. A mismatched collective sequence is enough to break the job even when each local model's math is fine.</p>
+      </div>
+    </section>
+
+    <hr class="sep">
+
+    <section id="ddp">
+      <div class="section-num">7</div>
+      <h2>DDP is this schedule, automated</h2>
+      <p class="section-hook">The manual toy and real DDP share one plan: synchronize gradients, then update local replicas.</p>
+
+      <table class="map-table">
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Manual toy</th>
+            <th>DDP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Local forward / loss</td>
+            <td>Implicit (fixed local_grad)</td>
+            <td>Ordinary autograd on a local mini-batch</td>
+          </tr>
+          <tr>
+            <td>Local gradient</td>
+            <td>Constructed by hand</td>
+            <td>Autograd fills <code>.grad</code></td>
+          </tr>
+          <tr>
+            <td>Synchronize</td>
+            <td><code>dist.all_reduce</code>, then average</td>
+            <td>DDP hooks reduce (and average) during backward</td>
+          </tr>
+          <tr>
+            <td>Update</td>
+            <td><code>weight -= lr * mean_grad</code> on each rank</td>
+            <td>Optimizer steps the local replica on each rank</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>The optimizer still runs locally on every rank. Nothing ships model weights out of process just to take a step. Replicas stay aligned because the gradients they step on have already been equalized by the collective schedule.</p>
+
+      <div class="note note-ok">
+        <div class="note-label">In short</div>
+        Autograd computes local gradients. Collectives synchronize those gradients during backward. Each optimizer then updates its own local replica with the same values.
+      </div>
+    </section>
+
+    <hr class="sep">
+
+    <section id="machines">
+      <div class="section-num">8</div>
+      <h2>What changes across machines — and what does not</h2>
+      <p class="section-hook">Launch coordinates change. The meaning of a collective does not.</p>
+
+      <p>A two-node job still runs the same training script. Each node starts one <code>torchrun</code>, which launches its local workers. The master address is for setup and rendezvous, not a permanent parameter server on the data path.</p>
+
+      <div class="code-block">
+        <div class="code-label">
+          <span>node 0</span>
+          <button class="copy-btn" type="button" data-copy="node0">Copy</button>
+        </div>
+        <pre id="code-node0">torchrun \
+  --nnodes=2 \
+  --node-rank=0 \
+  --nproc-per-node=2 \
+  --master-addr=10.0.0.1 \
+  --master-port=29500 \
+  toy_ddp.py</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-label">
+          <span>node 1</span>
+          <button class="copy-btn" type="button" data-copy="node1">Copy</button>
+        </div>
+        <pre id="code-node1">torchrun \
+  --nnodes=2 \
+  --node-rank=1 \
+  --nproc-per-node=2 \
+  --master-addr=10.0.0.1 \
+  --master-port=29500 \
+  toy_ddp.py</pre>
+      </div>
+
+      <div class="demo" id="mn-demo" role="region" aria-label="One machine versus many machines diagram">
+        <div class="demo-head">
+          <h3>One machine or many?</h3>
+          <p>Rendezvous is setup only. Collectives belong to the worker group.</p>
+        </div>
+        <div class="demo-body">
+          <div class="mn-toggle" role="tablist" aria-label="Cluster layout">
+            <button type="button" class="on" id="mn-one" aria-selected="true">One node · 2 ranks</button>
+            <button type="button" id="mn-two" aria-selected="false">Two nodes · 4 ranks</button>
+          </div>
+          <div class="mn-diagram" id="mn-diagram"></div>
+          <p class="mn-caption" id="mn-caption"></p>
+        </div>
+      </div>
+
+      <p>Across machines you still have private replicas, environment coordinates, a process group, and the same collective contract. Placement changes. Meaning does not.</p>
+    </section>
+
+    <hr class="sep">
+
+    <section id="close">
+      <div class="section-num">9</div>
+      <h2>What to keep</h2>
+
+      <div class="takeaway" style="margin-top:0">
+        <div class="thesis-label">The decision rule</div>
+        <p><strong>torchrun</strong> assigns identities and rendezvous coordinates. <strong>init_process_group</strong> turns those coordinates into group membership. <strong>Collectives</strong> then synchronize private state under a shared contract, and <strong>DDP</strong> places that synchronization at the gradient boundary.</p>
+        <p>Private replicas. Identical update. No shared Python object required.</p>
+      </div>
+
+      <div class="note note-neutral" style="margin-top:24px">
+        <div class="note-label">Scope</div>
+        Private state plus ordered group protocols is the foundation for later systems such as FSDP, tensor parallel layouts, and device meshes. Those change <em>what</em> is partitioned. The contract still rules how ranks agree.
+      </div>
+    </section>
+
+  </article>
+
+  <footer class="page-end">
+    <p>References</p>
+    <ul>
+      <li><a class="inline" href="https://pytorch.org/docs/stable/distributed.html" target="_blank" rel="noopener noreferrer">torch.distributed</a> — process groups and collectives</li>
+      <li><a class="inline" href="https://pytorch.org/docs/stable/elastic/run.html" target="_blank" rel="noopener noreferrer">torchrun (elastic run)</a> — launcher semantics</li>
+      <li><a class="inline" href="https://pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html" target="_blank" rel="noopener noreferrer">DistributedDataParallel</a> — gradient synchronization hooks</li>
+      <li><a class="inline" href="https://pytorch.org/tutorials/intermediate/ddp_tutorial.html" target="_blank" rel="noopener noreferrer">Getting Started with DDP</a> — official tutorial</li>
+    </ul>
+    <p style="margin-top:18px"><a class="inline" href="/">← Back to pinyu.ai</a></p>
+  </footer>
+</div>
+
+<script>
+/* ========== code copy buttons ========== */
+const CODE_SRC = {
+  toy: `import torch
+import torch.distributed as dist
+
+dist.init_process_group(backend="gloo")
+rank = dist.get_rank()
+world_size = dist.get_world_size()
+
+# Each process owns a private model replica.
+# They start equal only to keep the example small.
+weight = torch.tensor([1.0])
+
+# Different local data → different local gradients.
+local_grad = torch.tensor([2.0 if rank == 0 else 6.0])
+
+print(
+    f"rank={rank}: weight={weight.item()}, local_grad={local_grad.item()}",
+    flush=True,
+)
+
+# Sum gradients from every rank into every rank's local tensor.
+dist.all_reduce(local_grad, op=dist.ReduceOp.SUM)
+
+# DDP normally averages gradients.
+mean_grad = local_grad / world_size
+weight -= 0.1 * mean_grad
+
+print(
+    f"rank={rank}: mean_grad={mean_grad.item()}, updated_weight={weight.item()}",
+    flush=True,
+)
+
+dist.destroy_process_group()`,
+  run: `torchrun --standalone --nproc-per-node=2 toy_ddp.py`,
+  broken: `if rank == 0:
+    dist.all_reduce(local_grad)  # rank 1 never arrives`,
+  node0: `torchrun \\
+  --nnodes=2 \\
+  --node-rank=0 \\
+  --nproc-per-node=2 \\
+  --master-addr=10.0.0.1 \\
+  --master-port=29500 \\
+  toy_ddp.py`,
+  node1: `torchrun \\
+  --nnodes=2 \\
+  --node-rank=1 \\
+  --nproc-per-node=2 \\
+  --master-addr=10.0.0.1 \\
+  --master-port=29500 \\
+  toy_ddp.py`
+};
+
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const key = btn.getAttribute('data-copy');
+    const text = CODE_SRC[key] || '';
+    try {
+      await navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 1400);
+    } catch (_) {
+      btn.textContent = 'Failed';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 1400);
+    }
+  });
+});
+
+/* ========== Main walkthrough ========== */
+const NAMES = ['Isolated', 'Coords', 'Group', 'Local', 'Reduce', 'Update'];
+const STEPS = [
+  {
+    title: '1 · Before launch',
+    why: 'Two ordinary Python processes. Separate memory. No rank, no group, no connection — only two independent runtimes.',
+    grouped: false,
+    showIds: false,
+    cards: [
+      { name: 'Process A', fields: [
+        { k: 'memory', v: 'private' },
+        { k: 'rank', v: '—' },
+        { k: 'group', v: 'none' }
+      ]},
+      { name: 'Process B', fields: [
+        { k: 'memory', v: 'private' },
+        { k: 'rank', v: '—' },
+        { k: 'group', v: 'none' }
+      ]}
+    ],
+    fabric: { text: '— no connection —', mode: '' },
+    rule: 'Start from isolation. Any shared behavior has to be built.',
+    mantra: 'Two processes · zero contracts'
+  },
+  {
+    title: '2 · After torchrun',
+    why: 'The launcher injects coordinates. Each process gets an identity. Communication has not started — only bookkeeping has.',
+    grouped: false,
+    showIds: true,
+    cards: [
+      { name: 'Process 0 / rank 0', badge: ['RANK=0', 'LOCAL_RANK=0', 'WORLD_SIZE=2'], fields: [
+        { k: 'memory', v: 'private' },
+        { k: 'rank', v: '0' },
+        { k: 'group', v: 'not joined' }
+      ]},
+      { name: 'Process 1 / rank 1', badge: ['RANK=1', 'LOCAL_RANK=1', 'WORLD_SIZE=2'], fields: [
+        { k: 'memory', v: 'private' },
+        { k: 'rank', v: '1' },
+        { k: 'group', v: 'not joined' }
+      ]}
+    ],
+    fabric: { text: 'identity only · no process group yet', mode: '' },
+    rule: '<b>torchrun</b> assigns coordinates. It does not move gradients.',
+    mantra: 'Coordinates, not communication'
+  },
+  {
+    title: '3 · After init_process_group()',
+    why: 'Rendezvous succeeds. Both processes join the same logical process group. Membership is group membership — not a shared Python heap.',
+    grouped: true,
+    showIds: true,
+    cards: [
+      { name: 'Rank 0', badge: ['RANK=0', 'in group'], fields: [
+        { k: 'memory', v: 'still private' },
+        { k: 'rank', v: '0', hl: true },
+        { k: 'group', v: 'default PG', hl: true }
+      ]},
+      { name: 'Rank 1', badge: ['RANK=1', 'in group'], fields: [
+        { k: 'memory', v: 'still private' },
+        { k: 'rank', v: '1', hl: true },
+        { k: 'group', v: 'default PG', hl: true }
+      ]}
+    ],
+    fabric: { text: 'ProcessGroup formed · peers known', mode: '' },
+    rule: 'A process group is a <b>shared contract about who participates</b> — not shared memory.',
+    mantra: 'Group membership ≠ shared objects'
+  },
+  {
+    title: '4 · Local computation',
+    why: 'Both hold private weight = 1.0. Different data produces different local gradients. Without a collective, the replicas are about to diverge.',
+    grouped: true,
+    showIds: false,
+    cards: [
+      { name: 'Rank 0', fields: [
+        { k: 'weight', v: '1.0' },
+        { k: 'local_grad', v: '2.0', hl: true },
+        { k: 'mean_grad', v: '—' }
+      ]},
+      { name: 'Rank 1', fields: [
+        { k: 'weight', v: '1.0' },
+        { k: 'local_grad', v: '6.0', hl: true },
+        { k: 'mean_grad', v: '—' }
+      ]}
+    ],
+    fabric: { text: 'local work · no collective yet', mode: '' },
+    rule: 'Local signals differ: <b>2 ≠ 6</b>. The problem is agreement, not ownership.',
+    mantra: 'Private replicas · different local signal'
+  },
+  {
+    title: '5 · During all_reduce(SUM)',
+    why: 'Both ranks enter the same collective. Contributions move through a symmetric fabric, not a central aggregator. Both local buffers become the sum: 2 + 6 = 8.',
+    grouped: true,
+    showIds: false,
+    cards: [
+      { name: 'Rank 0', fields: [
+        { k: 'weight', v: '1.0' },
+        { k: 'local_grad', v: '8.0', hl: true },
+        { k: 'contributed', v: '2.0' }
+      ]},
+      { name: 'Rank 1', fields: [
+        { k: 'weight', v: '1.0' },
+        { k: 'local_grad', v: '8.0', hl: true },
+        { k: 'contributed', v: '6.0' }
+      ]}
+    ],
+    fabric: {
+      text: '',
+      mode: 'active',
+      packets: true
+    },
+    rule: '<b>all_reduce</b>: every rank contributes; every rank receives the same reduced value written into its own tensor.',
+    mantra: 'Same result · still private buffers'
+  },
+  {
+    title: '6 · Average + optimizer step',
+    why: 'Divide by world_size: mean_grad = 4. Each process updates its own weight: 1.0 − 0.1 × 4 = 0.6. Private replicas, identical update.',
+    grouped: true,
+    showIds: false,
+    cards: [
+      { name: 'Rank 0', fields: [
+        { k: 'mean_grad', v: '4.0', hl: true },
+        { k: 'weight', v: '0.6', hl: true },
+        { k: 'shared object?', v: 'no' }
+      ]},
+      { name: 'Rank 1', fields: [
+        { k: 'mean_grad', v: '4.0', hl: true },
+        { k: 'weight', v: '0.6', hl: true },
+        { k: 'shared object?', v: 'no' }
+      ]}
+    ],
+    fabric: { text: 'collective complete · replicas aligned', mode: 'active' },
+    rule: '<b>Private replicas, identical update.</b> No process shared a Python object with another.',
+    mantra: 'Private replicas · identical update'
+  }
+];
+
+let step = 0;
+let playTimer = null;
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function fieldHtml(f) {
+  const cls = ['fld'];
+  if (f.hl) cls.push('hl');
+  if (f.warn) cls.push('warn');
+  if (f.muted) cls.push('muted');
+  return `<div class="${cls.join(' ')}"><span class="k">${f.k}</span><span class="v">${f.v}</span></div>`;
+}
+
+function renderMain() {
+  const s = STEPS[step];
+  document.getElementById('idx').textContent = (step + 1) + ' / ' + STEPS.length;
+  document.getElementById('title').textContent = s.title;
+  document.getElementById('why').innerHTML = s.why;
+  document.getElementById('rule').innerHTML = s.rule;
+  document.getElementById('mantra').textContent = s.mantra;
+  document.getElementById('live').textContent = s.title + '. ' + s.mantra;
+
+  const stage = document.getElementById('stage');
+  stage.classList.toggle('grouped', s.grouped);
+
+  [0, 1].forEach(i => {
+    const c = s.cards[i];
+    document.getElementById('card' + i + '-name').textContent = c.name;
+    document.getElementById('fields' + i).innerHTML = c.fields.map(fieldHtml).join('');
+    const badge = document.getElementById('badge' + i);
+    if (s.showIds && c.badge) {
+      badge.classList.remove('hidden');
+      badge.innerHTML = c.badge.map(t => `<span>${t}</span>`).join('');
+    } else {
+      badge.classList.add('hidden');
+      badge.innerHTML = '';
+    }
+  });
+
+  const fabric = document.getElementById('fabric');
+  fabric.className = 'fabric' + (s.fabric.mode ? ' ' + s.fabric.mode : '');
+  if (s.fabric.packets) {
+    fabric.innerHTML =
+      '<span class="packet p0">2.0</span> ⇄ all_reduce(SUM) ⇄ <span class="packet p1">6.0</span>  →  both hold 8.0';
+  } else {
+    fabric.textContent = s.fabric.text;
+  }
+
+  const pips = document.getElementById('pips');
+  pips.innerHTML = '';
+  STEPS.forEach((_, k) => {
+    const p = document.createElement('button');
+    p.type = 'button';
+    p.className = 'pip' + (k === step ? ' on' : k < step ? ' done' : '');
+    p.textContent = (k + 1) + ' ' + NAMES[k];
+    p.setAttribute('role', 'tab');
+    p.setAttribute('aria-selected', k === step ? 'true' : 'false');
+    p.onclick = () => { stopPlay(); step = k; renderMain(); };
+    pips.appendChild(p);
+  });
+
+  document.getElementById('prev').disabled = step === 0;
+  document.getElementById('next').disabled = step === STEPS.length - 1;
+}
+
+function stopPlay() {
+  if (playTimer) {
+    clearInterval(playTimer);
+    playTimer = null;
+    document.getElementById('play').textContent = 'Play';
+  }
+}
+
+document.getElementById('next').onclick = () => {
+  stopPlay();
+  step = Math.min(STEPS.length - 1, step + 1);
+  renderMain();
+};
+document.getElementById('prev').onclick = () => {
+  stopPlay();
+  step = Math.max(0, step - 1);
+  renderMain();
+};
+document.getElementById('reset').onclick = () => {
+  stopPlay();
+  step = 0;
+  renderMain();
+};
+document.getElementById('play').onclick = () => {
+  if (playTimer) { stopPlay(); return; }
+  document.getElementById('play').textContent = 'Pause';
+  if (step === STEPS.length - 1) { step = 0; renderMain(); }
+  const delay = reduceMotion ? 1800 : 1400;
+  playTimer = setInterval(() => {
+    if (step >= STEPS.length - 1) { stopPlay(); return; }
+    step += 1;
+    renderMain();
+  }, delay);
+};
+
+window.addEventListener('keydown', (e) => {
+  const tag = (e.target && e.target.tagName) || '';
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON') {
+    if (tag === 'BUTTON' && (e.key === ' ' || e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
+      // allow normal button activation; still handle global nav only outside buttons
+    }
+  }
+  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+  // Don't steal keys when focus is on fail-toggle checkbox
+  if (e.target && e.target.id === 'skip-rank1') return;
+  if (e.key === ' ' || e.key === 'ArrowRight') {
+    // Only drive main demo if focus is not inside fail demo buttons
+    if (e.target && e.target.closest && e.target.closest('#fail-demo')) return;
+    e.preventDefault();
+    document.getElementById('next').click();
+  }
+  if (e.key === 'ArrowLeft') {
+    if (e.target && e.target.closest && e.target.closest('#fail-demo')) return;
+    e.preventDefault();
+    document.getElementById('prev').click();
+  }
+});
+renderMain();
+
+/* ========== Failure demo ========== */
+let failState = 'idle'; // idle | ok | broken
+
+function renderFail() {
+  const skip = document.getElementById('skip-rank1').checked;
+  const f0 = document.getElementById('ffields0');
+  const f1 = document.getElementById('ffields1');
+  const c0 = document.getElementById('fcard0');
+  const c1 = document.getElementById('fcard1');
+  const fabric = document.getElementById('ffabric');
+  const rule = document.getElementById('fail-rule');
+  const live = document.getElementById('fail-live');
+
+  c0.classList.remove('stuck', 'waiting');
+  c1.classList.remove('stuck', 'waiting');
+  fabric.className = 'fabric';
+  rule.className = 'demo-rule';
+
+  if (failState === 'idle') {
+    f0.innerHTML = fieldHtml({ k: 'local_grad', v: '2.0' }) + fieldHtml({ k: 'status', v: 'ready' });
+    f1.innerHTML = fieldHtml({ k: 'local_grad', v: '6.0' }) + fieldHtml({ k: 'status', v: skip ? 'will skip' : 'ready', warn: skip });
+    fabric.textContent = 'group ready · press "Attempt all_reduce"';
+    rule.innerHTML = 'Toggle the skip, then attempt the collective. With both ranks present the group finishes. With a missing member, the contract fails.';
+    live.textContent = '';
+    return;
+  }
+
+  if (failState === 'ok') {
+    f0.innerHTML = fieldHtml({ k: 'local_grad', v: '8.0', hl: true }) + fieldHtml({ k: 'status', v: 'complete', hl: true });
+    f1.innerHTML = fieldHtml({ k: 'local_grad', v: '8.0', hl: true }) + fieldHtml({ k: 'status', v: 'complete', hl: true });
+    fabric.className = 'fabric active';
+    fabric.innerHTML = '<span class="packet p0">2</span> ⇄ SUM ⇄ <span class="packet p1">6</span> → both own 8';
+    rule.className = 'demo-rule';
+    rule.innerHTML = '<b>Contract held.</b> Both ranks entered a compatible all_reduce. Both local tensors now hold 8.0.';
+    live.textContent = 'Collective succeeded. Both ranks hold 8.0.';
+    return;
+  }
+
+  // broken
+  c0.classList.add('stuck');
+  c1.classList.add('waiting');
+  f0.innerHTML = fieldHtml({ k: 'local_grad', v: '2.0' }) + fieldHtml({ k: 'status', v: 'waiting in collective…', warn: true });
+  f1.innerHTML = fieldHtml({ k: 'local_grad', v: '6.0' }) + fieldHtml({ k: 'status', v: 'never entered', warn: true });
+  fabric.className = 'fabric broken';
+  fabric.textContent = 'blocked · required member missing';
+  rule.className = 'demo-rule danger';
+  rule.innerHTML = '<b>The group cannot finish: a required member never arrived.</b> Depending on configuration this may timeout, error, or look hung. This is a contract simulation — not a live hang.';
+  live.textContent = 'Collective failed: rank 1 did not participate.';
+}
+
+document.getElementById('skip-rank1').addEventListener('change', () => {
+  failState = 'idle';
+  renderFail();
+});
+document.getElementById('fail-attempt').onclick = () => {
+  const skip = document.getElementById('skip-rank1').checked;
+  failState = skip ? 'broken' : 'ok';
+  renderFail();
+};
+document.getElementById('fail-reset').onclick = () => {
+  failState = 'idle';
+  document.getElementById('skip-rank1').checked = false;
+  renderFail();
+};
+renderFail();
+
+/* ========== Multi-node diagram ========== */
+function paintMn(mode) {
+  const el = document.getElementById('mn-diagram');
+  const cap = document.getElementById('mn-caption');
+  if (mode === 'one') {
+    el.innerHTML = `
+      <div class="mn-cluster">
+        <div class="mn-node">
+          <div class="mn-node-label">Node 0 · one torchrun</div>
+          <div class="mn-workers">
+            <div class="mn-worker"><div class="rank">rank 0</div><div class="sub">LOCAL_RANK=0</div></div>
+            <div class="mn-worker"><div class="rank">rank 1</div><div class="sub">LOCAL_RANK=1</div></div>
+          </div>
+        </div>
+        <div class="mn-rendezvous faded" id="mn-rdv"><strong>rendezvous</strong> used at init · not a parameter server</div>
+        <div class="mn-collectives">collectives among worker group · world_size = 2</div>
+      </div>`;
+    cap.textContent = 'One machine, two processes. After init, steady-state collectives stay among the workers — not through a permanent central relay.';
+  } else {
+    el.innerHTML = `
+      <div class="mn-cluster">
+        <div class="mn-node">
+          <div class="mn-node-label">Node 0 · torchrun --node-rank=0</div>
+          <div class="mn-workers">
+            <div class="mn-worker"><div class="rank">rank 0</div><div class="sub">LOCAL_RANK=0</div></div>
+            <div class="mn-worker"><div class="rank">rank 1</div><div class="sub">LOCAL_RANK=1</div></div>
+          </div>
+        </div>
+        <div class="mn-rendezvous" id="mn-rdv"><strong>master-addr:port</strong> · rendezvous only during setup</div>
+        <div class="mn-node">
+          <div class="mn-node-label">Node 1 · torchrun --node-rank=1</div>
+          <div class="mn-workers">
+            <div class="mn-worker"><div class="rank">rank 2</div><div class="sub">LOCAL_RANK=0</div></div>
+            <div class="mn-worker"><div class="rank">rank 3</div><div class="sub">LOCAL_RANK=1</div></div>
+          </div>
+        </div>
+        <div class="mn-collectives">one ProcessGroup across nodes · world_size = 4 · same collective semantics</div>
+      </div>`;
+    cap.textContent = 'Two machines, four processes. Each node runs its own torchrun. The master address is for rendezvous, not steady-state gradient traffic. An all_reduce still means every rank contributes and every rank receives the same result.';
+    // Fade rendezvous shortly after paint to show "setup only"
+    const rdv = document.getElementById('mn-rdv');
+    if (reduceMotion) {
+      rdv.classList.add('faded');
+    } else {
+      setTimeout(() => rdv.classList.add('faded'), 900);
+    }
+  }
+}
+
+document.getElementById('mn-one').onclick = () => {
+  document.getElementById('mn-one').classList.add('on');
+  document.getElementById('mn-two').classList.remove('on');
+  document.getElementById('mn-one').setAttribute('aria-selected', 'true');
+  document.getElementById('mn-two').setAttribute('aria-selected', 'false');
+  paintMn('one');
+};
+document.getElementById('mn-two').onclick = () => {
+  document.getElementById('mn-two').classList.add('on');
+  document.getElementById('mn-one').classList.remove('on');
+  document.getElementById('mn-two').setAttribute('aria-selected', 'true');
+  document.getElementById('mn-one').setAttribute('aria-selected', 'false');
+  paintMn('two');
+};
+paintMn('one');
+
+/* ========== progress + toc ========== */
+const progress = document.getElementById('progress');
+const tocLinks = [...document.querySelectorAll('nav.toc a')];
+const sections = tocLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+function onScroll() {
+  const scrollTop = window.scrollY;
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.width = (docH > 0 ? (scrollTop / docH) * 100 : 0) + '%';
+
+  let active = 0;
+  sections.forEach((sec, idx) => {
+    if (sec.getBoundingClientRect().top < 140) active = idx;
+  });
+  tocLinks.forEach((a, idx) => a.classList.toggle('active', idx === active));
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>

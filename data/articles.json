@@ -1,5 +1,13 @@
 [
   {
+    "title": "Private Replicas, Identical Update",
+    "subtitle": "Data-parallel training does not share one model object — each process keeps a private replica and synchronizes the update.",
+    "url": "https://pinyu.ai/p/ddp-replicas.html",
+    "date": "2026-07-11",
+    "source": "site",
+    "isTech": true
+  },
+  {
     "title": "Ulysses Sequence Parallelism: A Temporary Change of Layout",
     "subtitle": "Long-context attention works by splitting tokens most of the time, then splitting heads just for attention.",
     "url": "https://pinyu.ai/p/ulysses-sp.html",
