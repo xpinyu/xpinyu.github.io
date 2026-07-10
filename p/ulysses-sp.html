@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="An intuitive guide to DeepSpeed Ulysses: token-shard the sequence for memory, head-shard only for attention, switch with two all-to-alls.">
+<meta name="description" content="Ulysses sequence parallelism: keep tokens sharded for memory, switch to head sharding only for attention, restore with two all-to-alls.">
 <meta name="author" content="pinyu">
-<meta property="og:title" content="Ulysses Sequence Parallelism, Intuitively">
-<meta property="og:description" content="Token cut for memory. Head cut for attention. Two all-to-alls in between.">
+<meta property="og:title" content="Ulysses Sequence Parallelism: A Temporary Change of Layout">
+<meta property="og:description" content="Long-context attention works by splitting tokens most of the time, then splitting heads just for attention.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://pinyu.ai/p/ulysses-sp.html">
-<title>Ulysses Sequence Parallelism, Intuitively</title>
+<title>Ulysses Sequence Parallelism: A Temporary Change of Layout</title>
 <link rel="canonical" href="https://pinyu.ai/p/ulysses-sp.html">
 <link rel="stylesheet" href="/fonts/fonts.css">
 <style>
@@ -263,6 +263,64 @@
   }
   .rule-box p { margin: 0; font-size: 1rem; line-height: 1.75; }
 
+  /* Static layout diagram */
+  .layout-diagram {
+    margin: 28px 0;
+    border: 1px solid var(--border); border-radius: 14px;
+    background: var(--surface); overflow: hidden;
+  }
+  .layout-diagram .diagram-head {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    background: #FFFCF7;
+    font-size: 0.72rem; font-weight: 600;
+    color: var(--text-3); letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .layout-diagram .diagram-body {
+    padding: 18px;
+    display: grid; grid-template-columns: 1fr 60px 1fr; gap: 0;
+  }
+  .layout-diagram .layout-side {
+    text-align: center;
+  }
+  .layout-diagram .layout-side .layout-label {
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 10px;
+  }
+  .layout-diagram .layout-grid {
+    display: grid;
+    grid-template-columns: 28px repeat(8, 1fr);
+    gap: 2px;
+    margin-bottom: 10px;
+    font-family: var(--mono); font-size: 0.55rem;
+  }
+  .layout-diagram .layout-grid .gcell {
+    min-height: 20px; border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    color: #1a1714; font-weight: 600;
+  }
+  .layout-diagram .layout-grid .glab {
+    background: #F0EBE1; color: var(--text-3); font-weight: 500;
+    border: 1px dashed #ddd3c4;
+  }
+  .layout-diagram .layout-grid .gowned {
+    border: 1px solid rgba(0,0,0,0.12);
+  }
+  .layout-diagram .layout-grid .gother {
+    background: #F7F2E9; color: #c4b8a6;
+    border: 1px dashed #e4d9c8; font-weight: 500;
+  }
+  .layout-diagram .layout-arrow {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; color: var(--accent); font-weight: 700;
+  }
+  .layout-diagram .layout-caption {
+    font-size: 0.75rem; color: var(--text-3);
+    margin-top: 4px; font-family: var(--mono);
+  }
+
   /* Interactive demo */
   .demo {
     margin: 36px 0 8px;
@@ -419,6 +477,8 @@
       padding: 8px; border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border); border-left: 0; border-right: 0;
     }
+    .layout-diagram .diagram-body { grid-template-columns: 1fr; }
+    .layout-diagram .layout-arrow { transform: rotate(90deg); padding: 8px 0; }
     header h1 { font-size: 1.85rem; }
     .thesis, .takeaway { padding: 28px 24px; }
     .demo-bar .step-label { width: 100%; margin-left: 0; }
@@ -436,22 +496,19 @@
 
 <nav class="toc" id="toc">
   <a href="#idea">Idea</a>
-  <a href="#problem">Problem</a>
-  <a href="#token-cut">Token cut</a>
-  <a href="#heads">Heads</a>
-  <a href="#two-cuts">Two cuts</a>
-  <a href="#walkthrough">One layer</a>
-  <a href="#after">After attention</a>
-  <a href="#limits">Limits</a>
-  <a href="#closing">Closing</a>
+  <a href="#break">Token cut breaks</a>
+  <a href="#heads">Head axis</a>
+  <a href="#end-to-end">One layer</a>
+  <a href="#walkthrough">Walkthrough</a>
+  <a href="#costs">Costs &amp; limits</a>
 </nav>
 
 <div class="container">
 
   <header>
     <div class="eyebrow">DeepSpeed Ulysses · Sequence Parallelism</div>
-    <h1>Ulysses Sequence Parallelism, Intuitively</h1>
-    <p class="subtitle">How long-context training distributes the sequence across GPUs—and why attention briefly needs a different layout.</p>
+    <h1>Ulysses Sequence Parallelism: A Temporary Change of Layout</h1>
+    <p class="subtitle">Long-context attention works by splitting tokens most of the time, then splitting heads just for attention.</p>
     <div class="meta">
       <span>pinyu</span>
       <span>2026.07</span>
@@ -461,110 +518,116 @@
 
   <div class="thesis" id="idea">
     <div class="thesis-label">The idea</div>
-    <p>Keep the sequence split by tokens for most of the layer. Right before attention, reorganize so each GPU holds the <strong>full sequence for a few heads</strong>. Run attention locally. Switch back. Two all-to-alls. Everything else is ordinary single-GPU work.</p>
+    <p>A long sequence creates an awkward layout problem. For most of a Transformer layer, each GPU can own a slice of tokens and compute locally. Attention breaks that arrangement: every query needs keys and values from the full sequence, so a conventional all-gather would recreate the memory pressure that sharding was meant to remove.</p>
+    <p>Ulysses avoids that gather by <strong>changing the partition only for attention</strong>. Before the attention kernel, an all-to-all turns "some tokens, all heads" into "all tokens, some heads." Each GPU then runs ordinary attention for its assigned heads. A second all-to-all restores token shards for the rest of the layer.</p>
+    <p>The attention math does not change. The tensor layout does.</p>
   </div>
 
   <article>
 
-    <section id="problem">
-      <div class="section-num">01</div>
-      <h2>The sequence will not fit</h2>
-      <p class="section-hook">Not the weights. The activations along time.</p>
+    <section id="break">
+      <div class="section-num">1</div>
+      <h2>The layout that saves memory breaks at attention</h2>
+      <p class="section-hook">Token sharding works for almost everything—except the one operation that needs the full sequence.</p>
 
-      <p>Data parallel splits the batch. Tensor parallel splits layer width. Pipeline parallel splits model depth. None of them solves a different failure mode: one sample whose context is too long for a single device.</p>
+      <p>Let a sequence have length <code>L</code>, with <code>H</code> attention heads, running across <code>P</code> ranks. For most Transformer operations, the natural layout splits the sequence:</p>
 
-      <p>What fails is activation memory along the sequence. Each layer keeps hidden states, residuals, and intermediates for every token. That cost scales with <code>L</code>. FlashAttention removes the giant <code>L × L</code> score matrix, but it does not remove “carry a state for every position through the stack.” Past a point, one GPU runs out of room for those activations.</p>
+      <pre>rank 0: tokens 0 … L/P − 1, all H heads
+rank 1: tokens L/P … 2L/P − 1, all H heads
+...</pre>
 
-      <p>So you need to distribute the sequence itself.</p>
-    </section>
+      <p>Each rank holds only <code>L/P</code> token positions. QKV projections, layer norms, residual connections, output projections, and the MLP are all position-wise once their inputs are local. They run without reconstructing the rest of the sequence.</p>
 
-    <hr class="sep">
+      <p>Attention is the exception. For one head:</p>
 
-    <section id="token-cut">
-      <div class="section-num">02</div>
-      <h2>The token cut almost works</h2>
-      <p class="section-hook">Most of a transformer layer is local to each position.</p>
+      <pre>O_h = softmax(Q_h K_hᵀ / √d_h) V_h</pre>
 
-      <p>Give GPU 0 tokens <code>0 … L/P − 1</code>, GPU 1 the next span, and so on. Each device stores only <code>L/P</code> positions. Call this the <strong>token cut</strong>.</p>
+      <p>A query at one position needs keys and values from every permitted position in the sequence. A rank that owns only a token slice cannot compute complete attention for its queries on its own.</p>
 
-      <p>For QKV projections and the FFN, the cut is both correct and cheap. Those ops are position-wise. A token on GPU 0 does not need another GPU’s tokens to compute its own query or its feed-forward path. No communication is required.</p>
-
-      <p>Attention is different. A query at position <code>t</code> must score against keys from the full allowed context, then mix values from those positions. If a GPU only holds a slice and never communicates, attention is incomplete—not approximate, incomplete.</p>
-
-      <p>All-gathering the full sequence before attention restores correctness. It also restores the footprint you left: full <code>L</code> on every GPU at the most expensive moment. The token cut’s memory win disappears right where you needed it.</p>
+      <p>The obvious repair is to all-gather the sequence before attention. That produces the correct result, but it also puts all <code>L</code> tokens and all <code>H</code> heads on every rank. The memory saving from token sharding disappears at exactly the expensive point.</p>
 
       <div class="note note-problem">
         <div class="note-label">The tension</div>
-        Token cut saves memory but breaks attention. Full gather fixes attention but burns the savings. You need full-sequence attention without every GPU holding every channel of the full sequence.
+        Token sharding saves memory but leaves attention incomplete. All-gathering fixes attention but burns the memory savings. You need full-sequence attention without every GPU holding every channel of the full sequence.
       </div>
     </section>
 
     <hr class="sep">
 
     <section id="heads">
-      <div class="section-num">03</div>
-      <h2>Heads are already independent</h2>
-      <p class="section-hook">You need a second axis that is legal to split. Multi-head attention already provides one.</p>
+      <div class="section-num">2</div>
+      <h2>Use the other independent axis</h2>
+      <p class="section-hook">Multi-head attention has a second dimension that can be partitioned safely: heads.</p>
 
-      <p>Multi-head attention does not run one fat attention over the full hidden width. It projects each token into Q, K, and V, then splits those vectors into <code>H</code> heads of width <code>d_h</code> (<code>d = H · d_h</code>). Each head computes its own attention:</p>
+      <p>Heads interact only after their attention results are concatenated and passed through the output projection. During attention itself, head 0 does not need the Q, K, or V values of head 1. That permits a second layout—a <strong>head cut</strong>:</p>
 
-      <pre>O_h = softmax(Q_h K_hᵀ / √d_h) V_h</pre>
-
-      <p>Results are concatenated and passed through <code>W_O</code>. Inside the softmax, head 0 never mixes with head 1. They only meet after concat, through a linear map.</p>
-
-      <p>That independence is usually sold as a modeling feature. It is also a systems fact: if two computations do not interact, different devices can own them. When the token cut breaks attention, you are not out of options. You still have heads as a legal partition—usable only for the attention step, while the rest of the layer stays token-cut.</p>
-    </section>
-
-    <hr class="sep">
-
-    <section id="two-cuts">
-      <div class="section-num">04</div>
-      <h2>One grid, two cuts</h2>
-      <p class="section-hook">Picture ownership, not “the whole model.”</p>
-
-      <p>Use a small example: 8 tokens, 4 heads, 2 GPUs. Columns are tokens. Rows are heads. Each cell is one head at one position—first as Q/K/V, later as the attention output <code>O</code>.</p>
-
-<pre>        I   want  to  read  a  long  book  .
-   H0   ·    ·    ·    ·    ·    ·    ·    ·
-   H1   ·    ·    ·    ·    ·    ·    ·    ·
-   H2   ·    ·    ·    ·    ·    ·    ·    ·
-   H3   ·    ·    ·    ·    ·    ·    ·    ·</pre>
-
-      <div class="versus">
-        <div class="v-side">
-          <div class="v-label">Token cut</div>
-          <p>GPU 0: tokens 0–3, all heads<br>
-          GPU 1: tokens 4–7, all heads<br><br>
-          Memory: <code>L/P</code> positions each<br>
-          Use for QKV, FFN, residuals</p>
-        </div>
-        <div class="v-mid">↔</div>
-        <div class="v-side">
-          <div class="v-label">Head cut</div>
-          <p>GPU 0: all tokens, heads 0–1<br>
-          GPU 1: all tokens, heads 2–3<br><br>
-          Memory: full <code>L</code>, only <code>H/P</code> heads<br>
-          Use for exact local attention</p>
+      <div class="layout-diagram">
+        <div class="diagram-head">Two layouts on the same ownership grid</div>
+        <div class="diagram-body">
+          <div class="layout-side">
+            <div class="layout-label">Token cut (default)</div>
+            <div class="layout-grid" id="static-token"></div>
+            <div class="layout-caption">GPU 0: tokens 0–3, all heads<br>GPU 1: tokens 4–7, all heads</div>
+          </div>
+          <div class="layout-arrow">→<br>all-to-all<br>←</div>
+          <div class="layout-side">
+            <div class="layout-label">Head cut (for attention)</div>
+            <div class="layout-grid" id="static-head"></div>
+            <div class="layout-caption">GPU 0: all tokens, heads 0–1<br>GPU 1: all tokens, heads 2–3</div>
+          </div>
         </div>
       </div>
 
-      <p>Ulysses stays in the token cut most of the time. Before attention, an all-to-all switches to the head cut. Each GPU runs a standard attention kernel on its heads—full sequence, exact math. After attention, a second all-to-all restores the token cut so out-projection and FFN continue on the cheap layout.</p>
+      <p>The state worth tracking is <strong>ownership</strong>: for each (token, head) cell, which rank holds it? Under the token cut, each rank owns a horizontal band—a slice of tokens, all heads. Under the head cut, each rank owns a vertical band—all tokens, a subset of heads.</p>
 
-      <p>Nothing in the attention formula changes. Only who owns which cells changes.</p>
+      <p>For a standard multi-head attention layer, each rank begins with Q, K, and V shaped like <code>[B, L/P, H, d_h]</code>. The first all-to-all logically transposes the token and head partition:</p>
+
+      <pre>[B, L/P, H, d_h]  →  all-to-all  →  [B, L, H/P, d_h]</pre>
+
+      <p>Each sender splits its local heads into <code>P</code> groups. Each receiver collects one head group from every sender, then concatenates those token blocks along the sequence dimension. The result is <strong>not</strong> an all-gather. No rank holds the complete sequence <em>and</em> every head at the same time. Each rank has the full context only for its assigned <code>H/P</code> heads.</p>
+
+      <p>That is enough to run ordinary causal or bidirectional attention locally.</p>
     </section>
 
     <hr class="sep">
+
+    <section id="end-to-end">
+      <div class="section-num">3</div>
+      <h2>One attention block, end to end</h2>
+      <p class="section-hook">Four steps. Two all-to-alls. The attention kernel itself is untouched.</p>
+
+      <p>The full sequence of events inside one attention block is short:</p>
+
+      <p><strong>1. Keep tokens sharded.</strong> A rank owns <code>L/P</code> positions and computes its local Q, K, and V projections. Shape: <code>[B, L/P, H, d_h]</code>.</p>
+
+      <p><strong>2. Switch to head ownership.</strong> The first all-to-all turns local QKV tensors from "some tokens, all heads" into "all tokens, some heads." Shape becomes <code>[B, L, H/P, d_h]</code>.</p>
+
+      <p><strong>3. Run normal attention.</strong> Each rank has full-sequence Q, K, and V for its head subset. The attention kernel can be FlashAttention or another compatible implementation; the mask and attention math remain unchanged. Output: <code>[B, L, H/P, d_h]</code>.</p>
+
+      <p><strong>4. Switch back to token ownership.</strong> A second all-to-all returns the layout to <code>[B, L/P, H, d_h]</code>. Each rank again owns complete hidden states for its local tokens, so the output projection, residual path, and MLP continue in the token-sharded layout.</p>
+
+      <p>The shape trace, for each of Q, K, and V:</p>
+
+      <pre>[B, L/P, H, d_h]  →  all-to-all  →  [B, L, H/P, d_h]
+→  local attention  →  [B, L, H/P, d_h]
+→  all-to-all  →  [B, L/P, H, d_h]</pre>
+
+      <p>Attention changes what each cell means (from Q/K/V to O). All-to-all changes which GPU holds it. That separation is the whole method.</p>
+
+      <p>The two all-to-alls are Ulysses's own layout transitions. A larger training system may still have other collectives for FSDP, ZeRO, data parallelism, or tensor parallelism.</p>
+
+      <p>The interactive walkthrough below lets you step through each stage and watch ownership flip across the (token, head) grid. The static description above is self-contained; the animation verifies what you already understand.</p>
+    </section>
+
   </article>
 </div>
 
 <div class="container wide">
   <article>
     <section id="walkthrough">
-      <div class="section-num">05</div>
-      <h2>Walk one layer</h2>
-      <p class="section-hook">Ownership flips twice. Everything else is local.</p>
-
-      <p>Bright cells are owned by that GPU. Watch whether the bright region is a horizontal band (token cut) or a vertical band (head cut). The two all-to-alls are the only moments that pattern flips.</p>
+      <div class="section-num">Interactive</div>
+      <h2>Step through the layout changes</h2>
+      <p class="section-hook">Watch the bright cells. A horizontal band is the token cut. A vertical band is the head cut. Only the two all-to-alls flip the pattern.</p>
 
       <div class="demo" id="demo">
         <div class="demo-head">
@@ -620,61 +683,43 @@
 
     <hr class="sep">
 
-    <section id="after">
-      <div class="section-num">06</div>
-      <h2>Attention rewrites values. All-to-all rewrites seats.</h2>
-      <p class="section-hook">Do not conflate the two operations.</p>
+    <section id="costs">
+      <div class="section-num">4</div>
+      <h2>What Ulysses costs, and where it stops helping</h2>
+      <p class="section-hook">The exchange is not free. Know the constraints before you reach for it.</p>
 
-      <p>For each head, attention keeps shape and changes meaning:</p>
+      <h3>Communication</h3>
+      <p>Ulysses moves packed QKV once before attention and the attention output once afterward. For standard multi-head attention, the original paper counts this as QKV-sized traffic plus output-sized traffic per layer. It <strong>trades activation memory for bandwidth</strong>, so network topology matters. Good interconnect bandwidth is assumed.</p>
 
-      <pre>Q : [L, d_h]  →  O : [L, d_h]</pre>
+      <p>Its advantage is that the exchange preserves the useful sharding factor: when sequence length and Ulysses degree grow together, each rank does not need to communicate the entire global tensor. This is why Ulysses is attractive on fast, well-connected GPU groups.</p>
 
-      <p>Each row is now a context-mixed vector. Residual connections still line up because the width is unchanged.</p>
+      <h3>Head-count constraints</h3>
+      <p>The number of query heads must normally be compatible with the Ulysses degree: <code>H_q % P == 0</code> is the typical requirement. GQA and MQA need extra care because there may be fewer KV heads than query heads. Some implementations require compatible divisibility; others replicate KV heads to support a larger sequence-parallel group. That relaxes the apparent limit, but adds memory and communication cost. The K/V-head layout may impose the tighter bound.</p>
 
-      <p>Right after the kernel, the layout is still the head cut. Cells hold <code>O</code> instead of Q/K/V, but the same GPUs still own the same heads over the full sequence. Attention did not restore the token cut. The second all-to-all does that, so concat, <code>W_O</code>, and FFN can run on the memory-efficient token shards again.</p>
+      <h3>What Ulysses does not do</h3>
+      <ul class="bullet-list">
+        <li>It shards sequence activations. It does <strong>not</strong> shard model weights, optimizer state, or gradients by itself.</li>
+        <li>It preserves exact dense-attention math. It does <strong>not</strong> make the total L² attention work disappear.</li>
+        <li>If the desired parallelism degree exceeds the usable head layout, or if the all-to-all becomes the bottleneck, a ring- or context-parallel approach may be a better fit.</li>
+      </ul>
 
-      <pre>token cut  →  local QKV, split heads
-all-to-all →  head cut
-attention  →  cells become O (still head cut)
-all-to-all →  token cut
-local: concat, W_O, FFN</pre>
+      <p>Ulysses is one point in a larger parallelism design, not a replacement for every other strategy.</p>
 
-      <p>Those two all-to-alls are the only Ulysses collectives per layer. The attention kernel itself is a normal local call—FlashAttention or otherwise—on data the first all-to-all arranged for it.</p>
-    </section>
+      <div class="takeaway" style="margin-bottom:0">
+        <div class="thesis-label">The practical rule</div>
+        <p>Keep tokens sharded until an operation needs the full context. Then <strong>bring the context to a subset of heads</strong>, rather than bringing every head to every rank.</p>
+      </div>
 
-    <hr class="sep">
-
-    <section id="limits">
-      <div class="section-num">07</div>
-      <h2>Limits that belong to this idea</h2>
-      <p class="section-hook">The head cut is free only while heads last.</p>
-
-      <p>In the head cut, each rank needs whole heads. So the Ulysses degree <code>P</code> cannot exceed the head count. With grouped-query attention, the tighter bound is often the number of <strong>KV heads</strong>. Eight KV heads means pure Ulysses tops out at 8 unless you combine it with another sequence-parallel method.</p>
-
-      <p>Also: sequence parallelism shards activations along time. It does not shard model weights. Large parameters still need their own strategy. Long context and large models are different scarcities.</p>
-    </section>
-
-    <hr class="sep">
-
-    <section id="closing">
-      <div class="section-num">08</div>
-      <h2>What to keep</h2>
-      <p class="section-hook">Three moves, in order.</p>
-
-      <p>Token-cut the sequence so long activations fit on many GPUs for position-local work. When attention needs the full sequence, switch to a head cut instead of gathering every head. Switch back when local ops resume.</p>
-
-      <p>Attention changes what each cell means. All-to-all changes which GPU holds it. That separation is the whole method.</p>
-
-      <div class="takeaway" id="takeaway" style="margin-bottom:0">
-        <div class="thesis-label">One sentence</div>
-        <p>Ulysses is temporary head-sharding for exact full-sequence attention, between two all-to-alls, inside an otherwise token-sharded layer.</p>
+      <div class="note note-neutral" style="margin-top:24px">
+        <div class="note-label">Scope</div>
+        This describes the layer layout used for long-context training. Distributed decode and KV-cache serving introduce additional scheduling and memory trade-offs.
       </div>
     </section>
 
   </article>
 
   <footer class="page-end">
-    <p>Jacobs et al., <a class="inline" href="https://arxiv.org/abs/2309.14509" target="_blank" rel="noopener noreferrer">DeepSpeed-Ulysses (arXiv:2309.14509)</a>.</p>
+    <p>Jacobs et al., <a class="inline" href="https://arxiv.org/abs/2309.14509" target="_blank" rel="noopener noreferrer">DeepSpeed-Ulysses (arXiv:2309.14509)</a>. For one implementation-specific treatment of GQA/MQA head replication, see DeepSpeed's Ulysses implementation.</p>
     <p style="margin-top:10px"><a class="inline" href="/">← Back to pinyu.ai</a></p>
   </footer>
 </div>
@@ -728,7 +773,7 @@ const STEPS = [
     formula: "[L/P, H, d_h] → [L, H/P, d_h]",
     rule: "Head cut: full context, partial heads.",
     mantra: "Token cut → head cut",
-    tokenView: { kind: "heads-partial", title: "One token’s heads split across GPUs", hint: "Each head sees full L. No GPU holds all heads at full L." }
+    tokenView: { kind: "heads-partial", title: "One token's heads split across GPUs", hint: "Each head sees full L. No GPU holds all heads at full L." }
   },
   {
     title: "5 · Attention",
@@ -797,7 +842,7 @@ function owns(gpu, t, h, mode) {
 function paintBoard(el, gpu, mode, content) {
   el.innerHTML = "";
   const corner = document.createElement("div");
-  corner.className = "cell lab"; corner.textContent = "H\\\\T";
+  corner.className = "cell lab"; corner.textContent = "H\\T";
   el.appendChild(corner);
   for (let t = 0; t < 8; t++) {
     const d = document.createElement("div");
@@ -943,6 +988,55 @@ window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") { e.preventDefault(); document.getElementById("prev").click(); }
 });
 render();
+
+// Paint static layout diagrams
+(function paintStatic() {
+  const words8 = ["I","want","to","read","a","long","book","."];
+  const cols = ["var(--h0)","var(--h1)","var(--h2)","var(--h3)"];
+
+  function buildGrid(el, mode) {
+    el.innerHTML = "";
+    // corner
+    const corner = document.createElement("div");
+    corner.className = "gcell glab"; corner.textContent = "H\\T";
+    el.appendChild(corner);
+    for (let t = 0; t < 8; t++) {
+      const d = document.createElement("div");
+      d.className = "gcell glab"; d.textContent = words8[t].slice(0,4);
+      el.appendChild(d);
+    }
+    for (let h = 0; h < 4; h++) {
+      const lab = document.createElement("div");
+      lab.className = "gcell glab"; lab.textContent = "H" + h;
+      el.appendChild(lab);
+      for (let t = 0; t < 8; t++) {
+        const c = document.createElement("div");
+        // token cut: GPU 0 owns tokens 0-3, GPU 1 owns tokens 4-7 (both own all heads)
+        // head cut: GPU 0 owns heads 0-1, GPU 1 owns heads 2-3 (both own all tokens)
+        let ownedBy0 = mode === "token" ? (t < 4) : (h < 2);
+        if (ownedBy0) {
+          c.className = "gcell gowned";
+          c.style.background = cols[h];
+          c.style.boxShadow = "inset 0 0 0 1.5px rgba(27,63,139,.75)";
+          c.style.color = "#fff";
+          c.style.fontSize = "0.5rem";
+          c.textContent = "0";
+        } else {
+          c.className = "gcell gowned";
+          c.style.background = cols[h];
+          c.style.boxShadow = "inset 0 0 0 1.5px rgba(184,134,74,.8)";
+          c.style.color = "#fff";
+          c.style.fontSize = "0.5rem";
+          c.textContent = "1";
+        }
+        el.appendChild(c);
+      }
+    }
+  }
+
+  buildGrid(document.getElementById("static-token"), "token");
+  buildGrid(document.getElementById("static-head"), "head");
+})();
 
 // progress + toc
 const progress = document.getElementById("progress");
