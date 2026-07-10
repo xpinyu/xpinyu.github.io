@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Data-parallel training does not share one model object. Each process keeps a private replica; collective communication makes those replicas take the same update.">
+<meta name="description" content="A visual explanation of how torchrun, process groups, all_reduce, and PyTorch DDP keep separate worker processes on the same training step.">
 <meta name="author" content="pinyu">
-<meta property="og:title" content="Private Replicas, Identical Update">
-<meta property="og:description" content="What torchrun, init_process_group, and all_reduce actually do — a concrete mental model for PyTorch DDP.">
+<meta property="og:title" content="PyTorch DDP Explained: Private Replicas, Identical Updates">
+<meta property="og:description" content="How torchrun, process groups, all_reduce, and PyTorch DDP keep separate worker processes on the same training step.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://pinyu.ai/p/ddp-replicas.html">
-<title>Private Replicas, Identical Update — PyTorch DDP</title>
+<title>PyTorch DDP Explained: Private Replicas, Identical Updates</title>
 <link rel="canonical" href="https://pinyu.ai/p/ddp-replicas.html">
 <link rel="stylesheet" href="/fonts/fonts.css">
 <style>
@@ -246,23 +246,99 @@
     overflow-x: auto;
   }
 
-  .versus {
+  /* ===== Figure 1: Wrong vs Right ===== */
+  .fig-wrong-right {
     display: grid; grid-template-columns: 1fr auto 1fr;
-    border: 1px solid var(--border); border-radius: 14px;
-    overflow: hidden; margin: 28px 0; background: var(--surface);
+    gap: 0; margin: 32px 0;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--surface);
   }
-  .versus .v-side { padding: 22px 20px; }
-  .versus .v-label {
-    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--text-3); margin-bottom: 8px;
+  .fwr-side {
+    padding: 24px 20px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 16px;
   }
-  .versus .v-mid {
+  .fwr-side.wrong {
+    background: rgba(192, 80, 58, 0.04);
+  }
+  .fwr-side.right {
+    background: rgba(74, 128, 96, 0.04);
+  }
+  .fwr-label {
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .fwr-side.wrong .fwr-label { color: var(--red); }
+  .fwr-side.right .fwr-label { color: var(--green); }
+  .fwr-diagram {
+    width: 100%;
+    position: relative;
+  }
+  .fwr-diagram svg { width: 100%; height: auto; display: block; }
+  .fwr-caption {
+    font-size: 0.82rem; color: var(--text-2);
+    line-height: 1.65; text-align: center;
+    max-width: 240px;
+  }
+  .fwr-divider {
     display: flex; align-items: center; justify-content: center;
-    padding: 0 10px; color: var(--text-3); font-size: 0.75rem;
-    border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+    padding: 0 12px;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
     background: #F7F2E8;
+    font-size: 0.72rem; font-weight: 700;
+    color: var(--text-3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    min-width: 40px;
   }
-  .versus p { font-size: 0.9rem; color: var(--text-2); margin: 0; line-height: 1.7; }
+  .fwr-cross {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    font-size: 4rem;
+    color: var(--red);
+    opacity: 0.8;
+    pointer-events: none;
+    font-family: var(--serif);
+    font-weight: 700;
+  }
+  .fwr-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    background: var(--red-bg);
+    color: var(--red);
+    border: 1px solid rgba(192, 80, 58, 0.2);
+    margin-top: 8px;
+  }
+  .fwr-badge.ok {
+    background: var(--green-bg);
+    color: var(--green);
+    border-color: rgba(74, 128, 96, 0.2);
+  }
+
+  /* ===== Abstract concepts grid for Process/Rank/GPU ===== */
+  .concept-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;
+    margin: 28px 0;
+  }
+  .concept-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px;
+  }
+  .concept-card h4 {
+    font-family: var(--mono); font-size: 0.8rem; font-weight: 700;
+    color: var(--accent); margin-bottom: 6px;
+  }
+  .concept-card p {
+    font-size: 0.84rem; color: var(--text-2); margin: 0; line-height: 1.6;
+  }
 
   .rule-box {
     margin: 28px 0; padding: 22px 24px;
@@ -603,15 +679,16 @@
   @media (max-width: 1120px) { nav.toc { display: none; } }
   @media (max-width: 720px) {
     header h1 { font-size: 1.85rem; }
+    .fig-wrong-right { grid-template-columns: 1fr; }
+    .fig-wrong-right .fwr-divider {
+      padding: 10px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); border-left: 0; border-right: 0;
+    }
+    .concept-grid { grid-template-columns: 1fr; }
     .thesis, .takeaway { padding: 28px 24px; }
     .demo-bar .step-label { width: 100%; margin-left: 0; }
     .proc-row { grid-template-columns: 1fr; }
     .env-grid { grid-template-columns: 1fr; }
-    .versus { grid-template-columns: 1fr; }
-    .versus .v-mid {
-      padding: 8px; border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border); border-left: 0; border-right: 0;
-    }
   }
 </style>
 </head>
@@ -626,23 +703,23 @@
 
 <nav class="toc" id="toc" aria-label="Table of contents">
   <a href="#idea">Idea</a>
-  <a href="#mystery">Two processes</a>
-  <a href="#goal">Not sharing</a>
+  <a href="#picture">Right picture</a>
+  <a href="#example">Two-process update</a>
   <a href="#torchrun">torchrun</a>
   <a href="#init">Process group</a>
-  <a href="#walkthrough">Walkthrough</a>
   <a href="#allreduce">all_reduce</a>
   <a href="#contract">The contract</a>
   <a href="#ddp">DDP</a>
   <a href="#machines">Many machines</a>
+  <a href="#scope">Scope</a>
 </nav>
 
 <div class="container">
 
   <header>
     <div class="eyebrow">PyTorch · Data Parallelism</div>
-    <h1>Private Replicas, Identical Update</h1>
-    <p class="subtitle">Data-parallel training does not put one model object on many GPUs. Each process keeps a private replica, and collective communication makes those replicas take the same update.</p>
+    <h1>Private Replicas, Identical Updates</h1>
+    <p class="subtitle">How PyTorch DDP keeps separate processes on the same training step — torchrun, process groups, all_reduce, and the contract that makes them work.</p>
     <div class="meta">
       <span>pinyu</span>
       <span>2026.07</span>
@@ -652,19 +729,110 @@
 
   <div class="thesis" id="idea">
     <div class="thesis-label">The idea</div>
-    <p>Two ordinary Python processes have separate memory. Each starts with its own copy of a model parameter. How can they train as if they were updating one model?</p>
-    <p>Not by sharing memory. By sharing a schedule. Each process keeps a private replica. At the gradient boundary, every process joins a collective that leaves it with the same reduced gradient. Then each process updates its own weights with that common value.</p>
-    <p><strong>Private process state plus a shared communication contract is not the same thing as a shared Python object.</strong></p>
+    <p>PyTorch DistributedDataParallel does not put one Python model object on many GPUs. It runs separate processes — usually one per GPU. Each process owns a full model replica in its own address space. Each process sees a different local mini-batch and computes a different local gradient.</p>
+    <p>The replicas stay aligned because, during backward, every process participates in the same collective communication step. Each process receives the same reduced gradient, then each local optimizer applies the same update.</p>
+    <p><strong>Private replicas. Ordered communication. Identical updates.</strong> There is no shared Python heap, and no parameter server sitting between optimizer steps.</p>
   </div>
 
   <article>
 
-    <section id="mystery">
+    <!-- Section 1: Start with the right picture -->
+    <section id="picture">
       <div class="section-num">1</div>
-      <h2>Two processes, one update</h2>
-      <p class="section-hook">Same script, two processes, different local data — and both end with the same private parameter.</p>
+      <h2>Start with the right picture</h2>
+      <p class="section-hook">The common wrong picture is one model object spread across several GPUs. The correct picture is several isolated processes.</p>
 
-      <p>A minimal CPU program is enough. No GPU is required. The example uses Gloo so it runs on a laptop; real multi-GPU jobs usually pick NCCL instead. The shape of the story is the same either way.</p>
+      <div class="fig-wrong-right" role="figure" aria-label="Wrong mental model versus correct mental model for DDP">
+        <div class="fwr-side wrong">
+          <div class="fwr-label">Wrong</div>
+          <div class="fwr-diagram">
+            <div class="fwr-cross">✕</div>
+            <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+              <rect x="20" y="20" width="200" height="70" rx="10" fill="none" stroke="#C0503A" stroke-width="2" stroke-dasharray="8,4" opacity="0.6"/>
+              <text x="120" y="48" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#C0503A" font-weight="600">One shared model object</text>
+              <text x="120" y="68" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#C0503A" opacity="0.7">across GPUs</text>
+              <!-- GPUs below -->
+              <rect x="35" y="110" width="70" height="40" rx="6" fill="#F8ECE8" stroke="#C0503A" stroke-width="1.5"/>
+              <text x="70" y="135" text-anchor="middle" font-size="11" font-family="mono" fill="#C0503A">GPU 0</text>
+              <rect x="135" y="110" width="70" height="40" rx="6" fill="#F8ECE8" stroke="#C0503A" stroke-width="1.5"/>
+              <text x="170" y="135" text-anchor="middle" font-size="11" font-family="mono" fill="#C0503A">GPU 1</text>
+              <!-- dashed lines from model to GPUs -->
+              <line x1="70" y1="90" x2="70" y2="108" stroke="#C0503A" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+              <line x1="170" y1="90" x2="170" y2="108" stroke="#C0503A" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="fwr-badge">No shared address space</div>
+        </div>
+        <div class="fwr-divider">vs</div>
+        <div class="fwr-side right">
+          <div class="fwr-label">Right</div>
+          <div class="fwr-diagram">
+            <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+              <!-- Process 0 box -->
+              <rect x="15" y="15" width="95" height="130" rx="10" fill="#EAF0F5" stroke="#1B3F8B" stroke-width="1.5"/>
+              <text x="62" y="38" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#1B3F8B" font-weight="600">Process 0</text>
+              <rect x="25" y="48" width="75" height="30" rx="5" fill="#fff" stroke="#1B3F8B" stroke-width="1" opacity="0.7"/>
+              <text x="62" y="67" text-anchor="middle" font-size="10" font-family="mono" fill="#1B3F8B">weight</text>
+              <rect x="25" y="85" width="75" height="30" rx="5" fill="#fff" stroke="#1B3F8B" stroke-width="1" opacity="0.7"/>
+              <text x="62" y="104" text-anchor="middle" font-size="10" font-family="mono" fill="#1B3F8B">grad</text>
+              <text x="62" y="136" text-anchor="middle" font-size="9" font-family="mono" fill="#1B3F8B" opacity="0.6">private memory</text>
+              <!-- Process 1 box -->
+              <rect x="130" y="15" width="95" height="130" rx="10" fill="#F8F0E0" stroke="#B8864A" stroke-width="1.5"/>
+              <text x="177" y="38" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#B8864A" font-weight="600">Process 1</text>
+              <rect x="140" y="48" width="75" height="30" rx="5" fill="#fff" stroke="#B8864A" stroke-width="1" opacity="0.7"/>
+              <text x="177" y="67" text-anchor="middle" font-size="10" font-family="mono" fill="#B8864A">weight</text>
+              <rect x="140" y="85" width="75" height="30" rx="5" fill="#fff" stroke="#B8864A" stroke-width="1" opacity="0.7"/>
+              <text x="177" y="104" text-anchor="middle" font-size="10" font-family="mono" fill="#B8864A">grad</text>
+              <text x="177" y="136" text-anchor="middle" font-size="9" font-family="mono" fill="#B8864A" opacity="0.6">private memory</text>
+              <!-- collective between them -->
+              <ellipse cx="120" cy="155" rx="28" ry="14" fill="#E8F2EC" stroke="#4A8060" stroke-width="1.5"/>
+              <text x="120" y="158" text-anchor="middle" font-size="8" font-family="sans-serif" fill="#4A8060" font-weight="600">collective</text>
+            </svg>
+          </div>
+          <div class="fwr-badge ok">No shared address space</div>
+        </div>
+      </div>
+
+      <p>The distinction between the pieces matters:</p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h4>Process</h4>
+          <p>An independent Python runtime with its own memory. Not a thread, not a sub-interpreter — a full separate process.</p>
+        </div>
+        <div class="concept-card">
+          <h4>Rank</h4>
+          <p>That process's identity inside a distributed job. One-process-per-GPU is the usual layout, but rank and GPU are not the same concept.</p>
+        </div>
+        <div class="concept-card">
+          <h4>GPU</h4>
+          <p>A device a process commonly uses. A process typically binds to <code>cuda:LOCAL_RANK</code>, but the core synchronization pattern is device-independent.</p>
+        </div>
+      </div>
+
+      <p>At the start of a two-rank job, the state is private:</p>
+
+      <pre class="output">Rank 0 / Process 0                 Rank 1 / Process 1
+weight = 1.0                       weight = 1.0
+local gradient = 2.0               local gradient = 6.0</pre>
+
+      <p>If both processes stepped on their own local gradients, the replicas would immediately diverge. The real question is not "how can two GPUs share one model object?" It is:</p>
+
+      <div class="rule-box">
+        <div class="k">The real problem</div>
+        <p><strong>How can two private replicas agree on one update?</strong></p>
+      </div>
+    </section>
+
+    <hr class="sep">
+
+    <!-- Section 2: A two-process update -->
+    <section id="example">
+      <div class="section-num">2</div>
+      <h2>A two-process update</h2>
+      <p class="section-hook">A small CPU example that runs on a laptop. GPU jobs use NCCL, but the core behavior is the same.</p>
+
+      <p>This example captures the whole pattern: private replicas, a collective reduction, and identical local updates — no GPU required. It uses Gloo so it runs anywhere.</p>
 
       <div class="code-block">
         <div class="code-label">
@@ -675,14 +843,14 @@
 <span class="kw">import</span> torch.distributed <span class="kw">as</span> dist
 
 dist.init_process_group(backend=<span class="st">"gloo"</span>)
+
 rank = dist.get_rank()
 world_size = dist.get_world_size()
 
-<span class="cm"># Each process owns a private model replica.</span>
-<span class="cm"># They start equal only to keep the example small.</span>
+<span class="cm"># Each process owns this tensor in its own address space.</span>
 weight = torch.tensor([<span class="nu">1.0</span>])
 
-<span class="cm"># Different local data → different local gradients.</span>
+<span class="cm"># Each process has a different local gradient.</span>
 local_grad = torch.tensor([<span class="nu">2.0</span> <span class="kw">if</span> rank == <span class="nu">0</span> <span class="kw">else</span> <span class="nu">6.0</span>])
 
 <span class="fn">print</span>(
@@ -690,11 +858,13 @@ local_grad = torch.tensor([<span class="nu">2.0</span> <span class="kw">if</span
     flush=<span class="kw">True</span>,
 )
 
-<span class="cm"># Sum gradients from every rank into every rank's local tensor.</span>
+<span class="cm"># Sum every rank's contribution into every rank's local tensor.</span>
 dist.all_reduce(local_grad, op=dist.ReduceOp.SUM)
 
-<span class="cm"># DDP normally averages gradients.</span>
+<span class="cm"># DDP's usual semantic result is the mean gradient.</span>
 mean_grad = local_grad / world_size
+
+<span class="cm"># Each process updates its own local weight.</span>
 weight -= <span class="nu">0.1</span> * mean_grad
 
 <span class="fn">print</span>(
@@ -705,7 +875,7 @@ weight -= <span class="nu">0.1</span> * mean_grad
 dist.destroy_process_group()</pre>
       </div>
 
-      <p>Launch it with two processes:</p>
+      <p>Launch two worker processes:</p>
 
       <div class="code-block">
         <div class="code-label">
@@ -715,75 +885,43 @@ dist.destroy_process_group()</pre>
         <pre id="code-run">torchrun --standalone --nproc-per-node=2 toy_ddp.py</pre>
       </div>
 
-      <p>The logical result looks like this (print order is nondeterministic):</p>
+      <p>The output order is nondeterministic, but the logical result is:</p>
 
       <pre class="output">rank=0: weight=1.0, local_grad=2.0
 rank=1: weight=1.0, local_grad=6.0
+
 rank=0: mean_grad=4.0, updated_weight=0.6
 rank=1: mean_grad=4.0, updated_weight=0.6</pre>
 
-      <p>Nothing was shared in memory. No process handed model ownership to another. No parameter server sat between them. Both private copies still moved from <code>1.0</code> to <code>0.6</code>.</p>
-
-      <p>That is the mystery. The rest of the article tracks what makes it possible.</p>
+      <p>Nothing was shared in memory. Both processes independently changed their private <code>weight</code> tensor from <code>1.0</code> to <code>0.6</code>.</p>
     </section>
 
     <hr class="sep">
 
-    <section id="goal">
-      <div class="section-num">2</div>
-      <h2>The goal is not sharing a model</h2>
-      <p class="section-hook">The job already has two replicas. What it needs is agreement, not shared ownership.</p>
-
-      <p>A data-parallel job starts with private state on both sides:</p>
-
-      <div class="versus">
-        <div class="v-side">
-          <div class="v-label">Rank 0 · private</div>
-          <p>weight = 1.0<br>local gradient = 2.0</p>
-        </div>
-        <div class="v-mid">vs</div>
-        <div class="v-side">
-          <div class="v-label">Rank 1 · private</div>
-          <p>weight = 1.0<br>local gradient = 6.0</p>
-        </div>
-      </div>
-
-      <p>If each process stepped on its own gradient alone, the replicas would diverge. Rank 0 would move one way, rank 1 another, and after a few steps they would no longer be the same model in any useful sense.</p>
-
-      <p>A common assumption is that the GPUs must somehow share one model object. They do not. Each process holds a <strong>replica</strong>, and the job keeps those replicas aligned by synchronizing the update they apply.</p>
-
-      <div class="rule-box">
-        <div class="k">The real problem</div>
-        <p>Not: how can both processes reach one shared object?</p>
-        <p>But: <strong>how can both replicas agree on one update?</strong></p>
-      </div>
-    </section>
-
-    <hr class="sep">
-
+    <!-- Section 3: torchrun -->
     <section id="torchrun">
       <div class="section-num">3</div>
-      <h2>torchrun starts processes and gives them coordinates</h2>
-      <p class="section-hook">A launcher is not a collective. It is how workers get identities and a way to find one another.</p>
+      <h2><code>torchrun</code> gives workers coordinates</h2>
+      <p class="section-hook">A launcher, not a collective. It starts processes and tells them how to find each other.</p>
 
-      <p><code>torchrun</code> is a process launcher. In the simplest local case it starts worker processes for your training script, assigns each worker an identity, injects environment variables such as <code>RANK</code>, <code>LOCAL_RANK</code>, and <code>WORLD_SIZE</code>, and provides the rendezvous configuration the workers need to discover one another.</p>
+      <p><code>torchrun</code> is a launcher. It starts worker processes and gives them the information needed to discover one another.</p>
 
       <div class="env-grid">
         <div class="env-card">
           <div class="env-name">RANK</div>
-          <p>Global identity in the whole job. Rank 0 often owns logs or checkpoint writes, but for collectives every rank is a peer.</p>
+          <p>The process's global identity in the job.</p>
         </div>
         <div class="env-card">
           <div class="env-name">LOCAL_RANK</div>
-          <p>Identity on this machine. On a GPU job you usually pin work to <code>cuda:LOCAL_RANK</code>.</p>
+          <p>Its identity on the current machine. In a GPU job, a process commonly binds itself to <code>cuda:LOCAL_RANK</code>.</p>
         </div>
         <div class="env-card">
           <div class="env-name">WORLD_SIZE</div>
-          <p>How many processes participate. Two ranks on one node means <code>WORLD_SIZE=2</code>.</p>
+          <p>The number of participating processes. For a two-process local job, <code>WORLD_SIZE=2</code>.</p>
         </div>
       </div>
 
-      <p><code>torchrun</code> is useful, not magical. You can spawn two Python processes yourself, export the same environment variables, point them at a valid rendezvous endpoint, and still form a working job. What <code>torchrun</code> buys you is reliable bookkeeping for that setup — especially across many machines.</p>
+      <p><code>torchrun</code> does not synchronize gradients. It does not create a DDP wrapper. It does not make separate Python processes share memory. It launches workers and gives them a common rendezvous configuration.</p>
 
       <div class="note note-neutral">
         <div class="note-label">What torchrun does not do</div>
@@ -793,70 +931,123 @@ rank=1: mean_grad=4.0, updated_weight=0.6</pre>
 
     <hr class="sep">
 
+    <!-- Section 4: init_process_group -->
     <section id="init">
       <div class="section-num">4</div>
-      <h2>init_process_group turns coordinates into a group</h2>
-      <p class="section-hook">Until this call, each process is isolated Python. After it, each process belongs to a communication group.</p>
+      <h2><code>init_process_group</code> turns coordinates into membership</h2>
+      <p class="section-hook">Until this call, each process is isolated Python. After it, each belongs to a communication group.</p>
 
-      <p>Each process begins alone: private address space, private tensors, no agreed peers. <code>dist.init_process_group()</code> is the rendezvous. Using the launch configuration, every process finds the others and initializes the default process group.</p>
+      <p>Before initialization, each worker is just an isolated Python process.</p>
 
-      <p>That call has a precise meaning. Each process still keeps its own Python state and its own distributed-library state. Each receives a local handle to the same <em>logical</em> communication group; calls that omit <code>group=...</code> use that default group. And <code>init_process_group()</code> itself does <strong>not</strong> shard a model, synchronize gradients, or enable DDP.</p>
+      <div class="code-block">
+        <div class="code-label">
+          <span>python</span>
+          <button class="copy-btn" type="button" data-copy="init">Copy</button>
+        </div>
+        <pre id="code-init">dist.init_process_group(backend=<span class="st">"gloo"</span>)</pre>
+      </div>
 
-      <p>After init, two isolated runtimes are members of one process group. The boundary is group membership, not a shared heap.</p>
+      <p>After that call, each process has joined the same logical process group. Calls that do not specify <code>group=...</code> use this default group.</p>
+
+      <p>A process group is a membership contract: it defines which ranks are expected to participate in collectives together.</p>
+
+      <p>The important distinction:</p>
+
+      <pre class="output">torchrun                  → starts workers and gives them coordinates
+init_process_group()      → creates group membership
+collective communication  → synchronizes private state among group members</pre>
+
+      <p>The rendezvous is setup. It is not the data path for every gradient update.</p>
+    </section>
+
+    <hr class="sep">
+
+    <!-- Section 5: What all_reduce actually does -->
+    <section id="allreduce">
+      <div class="section-num">5</div>
+      <h2>What <code>all_reduce</code> actually does</h2>
+      <p class="section-hook">Reduce every rank's contribution. Write the result back to every participating rank. Still private memory.</p>
+
+      <p>The name is useful:</p>
+
+      <ul class="bullet-list">
+        <li><strong>reduce:</strong> combine every rank's contribution.</li>
+        <li><strong>all:</strong> write the reduced result back to every participating rank.</li>
+      </ul>
+
+      <p>For the toy example:</p>
+
+      <pre class="output">Before all_reduce:
+  rank 0 owns local_grad = 2
+  rank 1 owns local_grad = 6
+
+After all_reduce(SUM):
+  rank 0 owns local_grad = 8
+  rank 1 owns local_grad = 8
+
+After dividing by world_size:
+  rank 0 owns mean_grad = 4
+  rank 1 owns mean_grad = 4
+
+After the local optimizer step:
+  rank 0 owns weight = 0.6
+  rank 1 owns weight = 0.6</pre>
+
+      <p>Each result still lives in private local memory. <code>all_reduce</code> does not create a shared tensor.</p>
+
+      <p>The example uses <code>SUM</code> followed by division so the math is visible. DDP normally gives each rank the mean gradient during backward.</p>
+
+      <div class="note note-insight">
+        <div class="note-label">Scaling note</div>
+        This matches the usual single-process interpretation when the local loss is averaged over each mini-batch. If a loss uses <code>sum</code> reduction, its scaling relative to a single-process run must be chosen deliberately.
+      </div>
     </section>
 
   </article>
 </div>
 
+<!-- Interactive: step through one update (wide container) -->
 <div class="container wide">
   <article>
-    <section id="walkthrough">
-      <div class="section-num">Interactive</div>
-      <h2>Step through one distributed update</h2>
-      <p class="section-hook">Two private process cards, local tensors only — no shared model object.</p>
+    <div class="demo" id="main-demo" role="region" aria-label="Interactive distributed update walkthrough">
+      <div class="demo-head">
+        <h3>Step through one distributed update</h3>
+        <p>Space or → next · ← previous · Play auto-advances. Values change only inside local tensors.</p>
+      </div>
+      <div class="demo-bar">
+        <button type="button" id="prev" aria-label="Previous step">← Prev</button>
+        <button type="button" class="primary" id="next" aria-label="Next step">Next →</button>
+        <button type="button" id="play" aria-label="Play animation">Play</button>
+        <button type="button" id="reset" aria-label="Reset walkthrough">Reset</button>
+        <span class="step-label" id="idx" aria-live="polite">1 / 6</span>
+      </div>
+      <div class="demo-body">
+        <div class="pips" id="pips" role="tablist" aria-label="Walkthrough steps"></div>
+        <div class="demo-title" id="title"></div>
+        <div class="demo-why" id="why"></div>
 
-      <div class="demo" id="main-demo" role="region" aria-label="Interactive distributed update walkthrough">
-        <div class="demo-head">
-          <h3>Step through one distributed update</h3>
-          <p>Space or → next · ← previous · Play auto-advances. Values change only inside local tensors.</p>
-        </div>
-        <div class="demo-bar">
-          <button type="button" id="prev" aria-label="Previous step">← Prev</button>
-          <button type="button" class="primary" id="next" aria-label="Next step">Next →</button>
-          <button type="button" id="play" aria-label="Play animation">Play</button>
-          <button type="button" id="reset" aria-label="Reset walkthrough">Reset</button>
-          <span class="step-label" id="idx" aria-live="polite">1 / 6</span>
-        </div>
-        <div class="demo-body">
-          <div class="pips" id="pips" role="tablist" aria-label="Walkthrough steps"></div>
-          <div class="demo-title" id="title"></div>
-          <div class="demo-why" id="why"></div>
-
-          <div class="process-stage" id="stage">
-            <div class="pg-label" id="pg-label">ProcessGroup · world_size = 2</div>
-            <div class="proc-row">
-              <div class="proc-card r0" id="card0">
-                <h4><span class="dot" style="background:var(--r0)"></span><span id="card0-name">Process 0</span></h4>
-                <div class="proc-fields" id="fields0"></div>
-                <div class="id-badge hidden" id="badge0"></div>
-              </div>
-              <div class="proc-card r1" id="card1">
-                <h4><span class="dot" style="background:var(--r1)"></span><span id="card1-name">Process 1</span></h4>
-                <div class="proc-fields" id="fields1"></div>
-                <div class="id-badge hidden" id="badge1"></div>
-              </div>
+        <div class="process-stage grouped" id="stage">
+          <div class="pg-label" id="pg-label">ProcessGroup · world_size = 2</div>
+          <div class="proc-row">
+            <div class="proc-card r0" id="card0">
+              <h4><span class="dot" style="background:var(--r0)"></span><span id="card0-name">Rank 0</span></h4>
+              <div class="proc-fields" id="fields0"></div>
             </div>
-            <div class="collective-lane" id="lane" aria-hidden="true">
-              <div class="fabric" id="fabric">— no collective active —</div>
+            <div class="proc-card r1" id="card1">
+              <h4><span class="dot" style="background:var(--r1)"></span><span id="card1-name">Rank 1</span></h4>
+              <div class="proc-fields" id="fields1"></div>
             </div>
           </div>
-
-          <div class="demo-rule" id="rule"></div>
-          <p class="demo-mantra" id="mantra"></p>
-          <div class="sr-only" id="live" aria-live="polite" aria-atomic="true"></div>
+          <div class="collective-lane" id="lane" aria-hidden="true">
+            <div class="fabric" id="fabric">— no collective active —</div>
+          </div>
         </div>
+
+        <div class="demo-rule" id="rule"></div>
+        <p class="demo-mantra" id="mantra"></p>
+        <div class="sr-only" id="live" aria-live="polite" aria-atomic="true"></div>
       </div>
-    </section>
+    </div>
   </article>
 </div>
 
@@ -865,54 +1056,26 @@ rank=1: mean_grad=4.0, updated_weight=0.6</pre>
 
     <hr class="sep">
 
-    <section id="allreduce">
-      <div class="section-num">5</div>
-      <h2>all_reduce is the operation that keeps replicas equal</h2>
-      <p class="section-hook">Every rank gives a local tensor. Every rank ends with the same reduced result — still in private memory.</p>
-
-      <p>The numbers are small enough to check by hand.</p>
-
-      <p><strong>Before <code>all_reduce</code>:</strong></p>
-      <pre class="output">rank 0 owns local_grad = 2
-rank 1 owns local_grad = 6</pre>
-
-      <p><strong>After <code>all_reduce(SUM)</code>:</strong></p>
-      <pre class="output">rank 0 owns local_grad = 8
-rank 1 owns local_grad = 8</pre>
-
-      <p><strong>After dividing by world size:</strong></p>
-      <pre class="output">both own mean_grad = 4</pre>
-
-      <p><strong>After the optimizer-like step <code>weight -= 0.1 * mean_grad</code>:</strong></p>
-      <pre class="output">both privately update weight from 1.0 → 0.6</pre>
-
-      <div class="rule-box">
-        <div class="k">What all_reduce does</div>
-        <p><code>all_reduce(SUM)</code> reduces every rank's contribution and writes the same reduced value into each rank's own local buffer.</p>
-      </div>
-
-      <p>Average those synchronized gradients and both replicas take the same step. That is the core idea behind data-parallel training: DDP does not make many GPUs hold one model. It makes many model replicas take the same gradient step.</p>
-
-      <div class="note note-insight">
-        <div class="note-label">What the toy covers</div>
-        The example captures the semantic core: synchronize, average, update the local replica. Real DDP also installs autograd hooks, keeps parameters aligned at construction, buckets gradients, and often overlaps communication with backward. This is a teaching model, not a reimplementation.
-      </div>
-    </section>
-
-    <hr class="sep">
-
+    <!-- Section 6: Collective contract -->
     <section id="contract">
       <div class="section-num">6</div>
-      <h2>A collective is a contract, not shared memory</h2>
-      <p class="section-hook">Every participant must enter compatible collective calls in the same order.</p>
+      <h2>A collective is a group-wide protocol step</h2>
+      <p class="section-hook">Not an RPC. Not shared memory. Every member must eventually arrive at a compatible call.</p>
 
-      <p>An <code>all_reduce</code> is not "rank 0 asks rank 1 for data." It is not shared memory, and it is not an ordinary RPC that one process can fire alone and forget.</p>
+      <p>A collective is not an RPC where rank 0 asks another rank for data. Every participating rank must enter compatible collective calls in the same order. They do not need to arrive at the same wall-clock instant, but the protocol must match:</p>
 
-      <p>A collective is a <strong>group-wide protocol step</strong>. Every participating rank must eventually enter compatible collective calls in the same order. They do not need to hit the same wall-clock instant. What must line up is group membership, operations, tensor shapes, and call order.</p>
+      <ul class="bullet-list">
+        <li>same process group,</li>
+        <li>compatible operation,</li>
+        <li>compatible tensor metadata,</li>
+        <li>matching collective order.</li>
+      </ul>
+
+      <p>This is a correctness requirement, not a performance optimization.</p>
 
       <div class="note note-problem">
         <div class="note-label">Anti-pattern</div>
-        Rank 0 enters a collective that expects the whole group. Rank 1 never participates. Do not run this fragment without a short timeout.
+        Rank 0 enters a collective that expects the entire group. Rank 1 never joins it. Do not run this fragment without a short timeout.
         <div class="code-block" style="margin:14px 0 0">
           <div class="code-label">
             <span>broken.py · conceptual</span>
@@ -923,7 +1086,14 @@ rank 1 owns local_grad = 8</pre>
         </div>
       </div>
 
-      <p>Depending on backend, timeouts, and configuration, the failure may surface as a timeout, a communication error, or an apparent hang. Not every broken collective is an infinite hang, but mismatched participation is always a hard correctness bug.</p>
+      <p>Depending on backend and timeout settings, the job may hang, time out, or report a communication error.</p>
+
+      <p>The rule is simple:</p>
+
+      <div class="rule-box">
+        <div class="k">The rule</div>
+        <p><code>all_reduce</code> means <strong>every member of this group performs the next agreed protocol step.</strong></p>
+      </div>
 
       <div class="demo" id="fail-demo" role="region" aria-label="Interactive collective contract failure simulation">
         <div class="demo-head">
@@ -964,19 +1134,31 @@ rank 1 owns local_grad = 8</pre>
         </div>
       </div>
 
-      <div class="rule-box" style="margin-top:28px">
-        <div class="k">The rule</div>
-        <p><code>all_reduce</code> is not "ask another process for data." It means: <strong>every member of this group performs the next agreed protocol step.</strong></p>
-        <p style="margin-top:10px">Compatible shape, dtype, operation, and order all matter. A mismatched collective sequence is enough to break the job even when each local model's math is fine.</p>
-      </div>
+      <p style="margin-top:28px">A mismatched collective sequence is enough to break the job even when each local model's math is fine. The contract rules participation order — it does not care whether your loss function is correct.</p>
     </section>
 
     <hr class="sep">
 
+    <!-- Section 7: DDP automates -->
     <section id="ddp">
       <div class="section-num">7</div>
-      <h2>DDP is this schedule, automated</h2>
+      <h2>DDP automates this schedule during backward</h2>
       <p class="section-hook">The manual toy and real DDP share one plan: synchronize gradients, then update local replicas.</p>
+
+      <p>Real DDP places that logic into the normal training loop:</p>
+
+      <pre class="output">local forward
+→ local loss
+→ backward computes local gradients
+→ DDP hooks reduce corresponding gradients
+→ every rank receives the same averaged gradients
+→ every local optimizer calls step()</pre>
+
+      <p>At construction, DDP broadcasts model state from rank 0 so replicas begin aligned. With the default buffer behavior, it also synchronizes model buffers before forward passes.</p>
+
+      <p>During backward, DDP uses autograd hooks and gradient buckets to overlap communication with computation where possible. After the reductions complete, every rank has matching <code>.grad</code> values for corresponding parameters.</p>
+
+      <p>The optimizer is still local. Every rank owns an optimizer instance and calls <code>optimizer.step()</code> on its own replica.</p>
 
       <table class="map-table">
         <thead>
@@ -1010,22 +1192,23 @@ rank 1 owns local_grad = 8</pre>
         </tbody>
       </table>
 
-      <p>The optimizer still runs locally on every rank. Nothing ships model weights out of process just to take a step. Replicas stay aligned because the gradients they step on have already been equalized by the collective schedule.</p>
+      <p>That is why the replicas remain aligned:</p>
 
-      <div class="note note-ok">
-        <div class="note-label">In short</div>
-        Autograd computes local gradients. Collectives synchronize those gradients during backward. Each optimizer then updates its own local replica with the same values.
+      <div class="rule-box">
+        <div class="k">Why replication works</div>
+        <p><strong>Equal starting state plus equal synchronized gradients produces equal local updates.</strong></p>
       </div>
     </section>
 
     <hr class="sep">
 
+    <!-- Section 8: More machines -->
     <section id="machines">
       <div class="section-num">8</div>
-      <h2>What changes across machines — and what does not</h2>
+      <h2>More machines change placement, not meaning</h2>
       <p class="section-hook">Launch coordinates change. The meaning of a collective does not.</p>
 
-      <p>A two-node job still runs the same training script. Each node starts one <code>torchrun</code>, which launches its local workers. The master address is for setup and rendezvous, not a permanent parameter server on the data path.</p>
+      <p>A two-node job still follows the same model. Each node launches its local workers; all workers join one process group.</p>
 
       <div class="code-block">
         <div class="code-label">
@@ -1055,6 +1238,8 @@ rank 1 owns local_grad = 8</pre>
   toy_ddp.py</pre>
       </div>
 
+      <p><code>MASTER_ADDR</code> and <code>MASTER_PORT</code> support setup and rendezvous. They do not turn the master node into a permanent parameter server on the gradient data path.</p>
+
       <div class="demo" id="mn-demo" role="region" aria-label="One machine versus many machines diagram">
         <div class="demo-head">
           <h3>One machine or many?</h3>
@@ -1070,19 +1255,29 @@ rank 1 owns local_grad = 8</pre>
         </div>
       </div>
 
-      <p>Across machines you still have private replicas, environment coordinates, a process group, and the same collective contract. Placement changes. Meaning does not.</p>
+      <p>Across machines, the invariant remains:</p>
+
+      <pre class="output">private worker state
++ one process group
++ ordered compatible collectives
+= synchronized updates</pre>
     </section>
 
     <hr class="sep">
 
-    <section id="close">
+    <!-- Section 9: Where this model stops -->
+    <section id="scope">
       <div class="section-num">9</div>
-      <h2>What to keep</h2>
+      <h2>Where this model stops</h2>
+
+      <p>DDP replicates model parameters, gradients, and usually optimizer state across ranks. It is often the right first distributed-training model, but replication eventually becomes a memory limit.</p>
+
+      <p>FSDP changes the memory layout by sharding model state. Tensor parallelism partitions tensor operations. Those systems are different, but they still rely on explicit groups and ordered communication contracts.</p>
 
       <div class="takeaway" style="margin-top:0">
         <div class="thesis-label">The decision rule</div>
-        <p><strong>torchrun</strong> assigns identities and rendezvous coordinates. <strong>init_process_group</strong> turns those coordinates into group membership. <strong>Collectives</strong> then synchronize private state under a shared contract, and <strong>DDP</strong> places that synchronization at the gradient boundary.</p>
-        <p>Private replicas. Identical update. No shared Python object required.</p>
+        <p><strong>torchrun</strong> assigns coordinates. <strong>init_process_group()</strong> creates membership. <strong>Collectives</strong> synchronize private state under a shared protocol. <strong>DDP</strong> puts that synchronization at the gradient boundary.</p>
+        <p style="margin-top:16px">Private replicas. Identical updates.</p>
       </div>
 
       <div class="note note-neutral" style="margin-top:24px">
@@ -1096,10 +1291,9 @@ rank 1 owns local_grad = 8</pre>
   <footer class="page-end">
     <p>References</p>
     <ul>
-      <li><a class="inline" href="https://pytorch.org/docs/stable/distributed.html" target="_blank" rel="noopener noreferrer">torch.distributed</a> — process groups and collectives</li>
-      <li><a class="inline" href="https://pytorch.org/docs/stable/elastic/run.html" target="_blank" rel="noopener noreferrer">torchrun (elastic run)</a> — launcher semantics</li>
-      <li><a class="inline" href="https://pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html" target="_blank" rel="noopener noreferrer">DistributedDataParallel</a> — gradient synchronization hooks</li>
-      <li><a class="inline" href="https://pytorch.org/tutorials/intermediate/ddp_tutorial.html" target="_blank" rel="noopener noreferrer">Getting Started with DDP</a> — official tutorial</li>
+      <li><a class="inline" href="https://pytorch.org/docs/stable/distributed.html" target="_blank" rel="noopener noreferrer">PyTorch distributed communication package</a></li>
+      <li><a class="inline" href="https://pytorch.org/docs/stable/notes/ddp.html" target="_blank" rel="noopener noreferrer">PyTorch DistributedDataParallel notes</a></li>
+      <li><a class="inline" href="https://pytorch.org/docs/stable/elastic/run.html" target="_blank" rel="noopener noreferrer">torchrun documentation</a></li>
     </ul>
     <p style="margin-top:18px"><a class="inline" href="/">← Back to pinyu.ai</a></p>
   </footer>
@@ -1112,14 +1306,14 @@ const CODE_SRC = {
 import torch.distributed as dist
 
 dist.init_process_group(backend="gloo")
+
 rank = dist.get_rank()
 world_size = dist.get_world_size()
 
-# Each process owns a private model replica.
-# They start equal only to keep the example small.
+# Each process owns this tensor in its own address space.
 weight = torch.tensor([1.0])
 
-# Different local data → different local gradients.
+# Each process has a different local gradient.
 local_grad = torch.tensor([2.0 if rank == 0 else 6.0])
 
 print(
@@ -1127,11 +1321,13 @@ print(
     flush=True,
 )
 
-# Sum gradients from every rank into every rank's local tensor.
+# Sum every rank's contribution into every rank's local tensor.
 dist.all_reduce(local_grad, op=dist.ReduceOp.SUM)
 
-# DDP normally averages gradients.
+# DDP's usual semantic result is the mean gradient.
 mean_grad = local_grad / world_size
+
+# Each process updates its own local weight.
 weight -= 0.1 * mean_grad
 
 print(
@@ -1143,19 +1339,20 @@ dist.destroy_process_group()`,
   run: `torchrun --standalone --nproc-per-node=2 toy_ddp.py`,
   broken: `if rank == 0:
     dist.all_reduce(local_grad)  # rank 1 never arrives`,
-  node0: `torchrun \\
-  --nnodes=2 \\
-  --node-rank=0 \\
-  --nproc-per-node=2 \\
-  --master-addr=10.0.0.1 \\
-  --master-port=29500 \\
+  init: `dist.init_process_group(backend="gloo")`,
+  node0: `torchrun \\\\
+  --nnodes=2 \\\\
+  --node-rank=0 \\\\
+  --nproc-per-node=2 \\\\
+  --master-addr=10.0.0.1 \\\\
+  --master-port=29500 \\\\
   toy_ddp.py`,
-  node1: `torchrun \\
-  --nnodes=2 \\
-  --node-rank=1 \\
-  --nproc-per-node=2 \\
-  --master-addr=10.0.0.1 \\
-  --master-port=29500 \\
+  node1: `torchrun \\\\
+  --nnodes=2 \\\\
+  --node-rank=1 \\\\
+  --nproc-per-node=2 \\\\
+  --master-addr=10.0.0.1 \\\\
+  --master-port=29500 \\\\
   toy_ddp.py`
 };
 
@@ -1178,77 +1375,33 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
   });
 });
 
-/* ========== Main walkthrough ========== */
-const NAMES = ['Isolated', 'Coords', 'Group', 'Local', 'Reduce', 'Update'];
+/* ========== Main walkthrough — 6-state numeric machine ========== */
+const NAMES = ['Equal', 'Gradients', 'Reduce', '8 & 8', 'Average', 'Update'];
 const STEPS = [
   {
-    title: '1 · Before launch',
-    why: 'Two ordinary Python processes. Separate memory. No rank, no group, no connection — only two independent runtimes.',
-    grouped: false,
-    showIds: false,
-    cards: [
-      { name: 'Process A', fields: [
-        { k: 'memory', v: 'private' },
-        { k: 'rank', v: '—' },
-        { k: 'group', v: 'none' }
-      ]},
-      { name: 'Process B', fields: [
-        { k: 'memory', v: 'private' },
-        { k: 'rank', v: '—' },
-        { k: 'group', v: 'none' }
-      ]}
-    ],
-    fabric: { text: '— no connection —', mode: '' },
-    rule: 'Start from isolation. Any shared behavior has to be built.',
-    mantra: 'Two processes · zero contracts'
-  },
-  {
-    title: '2 · After torchrun',
-    why: 'The launcher injects coordinates. Each process gets an identity. Communication has not started — only bookkeeping has.',
-    grouped: false,
-    showIds: true,
-    cards: [
-      { name: 'Process 0 / rank 0', badge: ['RANK=0', 'LOCAL_RANK=0', 'WORLD_SIZE=2'], fields: [
-        { k: 'memory', v: 'private' },
-        { k: 'rank', v: '0' },
-        { k: 'group', v: 'not joined' }
-      ]},
-      { name: 'Process 1 / rank 1', badge: ['RANK=1', 'LOCAL_RANK=1', 'WORLD_SIZE=2'], fields: [
-        { k: 'memory', v: 'private' },
-        { k: 'rank', v: '1' },
-        { k: 'group', v: 'not joined' }
-      ]}
-    ],
-    fabric: { text: 'identity only · no process group yet', mode: '' },
-    rule: '<b>torchrun</b> assigns coordinates. It does not move gradients.',
-    mantra: 'Coordinates, not communication'
-  },
-  {
-    title: '3 · After init_process_group()',
-    why: 'Rendezvous succeeds. Both processes join the same logical process group. Membership is group membership — not a shared Python heap.',
+    title: '1 · Equal private replicas',
+    why: 'Both ranks hold <b>weight = 1.0</b>. These are separate tensors in separate address spaces — identical values, zero shared memory.',
     grouped: true,
-    showIds: true,
     cards: [
-      { name: 'Rank 0', badge: ['RANK=0', 'in group'], fields: [
-        { k: 'memory', v: 'still private' },
-        { k: 'rank', v: '0', hl: true },
-        { k: 'group', v: 'default PG', hl: true }
+      { name: 'Rank 0', fields: [
+        { k: 'weight', v: '1.0' },
+        { k: 'local_grad', v: '—' },
+        { k: 'mean_grad', v: '—' }
       ]},
-      { name: 'Rank 1', badge: ['RANK=1', 'in group'], fields: [
-        { k: 'memory', v: 'still private' },
-        { k: 'rank', v: '1', hl: true },
-        { k: 'group', v: 'default PG', hl: true }
+      { name: 'Rank 1', fields: [
+        { k: 'weight', v: '1.0' },
+        { k: 'local_grad', v: '—' },
+        { k: 'mean_grad', v: '—' }
       ]}
     ],
-    fabric: { text: 'ProcessGroup formed · peers known', mode: '' },
-    rule: 'A process group is a <b>shared contract about who participates</b> — not shared memory.',
-    mantra: 'Group membership ≠ shared objects'
+    fabric: { text: 'two private replicas · same starting value', mode: '' },
+    rule: 'Both processes own a private <b>weight = 1.0</b>. No shared Python object exists.',
+    mantra: 'Private replicas · equal start'
   },
   {
-    title: '4 · Local computation',
-    why: 'Both hold private weight = 1.0. Different data produces different local gradients. Without a collective, the replicas are about to diverge.',
+    title: '2 · Different local gradients',
+    why: 'Rank 0 sees <b>local_grad = 2.0</b>. Rank 1 sees <b>local_grad = 6.0</b>. Without a collective, the replicas are about to diverge.',
     grouped: true,
-    showIds: false,
     cards: [
       { name: 'Rank 0', fields: [
         { k: 'weight', v: '1.0' },
@@ -1261,25 +1414,24 @@ const STEPS = [
         { k: 'mean_grad', v: '—' }
       ]}
     ],
-    fabric: { text: 'local work · no collective yet', mode: '' },
-    rule: 'Local signals differ: <b>2 ≠ 6</b>. The problem is agreement, not ownership.',
-    mantra: 'Private replicas · different local signal'
+    fabric: { text: 'local signals differ: 2.0 vs 6.0 · need a collective', mode: '' },
+    rule: 'Different data → different gradients: <b>2 ≠ 6</b>. The problem is agreement, not ownership.',
+    mantra: 'Different local signals · must synchronize'
   },
   {
-    title: '5 · During all_reduce(SUM)',
-    why: 'Both ranks enter the same collective. Contributions move through a symmetric fabric, not a central aggregator. Both local buffers become the sum: 2 + 6 = 8.',
+    title: '3 · Both ranks enter all_reduce',
+    why: 'Both ranks join the same collective. Rank 0 contributes 2.0, rank 1 contributes 6.0. Neither talks to a parameter server — this is a group protocol.',
     grouped: true,
-    showIds: false,
     cards: [
       { name: 'Rank 0', fields: [
         { k: 'weight', v: '1.0' },
-        { k: 'local_grad', v: '8.0', hl: true },
-        { k: 'contributed', v: '2.0' }
+        { k: 'local_grad', v: '2.0 → ...' },
+        { k: 'contributed', v: '2.0', hl: true }
       ]},
       { name: 'Rank 1', fields: [
         { k: 'weight', v: '1.0' },
-        { k: 'local_grad', v: '8.0', hl: true },
-        { k: 'contributed', v: '6.0' }
+        { k: 'local_grad', v: '6.0 → ...' },
+        { k: 'contributed', v: '6.0', hl: true }
       ]}
     ],
     fabric: {
@@ -1287,28 +1439,67 @@ const STEPS = [
       mode: 'active',
       packets: true
     },
-    rule: '<b>all_reduce</b>: every rank contributes; every rank receives the same reduced value written into its own tensor.',
-    mantra: 'Same result · still private buffers'
+    rule: '<b>all_reduce(SUM)</b>: every rank contributes; every rank receives the same reduced value. No central aggregator.',
+    mantra: 'Same protocol · synchronized contributions'
   },
   {
-    title: '6 · Average + optimizer step',
-    why: 'Divide by world_size: mean_grad = 4. Each process updates its own weight: 1.0 − 0.1 × 4 = 0.6. Private replicas, identical update.',
+    title: '4 · Both local tensors become 8',
+    why: 'After SUM: <b>2 + 6 = 8</b>. Both local_grad tensors now hold 8.0 — still in separate address spaces, but now with identical values.',
     grouped: true,
-    showIds: false,
     cards: [
       { name: 'Rank 0', fields: [
-        { k: 'mean_grad', v: '4.0', hl: true },
+        { k: 'weight', v: '1.0' },
+        { k: 'local_grad', v: '8.0', hl: true },
+        { k: 'mean_grad', v: '—' }
+      ]},
+      { name: 'Rank 1', fields: [
+        { k: 'weight', v: '1.0' },
+        { k: 'local_grad', v: '8.0', hl: true },
+        { k: 'mean_grad', v: '—' }
+      ]}
+    ],
+    fabric: { text: 'sum complete · both own 8.0', mode: 'active' },
+    rule: '<b>2 + 6 = 8</b>. Both local tensors hold the same value. Still private buffers — no shared memory.',
+    mantra: '2 + 6 = 8 · identical local tensors'
+  },
+  {
+    title: '5 · Average: both become 4',
+    why: 'Divide by world_size: <b>8 / 2 = 4</b>. Every rank computes the same mean_grad. This matches DDP\'s usual gradient-averaging behavior.',
+    grouped: true,
+    cards: [
+      { name: 'Rank 0', fields: [
+        { k: 'weight', v: '1.0' },
+        { k: 'local_grad', v: '8.0', muted: true },
+        { k: 'mean_grad', v: '4.0', hl: true }
+      ]},
+      { name: 'Rank 1', fields: [
+        { k: 'weight', v: '1.0' },
+        { k: 'local_grad', v: '8.0', muted: true },
+        { k: 'mean_grad', v: '4.0', hl: true }
+      ]}
+    ],
+    fabric: { text: '÷ world_size → mean_grad = 4.0 for both', mode: 'active' },
+    rule: '<b>8 / 2 = 4</b>. Identical mean gradients on both ranks. This is a local computation — no further communication needed.',
+    mantra: '8 / 2 = 4 · same mean gradient'
+  },
+  {
+    title: '6 · Identical update: both become 0.6',
+    why: 'Each rank runs its own optimizer step: <b>1.0 − 0.1 × 4 = 0.6</b>. Private replicas, identical update.',
+    grouped: true,
+    cards: [
+      { name: 'Rank 0', fields: [
         { k: 'weight', v: '0.6', hl: true },
+        { k: 'mean_grad', v: '4.0' },
         { k: 'shared object?', v: 'no' }
       ]},
       { name: 'Rank 1', fields: [
-        { k: 'mean_grad', v: '4.0', hl: true },
         { k: 'weight', v: '0.6', hl: true },
+        { k: 'mean_grad', v: '4.0' },
         { k: 'shared object?', v: 'no' }
       ]}
     ],
     fabric: { text: 'collective complete · replicas aligned', mode: 'active' },
-    rule: '<b>Private replicas, identical update.</b> No process shared a Python object with another.',
+    rule: '<b>weight -= 0.1 × 4.0</b> on each rank. Equal start + equal gradients = equal update. No shared Python object required.',
     mantra: 'Private replicas · identical update'
   }
 ];
@@ -1341,21 +1532,13 @@ function renderMain() {
     const c = s.cards[i];
     document.getElementById('card' + i + '-name').textContent = c.name;
     document.getElementById('fields' + i).innerHTML = c.fields.map(fieldHtml).join('');
-    const badge = document.getElementById('badge' + i);
-    if (s.showIds && c.badge) {
-      badge.classList.remove('hidden');
-      badge.innerHTML = c.badge.map(t => `<span>${t}</span>`).join('');
-    } else {
-      badge.classList.add('hidden');
-      badge.innerHTML = '';
-    }
   });
 
   const fabric = document.getElementById('fabric');
   fabric.className = 'fabric' + (s.fabric.mode ? ' ' + s.fabric.mode : '');
   if (s.fabric.packets) {
     fabric.innerHTML =
-      '<span class="packet p0">2.0</span> ⇄ all_reduce(SUM) ⇄ <span class="packet p1">6.0</span>  →  both hold 8.0';
+      '<span class="packet p0">2.0</span> ⇄ all_reduce(SUM) ⇄ <span class="packet p1">6.0</span>';
   } else {
     fabric.textContent = s.fabric.text;
   }
@@ -1404,7 +1587,7 @@ document.getElementById('play').onclick = () => {
   if (playTimer) { stopPlay(); return; }
   document.getElementById('play').textContent = 'Pause';
   if (step === STEPS.length - 1) { step = 0; renderMain(); }
-  const delay = reduceMotion ? 1800 : 1400;
+  const delay = reduceMotion ? 2000 : 1600;
   playTimer = setInterval(() => {
     if (step >= STEPS.length - 1) { stopPlay(); return; }
     step += 1;
@@ -1414,16 +1597,9 @@ document.getElementById('play').onclick = () => {
 
 window.addEventListener('keydown', (e) => {
   const tag = (e.target && e.target.tagName) || '';
-  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON') {
-    if (tag === 'BUTTON' && (e.key === ' ' || e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
-      // allow normal button activation; still handle global nav only outside buttons
-    }
-  }
   if (tag === 'INPUT' || tag === 'TEXTAREA') return;
-  // Don't steal keys when focus is on fail-toggle checkbox
   if (e.target && e.target.id === 'skip-rank1') return;
   if (e.key === ' ' || e.key === 'ArrowRight') {
-    // Only drive main demo if focus is not inside fail demo buttons
     if (e.target && e.target.closest && e.target.closest('#fail-demo')) return;
     e.preventDefault();
     document.getElementById('next').click();
@@ -1437,7 +1613,7 @@ window.addEventListener('keydown', (e) => {
 renderMain();
 
 /* ========== Failure demo ========== */
-let failState = 'idle'; // idle | ok | broken
+let failState = 'idle';
 
 function renderFail() {
   const skip = document.getElementById('skip-rank1').checked;
@@ -1482,7 +1658,7 @@ function renderFail() {
   fabric.className = 'fabric broken';
   fabric.textContent = 'blocked · required member missing';
   rule.className = 'demo-rule danger';
-  rule.innerHTML = '<b>The group cannot finish: a required member never arrived.</b> Depending on configuration this may timeout, error, or look hung. This is a contract simulation — not a live hang.';
+  rule.innerHTML = '<b>The group cannot finish: a required member never arrived.</b> Depending on configuration this may timeout, error, or look hung. This is a simulation — not a live hang.';
   live.textContent = 'Collective failed: rank 1 did not participate.';
 }
 
@@ -1541,7 +1717,6 @@ function paintMn(mode) {
         <div class="mn-collectives">one ProcessGroup across nodes · world_size = 4 · same collective semantics</div>
       </div>`;
     cap.textContent = 'Two machines, four processes. Each node runs its own torchrun. The master address is for rendezvous, not steady-state gradient traffic. An all_reduce still means every rank contributes and every rank receives the same result.';
-    // Fade rendezvous shortly after paint to show "setup only"
     const rdv = document.getElementById('mn-rdv');
     if (reduceMotion) {
       rdv.classList.add('faded');
