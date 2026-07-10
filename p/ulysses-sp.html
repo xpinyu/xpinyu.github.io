@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="An intuitive guide to DeepSpeed Ulysses: token-shard the sequence for memory, head-shard only for attention, switch with two all-to-alls.">
+<meta name="author" content="pinyu">
+<meta property="og:title" content="Ulysses Sequence Parallelism, Intuitively">
+<meta property="og:description" content="Token cut for memory. Head cut for attention. Two all-to-alls in between.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pinyu.ai/p/ulysses-sp.html">
+<title>Ulysses Sequence Parallelism, Intuitively</title>
+<link rel="canonical" href="https://pinyu.ai/p/ulysses-sp.html">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --ochre: #E8B830;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --blue: #5A7A90;
+    --blue-bg: #EAF0F5;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+    --serif: 'EB Garamond', Georgia, serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --content-w: 720px;
+    --wide-w: 880px;
+    --h0: #5B8DEF;
+    --h1: #3DAA7C;
+    --h2: #D46BA0;
+    --h3: #D4A017;
+    --gpu0: #1B3F8B;
+    --gpu1: #B8864A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.88;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0; z-index: 100;
+    padding: 10px 24px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250, 246, 238, 0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229, 221, 208, 0.6);
+  }
+  .topbar a { color: var(--text-3); text-decoration: none; transition: color 0.15s; }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+  .container.wide { max-width: var(--wide-w); }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.25rem; font-weight: 500;
+    line-height: 1.22; letter-spacing: -0.02em;
+    margin-bottom: 24px; max-width: 640px;
+  }
+  header .subtitle {
+    font-size: 1.02rem; color: var(--text-2);
+    line-height: 1.9; max-width: 620px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px; flex-wrap: wrap;
+    font-size: 0.75rem; color: var(--text-3);
+  }
+  header .meta a {
+    color: var(--text-3); text-decoration: none;
+    border-bottom: 1px solid var(--border); transition: all 0.15s;
+  }
+  header .meta a:hover { color: var(--text-1); border-color: var(--text-1); }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(16px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.55; z-index: 50;
+  }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none; transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+
+  .thesis, .takeaway {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+  }
+  .thesis { margin-bottom: 72px; }
+  .takeaway { margin: 72px 0 24px; }
+  .thesis .thesis-label, .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p, .takeaway p { font-size: 1.03rem; line-height: 1.9; }
+  .thesis p + p, .takeaway p + p { margin-top: 16px; }
+  .thesis strong { color: var(--ochre); }
+  .takeaway strong { color: #8EC5A0; }
+
+  article { animation: enter 0.6s ease 0.08s both; }
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.52rem; font-weight: 600;
+    line-height: 1.32; letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.62;
+  }
+  h3 {
+    font-size: 1.08rem; font-weight: 600;
+    margin: 36px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; font-size: 1rem; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 700; color: #162E66; }
+  a.inline {
+    color: var(--accent); text-decoration: none;
+    border-bottom: 1px solid rgba(27, 63, 139, 0.25);
+  }
+  a.inline:hover { border-color: var(--accent); }
+
+  blockquote {
+    margin: 28px 0; padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.035);
+    color: var(--text-2); border-radius: 0 10px 10px 0;
+    font-size: 0.96rem; line-height: 1.88;
+  }
+  blockquote p { margin-bottom: 0; }
+
+  .sep { border: 0; height: 1px; background: var(--border); margin: 72px 0; }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px; margin: 24px 0;
+    font-size: 0.88rem; line-height: 1.82; border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .note-neutral { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+  .note-insight { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-ok { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-problem { background: var(--red-bg); border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+
+  .bullet-list {
+    margin: 24px 0;
+    padding-left: 1.2rem;
+  }
+  .bullet-list li { margin: 10px 0; color: var(--text-2); }
+
+  code, .mono {
+    font-family: var(--mono); font-size: 0.86em;
+    background: rgba(26, 23, 20, 0.05); padding: 0.1em 0.35em; border-radius: 4px;
+  }
+  pre {
+    margin: 24px 0; padding: 18px 20px;
+    background: #1A2540; color: #E8E4DC;
+    border-radius: 12px; overflow-x: auto;
+    font-family: var(--mono); font-size: 0.78rem; line-height: 1.7;
+  }
+
+  .versus {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden; margin: 28px 0; background: var(--surface);
+  }
+  .versus .v-side { padding: 22px 20px; }
+  .versus .v-label {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-3); margin-bottom: 8px;
+  }
+  .versus .v-mid {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 10px; color: var(--text-3); font-size: 0.75rem;
+    border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+    background: #F7F2E8;
+  }
+  .versus p { font-size: 0.9rem; color: var(--text-2); margin: 0; line-height: 1.7; }
+
+  table.compare {
+    width: 100%; border-collapse: collapse; margin: 28px 0;
+    font-size: 0.88rem; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+  }
+  table.compare th, table.compare td {
+    text-align: left; padding: 12px 14px;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  table.compare th {
+    background: #F3EEE4; font-size: 0.72rem; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--text-3); font-weight: 650;
+  }
+  table.compare tr:last-child td { border-bottom: 0; }
+  table.compare td:first-child { font-weight: 600; color: var(--text-1); white-space: nowrap; }
+
+  .rule-box {
+    margin: 28px 0; padding: 22px 24px;
+    border: 1px solid var(--border); border-radius: 14px;
+    background: var(--surface);
+  }
+  .rule-box .k {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+  }
+  .rule-box p { margin: 0; font-size: 1rem; line-height: 1.75; }
+
+  /* Interactive demo */
+  .demo {
+    margin: 36px 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(26, 23, 20, 0.04);
+  }
+  .demo-head {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #FFFCF7 0%, #FAF6EE 100%);
+  }
+  .demo-head h3 { margin: 0 0 4px; font-size: 1rem; }
+  .demo-head p { margin: 0; font-size: 0.82rem; color: var(--text-3); line-height: 1.55; }
+  .demo-bar {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    background: #FFFCF7; position: sticky; top: 36px; z-index: 4;
+  }
+  .demo-bar button {
+    background: #fff; color: var(--text-1);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 7px 12px; cursor: pointer; font-size: 0.8rem;
+    font-family: var(--sans); transition: all 0.15s;
+  }
+  .demo-bar button:hover { border-color: #cfc4b2; }
+  .demo-bar button.primary {
+    border-color: var(--accent); color: var(--accent); background: var(--blue-bg);
+  }
+  .demo-bar .step-label {
+    margin-left: auto; font-family: var(--mono);
+    font-size: 0.75rem; color: var(--accent); font-weight: 600;
+  }
+  .demo-body { padding: 16px 18px 20px; }
+  .pips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .pip {
+    font-size: 0.68rem; padding: 4px 9px; border-radius: 999px;
+    border: 1px solid var(--border); color: var(--text-3); cursor: pointer;
+    background: #fff;
+  }
+  .pip.on { border-color: var(--accent); color: var(--accent); background: var(--blue-bg); }
+  .pip.done { color: #a39888; }
+  .demo-title {
+    font-family: var(--serif); font-size: 1.2rem; font-weight: 600;
+    margin-bottom: 6px; line-height: 1.3;
+  }
+  .demo-why {
+    color: var(--text-2); font-size: 0.9rem; margin-bottom: 14px; line-height: 1.7;
+  }
+  .demo-why b { color: var(--text-1); }
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 10px 14px;
+    font-size: 0.75rem; color: var(--text-3); margin-bottom: 12px;
+  }
+  .dot {
+    width: 9px; height: 9px; border-radius: 2px;
+    display: inline-block; margin-right: 5px; vertical-align: middle;
+  }
+  .seats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  }
+  .seat {
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 10px; background: #FFFcf7;
+  }
+  .seat h4 {
+    margin: 0 0 8px; font-size: 0.8rem; font-weight: 650;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .board {
+    display: grid;
+    grid-template-columns: 34px repeat(8, 1fr);
+    gap: 3px;
+  }
+  .cell {
+    min-height: 26px; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.58rem; font-family: var(--mono); font-weight: 700;
+    color: #1a1714;
+  }
+  .cell.lab {
+    background: #F0EBE1; color: var(--text-3); font-weight: 500;
+    border: 1px dashed #ddd3c4;
+  }
+  .cell.empty {
+    background: #F7F2E9; color: #c4b8a6;
+    border: 1px dashed #e4d9c8; font-weight: 500;
+  }
+  .cell.out-mark { box-shadow: inset 0 0 0 2px rgba(123, 104, 146, 0.9) !important; }
+  .seat-meta {
+    margin-top: 8px; font-size: 0.72rem; color: var(--text-3);
+    font-family: var(--mono); line-height: 1.45;
+  }
+  .demo-formula {
+    margin-top: 12px; font-family: var(--mono); font-size: 0.74rem;
+    color: var(--text-2); background: #F5F0E6;
+    border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px;
+    line-height: 1.55;
+  }
+  .demo-rule {
+    margin-top: 12px; padding: 12px 14px; border-radius: 10px;
+    background: #F7F2E8; border-left: 3px solid var(--green);
+    color: var(--text-2); font-size: 0.88rem; line-height: 1.7;
+  }
+  .demo-rule b { color: var(--green); }
+  .demo-mantra {
+    text-align: center; margin: 12px 0 0;
+    font-family: var(--serif); font-size: 1.05rem; font-weight: 600;
+    color: var(--text-1);
+  }
+  .token-panel {
+    margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);
+  }
+  .token-panel h4 {
+    margin: 0 0 8px; font-size: 0.82rem; font-weight: 650;
+  }
+  .tok-row {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px;
+  }
+  .tok-card {
+    background: #FFFcf7; border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 4px; text-align: center;
+  }
+  .tok-card .w { font-size: 0.72rem; font-weight: 700; margin-bottom: 4px; }
+  .tok-card .bar {
+    display: grid; height: 12px; border-radius: 3px; overflow: hidden;
+  }
+  .tok-card .bar > i { display: block; min-height: 12px; }
+  .tok-card .lab2 {
+    margin-top: 4px; font-size: 0.56rem; color: var(--text-3);
+    font-family: var(--mono);
+  }
+  .token-hint {
+    margin-top: 8px; font-size: 0.8rem; color: var(--text-3); line-height: 1.6;
+  }
+
+  footer.page-end {
+    padding: 48px 0 80px;
+    border-top: 1px solid var(--border);
+    font-size: 0.82rem; color: var(--text-3);
+  }
+  footer.page-end a { color: var(--text-2); }
+
+  @media (prefers-reduced-motion: reduce) {
+    header, article { animation: none; }
+  }
+  @media (max-width: 1120px) { nav.toc { display: none; } }
+  @media (max-width: 720px) {
+    .seats { grid-template-columns: 1fr; }
+    .versus { grid-template-columns: 1fr; }
+    .versus .v-mid {
+      padding: 8px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); border-left: 0; border-right: 0;
+    }
+    header h1 { font-size: 1.85rem; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .demo-bar .step-label { width: 100%; margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+
+<div class="topbar">
+  <a href="/" class="home-link">← pinyu.ai</a>
+  <span style="color:var(--text-3)">Systems · Long Context</span>
+</div>
+
+<nav class="toc" id="toc">
+  <a href="#idea">Idea</a>
+  <a href="#problem">Problem</a>
+  <a href="#token-cut">Token cut</a>
+  <a href="#heads">Heads</a>
+  <a href="#two-cuts">Two cuts</a>
+  <a href="#walkthrough">One layer</a>
+  <a href="#after">After attention</a>
+  <a href="#limits">Limits</a>
+  <a href="#closing">Closing</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">DeepSpeed Ulysses · Sequence Parallelism</div>
+    <h1>Ulysses Sequence Parallelism, Intuitively</h1>
+    <p class="subtitle">How long-context training distributes the sequence across GPUs—and why attention briefly needs a different layout.</p>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.07</span>
+      <a href="https://arxiv.org/abs/2309.14509" target="_blank" rel="noopener noreferrer">DeepSpeed-Ulysses</a>
+    </div>
+  </header>
+
+  <div class="thesis" id="idea">
+    <div class="thesis-label">The idea</div>
+    <p>Keep the sequence split by tokens for most of the layer. Right before attention, reorganize so each GPU holds the <strong>full sequence for a few heads</strong>. Run attention locally. Switch back. Two all-to-alls. Everything else is ordinary single-GPU work.</p>
+  </div>
+
+  <article>
+
+    <section id="problem">
+      <div class="section-num">01</div>
+      <h2>The sequence will not fit</h2>
+      <p class="section-hook">Not the weights. The activations along time.</p>
+
+      <p>Data parallel splits the batch. Tensor parallel splits layer width. Pipeline parallel splits model depth. None of them solves a different failure mode: one sample whose context is too long for a single device.</p>
+
+      <p>What fails is activation memory along the sequence. Each layer keeps hidden states, residuals, and intermediates for every token. That cost scales with <code>L</code>. FlashAttention removes the giant <code>L × L</code> score matrix, but it does not remove “carry a state for every position through the stack.” Past a point, one GPU runs out of room for those activations.</p>
+
+      <p>So you need to distribute the sequence itself.</p>
+    </section>
+
+    <hr class="sep">
+
+    <section id="token-cut">
+      <div class="section-num">02</div>
+      <h2>The token cut almost works</h2>
+      <p class="section-hook">Most of a transformer layer is local to each position.</p>
+
+      <p>Give GPU 0 tokens <code>0 … L/P − 1</code>, GPU 1 the next span, and so on. Each device stores only <code>L/P</code> positions. Call this the <strong>token cut</strong>.</p>
+
+      <p>For QKV projections and the FFN, the cut is both correct and cheap. Those ops are position-wise. A token on GPU 0 does not need another GPU’s tokens to compute its own query or its feed-forward path. No communication is required.</p>
+
+      <p>Attention is different. A query at position <code>t</code> must score against keys from the full allowed context, then mix values from those positions. If a GPU only holds a slice and never communicates, attention is incomplete—not approximate, incomplete.</p>
+
+      <p>All-gathering the full sequence before attention restores correctness. It also restores the footprint you left: full <code>L</code> on every GPU at the most expensive moment. The token cut’s memory win disappears right where you needed it.</p>
+
+      <div class="note note-problem">
+        <div class="note-label">The tension</div>
+        Token cut saves memory but breaks attention. Full gather fixes attention but burns the savings. You need full-sequence attention without every GPU holding every channel of the full sequence.
+      </div>
+    </section>
+
+    <hr class="sep">
+
+    <section id="heads">
+      <div class="section-num">03</div>
+      <h2>Heads are already independent</h2>
+      <p class="section-hook">You need a second axis that is legal to split. Multi-head attention already provides one.</p>
+
+      <p>Multi-head attention does not run one fat attention over the full hidden width. It projects each token into Q, K, and V, then splits those vectors into <code>H</code> heads of width <code>d_h</code> (<code>d = H · d_h</code>). Each head computes its own attention:</p>
+
+      <pre>O_h = softmax(Q_h K_hᵀ / √d_h) V_h</pre>
+
+      <p>Results are concatenated and passed through <code>W_O</code>. Inside the softmax, head 0 never mixes with head 1. They only meet after concat, through a linear map.</p>
+
+      <p>That independence is usually sold as a modeling feature. It is also a systems fact: if two computations do not interact, different devices can own them. When the token cut breaks attention, you are not out of options. You still have heads as a legal partition—usable only for the attention step, while the rest of the layer stays token-cut.</p>
+    </section>
+
+    <hr class="sep">
+
+    <section id="two-cuts">
+      <div class="section-num">04</div>
+      <h2>One grid, two cuts</h2>
+      <p class="section-hook">Picture ownership, not “the whole model.”</p>
+
+      <p>Use a small example: 8 tokens, 4 heads, 2 GPUs. Columns are tokens. Rows are heads. Each cell is one head at one position—first as Q/K/V, later as the attention output <code>O</code>.</p>
+
+<pre>        I   want  to  read  a  long  book  .
+   H0   ·    ·    ·    ·    ·    ·    ·    ·
+   H1   ·    ·    ·    ·    ·    ·    ·    ·
+   H2   ·    ·    ·    ·    ·    ·    ·    ·
+   H3   ·    ·    ·    ·    ·    ·    ·    ·</pre>
+
+      <div class="versus">
+        <div class="v-side">
+          <div class="v-label">Token cut</div>
+          <p>GPU 0: tokens 0–3, all heads<br>
+          GPU 1: tokens 4–7, all heads<br><br>
+          Memory: <code>L/P</code> positions each<br>
+          Use for QKV, FFN, residuals</p>
+        </div>
+        <div class="v-mid">↔</div>
+        <div class="v-side">
+          <div class="v-label">Head cut</div>
+          <p>GPU 0: all tokens, heads 0–1<br>
+          GPU 1: all tokens, heads 2–3<br><br>
+          Memory: full <code>L</code>, only <code>H/P</code> heads<br>
+          Use for exact local attention</p>
+        </div>
+      </div>
+
+      <p>Ulysses stays in the token cut most of the time. Before attention, an all-to-all switches to the head cut. Each GPU runs a standard attention kernel on its heads—full sequence, exact math. After attention, a second all-to-all restores the token cut so out-projection and FFN continue on the cheap layout.</p>
+
+      <p>Nothing in the attention formula changes. Only who owns which cells changes.</p>
+    </section>
+
+    <hr class="sep">
+  </article>
+</div>
+
+<div class="container wide">
+  <article>
+    <section id="walkthrough">
+      <div class="section-num">05</div>
+      <h2>Walk one layer</h2>
+      <p class="section-hook">Ownership flips twice. Everything else is local.</p>
+
+      <p>Bright cells are owned by that GPU. Watch whether the bright region is a horizontal band (token cut) or a vertical band (head cut). The two all-to-alls are the only moments that pattern flips.</p>
+
+      <div class="demo" id="demo">
+        <div class="demo-head">
+          <h3>Interactive walkthrough</h3>
+          <p>Space or → next · ← previous. Follow the bright cells.</p>
+        </div>
+        <div class="demo-bar">
+          <button id="prev">← Prev</button>
+          <button class="primary" id="next">Next →</button>
+          <button id="reset">Reset</button>
+          <span class="step-label" id="idx">1 / 9</span>
+        </div>
+        <div class="demo-body">
+          <div class="pips" id="pips"></div>
+          <div class="legend">
+            <span><span class="dot" style="background:var(--h0)"></span>H0</span>
+            <span><span class="dot" style="background:var(--h1)"></span>H1</span>
+            <span><span class="dot" style="background:var(--h2)"></span>H2</span>
+            <span><span class="dot" style="background:var(--h3)"></span>H3</span>
+            <span><span class="dot" style="background:var(--purple)"></span>Output O</span>
+            <span><span class="dot" style="background:#F7F2E9;border:1px dashed #e4d9c8"></span>Not on this GPU</span>
+          </div>
+          <div class="demo-title" id="title"></div>
+          <div class="demo-why" id="why"></div>
+          <div class="seats">
+            <div class="seat">
+              <h4><span class="dot" style="background:var(--gpu0)"></span>GPU 0</h4>
+              <div class="board" id="g0"></div>
+              <div class="seat-meta" id="m0"></div>
+            </div>
+            <div class="seat">
+              <h4><span class="dot" style="background:var(--gpu1)"></span>GPU 1</h4>
+              <div class="board" id="g1"></div>
+              <div class="seat-meta" id="m1"></div>
+            </div>
+          </div>
+          <div class="demo-formula" id="formula"></div>
+          <div class="demo-rule" id="rule"></div>
+          <p class="demo-mantra" id="mantra"></p>
+          <div class="token-panel" id="tokenPanel" hidden>
+            <h4 id="tokenTitle">What one token looks like</h4>
+            <div class="tok-row" id="tokRow"></div>
+            <p class="token-hint" id="tokenHint"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</div>
+
+<div class="container">
+  <article>
+
+    <hr class="sep">
+
+    <section id="after">
+      <div class="section-num">06</div>
+      <h2>Attention rewrites values. All-to-all rewrites seats.</h2>
+      <p class="section-hook">Do not conflate the two operations.</p>
+
+      <p>For each head, attention keeps shape and changes meaning:</p>
+
+      <pre>Q : [L, d_h]  →  O : [L, d_h]</pre>
+
+      <p>Each row is now a context-mixed vector. Residual connections still line up because the width is unchanged.</p>
+
+      <p>Right after the kernel, the layout is still the head cut. Cells hold <code>O</code> instead of Q/K/V, but the same GPUs still own the same heads over the full sequence. Attention did not restore the token cut. The second all-to-all does that, so concat, <code>W_O</code>, and FFN can run on the memory-efficient token shards again.</p>
+
+      <pre>token cut  →  local QKV, split heads
+all-to-all →  head cut
+attention  →  cells become O (still head cut)
+all-to-all →  token cut
+local: concat, W_O, FFN</pre>
+
+      <p>Those two all-to-alls are the only Ulysses collectives per layer. The attention kernel itself is a normal local call—FlashAttention or otherwise—on data the first all-to-all arranged for it.</p>
+    </section>
+
+    <hr class="sep">
+
+    <section id="limits">
+      <div class="section-num">07</div>
+      <h2>Limits that belong to this idea</h2>
+      <p class="section-hook">The head cut is free only while heads last.</p>
+
+      <p>In the head cut, each rank needs whole heads. So the Ulysses degree <code>P</code> cannot exceed the head count. With grouped-query attention, the tighter bound is often the number of <strong>KV heads</strong>. Eight KV heads means pure Ulysses tops out at 8 unless you combine it with another sequence-parallel method.</p>
+
+      <p>Also: sequence parallelism shards activations along time. It does not shard model weights. Large parameters still need their own strategy. Long context and large models are different scarcities.</p>
+    </section>
+
+    <hr class="sep">
+
+    <section id="closing">
+      <div class="section-num">08</div>
+      <h2>What to keep</h2>
+      <p class="section-hook">Three moves, in order.</p>
+
+      <p>Token-cut the sequence so long activations fit on many GPUs for position-local work. When attention needs the full sequence, switch to a head cut instead of gathering every head. Switch back when local ops resume.</p>
+
+      <p>Attention changes what each cell means. All-to-all changes which GPU holds it. That separation is the whole method.</p>
+
+      <div class="takeaway" id="takeaway" style="margin-bottom:0">
+        <div class="thesis-label">One sentence</div>
+        <p>Ulysses is temporary head-sharding for exact full-sequence attention, between two all-to-alls, inside an otherwise token-sharded layer.</p>
+      </div>
+    </section>
+
+  </article>
+
+  <footer class="page-end">
+    <p>Jacobs et al., <a class="inline" href="https://arxiv.org/abs/2309.14509" target="_blank" rel="noopener noreferrer">DeepSpeed-Ulysses (arXiv:2309.14509)</a>.</p>
+    <p style="margin-top:10px"><a class="inline" href="/">← Back to pinyu.ai</a></p>
+  </footer>
+</div>
+
+
+<script>
+const WORDS = ["I","want","to","read","a","long","book","."];
+const HC = ["var(--h0)","var(--h1)","var(--h2)","var(--h3)"];
+const NAMES = ["Shard","Project","Split","Transpose","Attend","Output O","Restore","Concat","FFN"];
+
+const STEPS = [
+  {
+    title: "1 · Token-cut the sequence",
+    why: "Long activations will not fit on one GPU. Split by position so each device stores only L/P tokens—the default layout for position-local work.",
+    mode: "seq", content: "empty",
+    m0: "tokens 0–3",
+    m1: "tokens 4–7",
+    formula: "per GPU: L/P positions",
+    rule: "Token cut. Sequence-shaped memory is distributed.",
+    mantra: "Half the sentence each",
+    tokenView: { kind: "raw", title: "Each column lives on one GPU", hint: "This cut exists to split long-sequence activations." }
+  },
+  {
+    title: "2 · Project Q, K, V",
+    why: "QKV is position-wise. Under the token cut each GPU projects only its span—correct, local, no communication.",
+    mode: "seq", content: "qkv",
+    m0: "QKV on first half",
+    m1: "QKV on second half",
+    formula: "local linear maps · comm = 0",
+    rule: "Still the token cut.",
+    mantra: "Local ops keep the token cut",
+    tokenView: { kind: "vec", title: "Each owned token has Q (and K, V)", hint: "Projection is local; it does not need the rest of the sentence." }
+  },
+  {
+    title: "3 · Split into heads",
+    why: "Reshape each Q/K/V into H head channels. Ownership unchanged: half the tokens, all heads on those tokens.",
+    mode: "seq", content: "qkv",
+    m0: "[L/2 × H × d_h]",
+    m1: "[L/2 × H × d_h]",
+    formula: "[L/P, d] → [L/P, H, d_h]",
+    rule: "Reshape only. Ready to recolor the grid.",
+    mantra: "Heads exist; seats still follow tokens",
+    tokenView: { kind: "heads", title: "All heads of a token stay on its GPU", hint: "Attending now without communication would still miss half the sequence." }
+  },
+  {
+    title: "4 · All-to-all → head cut",
+    why: "Attention needs full sequence per head. Heads are independent, so recolor: full L, fewer heads. No full gather of every head.",
+    mode: "head", content: "qkv",
+    m0: "all tokens × heads 0–1",
+    m1: "all tokens × heads 2–3",
+    formula: "[L/P, H, d_h] → [L, H/P, d_h]",
+    rule: "Head cut: full context, partial heads.",
+    mantra: "Token cut → head cut",
+    tokenView: { kind: "heads-partial", title: "One token’s heads split across GPUs", hint: "Each head sees full L. No GPU holds all heads at full L." }
+  },
+  {
+    title: "5 · Attention",
+    why: "Each GPU runs full-sequence attention on its heads only. Exact math. No communication inside the kernel.",
+    mode: "head", content: "qkv",
+    m0: "full-L attention on H0, H1",
+    m1: "full-L attention on H2, H3",
+    formula: "Q [L, d_h] → O [L, d_h] per head",
+    rule: "This is why the head cut exists.",
+    mantra: "Full sequence, few heads",
+    tokenView: { kind: "attn", title: "Each head mixes over the whole context", hint: "Shape stays d_h. Content becomes context-mixed." }
+  },
+  {
+    title: "6 · Cells hold O",
+    why: "Attention rewrote values to O. Layout is still the head cut until the next all-to-all.",
+    mode: "head", content: "out",
+    m0: "O for H0, H1",
+    m1: "O for H2, H3",
+    formula: "same head cut; content is now O",
+    rule: "Content changed. Seats did not.",
+    mantra: "Still head cut after attention",
+    tokenView: { kind: "out-partial", title: "Outputs still split by head", hint: "Token cut has not returned yet." }
+  },
+  {
+    title: "7 · All-to-all → token cut",
+    why: "Out-proj and FFN are position-local. Restore the token cut so each GPU holds L/P positions again.",
+    mode: "seq", content: "out",
+    m0: "first half × all O heads",
+    m1: "second half × all O heads",
+    formula: "[L, H/P, d_h] → [L/P, H, d_h]",
+    rule: "Back to the token cut.",
+    mantra: "Head cut was temporary",
+    tokenView: { kind: "out-full", title: "All head outputs for a token reunite", hint: "Ready to concat on the token shard." }
+  },
+  {
+    title: "8 · Concat + out-proj",
+    why: "Concatenate heads and apply W_O. Each token is a d-vector on its owning GPU.",
+    mode: "seq", content: "hidden",
+    m0: "concat + out-proj",
+    m1: "concat + out-proj",
+    formula: "[L/P, H, d_h] → [L/P, d]",
+    rule: "Local on the token cut.",
+    mantra: "Heads → residual width",
+    tokenView: { kind: "hidden", title: "d-dim state, sequence still sharded", hint: "Home layout is the token cut." }
+  },
+  {
+    title: "9 · FFN",
+    why: "FFN is position-wise. Stay on the token cut. Next layer repeats the same pattern.",
+    mode: "seq", content: "hidden",
+    m0: "local FFN",
+    m1: "local FFN",
+    formula: "comm = 0",
+    rule: "Two flips per layer. Token cut is home.",
+    mantra: "Home: token cut",
+    tokenView: { kind: "hidden", title: "Ready for the next layer", hint: "Token cut for memory · head cut for attention · two all-to-alls." }
+  }
+];
+
+let i = 0;
+
+function owns(gpu, t, h, mode) {
+  if (mode === "seq") return gpu === 0 ? t < 4 : t >= 4;
+  return gpu === 0 ? h < 2 : h >= 2;
+}
+
+function paintBoard(el, gpu, mode, content) {
+  el.innerHTML = "";
+  const corner = document.createElement("div");
+  corner.className = "cell lab"; corner.textContent = "H\\\\T";
+  el.appendChild(corner);
+  for (let t = 0; t < 8; t++) {
+    const d = document.createElement("div");
+    d.className = "cell lab"; d.textContent = WORDS[t].slice(0, 4);
+    el.appendChild(d);
+  }
+  for (let h = 0; h < 4; h++) {
+    const lab = document.createElement("div");
+    lab.className = "cell lab"; lab.textContent = "H" + h;
+    el.appendChild(lab);
+    for (let t = 0; t < 8; t++) {
+      const c = document.createElement("div");
+      const mine = owns(gpu, t, h, mode);
+      if (!mine) {
+        c.className = "cell empty"; c.textContent = "·";
+      } else if (content === "empty") {
+        c.className = "cell";
+        c.style.background = "#CFC6B6";
+        c.textContent = WORDS[t][0];
+      } else if (content === "qkv") {
+        c.className = "cell";
+        c.style.background = HC[h];
+        c.style.boxShadow = gpu === 0
+          ? "inset 0 0 0 2px rgba(27,63,139,.85)"
+          : "inset 0 0 0 2px rgba(184,134,74,.9)";
+        c.textContent = "Q";
+      } else if (content === "out") {
+        c.className = "cell out-mark";
+        c.style.background = HC[h];
+        c.textContent = "O";
+      } else {
+        c.className = "cell";
+        c.style.background = "linear-gradient(90deg, var(--h0), var(--h1), var(--h2), var(--h3))";
+        c.style.boxShadow = gpu === 0
+          ? "inset 0 0 0 2px rgba(27,63,139,.85)"
+          : "inset 0 0 0 2px rgba(184,134,74,.9)";
+        c.textContent = h === 0 ? "d" : "";
+        if (h > 0) c.style.opacity = "0.22";
+      }
+      el.appendChild(c);
+    }
+  }
+}
+
+function paintTokens(view) {
+  const panel = document.getElementById("tokenPanel");
+  const row = document.getElementById("tokRow");
+  if (!view) { panel.hidden = true; return; }
+  panel.hidden = false;
+  document.getElementById("tokenTitle").textContent = view.title;
+  document.getElementById("tokenHint").textContent = view.hint;
+  row.innerHTML = "";
+  for (let t = 0; t < 8; t++) {
+    const card = document.createElement("div");
+    card.className = "tok-card";
+    const w = document.createElement("div");
+    w.className = "w"; w.textContent = WORDS[t];
+    card.appendChild(w);
+    const bar = document.createElement("div");
+    bar.className = "bar";
+    const lab = document.createElement("div");
+    lab.className = "lab2";
+    const on0 = t < 4;
+
+    if (view.kind === "raw") {
+      bar.style.gridTemplateColumns = "1fr";
+      bar.innerHTML = `<i style="background:#CFC6B6"></i>`;
+      lab.textContent = on0 ? "GPU0" : "GPU1";
+    } else if (view.kind === "vec") {
+      bar.style.gridTemplateColumns = "1fr";
+      bar.innerHTML = `<i style="background:linear-gradient(90deg,#9aa7b8,#c5ccd6)"></i>`;
+      lab.textContent = "d-dim Q";
+    } else if (view.kind === "heads") {
+      bar.style.gridTemplateColumns = "repeat(4,1fr)";
+      bar.innerHTML = ["var(--h0)","var(--h1)","var(--h2)","var(--h3)"].map(c => `<i style="background:${c}"></i>`).join("");
+      lab.textContent = on0 ? "all H @0" : "all H @1";
+    } else if (view.kind === "heads-partial" || view.kind === "out-partial") {
+      bar.style.gridTemplateColumns = "repeat(4,1fr)";
+      const isOut = view.kind === "out-partial";
+      bar.innerHTML = ["var(--h0)","var(--h1)","var(--h2)","var(--h3)"].map((c, h) => {
+        const edge = isOut ? "box-shadow:inset 0 0 0 1px #7B6892;" : "";
+        return `<i style="background:${c};${edge}"></i>`;
+      }).join("");
+      lab.textContent = isOut ? "O split" : "H split";
+    } else if (view.kind === "attn") {
+      bar.style.gridTemplateColumns = "repeat(8,1fr)";
+      const scores = t === 7 ? [1,1,2,2,3,4,5,8] : [2,2,2,2,2,2,2,2];
+      const max = Math.max(...scores);
+      bar.innerHTML = scores.map(s => {
+        const a = 0.2 + 0.8 * (s / max);
+        return `<i style="background:rgba(91,141,239,${a})"></i>`;
+      }).join("");
+      lab.textContent = t === 7 ? "scores" : "…";
+    } else if (view.kind === "out-full") {
+      bar.style.gridTemplateColumns = "repeat(4,1fr)";
+      bar.innerHTML = ["var(--h0)","var(--h1)","var(--h2)","var(--h3)"].map(c =>
+        `<i style="background:${c};box-shadow:inset 0 0 0 1px #7B6892"></i>`
+      ).join("");
+      lab.textContent = on0 ? "O×4@0" : "O×4@1";
+    } else {
+      bar.style.gridTemplateColumns = "1fr";
+      bar.innerHTML = `<i style="background:linear-gradient(90deg,var(--h0),var(--h1),var(--h2),var(--h3))"></i>`;
+      lab.textContent = "d-dim h";
+    }
+    card.appendChild(bar);
+    card.appendChild(lab);
+    row.appendChild(card);
+  }
+}
+
+function render() {
+  const s = STEPS[i];
+  document.getElementById("idx").textContent = (i + 1) + " / " + STEPS.length;
+  document.getElementById("title").textContent = s.title;
+  document.getElementById("why").innerHTML = s.why;
+  document.getElementById("m0").textContent = s.m0;
+  document.getElementById("m1").textContent = s.m1;
+  document.getElementById("formula").textContent = s.formula;
+  document.getElementById("rule").innerHTML = s.rule;
+  document.getElementById("mantra").textContent = s.mantra;
+  paintBoard(document.getElementById("g0"), 0, s.mode, s.content);
+  paintBoard(document.getElementById("g1"), 1, s.mode, s.content);
+  paintTokens(s.tokenView);
+
+  const pips = document.getElementById("pips");
+  pips.innerHTML = "";
+  STEPS.forEach((_, k) => {
+    const p = document.createElement("div");
+    p.className = "pip" + (k === i ? " on" : k < i ? " done" : "");
+    p.textContent = (k + 1) + " " + NAMES[k];
+    p.onclick = () => { i = k; render(); };
+    pips.appendChild(p);
+  });
+}
+
+document.getElementById("next").onclick = () => { i = Math.min(STEPS.length - 1, i + 1); render(); };
+document.getElementById("prev").onclick = () => { i = Math.max(0, i - 1); render(); };
+document.getElementById("reset").onclick = () => { i = 0; render(); };
+window.addEventListener("keydown", (e) => {
+  const tag = (e.target && e.target.tagName) || "";
+  if (tag === "INPUT" || tag === "TEXTAREA") return;
+  if (e.key === " " || e.key === "ArrowRight") { e.preventDefault(); document.getElementById("next").click(); }
+  if (e.key === "ArrowLeft") { e.preventDefault(); document.getElementById("prev").click(); }
+});
+render();
+
+// progress + toc
+const progress = document.getElementById("progress");
+const tocLinks = [...document.querySelectorAll("nav.toc a")];
+const sections = tocLinks.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+
+function onScroll() {
+  const scrollTop = window.scrollY;
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.width = (docH > 0 ? (scrollTop / docH) * 100 : 0) + "%";
+
+  let active = 0;
+  sections.forEach((sec, idx) => {
+    if (sec.getBoundingClientRect().top < 140) active = idx;
+  });
+  tocLinks.forEach((a, idx) => a.classList.toggle("active", idx === active));
+}
+window.addEventListener("scroll", onScroll, { passive: true });
+onScroll();
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
