@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Cosmos 3 技术报告深读：双塔 MoT 如何用同一个注意力把理解与生成缝在一起，干净的与噪声的 token 之辩，以及物理时间轴上的 FPS 调制。">
+<meta name="author" content="pinyu">
+<meta property="og:title" content="Cosmos 3：一个模型，两种大脑">
+<meta property="og:description" content="双塔 MoT、干净的与噪声的 token、物理时间轴——NVIDIA 全模态世界模型的技术细节深读。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pinyu.ai/p/cosmos3.html">
+<title>Cosmos 3：一个模型，两种大脑</title>
+<link rel="canonical" href="https://pinyu.ai/p/cosmos3.html">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --ochre: #E8B830;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --blue: #5A7A90;
+    --blue-bg: #EAF0F5;
+    --purple: #7B6892;
+    --purple-bg: #F0ECF5;
+    --mono: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+    --serif: 'EB Garamond', Georgia, serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --content-w: 720px;
+    --wide-w: 880px;
+    --ar: #1B3F8B;       /* Reasoner tower */
+    --dm: #B8864A;       /* Generator tower */
+    --clean: #4A8060;    /* clean token */
+    --noisy: #C0503A;    /* noisy token */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.88;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--accent); z-index: 999;
+    transition: width 80ms linear; pointer-events: none;
+  }
+
+  .topbar {
+    position: fixed; top: 2px; left: 0; right: 0; z-index: 100;
+    padding: 10px 24px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250, 246, 238, 0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229, 221, 208, 0.6);
+  }
+  .topbar a { color: var(--text-3); text-decoration: none; transition: color 0.15s; }
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  .container { max-width: var(--content-w); margin: 0 auto; padding: 0 24px; }
+  .container.wide { max-width: var(--wide-w); }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+  @keyframes enter { from { opacity: 0; transform: translateY(8px); } }
+  header .eyebrow {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.25rem; font-weight: 500;
+    line-height: 1.22; letter-spacing: -0.02em;
+    margin-bottom: 24px; max-width: 640px;
+  }
+  header .subtitle {
+    font-size: 1.02rem; color: var(--text-2);
+    line-height: 1.9; max-width: 620px;
+  }
+  header .meta {
+    margin-top: 28px; display: flex; gap: 24px; flex-wrap: wrap;
+    font-size: 0.75rem; color: var(--text-3);
+  }
+  header .meta a {
+    color: var(--text-3); text-decoration: none;
+    border-bottom: 1px solid var(--border); transition: all 0.15s;
+  }
+  header .meta a:hover { color: var(--text-1); border-color: var(--text-1); }
+
+  nav.toc {
+    position: fixed; top: 100px;
+    left: max(16px, calc((100vw - var(--content-w)) / 2 - 240px));
+    width: 200px; font-size: 0.7rem; line-height: 1.55; z-index: 50;
+  }
+  nav.toc a {
+    display: block; padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3); text-decoration: none; transition: all 0.15s;
+  }
+  nav.toc a:hover, nav.toc a.active {
+    color: var(--text-1); border-color: var(--text-1);
+  }
+
+  .thesis, .takeaway {
+    background: #1A2540; color: #F5F0EB;
+    padding: 36px 40px; border-radius: 16px;
+  }
+  .thesis { margin-bottom: 72px; }
+  .takeaway { margin: 72px 0 24px; }
+  .thesis .thesis-label, .takeaway .thesis-label {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 14px;
+  }
+  .thesis p, .takeaway p { font-size: 1.03rem; line-height: 1.9; }
+  .thesis p + p, .takeaway p + p { margin-top: 16px; }
+  .thesis strong { color: var(--ochre); }
+  .takeaway strong { color: #8EC5A0; }
+
+  article { animation: enter 0.6s ease 0.08s both; }
+  section { margin-bottom: 72px; }
+  .section-num {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 8px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.52rem; font-weight: 600;
+    line-height: 1.32; letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  section > .section-hook {
+    font-size: 0.85rem; color: var(--text-3);
+    margin-bottom: 24px; line-height: 1.62;
+  }
+  h3 {
+    font-size: 1.08rem; font-weight: 600;
+    margin: 36px 0 12px; letter-spacing: -0.01em;
+  }
+  p { margin-bottom: 18px; font-size: 1rem; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 700; color: #162E66; }
+  a.inline {
+    color: var(--accent); text-decoration: none;
+    border-bottom: 1px solid rgba(27, 63, 139, 0.25);
+  }
+  a.inline:hover { border-color: var(--accent); }
+
+  blockquote {
+    margin: 28px 0; padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.035);
+    color: var(--text-2); border-radius: 0 10px 10px 0;
+    font-size: 0.96rem; line-height: 1.88;
+  }
+  blockquote p { margin-bottom: 0; }
+
+  .sep { border: 0; height: 1px; background: var(--border); margin: 72px 0; }
+
+  .note {
+    padding: 20px 24px; border-radius: 12px; margin: 24px 0;
+    font-size: 0.88rem; line-height: 1.82; border-left: 3px solid;
+  }
+  .note-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .note-neutral { background: #F2EDE4; border-color: var(--border); color: var(--text-2); }
+  .note-neutral .note-label { color: var(--text-3); }
+  .note-insight { background: var(--amber-bg); border-color: var(--amber); }
+  .note-insight .note-label { color: var(--amber); }
+  .note-ok { background: var(--green-bg); border-color: var(--green); }
+  .note-ok .note-label { color: var(--green); }
+  .note-problem { background: var(--red-bg); border-color: var(--red); }
+  .note-problem .note-label { color: var(--red); }
+
+  .bullet-list { margin: 24px 0; padding-left: 1.2rem; }
+  .bullet-list li { margin: 10px 0; color: var(--text-2); }
+
+  code, .mono {
+    font-family: var(--mono); font-size: 0.86em;
+    background: rgba(26, 23, 20, 0.05); padding: 0.1em 0.35em; border-radius: 4px;
+  }
+
+  .code-block {
+    position: relative; margin: 28px 0;
+    background: #1A2540; border-radius: 12px; overflow: hidden;
+  }
+  .code-block .code-label {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-family: var(--mono); font-size: 0.68rem; color: rgba(232,228,220,0.55);
+    letter-spacing: 0.04em;
+  }
+  .code-block .copy-btn {
+    background: transparent; border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(232,228,220,0.7); border-radius: 6px;
+    padding: 3px 10px; font-size: 0.68rem; cursor: pointer;
+    font-family: var(--sans); transition: all 0.15s;
+  }
+  .code-block .copy-btn:hover { border-color: rgba(255,255,255,0.3); color: #fff; }
+  .code-block .copy-btn.copied { border-color: var(--green); color: #8EC5A0; }
+  .code-block pre {
+    margin: 0; padding: 18px 20px; overflow-x: auto;
+    font-family: var(--mono); font-size: 0.78rem; line-height: 1.7;
+    color: #E8E4DC; background: transparent;
+  }
+  .code-block .cm { color: #7A8899; }
+  .code-block .kw { color: #7EB8E8; }
+  .code-block .fn { color: #E8C57A; }
+  .code-block .st { color: #8EC5A0; }
+  .code-block .nu { color: #E8A070; }
+
+  pre.output {
+    margin: 16px 0 28px; padding: 16px 20px;
+    background: #F3EEE4; color: var(--text-2);
+    border: 1px solid var(--border); border-radius: 10px;
+    font-family: var(--mono); font-size: 0.78rem; line-height: 1.7;
+    overflow-x: auto;
+  }
+
+  .rule-box {
+    margin: 28px 0; padding: 22px 24px;
+    border: 1px solid var(--border); border-radius: 14px;
+    background: var(--surface);
+  }
+  .rule-box .k {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+  }
+  .rule-box p { margin: 0; font-size: 1rem; line-height: 1.75; }
+  .rule-box p + p { margin-top: 10px; }
+
+  .concept-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;
+    margin: 28px 0;
+  }
+  .concept-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px;
+  }
+  .concept-card h4 {
+    font-family: var(--mono); font-size: 0.8rem; font-weight: 700;
+    color: var(--accent); margin-bottom: 6px;
+  }
+  .concept-card p {
+    font-size: 0.84rem; color: var(--text-2); margin: 0; line-height: 1.6;
+  }
+
+  .map-table {
+    width: 100%; border-collapse: collapse; margin: 28px 0;
+    font-size: 0.88rem; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+  }
+  .map-table th, .map-table td {
+    text-align: left; padding: 12px 14px;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .map-table th {
+    background: #F3EEE4; font-size: 0.72rem; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--text-3); font-weight: 650;
+  }
+  .map-table tr:last-child td { border-bottom: 0; }
+  .map-table td:first-child { font-weight: 600; color: var(--text-1); }
+  .map-table code { font-size: 0.78em; }
+
+  /* ===== Fragmented vs Unified figure ===== */
+  .fig-frag {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; margin: 32px 0;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .ff-side { padding: 24px 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .ff-side.frag { background: rgba(192, 80, 58, 0.04); }
+  .ff-side.unified { background: rgba(74, 128, 96, 0.04); }
+  .ff-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .ff-side.frag .ff-label { color: var(--red); }
+  .ff-side.unified .ff-label { color: var(--green); }
+  .ff-diagram { width: 100%; }
+  .ff-diagram svg { width: 100%; height: auto; display: block; }
+  .ff-caption { font-size: 0.82rem; color: var(--text-2); line-height: 1.65; text-align: center; max-width: 250px; }
+  .ff-divider {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 12px;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    background: #F7F2E8;
+    font-size: 0.72rem; font-weight: 700; color: var(--text-3);
+    letter-spacing: 0.08em; text-transform: uppercase; min-width: 40px;
+  }
+
+  /* ===== Generic demo chrome ===== */
+  .demo {
+    margin: 36px 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(26, 23, 20, 0.04);
+  }
+  .demo-head {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #FFFCF7 0%, #FAF6EE 100%);
+  }
+  .demo-head h3 { margin: 0 0 4px; font-size: 1rem; }
+  .demo-head p { margin: 0; font-size: 0.82rem; color: var(--text-3); line-height: 1.55; }
+  .demo-bar {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    background: #FFFCF7;
+  }
+  .demo-bar button {
+    background: #fff; color: var(--text-1);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 7px 12px; cursor: pointer; font-size: 0.8rem;
+    font-family: var(--sans); transition: all 0.15s;
+  }
+  .demo-bar button:hover:not(:disabled) { border-color: #cfc4b2; }
+  .demo-bar button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .demo-bar button.primary {
+    border-color: var(--accent); color: var(--accent); background: var(--blue-bg);
+  }
+  .demo-bar button.primary:hover:not(:disabled) { background: #dce8f5; }
+  .demo-bar .step-label {
+    margin-left: auto; font-family: var(--mono);
+    font-size: 0.75rem; color: var(--accent); font-weight: 600;
+  }
+  .demo-body { padding: 16px 18px 20px; }
+  .pips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .pip {
+    font-size: 0.68rem; padding: 4px 9px; border-radius: 999px;
+    border: 1px solid var(--border); color: var(--text-3); cursor: pointer;
+    background: #fff; font-family: var(--sans);
+  }
+  .pip.on { border-color: var(--accent); color: var(--accent); background: var(--blue-bg); }
+  .pip.done { color: #a39888; }
+  .demo-title {
+    font-family: var(--serif); font-size: 1.2rem; font-weight: 600;
+    margin-bottom: 6px; line-height: 1.3;
+  }
+  .demo-why {
+    color: var(--text-2); font-size: 0.9rem; margin-bottom: 16px; line-height: 1.7;
+  }
+  .demo-why b { color: var(--text-1); }
+  .demo-rule {
+    margin-top: 14px; padding: 12px 14px; border-radius: 10px;
+    background: #F7F2E8; border-left: 3px solid var(--green);
+    color: var(--text-2); font-size: 0.88rem; line-height: 1.7;
+  }
+  .demo-rule b { color: var(--green); }
+  .demo-rule.danger { background: var(--red-bg); border-left-color: var(--red); }
+  .demo-rule.danger b { color: var(--red); }
+  .demo-mantra {
+    text-align: center; margin: 14px 0 0;
+    font-family: var(--serif); font-size: 1.05rem; font-weight: 600;
+    color: var(--text-1);
+  }
+
+  /* ===== Token stream visualization ===== */
+  .stream { display: flex; flex-direction: column; gap: 14px; margin: 18px 0; }
+  .stream-lane { display: flex; flex-direction: column; gap: 6px; }
+  .stream-lane-label {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-3);
+  }
+  .stream-tokens { display: flex; gap: 4px; flex-wrap: wrap; }
+  .tok {
+    min-width: 34px; height: 34px; padding: 0 6px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 7px; border: 1.5px solid var(--border);
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 600;
+    background: #fff; color: var(--text-2);
+    transition: all 0.25s;
+  }
+  .tok.lang { border-color: rgba(27,63,139,0.35); color: var(--ar); background: var(--blue-bg); }
+  .tok.special { border-style: dashed; color: var(--text-3); background: #F7F2E8; }
+  .tok.vision.clean { border-color: rgba(74,128,96,0.5); color: var(--clean); background: var(--green-bg); }
+  .tok.vision.noisy { border-color: rgba(192,80,58,0.45); color: var(--noisy); background: var(--red-bg); }
+  .tok.audio.clean { border-color: rgba(74,128,96,0.5); color: var(--clean); background: var(--green-bg); border-style: dotted; }
+  .tok.audio.noisy { border-color: rgba(192,80,58,0.45); color: var(--noisy); background: var(--red-bg); border-style: dotted; }
+  .tok.action.clean { border-color: rgba(123,104,146,0.55); color: var(--purple); background: var(--purple-bg); }
+  .tok.action.noisy { border-color: rgba(192,80,58,0.45); color: var(--noisy); background: var(--red-bg); }
+  .tok.dim { opacity: 0.35; }
+  .tok.gap { border: none; background: transparent; min-width: 14px; }
+  .stream-legend {
+    display: flex; flex-wrap: wrap; gap: 10px 16px;
+    font-size: 0.72rem; color: var(--text-3); margin-top: 4px;
+  }
+  .stream-legend .lg { display: inline-flex; align-items: center; gap: 6px; }
+  .stream-legend .sw {
+    width: 12px; height: 12px; border-radius: 3px; border: 1.5px solid var(--border);
+    display: inline-block;
+  }
+
+  /* ===== Attention mask grid ===== */
+  .mask-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 20px 0; }
+  .mask-grid { display: grid; gap: 3px; }
+  .mcell {
+    width: 30px; height: 30px; border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 0.55rem; color: transparent;
+    transition: all 0.3s; border: 1px solid transparent;
+  }
+  .mcell.allow { background: var(--green-bg); border-color: rgba(74,128,96,0.35); }
+  .mcell.deny  { background: var(--red-bg);   border-color: rgba(192,80,58,0.25); }
+  .mcell.axis  { background: transparent; border: none; color: var(--text-3); font-size: 0.58rem; }
+  .mask-caption { font-size: 0.82rem; color: var(--text-2); line-height: 1.65; text-align: center; max-width: 480px; }
+
+  /* ===== Tower diagram ===== */
+  .tower-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+  .tower-card {
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 16px; background: #FFFCF7;
+    transition: all 0.25s;
+  }
+  .tower-card.ar { border-top: 3px solid var(--ar); }
+  .tower-card.dm { border-top: 3px solid var(--dm); }
+  .tower-card.inactive { opacity: 0.4; border-style: dashed; }
+  .tower-card h4 { margin: 0 0 8px; font-size: 0.84rem; font-weight: 650; display: flex; gap: 8px; align-items: center; }
+  .tower-card .dot { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+  .tower-card p { font-size: 0.82rem; color: var(--text-2); margin: 0; line-height: 1.6; }
+  .tower-fields { display: grid; gap: 5px; margin-top: 10px; font-family: var(--mono); font-size: 0.7rem; }
+  .tower-fields .fld {
+    display: flex; justify-content: space-between; gap: 8px;
+    padding: 4px 8px; border-radius: 6px; background: rgba(26,23,20,0.03);
+  }
+  .tower-fields .fld .k { color: var(--text-3); }
+  .tower-fields .fld .v { color: var(--text-1); font-weight: 600; }
+  .tower-fields .fld.hl .v { color: var(--clean); }
+
+  /* ===== FPS demo ===== */
+  .fps-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .fps-controls button {
+    background: #fff; color: var(--text-2);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 7px 14px; cursor: pointer; font-size: 0.8rem;
+    font-family: var(--sans); transition: all 0.15s;
+  }
+  .fps-controls button.on {
+    border-color: var(--accent); color: var(--accent); background: var(--blue-bg); font-weight: 600;
+  }
+  .fps-axis { position: relative; height: 120px; margin: 10px 0 6px; }
+  .fps-line {
+    position: absolute; left: 0; right: 0; top: 58px; height: 2px;
+    background: var(--border);
+  }
+  .fps-tick {
+    position: absolute; top: 44px; width: 2px; height: 30px;
+    background: var(--accent); border-radius: 1px;
+    transition: left 0.35s;
+  }
+  .fps-tick span {
+    position: absolute; top: 34px; left: 50%; transform: translateX(-50%);
+    font-family: var(--mono); font-size: 0.62rem; color: var(--text-2);
+    white-space: nowrap;
+  }
+  .fps-time {
+    position: absolute; top: 84px; font-family: var(--mono);
+    font-size: 0.62rem; color: var(--text-3); transform: translateX(-50%);
+  }
+  .fps-eq {
+    margin-top: 14px; padding: 12px 16px; border-radius: 10px;
+    background: #F7F2E8; font-family: var(--mono); font-size: 0.78rem;
+    color: var(--text-2); text-align: center;
+  }
+  .fps-eq b { color: var(--accent); }
+
+  footer.page-end {
+    padding: 48px 0 80px;
+    border-top: 1px solid var(--border);
+    font-size: 0.82rem; color: var(--text-3);
+  }
+  footer.page-end a { color: var(--text-2); }
+  footer.page-end ul { margin: 12px 0 0; padding-left: 1.1rem; line-height: 1.9; }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); border: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header, article { animation: none; }
+    .tok, .mcell, .tower-card, .fps-tick { transition: none; }
+  }
+  @media (max-width: 1120px) { nav.toc { display: none; } }
+  @media (max-width: 720px) {
+    header h1 { font-size: 1.85rem; }
+    .fig-frag { grid-template-columns: 1fr; }
+    .fig-frag .ff-divider {
+      padding: 10px; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); border-left: 0; border-right: 0;
+    }
+    .concept-grid { grid-template-columns: 1fr; }
+    .thesis, .takeaway { padding: 28px 24px; }
+    .demo-bar .step-label { width: 100%; margin-left: 0; }
+    .tower-row { grid-template-columns: 1fr; }
+    .mcell { width: 22px; height: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%" aria-hidden="true"></div>
+
+<div class="topbar">
+  <a href="/" class="home-link">← pinyu.ai</a>
+  <span style="color:var(--text-3)">AI · 世界模型</span>
+</div>
+
+<nav class="toc" id="toc" aria-label="目录">
+  <a href="#idea">核心问题</a>
+  <a href="#frag">拼图 vs 统一</a>
+  <a href="#mot">双塔 MoT</a>
+  <a href="#modes">干净与噪声</a>
+  <a href="#time">物理时间轴</a>
+  <a href="#training">训练课程</a>
+  <a href="#nonobvious">反直觉处</a>
+  <a href="#scope">边界</a>
+  <a href="#check">迁移检验</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">NVIDIA Cosmos 3 · 技术报告深读</div>
+    <h1>一个模型，两种大脑</h1>
+    <p class="subtitle">Cosmos 3 把视觉语言模型、视频生成器、世界模拟器、机器人策略缝进同一组权重。它没有发明新任务——它发现这些任务本来就是同一个东西的不同切面。这篇文章讲清楚它是怎么缝的。</p>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.07</span>
+      <a href="https://research.nvidia.com/labs/cosmos-lab/cosmos3/technical-report.pdf" target="_blank" rel="noopener noreferrer">技术报告（139 页）</a>
+      <a href="https://github.com/nvidia/cosmos" target="_blank" rel="noopener noreferrer">代码</a>
+    </div>
+  </header>
+
+  <div class="thesis" id="idea">
+    <div class="thesis-label">核心逻辑链</div>
+    <p>训练物理 AI 智能体需要两种能力：<strong>理解</strong>（从观测推断语义与动力学）和<strong>生成</strong>（预测世界的未来演化与行动后果）。过去它们被训成两批互不相干的模型——视觉语言模型负责理解，扩散模型负责生成，VLA 负责动作。</p>
+    <p>Cosmos 3 的赌注：这不是两类任务，而是<strong>同一个因果结构的两个方向</strong>。动作是因，世界状态变化是果；理解是从果推因，生成是从因推果。如果把语言、视觉、音频、动作全部编码成 token 排进一条序列，那么"理解 vs 生成"就退化为一个简单问题：<strong>哪些 token 是已知的（干净），哪些 token 是待预测的（加噪）？</strong></p>
+    <p>答案是一个双塔 Mixture-of-Transformers：Reasoner 塔做因果自回归，Generator 塔做扩散去噪，两塔只在共享注意力里相遇。六种看似无关的任务——问答、文生图、视频续写、正动力学、逆动力学、机器人策略——全部是同一条 token 序列上干净/噪声模式的不同排列。</p>
+  </div>
+
+  <article>
+
+    <!-- ============ Section 1: Fragmented vs unified ============ -->
+    <section id="frag">
+      <div class="section-num">1</div>
+      <h2>先看清它要消灭的东西</h2>
+      <p class="section-hook">旧范式的问题不是模型不够强，而是知识被切成碎片，每片都要单独收集数据、单独训练、单独维护。</p>
+
+      <p>一个饭后收拾餐桌的家用机器人，在旧范式下需要三个模型接力：视觉语言模型认出杯盘并规划，VLA 生成动作序列，世界模型模拟后果做评估。每个模型有自己的训练数据、自己的表征空间、自己的失败模式。更糟的是它们互相看不见对方学到的东西——世界模型懂重力，但这个知识漏不进规划器。</p>
+
+      <div class="fig-frag" role="figure" aria-label="碎片管线与统一模型的对比">
+        <div class="ff-side frag">
+          <div class="ff-label">旧范式：碎片管线</div>
+          <div class="ff-diagram">
+            <svg viewBox="0 0 260 190" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="14" width="240" height="44" rx="8" fill="#F8ECE8" stroke="#C0503A" stroke-width="1.5"/>
+              <text x="130" y="33" text-anchor="middle" font-size="11" font-weight="600" fill="#C0503A">视觉语言模型</text>
+              <text x="130" y="48" text-anchor="middle" font-size="9" fill="#C0503A" opacity="0.75">理解 · 规划</text>
+              <rect x="10" y="74" width="240" height="44" rx="8" fill="#F8ECE8" stroke="#C0503A" stroke-width="1.5"/>
+              <text x="130" y="93" text-anchor="middle" font-size="11" font-weight="600" fill="#C0503A">VLA / 世界动作模型</text>
+              <text x="130" y="108" text-anchor="middle" font-size="9" fill="#C0503A" opacity="0.75">动作生成</text>
+              <rect x="10" y="134" width="240" height="44" rx="8" fill="#F8ECE8" stroke="#C0503A" stroke-width="1.5"/>
+              <text x="130" y="153" text-anchor="middle" font-size="11" font-weight="600" fill="#C0503A">前向动力学模型</text>
+              <text x="130" y="168" text-anchor="middle" font-size="9" fill="#C0503A" opacity="0.75">后果模拟</text>
+              <line x1="130" y1="58" x2="130" y2="72" stroke="#C0503A" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.6"/>
+              <line x1="130" y1="118" x2="130" y2="132" stroke="#C0503A" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="ff-caption">三套权重、三套数据管线、知识互不流通。接口处全靠人工拼接。</div>
+        </div>
+        <div class="ff-divider">vs</div>
+        <div class="ff-side unified">
+          <div class="ff-label">Cosmos 3：一套权重</div>
+          <div class="ff-diagram">
+            <svg viewBox="0 0 260 190" xmlns="http://www.w3.org/2000/svg">
+              <rect x="30" y="20" width="200" height="150" rx="12" fill="#E8F2EC" stroke="#4A8060" stroke-width="1.5"/>
+              <text x="130" y="45" text-anchor="middle" font-size="12" font-weight="600" fill="#4A8060">Cosmos 3</text>
+              <text x="130" y="62" text-anchor="middle" font-size="9" fill="#4A8060" opacity="0.8">语言 · 图像 · 视频 · 音频 · 动作</text>
+              <g font-size="9" fill="#1A1714">
+                <rect x="48" y="78" width="76" height="24" rx="5" fill="#fff" stroke="#4A8060" stroke-width="1" opacity="0.85"/>
+                <text x="86" y="94" text-anchor="middle">理解 / 问答</text>
+                <rect x="136" y="78" width="76" height="24" rx="5" fill="#fff" stroke="#4A8060" stroke-width="1" opacity="0.85"/>
+                <text x="174" y="94" text-anchor="middle">图 / 视频生成</text>
+                <rect x="48" y="112" width="76" height="24" rx="5" fill="#fff" stroke="#4A8060" stroke-width="1" opacity="0.85"/>
+                <text x="86" y="128" text-anchor="middle">正逆动力学</text>
+                <rect x="136" y="112" width="76" height="24" rx="5" fill="#fff" stroke="#4A8060" stroke-width="1" opacity="0.85"/>
+                <text x="174" y="128" text-anchor="middle">机器人策略</text>
+              </g>
+              <text x="130" y="158" text-anchor="middle" font-size="8.5" fill="#4A8060" opacity="0.8">同一组权重 · 只是 token 排布不同</text>
+            </svg>
+          </div>
+          <div class="ff-caption">理解重力学到的表征，生成视频时直接可用；策略学到的动作先验，模拟时直接可用。</div>
+        </div>
+      </div>
+
+      <p>这不只是工程上的省事。报告里有一个直接证据：把 Generator 的理解塔从通用 Qwen3-VL 换成在物理 AI 数据上训练过的 Cosmos3 Reasoner，机器人域的生成质量分数从 66.5 涨到 71.3（+4.8），自动驾驶域 +2.3——而生成器本身的参数、数据、算力完全没变。<strong>理解侧学到的物理常识，透过共享注意力直接变成了生成侧的质量。</strong>碎片管线里这种迁移是不存在的。</p>
+
+      <p>于是真正的问题变成：</p>
+
+      <div class="rule-box">
+        <div class="k">真正的问题</div>
+        <p>自回归（下一个 token）和扩散（迭代去噪）是两种完全不同的生成数学。<strong>如何让它们共享一个 transformer，而不互相干扰？</strong></p>
+      </div>
+    </section>
+
+    <hr class="sep">
+
+    <!-- ============ Section 2: MoT ============ -->
+    <section id="mot">
+      <div class="section-num">2</div>
+      <h2>双塔 MoT：一个注意力，两套参数</h2>
+      <p class="section-hook">Mixture-of-Transformers 的答案：每层装两套 LayerNorm 和 MLP，注意力操作符共享但注意力掩码不对称。</p>
+
+      <p>输入序列被切成前后两段。前半段叫 <strong>AR 子序列</strong>：语言 token，加上经 ViT 编码的图像/视频 token——这是"思考"用的。后半段叫 <strong>扩散子序列</strong>：经 VAE 编码的图像/视频 token、音频 token、动作 token——这是"做梦"用的，训练时被加上噪声，模型要学会去噪。</p>
+
+      <p>每个 transformer 层里有两套独立参数：AR token 走 Reasoner 塔的 LayerNorm、注意力投影和 MLP；扩散 token 走 Generator 塔的另一套。两套都从同一个预训练视觉语言模型的权重初始化——所以 Generator 塔白捡了语言模型全部的世界知识，不用从零学"什么是杯子"。</p>
+
+      <p>关键在注意力。两塔在注意力里相遇，但相遇方式是<strong>不对称</strong>的：</p>
+
+      <div class="code-block">
+        <div class="code-label">
+          <span>双流联合注意力（报告 Eq. 7–8）</span>
+          <button class="copy-btn" type="button" data-copy="attn">Copy</button>
+        </div>
+        <pre id="code-attn"><span class="cm"># AR 段：标准因果自注意力，只看自己段内、只看过去</span>
+O_AR = <span class="fn">Attn_causal</span>(Q_AR, K_AR, V_AR)
+
+<span class="cm"># 扩散段：全双向注意力，键值是两段的拼接</span>
+O_DM = <span class="fn">Attn_full</span>(Q_DM, [K_AR ; K_DM], [V_AR ; V_DM])</pre>
+      </div>
+
+      <p>读法：扩散 token 可以随便看语言提示和其他扩散 token（双向），所以视频第 8 帧在去噪时能参考第 12 帧，时间一致性就是这么来的。但 AR token <strong>永远看不到扩散 token</strong>——条件通路保持纯粹的因果性，语言生成的能力一个字节都不会被污染。</p>
+
+      <p>下面这张注意力掩码图是整个架构最浓缩的表达。点播放键，看信息被允许怎么流动：</p>
+
+      <div class="demo" id="mask-demo" role="region" aria-label="双塔注意力掩码演示">
+        <div class="demo-head">
+          <h3>注意力掩码：谁可以看谁</h3>
+          <p>6 个 token 的迷你序列：3 个 AR（2 个语言 + ⟨BOG⟩）+ 3 个扩散（2 个带噪视频 + 1 个带噪动作）。绿色 = 允许注意，红色 = 被掩码挡住。行是提问者（Q），列是被看者（K）。</p>
+        </div>
+        <div class="demo-bar">
+          <button id="mask-prev" type="button">← 上一步</button>
+          <button id="mask-play" type="button" class="primary">▶ 播放</button>
+          <button id="mask-next" type="button">下一步 →</button>
+          <button id="mask-reset" type="button">重置</button>
+          <span class="step-label" id="mask-step-label"></span>
+        </div>
+        <div class="demo-body">
+          <div class="pips" id="mask-pips"></div>
+          <div class="demo-title" id="mask-title"></div>
+          <div class="demo-why" id="mask-why"></div>
+          <div class="mask-wrap">
+            <div class="mask-grid" id="mask-grid"></div>
+            <div class="stream-legend" aria-hidden="true">
+              <span class="lg"><span class="sw" style="background:var(--green-bg);border-color:rgba(74,128,96,0.35)"></span>允许注意</span>
+              <span class="lg"><span class="sw" style="background:var(--red-bg);border-color:rgba(192,80,58,0.25)"></span>被掩码</span>
+            </div>
+          </div>
+          <div class="demo-rule" id="mask-rule"></div>
+          <div class="sr-only" aria-live="polite" id="mask-live"></div>
+        </div>
+      </div>
+
+      <div class="note note-insight">
+        <div class="note-label">为什么不对称是必需的</div>
+        如果允许 AR token 看扩散 token，语言建模的目标函数就会被扩散噪声污染——"下一个词"的预测会依赖一堆还没去噪的连续向量，预训练 VLM 的推理能力立刻退化。反过来，扩散 token 看 AR 是零成本的：语言是条件，条件本来就该被看见。不对称掩码让两种数学各取所需。
+      </div>
+
+      <p>两塔的分工可以总结成两张卡片：</p>
+
+      <div class="tower-row">
+        <div class="tower-card ar">
+          <h4><span class="dot" style="background:var(--ar)"></span>Reasoner 塔</h4>
+          <p>处理 AR 子序列。下一个 token 预测，因果掩码。训练目标是理解与推理——问答、空间定位、时序推理、动作理解。</p>
+          <div class="tower-fields">
+            <div class="fld"><span class="k">输入</span><span class="v">语言 + ViT 视觉 token</span></div>
+            <div class="fld"><span class="k">目标</span><span class="v">next-token prediction</span></div>
+            <div class="fld"><span class="k">掩码</span><span class="v">因果（只看过去）</span></div>
+            <div class="fld hl"><span class="k">训练时</span><span class="v">Generator 塔冻结</span></div>
+          </div>
+        </div>
+        <div class="tower-card dm">
+          <h4><span class="dot" style="background:var(--dm)"></span>Generator 塔</h4>
+          <p>处理扩散子序列。流匹配目标，预测去噪速度，双向掩码。训练目标是合成——像素、声音、动作轨迹。</p>
+          <div class="tower-fields">
+            <div class="fld"><span class="k">输入</span><span class="v">VAE 视觉 + 音频 + 动作 token</span></div>
+            <div class="fld"><span class="k">目标</span><span class="v">flow matching（预测速度）</span></div>
+            <div class="fld"><span class="k">掩码</span><span class="v">双向（看全部 AR+DM）</span></div>
+            <div class="fld hl"><span class="k">训练时</span><span class="v">Reasoner 塔冻结</span></div>
+          </div>
+        </div>
+      </div>
+
+      <p>注意最后那行高亮：训练 Generator 时 Reasoner 是冻结的。语言能力是存量资产，训练生成时一分钱不花、一点险不冒。这个"轮流冻结"的编排，是统一模型不翻车的第一道保险。</p>
+    </section>
+
+    <hr class="sep">
+
+    <!-- ============ Section 3: clean vs noisy ============ -->
+    <section id="modes">
+      <div class="section-num">3</div>
+      <h2>干净的与噪声的：六种任务，一种句法</h2>
+      <p class="section-hook">这是全文最重要的一个认知转换。任务不是由架构决定的，是由 token 的干净/噪声排布决定的。</p>
+
+      <p>报告用 <code>v</code> 表示干净的视觉 token，<code>ṽ</code> 表示加噪的。一条序列永远是 <code>[AR 前缀, 扩散段]</code>，扩散段里"干净的在前、带噪的在后"。文生视频是 <code>[S_AR, ṽ₁:N]</code>；图生视频是 <code>[S_AR, v₁, ṽ₂:N]</code>——区别只是第一帧是干净还是带噪。任务切换不需要改任何架构，只需要改排布。</p>
+
+      <p>这个句法在动作模态上发挥出真正的威力。动作 token <code>aₜ</code> 被定义为从状态 <code>vₜ₋₁</code> 到 <code>vₜ</code> 的<strong>因果变量</strong>——是世界发生变化的原因。现在，把"哪一段干净、哪一段带噪"当旋钮转，三种经典问题就自动浮现了：</p>
+
+      <div class="demo" id="mode-demo" role="region" aria-label="动作三种模式演示">
+        <div class="demo-head">
+          <h3>同一个数据样本，三种学习任务</h3>
+          <p>一段机器人操作录像：帧 v₀ → 动作 a₁ → 帧 v₁ → 动作 a₂ → 帧 v₂。绿色 = 干净（已知条件），红色 = 带噪（预测目标）。切换下面的模式，注意变化的只有 token 的颜色——架构一动不动。</p>
+        </div>
+        <div class="demo-bar">
+          <button type="button" data-mode="fd" class="primary">正动力学</button>
+          <button type="button" data-mode="id">逆动力学</button>
+          <button type="button" data-mode="policy">策略</button>
+          <span class="step-label" id="mode-label"></span>
+        </div>
+        <div class="demo-body">
+          <div class="demo-title" id="mode-title"></div>
+          <div class="demo-why" id="mode-why"></div>
+          <div class="stream">
+            <div class="stream-lane">
+              <div class="stream-lane-label">时间轴 →</div>
+              <div class="stream-tokens" id="mode-tokens"></div>
+            </div>
+            <div class="stream-legend">
+              <span class="lg"><span class="sw" style="background:var(--green-bg);border-color:rgba(74,128,96,0.5)"></span>干净视频帧 v（条件）</span>
+              <span class="lg"><span class="sw" style="background:var(--red-bg);border-color:rgba(192,80,58,0.45)"></span>带噪帧 ṽ（待去噪）</span>
+              <span class="lg"><span class="sw" style="background:var(--purple-bg);border-color:rgba(123,104,146,0.55)"></span>干净动作 a（条件）</span>
+              <span class="lg"><span class="sw" style="background:var(--red-bg);border-color:rgba(192,80,58,0.45)"></span>带噪动作 ã（待去噪）</span>
+            </div>
+          </div>
+          <div class="demo-rule" id="mode-rule"></div>
+          <p class="demo-mantra" id="mode-mantra"></p>
+        </div>
+      </div>
+
+      <p>这就是"世界模型"和"策略模型"是同一个东西的确切含义：<strong>给动作预测未来（正动力学），给未来反推动作（逆动力学），两者都预测（策略）——是同一条序列上条件方向的三种取法。</strong>一个联合训练的模型在三种模式间共享结构：报告在 PushT 上做了消融，联合训练三模式的模型，逆动力学误差比单模式专训低 72%，策略覆盖率从 74.1% 升到 77.3%。</p>
+
+      <p>同样的句法一路推广，就是 Cosmos 3 的全部任务清单：</p>
+
+      <table class="map-table">
+        <thead>
+          <tr><th>任务</th><th>序列排布</th><th>谁干净 / 谁带噪</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>语言问答（VLM）</td><td><code>[S_AR]</code></td><td>只有 AR 段，扩散塔不激活</td></tr>
+          <tr><td>文生图</td><td><code>[S_AR, ṽ]</code></td><td>语言干净，图像全噪</td></tr>
+          <tr><td>文生视频+音频</td><td><code>[S_AR, ṽ₁:N, s̃]</code></td><td>视频、音频全噪</td></tr>
+          <tr><td>图/视频生视频</td><td><code>[S_AR, v₁:P, ṽ_P+1:N]</code></td><td>前 P 帧干净，后续带噪</td></tr>
+          <tr><td>视频迁移</td><td><code>[S_AR, v_ctrl, ṽ₁:N]</code></td><td>控制信号（深度/边缘/地图）干净，RGB 带噪</td></tr>
+          <tr><td>正动力学</td><td><code>[…, v, a, ṽ]</code></td><td>动作干净，未来帧带噪</td></tr>
+          <tr><td>逆动力学</td><td><code>[…, v, ã, v]</code></td><td>帧干净，中间动作带噪</td></tr>
+          <tr><td>策略</td><td><code>[…, v, ã, ṽ]</code></td><td>动作与未来帧都带噪，联合生成</td></tr>
+        </tbody>
+      </table>
+
+      <h3>动作的统一几何</h3>
+      <p>还有一个藏在动作模态里的设计，值得单独说。自动驾驶的方向盘、相机的推拉摇移、机械臂的关节、人手的抓握——控制空间完全不同，怎么放进同一个模型？Cosmos 3 的答案是：<strong>全部翻译成几何语言</strong>。任何动作都被分解为至多三个成分：自身位姿（ego pose）、末端执行器位姿（effector pose）、抓握状态。位姿变化不直接记录控制器指令（PID 参数、关节电流这类东西被刻意丢掉），而是记录相邻两帧的相对位姿变换 <code>ΔT = T⁻¹ₜ₋₁·Tₜ</code>，用 3 维平移 + 6 维旋转表示。</p>
+      <p>于是无人车是 9 维（只有 ego pose），单臂机器人 10 维（ego + 夹爪开合），双臂 20 维，人形 29 维。不同长度的向量通过各自领域的投影矩阵 <code>W_in⁽ᵏ⁾</code> 映射进同一个隐空间，共享 MoT 主干。翻译层很薄，但这就是"跨本体迁移"在工程上成立的原因——相机运动学到的"位姿变化如何改变画面"，和机械臂学到的，在几何上是同一门语言。</p>
+    </section>
+
+    <hr class="sep">
+
+    <!-- ============ Section 4: physical time axis ============ -->
+    <section id="time">
+      <div class="section-num">4</div>
+      <h2>把三种时钟拧到同一根轴上</h2>
+      <p class="section-hook">视频 24 帧每秒、音频 25 token 每秒、动作 15 赫兹——联合生成时，位置编码必须按物理时间对齐，不能按 token 序号。</p>
+
+      <p>标准的位置编码给每个 token 一个序号：第 0 个、第 1 个、第 2 个。这在纯语言里没问题。但联合生成视频+音频+动作时，"第 5 个 token"在三种模态里对应完全不同的物理时刻——视频第 5 个 latent 帧是 0.83 秒处（24 FPS 经 4 倍时间压缩），音频第 5 个 token 是 0.2 秒处。如果按序号对齐，模型学到的时间对应关系就是错的。</p>
+
+      <p>Cosmos 3 改造了 3D MRoPE：时间轴不再数 token，而是<strong>数物理时间</strong>。每种模态有一个"每秒步数"（TPS），位置增量按 <code>δt = TPS_base / TPS</code> 缩放。基准是视频的 6（24 FPS ÷ 4 倍压缩）。于是 30 FPS 的视频每帧走 0.8 格，16 FPS 的每帧走 1.5 格——同样的真实时长，占据同样的位置区间。</p>
+
+      <div class="demo" id="fps-demo" role="region" aria-label="FPS 调制演示">
+        <div class="demo-head">
+          <h3>FPS 调制：位置间距反映真实时间</h3>
+          <p>切换帧率，观察同样 5 帧在位置轴上占据的区间如何缩放。16 FPS 的 5 帧覆盖更长的真实时间，所以间距更宽。</p>
+        </div>
+        <div class="demo-body">
+          <div class="fps-controls" role="group" aria-label="选择帧率">
+            <button type="button" data-fps="16">16 FPS</button>
+            <button type="button" data-fps="24" class="on">24 FPS（基准）</button>
+            <button type="button" data-fps="30">30 FPS</button>
+          </div>
+          <div class="fps-axis" id="fps-axis">
+            <div class="fps-line"></div>
+          </div>
+          <div class="fps-eq" id="fps-eq"></div>
+          <div class="demo-rule" id="fps-rule">
+            消融实验：只用文本告诉模型目标帧率，运动保真度 0.72；只用位置调制，0.74；<b>两者叠加 0.76</b>——文本通道和位置通道学到的是互补的约束。
+          </div>
+        </div>
+      </div>
+
+      <p>这个位置编码章节里还埋着一个非常诚实的工程细节。扩散 token 的时间索引本可以从 AR 段末尾紧接着编号——但这样最后一个语言 token 和第一帧视觉 token 的时间嵌入几乎相同，模型分不清"语言结束了、画面开始了"，大模型上会出现画面过饱和和棋盘格伪影。修复方法朴素得可爱：<strong>在位置空间里硬插一个 15000 的空档</strong>。不加参数、不改架构，只是在"语言"和"画面"之间留出一段位置上的缓冲带，过渡信号立刻变清晰。这类"位置编码当设计变量用"的手法，是这份报告里反复出现的味道。</p>
+    </section>
+
+    <hr class="sep">
+
+    <!-- ============ Section 5: training ============ -->
+    <section id="training">
+      <div class="section-num">5</div>
+      <h2>训练课程：先做梦，再接触地面</h2>
+      <p class="section-hook">Reasoner 和 Generator 走两条不同的课程表，但编排原则相同：先通用，再专门，而且每一步都不烧掉上一步的资产。</p>
+
+      <p>Generator 的三阶段课程是一个清晰的递进：</p>
+
+      <table class="map-table">
+        <thead>
+          <tr><th>阶段</th><th>学什么</th><th>数据规模（Nano / Super）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>预训练</td><td>图、视频、音频的通用生成先验；多分辨率混训（256p/480p/720p），token 打包进固定 7.4 万 token 的窗口</td><td>31.05T / 17.86T token</td></tr>
+          <tr><td>中训练</td><td>引入动作（25%）和视频迁移（25%）；针对性补物理 AI 稀缺场景——长时程交互、精细机器人动作、安全攸关驾驶</td><td>2.4T / 1.9T token</td></tr>
+          <tr><td>后训练</td><td>小数据精调成专才：文生图 checkpoint、图生视频 checkpoint、DROID 机器人策略</td><td>约 500 亿 token（策略）</td></tr>
+        </tbody>
+      </table>
+
+      <p>两个细节值得记住。其一，中训练才引入动作数据——<strong>先学会世界怎么演化，再学动作怎么驱动演化</strong>，顺序反了会让动作先验没有世界模型可以附着。消融证实了中训练的价值：从"见过动作的中训练 checkpoint"出发做下游适配，在相机运动、驾驶、机器人、第一人称全部四个域上都优于从预训练 checkpoint 出发，差距还不小（机器人正动力学 PSNR 23.24 → 25.52）。</p>
+
+      <p>其二，机器人策略后训练时，模型预测的不只是 32 步未来动作，还有<strong>辅助的 RGB 未来画面</strong>。动作和它的视觉后果在同一个前向过程里被联合去噪——策略网络内部自带一个世界模拟器，这就是论文标题里 "world-action model" 的实体含义。推理时为了速度可以跳过视频解码，只用 4 步扩散采样动作，两块 RTX Pro 6000 就能跑 15Hz 闭环控制。这个 checkpoint 在 RoboArena、RoboLab、MolmoSpaces 三个榜单上同时登顶。</p>
+
+      <div class="note note-neutral">
+        <div class="note-label">一致性证据</div>
+        怎么验证"策略预测的动作"和"策略想象的画面"真的互相一致？把预测的动作块拿到 RoboLab 仿真器里执行，对比真实 rollout 和模型想象的画面：第三人称视角 PSNR 23.19 dB——和专门的前向动力学模型相当。想象与行动在同一个表征里对齐，不是两个碰巧同居的子网络。
+      </div>
+    </section>
+
+    <hr class="sep">
+
+    <!-- ============ Section 6: non-obvious ============ -->
+    <section id="nonobvious">
+      <div class="section-num">6</div>
+      <h2>三个不显眼但重要的点</h2>
+
+      <h3>音频教视频学物理</h3>
+      <p>消融里最反直觉的一笔：预训练加入音频后，<strong>纯视频指标也变好了</strong>。机器人域 T2V 从 81.9 涨到 83.8，AV 域从 64.7 涨到 67.9——评测里根本不含音频。合理的解释是：碰撞有声音、材质有声音、运动节奏有声音，联合建模迫使模型把这些物理属性的表征磨得更准，视频侧白捡了这份约束。模态之间不是竞争参数，而是互相提供监督信号。</p>
+
+      <h3>理解塔是生成质量的免费杠杆</h3>
+      <p>前面提过：换一个更懂物理的理解塔，生成器不动，物理域生成质量就涨。这反过来说明统一架构里最值钱的设计不是"能同时做很多任务"，而是<strong>理解侧的每一点进步都会自动补贴生成侧</strong>。你优化 VLM 的推理能力，视频生成就跟着变好——碎片管线里这是不存在的复利。</p>
+
+      <h3>token 打包是个被低估的工程决策</h3>
+      <p>多分辨率混训的通常做法是按分辨率分桶、牺牲利用率。Cosmos 3 直接把不同分辨率、不同长度的序列打包进固定 7.4 万 token 的窗口，零填充。这个决定听起来纯工程，但它让"同一 batch 里图像、256p 视频、720p 视频共存"成为常态——分辨率无关的表征不是设计出来的，是被数据装载方式逼出来的。配比 1:1:2:1（图像 : 256p : 480p : 720p），480p 占双份，是保真度与样本多样性的权衡点。</p>
+    </section>
+
+    <hr class="sep">
+
+    <!-- ============ Section 7: boundary ============ -->
+    <section id="scope">
+      <div class="section-num">7</div>
+      <h2>这个模型的边界在哪</h2>
+      <p class="section-hook">统一不是免费的。知道它在哪里吃力，才算真正理解了它的形状。</p>
+
+      <ul class="bullet-list">
+        <li><strong>通用性输给专才的上限。</strong>联合训练在单指标上仍可能略输单模式专训（PushT 消融里正动力学 PSNR 26.22 vs 27.13）。统一买到的是迁移与复用，不是每个单项的极限。</li>
+        <li><strong>因果性是被架构锁死的。</strong>AR 段永远看不到扩散段，意味着"边生成视频边用语言自我解说"这类交错推理不在当前句法内——语言只能在开头当条件，不能在生成中途插入。</li>
+        <li><strong>动作翻译层丢弃了控制器细节。</strong>统一几何表示刻意丢掉 PID、关节电流这类低层接口信息。换来跨本体迁移，代价是部署时仍需领域特定的后处理（DROID 策略用了 Franky 控制器执行预测出的关节位置）。</li>
+        <li><strong>PSNR 是低保真度代理。</strong>报告自己承认：生成式 rollout 本来就不必逐像素复现唯一的真实未来。PSNR 高只说明时序对齐和重建保真，不等于物理正确——人评（Cosmos-HUE）和闭环成功率才是更硬的指标。</li>
+        <li><strong>Edge 变体掉队了。</strong>从零训练的 2B Edge 模型在数学和科学上碾压同级别对手（HMMT 76.3 vs 22.9），但通用域 MMLU-Pro 反而更低——课程表的取舍在通用知识上付了税。</li>
+      </ul>
+    </section>
+
+    <div class="takeaway" id="check">
+      <div class="thesis-label">迁移检验</div>
+      <p>读完之后，一个问题可以检查你是否真的拿到了这个模型的心智图：</p>
+      <p><strong>如果要做"视频配音"——输入无声视频，生成匹配的音效——在 Cosmos 3 的句法里，token 应该怎么排？哪个塔先被训练、哪个塔提供条件？</strong></p>
+      <p>（答案的形状：视频 VAE token 干净、音频 token 带噪，排在扩散段内"视觉→音频"的顺序里，<code>[S_AR, v₁:N, s̃]</code>。条件通路和正动力学是同构的——干净的东西在前，待生成的东西在后，模式只是又一次翻转干净/噪声的排布。）</p>
+      <p>这就是 Cosmos 3 真正交付的东西：<strong>任务空间被压缩成了排布空间</strong>。架构只设计一次，新任务只是新排布。</p>
+    </div>
+
+  </article>
+
+  <footer class="page-end">
+    <p>基于 <a href="https://research.nvidia.com/labs/cosmos-lab/cosmos3/technical-report.pdf" target="_blank" rel="noopener noreferrer">Cosmos 3 技术报告</a>（NVIDIA Research，2026.06，139 页）整理。所有数字均可回到报告核对：双塔注意力见 §2.3，任务句法见 §2.2 与图 4，位置编码见 §2.4，训练课程见 §4，消融见附录 E。</p>
+    <ul>
+      <li>开源：代码与 checkpoint（Super / Nano / 三个后训练变体）、5 个合成数据集、Cosmos-HUE 人评基准，OpenMDW-1.1 许可。</li>
+      <li>文中页面为交互式解读，掩码与 token 演示为概念模拟，非实际模型运行。</li>
+    </ul>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- progress bar ---------- */
+  var progress = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    progress.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  /* ---------- TOC highlight ---------- */
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll("#toc a"));
+  var sections = tocLinks
+    .map(function (a) { return document.querySelector(a.getAttribute("href")); })
+    .filter(Boolean);
+  function onToc() {
+    var y = window.scrollY + 140;
+    var current = null;
+    sections.forEach(function (s) { if (s.offsetTop <= y) current = s.id; });
+    tocLinks.forEach(function (a) {
+      a.classList.toggle("active", a.getAttribute("href") === "#" + current);
+    });
+  }
+  window.addEventListener("scroll", onToc, { passive: true });
+  onToc();
+
+  /* ---------- copy buttons ---------- */
+  var COPY = {
+    attn: "# AR 段：标准因果自注意力，只看自己段内、只看过去\nO_AR = Attn_causal(Q_AR, K_AR, V_AR)\n\n# 扩散段：全双向注意力，键值是两段的拼接\nO_DM = Attn_full(Q_DM, [K_AR ; K_DM], [V_AR ; V_DM])"
+  };
+  document.querySelectorAll(".copy-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var key = btn.getAttribute("data-copy");
+      var text = COPY[key] || "";
+      function done() {
+        btn.textContent = "Copied";
+        btn.classList.add("copied");
+        setTimeout(function () { btn.textContent = "Copy"; btn.classList.remove("copied"); }, 1600);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, done);
+      } else { done(); }
+    });
+  });
+
+  /* ================= Attention mask demo ================= */
+  var MASK_TOKENS = ["l₁", "l₂", "BOG", "ṽ₁", "ṽ₂", "ã₁"];
+  // maskMatrix[q][k] = true means allowed
+  function buildMask() {
+    var m = [];
+    for (var q = 0; q < 6; q++) {
+      m.push([]);
+      for (var k = 0; k < 6; k++) {
+        var isQAR = q < 3, isKAR = k < 3;
+        var allow;
+        if (isQAR) {
+          allow = isKAR && k <= q;           // AR: causal within AR
+        } else {
+          allow = true;                       // DM: full over AR+DM
+        }
+        m[q].push(allow);
+      }
+    }
+    return m;
+  }
+  var MASK = buildMask();
+  var maskGrid = document.getElementById("mask-grid");
+  var maskCells = [];
+  maskGrid.style.gridTemplateColumns = "repeat(7, auto)";
+  // header row
+  var corner = document.createElement("div");
+  corner.className = "mcell axis";
+  maskGrid.appendChild(corner);
+  MASK_TOKENS.forEach(function (t) {
+    var h = document.createElement("div");
+    h.className = "mcell axis";
+    h.textContent = t;
+    maskGrid.appendChild(h);
+  });
+  for (var q = 0; q < 6; q++) {
+    var label = document.createElement("div");
+    label.className = "mcell axis";
+    label.textContent = MASK_TOKENS[q];
+    maskGrid.appendChild(label);
+    maskCells.push([]);
+    for (var k = 0; k < 6; k++) {
+      var c = document.createElement("div");
+      c.className = "mcell";
+      maskGrid.appendChild(c);
+      maskCells[q].push(c);
+    }
+  }
+
+  var MASK_STEPS = [
+    {
+      title: "先看 AR 段内部：标准因果掩码",
+      why: "Q 是语言 token 时，它只能看 AR 段里自己及之前的 token。下三角绿色，上三角红色——这和任何 GPT 式模型一样，VLM 的推理能力原样保留。",
+      rule: "<b>规则 1：</b>AR 段的行，只允许下三角（段内因果）。",
+      rows: [0, 1, 2], focus: "ar"
+    },
+    {
+      title: "再看扩散段的行：全放开",
+      why: "Q 是带噪视频或动作 token 时，它可以看<b>所有</b> token——全部 AR 前缀（语言条件）加上全部扩散 token（包括时间上更晚的）。双向性是时间一致性的来源。",
+      rule: "<b>规则 2：</b>扩散段的行，整行绿色（双向 + 跨界）。",
+      rows: [3, 4, 5], focus: "dm"
+    },
+    {
+      title: "注意这个不对称的角落",
+      why: "左下角（扩散 Q × AR K）是绿的：生成看得见条件。右上角（AR Q × 扩散 K）是红的：条件<b>永远</b>不被生成物污染。整块掩码的信息流向因此是单向的——从理解流向生成，不回流。",
+      rule: "<b>规则 3：</b>信息只从 AR 流向扩散，永不回流。",
+      rows: null, focus: "cross"
+    }
+  ];
+
+  var maskState = { i: 0, playing: false, timer: null };
+  var maskTitle = document.getElementById("mask-title");
+  var maskWhy = document.getElementById("mask-why");
+  var maskRule = document.getElementById("mask-rule");
+  var maskLive = document.getElementById("mask-live");
+  var maskPips = document.getElementById("mask-pips");
+  var maskStepLabel = document.getElementById("mask-step-label");
+
+  MASK_STEPS.forEach(function (_, idx) {
+    var p = document.createElement("button");
+    p.className = "pip";
+    p.type = "button";
+    p.textContent = String(idx + 1);
+    p.addEventListener("click", function () { maskGo(idx); });
+    maskPips.appendChild(p);
+  });
+  var maskPipEls = maskPips.querySelectorAll(".pip");
+
+  function maskRender() {
+    var step = MASK_STEPS[maskState.i];
+    maskTitle.textContent = step.title;
+    maskWhy.innerHTML = step.why;
+    maskRule.innerHTML = step.rule;
+    maskStepLabel.textContent = (maskState.i + 1) + " / " + MASK_STEPS.length;
+    maskLive.textContent = step.title;
+    for (var q = 0; q < 6; q++) {
+      var rowActive = step.rows === null || step.rows.indexOf(q) !== -1;
+      for (var k = 0; k < 6; k++) {
+        var cell = maskCells[q][k];
+        var allow = MASK[q][k];
+        var show = allow;
+        if (step.focus === "cross") {
+          // highlight the two off-diagonal blocks
+          var isCross = (q >= 3 && k < 3) || (q < 3 && k >= 3);
+          cell.className = "mcell " + (allow ? "allow" : "deny");
+          cell.style.opacity = isCross ? "1" : "0.25";
+        } else {
+          cell.className = "mcell " + (show ? "allow" : "deny");
+          cell.style.opacity = rowActive ? "1" : "0.25";
+        }
+      }
+    }
+    maskPipEls.forEach(function (p, idx) {
+      p.classList.toggle("on", idx === maskState.i);
+      p.classList.toggle("done", idx < maskState.i);
+    });
+    document.getElementById("mask-prev").disabled = maskState.i === 0;
+    document.getElementById("mask-next").disabled = maskState.i === MASK_STEPS.length - 1;
+  }
+  function maskGo(i) {
+    maskState.i = Math.max(0, Math.min(MASK_STEPS.length - 1, i));
+    maskRender();
+  }
+  function maskStop() {
+    maskState.playing = false;
+    if (maskState.timer) { clearInterval(maskState.timer); maskState.timer = null; }
+    document.getElementById("mask-play").textContent = "▶ 播放";
+  }
+  document.getElementById("mask-prev").addEventListener("click", function () { maskStop(); maskGo(maskState.i - 1); });
+  document.getElementById("mask-next").addEventListener("click", function () { maskStop(); maskGo(maskState.i + 1); });
+  document.getElementById("mask-reset").addEventListener("click", function () { maskStop(); maskGo(0); });
+  document.getElementById("mask-play").addEventListener("click", function () {
+    if (maskState.playing) { maskStop(); return; }
+    maskState.playing = true;
+    this.textContent = "⏸ 暂停";
+    maskState.timer = setInterval(function () {
+      if (maskState.i >= MASK_STEPS.length - 1) { maskStop(); return; }
+      maskGo(maskState.i + 1);
+    }, reduced ? 4200 : 2600);
+  });
+  maskRender();
+
+  /* ================= Mode demo (clean/noisy) ================= */
+  // tokens: v0, a1, v1, a2, v2
+  var MODE_TOKENS = [
+    { id: "v0", label: "v₀", kind: "vision" },
+    { id: "a1", label: "a₁", kind: "action" },
+    { id: "v1", label: "v₁", kind: "vision" },
+    { id: "a2", label: "a₂", kind: "action" },
+    { id: "v2", label: "v₂", kind: "vision" }
+  ];
+  var MODES = {
+    fd: {
+      label: "正动力学",
+      noisy: ["v1", "v2"],
+      title: "正动力学：给动作，预测未来画面",
+      why: "动作 token 干净（已知干预），未来帧带噪（待生成）。模型学的是：<b>世界在动作作用下如何演化</b>。这是模拟器。",
+      rule: "应用：在真机执行前，先在想象中试跑动作序列，评估后果。机器人正动力学 PSNR 26.0（Super），超过专才基线 Ctrl-World 的 23.0。",
+      mantra: "因 → 果"
+    },
+    id: {
+      label: "逆动力学",
+      noisy: ["a1", "a2"],
+      title: "逆动力学：给画面，反推动作",
+      why: "帧干净（观测已知），中间的动作带噪。模型学的是：<b>什么样的动作能解释这个状态转移</b>。这是从视频里蒸馏动作标签的机器——互联网上的无标注操作视频因此全部变成可训练数据。",
+      rule: "应用：给没有动作标注的视频自动补动作标签；从驾驶视频直接估计自车轨迹（RRE 0.21°，远优于 VGGT 的 0.60°）。",
+      mantra: "果 → 因"
+    },
+    policy: {
+      label: "策略",
+      noisy: ["a1", "v1", "a2", "v2"],
+      title: "策略：动作与后果联合生成",
+      why: "只有当前帧干净，动作和未来帧<b>同时</b>带噪、联合去噪。模型在同一个前向过程里既决定怎么动、又想象动了会怎样——策略网络内部自带世界模拟器。",
+      rule: "应用：DROID 机器人策略。预测 32 步动作 + 辅助未来画面，RoboArena / RoboLab / MolmoSpaces 三榜第一。",
+      mantra: "因与果，共同浮现"
+    }
+  };
+  var modeTokensEl = document.getElementById("mode-tokens");
+  var modeTokEls = {};
+  MODE_TOKENS.forEach(function (t, idx) {
+    if (idx > 0) {
+      var arrow = document.createElement("span");
+      arrow.className = "tok gap";
+      arrow.textContent = "→";
+      arrow.setAttribute("aria-hidden", "true");
+      modeTokensEl.appendChild(arrow);
+    }
+    var el = document.createElement("div");
+    el.className = "tok " + t.kind + " clean";
+    el.textContent = t.label;
+    modeTokensEl.appendChild(el);
+    modeTokEls[t.id] = el;
+  });
+  var modeBtns = document.querySelectorAll("#mode-demo [data-mode]");
+  function modeRender(key) {
+    var m = MODES[key];
+    document.getElementById("mode-label").textContent = m.label;
+    document.getElementById("mode-title").textContent = m.title;
+    document.getElementById("mode-why").innerHTML = m.why;
+    document.getElementById("mode-rule").innerHTML = m.rule;
+    document.getElementById("mode-mantra").textContent = m.mantra;
+    MODE_TOKENS.forEach(function (t) {
+      var el = modeTokEls[t.id];
+      var noisy = m.noisy.indexOf(t.id) !== -1;
+      el.className = "tok " + t.kind + (noisy ? " noisy" : " clean");
+      el.textContent = noisy ? t.label.replace("v", "ṽ").replace("a", "ã") : t.label;
+    });
+    modeBtns.forEach(function (b) {
+      b.classList.toggle("primary", b.getAttribute("data-mode") === key);
+    });
+  }
+  modeBtns.forEach(function (b) {
+    b.addEventListener("click", function () { modeRender(b.getAttribute("data-mode")); });
+  });
+  modeRender("fd");
+
+  /* ================= FPS demo ================= */
+  var FPS_BASE_TPS = 6; // 24 fps / 4 compression
+  var fpsAxis = document.getElementById("fps-axis");
+  var fpsEq = document.getElementById("fps-eq");
+  var fpsBtns = document.querySelectorAll(".fps-controls [data-fps]");
+  var AXIS_SPAN = 6; // show positions 0..6
+  var fpsTicks = [];
+  var fpsTimeLabels = [];
+
+  function fpsRender(fps) {
+    fpsBtns.forEach(function (b) {
+      b.classList.toggle("on", b.getAttribute("data-fps") === String(fps));
+    });
+    // clear old ticks
+    fpsTicks.forEach(function (t) { t.remove(); });
+    fpsTimeLabels.forEach(function (t) { t.remove(); });
+    fpsTicks = []; fpsTimeLabels = [];
+    var tps = fps / 4;
+    var delta = FPS_BASE_TPS / tps;
+    var width = fpsAxis.clientWidth || 600;
+    for (var i = 0; i < 5; i++) {
+      var pos = i * delta;
+      if (pos > AXIS_SPAN) break;
+      var x = (pos / AXIS_SPAN) * (width - 30) + 6;
+      var tick = document.createElement("div");
+      tick.className = "fps-tick";
+      tick.style.left = x + "px";
+      tick.innerHTML = "<span>帧 " + i + "<br>t=" + pos.toFixed(1) + "</span>";
+      fpsAxis.appendChild(tick);
+      fpsTicks.push(tick);
+    }
+    // physical time markers every 1/6s unit of real time for reference: show real time at position 6
+    var realSpan = AXIS_SPAN / FPS_BASE_TPS; // seconds covered by axis
+    for (var s = 0; s <= 4; s++) {
+      var tp = (s / 4) * realSpan;
+      var xt = (s / 4) * (width - 30) + 6;
+      var lab = document.createElement("div");
+      lab.className = "fps-time";
+      lab.style.left = xt + "px";
+      lab.textContent = tp.toFixed(2) + "s";
+      fpsAxis.appendChild(lab);
+      fpsTimeLabels.push(lab);
+    }
+    fpsEq.innerHTML = "TPS = " + fps + " ÷ 4 = " + tps + " 　<b>δt = " + FPS_BASE_TPS + " / " + tps + " = " + delta.toFixed(2) + "</b> 　每帧在位置轴上走 " + delta.toFixed(2) + " 格";
+  }
+  fpsBtns.forEach(function (b) {
+    b.addEventListener("click", function () { fpsRender(parseInt(b.getAttribute("data-fps"), 10)); });
+  });
+  window.addEventListener("resize", function () {
+    var on = document.querySelector(".fps-controls button.on");
+    fpsRender(parseInt(on.getAttribute("data-fps"), 10));
+  });
+  fpsRender(24);
+
+  /* ---------- keyboard nav for mask demo ---------- */
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target && e.target.tagName) || "";
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+    var maskDemo = document.getElementById("mask-demo");
+    var r = maskDemo.getBoundingClientRect();
+    var visible = r.top < window.innerHeight && r.bottom > 0;
+    if (!visible) return;
+    if (e.key === "ArrowRight") { maskStop(); maskGo(maskState.i + 1); }
+    if (e.key === "ArrowLeft") { maskStop(); maskGo(maskState.i - 1); }
+  });
+})();
+</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
