@@ -64,12 +64,17 @@ function normalizeArticle(article, index) {
     date: String(article.date || "").trim(),
     source: String(article.source || "site").trim().toLowerCase(),
     isTech: Boolean(article.isTech),
+    pinned: Boolean(article.pinned),
     originalIndex: index,
   };
 }
 
 function sortArticles(articles) {
   return [...articles].sort((left, right) => {
+    if (left.pinned !== right.pinned) {
+      return left.pinned ? -1 : 1;
+    }
+
     const leftTime = dateTime(left.date);
     const rightTime = dateTime(right.date);
 
@@ -361,6 +366,12 @@ ${nextPath ? `<link rel="next" href="${SITE_URL}${nextPath}">` : ""}
     text-decoration: none;
   }
 
+  .article-marker.pin {
+    margin-left: 0.35rem;
+    color: var(--amber);
+    vertical-align: 0.18em;
+  }
+
   .article-desc {
     max-width: 60ch;
     margin-top: 5px;
@@ -485,11 +496,12 @@ function renderArticle(article) {
   const href = displayHref(article.url);
   const isExternal = /^https?:\/\//i.test(article.url);
   const attributes = isExternal ? ' target="_blank" rel="noopener noreferrer"' : "";
+  const pin = article.pinned ? ' <span class="article-marker pin" title="Pinned" aria-label="Pinned">✦</span>' : "";
   const marker = article.isTech ? ' <span class="article-marker">Tech</span>' : "";
 
   return `    <li class="article">
       <a href="${escapeAttribute(href)}"${attributes}>
-        <h2 class="article-title">${escapeHtml(article.title)}${marker}</h2>
+        <h2 class="article-title">${escapeHtml(article.title)}${pin}${marker}</h2>
         ${article.subtitle ? `<p class="article-desc">${escapeHtml(article.subtitle)}</p>` : ""}
       </a>
     </li>`;
