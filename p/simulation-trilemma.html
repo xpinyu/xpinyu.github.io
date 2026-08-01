@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="马斯克那句几十亿分之一只讲了一半。Bostrom 的原文是一道算术题：意识可计算、模拟很便宜、模拟者占绝大多数——然后是一个三者必居其一的三选一。">
+<meta name="author" content="pinyu">
+<meta property="og:title" content="我们活在模拟里吗：一篇论文给出的三选一">
+<meta property="og:description" content="马斯克只讲了一半。Bostrom 的原文是一道算术题，它约束的不是现实，而是我们对人类未来的信念。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pinyu.ai/p/simulation-trilemma.html">
+<title>我们活在模拟里吗：一篇论文给出的三选一</title>
+<link rel="canonical" href="https://pinyu.ai/p/simulation-trilemma.html">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+  :root {
+    --bg: #FAF6EE;
+    --surface: #FFFFFF;
+    --text-1: #1A1714;
+    --text-2: #5C5349;
+    --text-3: #776E62;
+    --border: #E5DDD0;
+    --accent: #1B3F8B;
+    --ochre: #E8B830;
+    --amber: #B8864A;
+    --amber-bg: #F8F0E0;
+    --green: #4A8060;
+    --green-bg: #E8F2EC;
+    --red: #C0503A;
+    --red-bg: #F8ECE8;
+    --blue: #5A7A90;
+    --blue-bg: #EAF0F5;
+    --serif: 'EB Garamond', 'Songti SC', Georgia, serif;
+    --sans: 'Inter', -apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif;
+    --content-w: 720px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.88;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 999;
+    transition: width 80ms linear;
+    pointer-events: none;
+  }
+
+  .container {
+    max-width: var(--content-w);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header {
+    padding: 100px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    animation: enter 0.6s ease both;
+  }
+
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(8px); }
+  }
+
+  header .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-family: var(--serif);
+    font-size: 2.28rem;
+    font-weight: 500;
+    line-height: 1.24;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    max-width: 620px;
+  }
+
+  header .subtitle {
+    font-size: 1rem;
+    color: var(--text-2);
+    line-height: 1.92;
+    max-width: 660px;
+  }
+
+  header .meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+    color: var(--text-3);
+  }
+
+  .thesis {
+    background: #1A2540;
+    color: #F5F0EB;
+    padding: 36px 40px;
+    border-radius: 16px;
+    margin-bottom: 72px;
+  }
+
+  .thesis .thesis-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 14px;
+  }
+
+  .thesis p {
+    font-size: 1.03rem;
+    line-height: 1.9;
+  }
+
+  .thesis p + p { margin-top: 16px; }
+  .thesis strong { color: var(--ochre); }
+
+  section { margin-bottom: 72px; }
+
+  .section-num {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 1.52rem;
+    font-weight: 600;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+  }
+
+  p {
+    margin-bottom: 18px;
+    font-size: 1rem;
+  }
+
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 600; }
+
+  blockquote {
+    margin: 28px 0;
+    padding: 20px 28px;
+    border-left: 3px solid var(--accent);
+    background: rgba(27, 63, 139, 0.03);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.96rem;
+    line-height: 1.88;
+  }
+
+  blockquote p { margin-bottom: 0; }
+
+  .topbar {
+    position: fixed;
+    top: 2px;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    background: rgba(250, 246, 238, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229, 221, 208, 0.6);
+  }
+
+  .topbar a {
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .topbar a:hover { color: var(--text-1); }
+  .topbar .home-link { font-weight: 500; letter-spacing: 0.02em; }
+
+  footer {
+    text-align: center;
+    padding: 48px 0 64px;
+    font-size: 0.72rem;
+    color: var(--text-3);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  nav.toc {
+    position: fixed;
+    top: 100px;
+    left: max(20px, calc((100vw - var(--content-w)) / 2 - 250px));
+    width: 210px;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    z-index: 50;
+  }
+
+  nav.toc a {
+    display: block;
+    padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--border);
+    color: var(--text-3);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  nav.toc a:hover,
+  nav.toc a.active {
+    color: var(--text-1);
+    border-color: var(--text-1);
+  }
+
+  @media (max-width: 1120px) {
+    nav.toc { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header { animation: none; }
+  }
+
+  @media (max-width: 640px) {
+    header h1 { font-size: 1.82rem; }
+    .thesis { padding: 28px 24px; }
+    blockquote { padding: 16px 20px; }
+  }
+
+  /* 算账的三个数字 */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin: 32px 0 8px;
+  }
+
+  .stats .stat {
+    text-align: center;
+    padding: 20px 12px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+  }
+
+  .stats .stat .num {
+    font-family: var(--serif);
+    font-size: 1.42rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--accent);
+    line-height: 1.3;
+  }
+
+  .stats .stat .label {
+    margin-top: 6px;
+    font-size: 0.7rem;
+    color: var(--text-3);
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 640px) {
+    .stats { grid-template-columns: 1fr; gap: 12px; }
+  }
+
+  /* 三选一 */
+  .trilemma {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 12px;
+    padding: 8px 28px;
+    margin: 28px 0;
+  }
+
+  .trilemma .item {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.98rem;
+    line-height: 1.8;
+  }
+
+  .trilemma .item:last-child { border-bottom: none; }
+
+  .trilemma .num {
+    font-family: var(--serif);
+    font-weight: 600;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  sup { font-size: 0.72em; }
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:0%"></div>
+
+<div class="topbar">
+  <a href="/" class="home-link">← pinyu.ai</a>
+</div>
+
+<nav class="toc" id="toc">
+  <a href="#core-thesis">全文论点</a>
+  <a href="#opening">马斯克只讲了一半</a>
+  <a href="#fly">一个假设，和一只果蝇</a>
+  <a href="#bill">先算一笔账</a>
+  <a href="#count">你大概率在模拟里</a>
+  <a href="#branches">三个选项</a>
+  <a href="#fermi">宇宙的沉默不是证据</a>
+  <a href="#questions">两个更硬的问题</a>
+</nav>
+
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Bostrom × Simulation Hypothesis</div>
+    <h1>我们活在模拟里吗：一篇论文给出的三选一</h1>
+    <p class="subtitle">马斯克只讲了一半。Bostrom 的原文是一道算术题，它约束的不是现实，而是我们对人类未来的信念</p>
+    <div class="meta">
+      <span>pinyu</span>
+      <span>2026.08</span>
+      <span>约 5800 字</span>
+    </div>
+  </header>
+
+  <div class="thesis" id="core-thesis">
+    <div class="thesis-label">全文论点</div>
+    <p>模拟论证不是科幻预言，而是一道算术约束。整条链只有四个环节：<strong>意识可计算，模拟心灵很便宜，模拟观察者占绝大多数，所以你大概率是其中之一</strong>——但这条链的结论不是"我们在模拟里"，而是一个三选一。</p>
+    <p>文明几乎必然在到达后人类阶段之前灭亡；后人类文明几乎必然对祖先模拟没有兴趣；我们几乎肯定活在模拟里。<strong>三者必居其一，你不能两个都要。</strong></p>
+  </div>
+
+  <section id="opening">
+    <p>2016 年，一场科技大会上，有人问马斯克：我们有没有可能活在模拟里？</p>
+    <p>他的回答后来流传得很广。四十年前我们只有《Pong》，两个矩形加一个点；四十年后，游戏已经有了照片级的画质，几百万人同时在同一个世界里。就算进步的速度再慢一万倍，游戏迟早会和现实难以区分。所以他说，我们活在"基础现实"里的概率，只有几十亿分之一。</p>
+    <p>这段话几乎没人不知道，但很少有人去翻它的出处：牛津哲学家 Nick Bostrom 在 2003 年发表的论文《Are You Living in a Computer Simulation?》。马斯克自己说过，他的想法来自这篇论文。</p>
+    <p>真去读了原文的人，会发现一件尴尬的事。Bostrom 从来没说过"我们几乎肯定活在模拟里"。他在结论里写的是，在我们"当前无知的黑暗森林"里，明智的做法是把信念大致平均地分给三种可能。"黑暗森林"这个意象，比《三体》早了五年。</p>
+    <p>大众版卖的是一个结论，原文写的是一道约束。这道约束，比那个结论锋利得多。</p>
+  </section>
+
+  <section id="fly">
+    <div class="section-num">01 / Substrate Independence</div>
+    <h2>一个假设，和一只果蝇</h2>
+    <p>整条论证链的第一环不是技术，是一个心灵哲学假设：基质无关性。</p>
+    <p>意思是，心灵是计算层面的东西，不依赖碳基大脑。只要一个系统实现了正确的计算结构和过程，它就能产生体验。碳基神经元可以，硅基处理器原则上也可以。意识不是"长在颅骨里的生物组织"这个载体的本质属性。</p>
+    <p>论文需要的版本其实相当弱。不需要机器通过图灵测试，只需要一件事：把大脑的计算过程在足够细的粒度上复制出来——比如到突触级别——就足以产生主观体验。</p>
+    <p>这个假设在哲学界接受度很广，但从来没有被证明过。直到 2026 年 3 月，它第一次有了物理形态。</p>
+    <p>美国一家初创公司发布了一段 42 秒的视频：一只数字果蝇在屏幕里行走、转向、梳毛、进食。它不是动画，也不是训练出来的 AI。它是完整的果蝇大脑连接组——139,255 个神经元，约 5000 万个突触连接——被直接放进模拟器里跑起来，再接上一个物理仿真的虚拟身体。没有训练数据，没有强化学习，没有外部指令。行为完全从生物的真实神经环路里长了出来。马斯克转发时只写了两个字：Wow。</p>
+    <p>这段视频让整个神经科学界震动。它让基质无关性第一次从扶手椅上的思想实验，变成了工程现实：一个脱离了生物基质的、纯硅基的神经结构，复现出了它所复制的那只动物的行为。</p>
+    <p>但它没有证明那个假设，反而把争议暴露得更清楚。这个模型的神经元被简化得近乎粗暴：突触只是一个权重，没有神经递质，没有神经调制，没有可塑性。反对者可以说，你复现的只是连接的拓扑，不是大脑的化学，这是一只行为逼真的僵尸。支持者可以回，连这样粗糙的复制都已经能长出目标导向的行为，那距离足够细的复制，只剩工程时间，不剩物理障碍。</p>
+    <p>果蝇没有替我们回答问题。它做的事情是：把"意识能不能被计算"这个问题，从哲学家的书房，搬到了一台正在运行的服务器上。这个问题是整条论证链唯一的支点。如果意识涉及某种不可计算的东西，模拟出来的人就没有体验，后面的一切都会崩塌。</p>
+  </section>
+
+  <section id="bill">
+    <div class="section-num">02 / The Bill</div>
+    <h2>先算一笔账</h2>
+    <p>支点成立之后，剩下的问题是成本：模拟一个有人类体验的世界，要多少算力？</p>
+    <p>先看成本端，有一个新鲜的基准。2026 年，一台桌面电脑就能跑起 13.9 万个神经元、5000 万个连接的完整大脑，外加一个物理身体。人脑大约有 860 亿个神经元、100 万亿个突触，比果蝇大四到六个数量级。但这只是工程时间的差距，不是物理可能性的差距。</p>
+    <p>再看算力端的天花板。用已知的、不违反物理定律的设计，就能估算后人类文明算力的下限：一块方糖大小的纳米计算机，每秒能执行 10<sup>21</sup> 次指令；一台行星质量的计算机，每秒约 10<sup>42</sup> 次运算。这只是下限。上限因为物理学还没封顶，没有人知道。</p>
+    <p>模拟一个人脑，估算在每秒 10<sup>14</sup> 到 10<sup>17</sup> 次运算之间。感官输入几乎可以忽略：人类感官带宽的上限大约是每秒 10<sup>8</sup> 比特，和模拟皮层的成本相比，不值一提。</p>
+    <p>环境比想象中便宜。把整个宇宙模拟到量子级别不可行，但也没必要——只需要保证模拟中的人察觉不到异常。地球内部可以省略；遥远天体用压缩贴图，逼真度只需覆盖我们能观测到的那一小条属性带；微观世界临时现编，你往电子显微镜里看的时候，它渲染出"不令人起疑"的画面就够了。出了 bug，直接编辑发现异常者的记忆，或者倒退几秒重跑。</p>
+    <p>总账是这样的：1000 亿人，每人 50 年，每年 3000 万秒，每秒 10<sup>14</sup> 到 10<sup>17</sup> 次运算。乘起来大约是 10<sup>33</sup> 到 10<sup>36</sup> 次运算。这就是全部人类心灵史的成本。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="num">10<sup>33</sup>–10<sup>36</sup> 次运算</div>
+        <div class="label">全部人类心灵史的成本</div>
+      </div>
+      <div class="stat">
+        <div class="num">10<sup>42</sup> 次 / 秒</div>
+        <div class="label">行星计算机的算力下限</div>
+      </div>
+      <div class="stat">
+        <div class="num">百万分之一秒</div>
+        <div class="label">复现全部人类史所需时间</div>
+      </div>
+    </div>
+
+    <p>对照行星计算机每秒 10<sup>42</sup> 次的算力：一台这样的计算机，用不到百万分之一的算力，跑一秒钟，就能模拟完全部人类心灵史。</p>
+    <p>这个"便宜"，2026 年第一次变得肉眼可见——桌面上的那只果蝇。</p>
+  </section>
+
+  <section id="count">
+    <div class="section-num">03 / The Count</div>
+    <h2>你大概率在模拟里</h2>
+    <p>核心论证是一个计数问题，可以浓缩成一句反问：如果我们的文明真有不小的概率走到后人类阶段，并且跑出大量祖先模拟——那你凭什么不就在那样一个模拟里？</p>
+    <p>如果模拟心灵这么便宜，那么每一个走到后人类阶段的文明，只要有一点点兴趣研究自己的历史，就会跑出海量的祖先模拟。每一个模拟里，都住着亿万有体验的存在。于是，在宇宙中所有"拥有人类式体验"的观察者里，模拟出来的数量会以天文倍数超过真实历史上的数量。</p>
+    <p>从这里面随机挑一个观察者，比如你。你几乎必然是模拟的。</p>
+    <p>最后一步是一条统计原则，论文用了一个类比。假设 x% 的人 DNA 里带有一段序列 S，它没有任何可观测的表型，和任何特征都没有已知的相关。那么只要你没测过序，你对"我带有 S"的理性置信度就应该是 x%。尽管带 S 和不带 S 的人体验完全不同——但所有人的体验本来就彼此不同。把 S 换成"处于模拟中"，推理原样平移。一个看似形而上学的"我是谁"的问题，就这样被降维成了一个统计问题。</p>
+    <p>意识可计算，模拟心灵很便宜，模拟观察者占绝大多数，所以你大概率是其中之一。</p>
+    <p>但论文真正的结论不是这个计数结果，而是一个三选一：</p>
+
+    <div class="trilemma">
+      <div class="item"><span class="num">一</span><span>文明几乎必然在到达后人类阶段之前灭亡。</span></div>
+      <div class="item"><span class="num">二</span><span>后人类文明几乎必然对跑祖先模拟没有兴趣。</span></div>
+      <div class="item"><span class="num">三</span><span>我们几乎肯定活在模拟里。</span></div>
+    </div>
+
+    <p>三者必居其一。这背后是算术：模拟数量要么大到淹没真实历史，要么某个环节把它压到了零。你不需要证明我们在模拟里，你只需要无法承受同时否认前两支的代价。</p>
+    <p>换句话说，这篇论文写的是一道纪律：除非我们此刻就活在模拟里，否则"我们的后代有一天会跑祖先模拟"这个信念就是假的。它约束的不是现实，而是你对人类未来的信念必须自洽。马斯克那句"几十亿分之一"，是把三选一裁成了只剩第三支。</p>
+  </section>
+
+  <section id="branches">
+    <div class="section-num">04 / Three Branches</div>
+    <h2>三个选项，逐一来看</h2>
+    <p><strong>第一支：文明活不到那天。</strong>如果几乎没有文明能活到后人类阶段，那么"人类会灭绝于这道门槛之前"的置信度就应该很高。我们没有理由认为自己这个物种会被特殊豁免。这不等于明天就完——也可能是文明在关键技术上自毁，或者崩溃后退回原始社会，无限期地苟着。这一支其实是一份文明级的风险评估报告：不存在"模拟"这个出口，人类的前途是真实且脆弱的。</p>
+    <p><strong>第二支：他们不想。</strong>要让有兴趣的文明趋近于零，需要一种强烈的趋同：几乎所有后人类文明都走上了同一条路。可能是伦理趋同：都认定创造会受苦的有意识存在是不道德的，并且有能力禁掉它。也可能是动机趋同：后人类的欲望结构已经彻底改变。对智力高到我们无法理解的他们来说，祖先模拟的科学价值约等于零，娱乐价值更是笑话——直接刺激大脑的奖赏中枢，比玩模拟便宜太多了。无论哪一种，这一支都意味着，后人类社会将和我们完全不同。</p>
+    <p><strong>第三支：我们在其中。</strong>如果我们在模拟里，我们观测到的整个宇宙，只是物理存在的一小块。我们看到的世界在某种意义上是真的，但它不在现实的最底层。</p>
+    <p>然后是关机预言。模拟里的文明也可以造计算机、跑自己的模拟——这在计算机科学里叫虚拟机，虚拟机可以无限堆叠。但套层有代价：被模拟的文明越接近后人类，底层模拟者的算力成本越是失控。论文由此推出：我们应该预期，当我们即将变成后人类的时候，我们的模拟会被终止。模拟论自己预言了结局：如果我们真的在模拟里，这场模拟大概率会在我们造出能跑祖先模拟的东西之前，被拔掉电源。</p>
+    <p>这个图景还能再往下推一层。模拟者之于我们，几乎就是传统意义上的神：创世者，全知，全能。但既然没有人能确定自己在最底层，那么每一层级的文明都得考虑：我的行为，会不会被我的模拟者审判？由此，来世成为一种真实的可能性。甚至最底层的文明也有理由行善，而这个理由会一层层向上传导，最终形成一种仿佛凭空而来、人人出于自利都会遵守的普遍道德律。从纯自然主义的前提出发，重新推导出了康德式的道德律。</p>
+  </section>
+
+  <section id="fermi">
+    <div class="section-num">05 / The Silent Sky</div>
+    <h2>宇宙的沉默不是证据</h2>
+    <p>费米悖论常被拿来佐证第三支。银河系里有上千亿颗恒星，可观测宇宙里有上万亿个星系。一个文明只要掌握自我复制探测器，几千万年就能铺满整个银河系——这在 138 亿年的宇宙史里，只是一瞬间。宇宙应该拥挤不堪，我们观测到的却是死寂。</p>
+    <p>直觉是：如果我们在模拟里，模拟者只需渲染我们这一个文明，背景星空全是低成本贴图——用论文的说法，遥远天体可以用高度压缩的表示。宇宙空荡荡不再奇怪，因为根本没有费算力去造别的文明。宇宙是给你一个人看的天文馆穹顶。</p>
+    <p>但这是笔借来还不起的债。</p>
+    <p>第一，死寂的星空同时兼容"我们在模拟里"和"文明都早夭"两个假说。它们做出完全相同的观测预言。一个无法区分两个假说的观测，不构成对其中任何一个的证据。</p>
+    <p>第二，宇宙的沉默是关于"文明存活率"的经验证据，而且方向是压低它：至少在我们可见的范围内，没有任何文明活到能跑模拟的阶段。存活率越低，三选一里第一支的权重就越高，第三支反而越低。宇宙的沉默不是模拟的渲染预算问题，它更像是"文明活不到造模拟那一步"的证据。</p>
+    <p>拿"宇宙太安静"来支持"我们在模拟里"，是在借一笔自己还不起的债：宇宙越安静，"存在会造模拟的文明"这个前提本身，就越可疑。</p>
+  </section>
+
+  <section id="questions">
+    <div class="section-num">06 / Two Harder Questions</div>
+    <h2>两个更硬的问题</h2>
+    <p>这条论证链的价值，不在于回答"我们在不在模拟里"。这个问题以目前的手段无法裁决——任何观测都同时兼容两种答案。它真正做的，是逼人回答两个更硬的问题。</p>
+    <p><strong>第一个：意识到底是不是计算？</strong></p>
+    <p>整条链就挂在这一个支点上。如果未来的神经科学证明，意识无法被任何计算过程完整复现，第三支自动出局——模拟心灵没有体验，计数无从谈起。论证坍缩回前两支，而那两支不再是形而上学，是关于文明未来的经验预测。</p>
+    <p>那只数字果蝇之所以重要，不是因为它回答了什么，而是因为它让这个问题第一次有了实验品的形状。它此刻正在某台服务器上行走、梳毛、进食。它体内有没有哪怕一丁点"作为一只果蝇是什么感觉"？没有人知道。但"没有人知道"这种状态，第一次显得像是一个暂时的、可以被攻克的无知，而不是一个永恒的哲学僵局。</p>
+    <p><strong>第二个：你对人类未来的信念，自洽吗？</strong></p>
+    <p>三选一是一份不许全选的菜单。信第一支，意味着认真对待文明级风险是理性选择，不是杞人忧天；信第二支，意味着相信技术进步存在文明级的自我约束；信第三支，意味着你的一切体验依然真实有效——论文的原话是，它"完全不应该让我们发疯，也不该妨碍我们为明天做计划"。模拟里的痛苦依然是体验者的痛苦。拿它给虚无主义背书，是连原作者都不认的读法。</p>
+    <p>很多人下意识想做的事——一边否认我们在模拟里，一边又相信人类前途无量、后代会做出模拟整个历史的惊人壮举——被这篇论文证明了是矛盾的。你不能两个都要。</p>
+    <p>"我们活在模拟里吗"，是一个今天无法回答的问题。"我愿不愿意认真对待人类文明的未来"，是一个今天就能回答的问题。这篇论文真正做的，是把前一个问题的伪装剥掉，露出后一个。</p>
+    <p>二十多年后重读它，最耐琢磨的还是作者自己的克制。一个算出"百万分之一秒"这种数字的人，一个顺手推出了关机预言、自然主义神学和来世可能性的人，最后落在纸面上的结论，只是：在黑暗森林里，三种可能，大致均分。</p>
+    <p>也许真正值得记住的，不是"我们可能活在模拟里"。</p>
+    <p><strong>而是：一个文明能给自己写出的最诚实的未来学，长这样。</strong></p>
+  </section>
+
+  <footer>
+    <p>© 2026 pinyu · 写作是为了夺回被符号塑造的主动权</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var progress = document.getElementById('progress');
+  function updateProgress() {
+    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = docH > 0 ? (window.scrollY / docH) * 100 : 0;
+    progress.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // TOC active state
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+  var sections = tocLinks
+    .map(function (a) { return document.querySelector(a.getAttribute('href')); })
+    .filter(Boolean);
+
+  function updateToc() {
+    var current = null;
+    sections.forEach(function (sec) {
+      if (sec.getBoundingClientRect().top <= 140) current = sec;
+    });
+    tocLinks.forEach(function (a) {
+      var isActive = current && a.getAttribute('href') === '#' + current.id;
+      a.classList.toggle('active', !!isActive);
+    });
+  }
+  window.addEventListener('scroll', updateToc, { passive: true });
+  updateToc();
+})();
+</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="920ac93c-222f-4ac4-9de2-f7cf2d3de4cd"></script>
+</body>
+</html>
